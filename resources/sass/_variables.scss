@@ -1,0 +1,39 @@
+$rounded-pill:                50rem !default;
+
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+$primary: #000a33;
+
+// Components
+$link-color: $blue;
+
+$btn-border-radius: $rounded-pill;
+$btn-border-radius-lg: $rounded-pill;
+$btn-border-radius-sm: $rounded-pill;
+
+// $input-border-radius: $rounded-pill;
+// $input-border-radius-lg: $rounded-pill;
+// $input-border-radius-sm: $rounded-pill;
+
+$progress-border-radius: $rounded-pill;
+
+$input-btn-padding-x: 1rem;
+$input-btn-padding-x-sm: .75rem;
+$input-btn-padding-y-lg: 1.25rem;
