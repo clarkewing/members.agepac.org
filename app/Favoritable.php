@@ -35,7 +35,7 @@ trait Favoritable
      * If no userId is passed, authenticated user is used.
      *
      * @param  int|null $userId
-     * @return \App\Favorite
+     * @return \App\Favorite|void
      */
     public function favorite(int $userId = null)
     {
@@ -53,9 +53,9 @@ trait Favoritable
      * If no userId is passed, authenticated user is used.
      *
      * @param  int|null $userId
-     * @return \App\Favorite
+     * @return void
      */
-    public function unfavorite(int $userId = null)
+    public function unfavorite(int $userId = null): void
     {
         $attributes = ['user_id' => $userId ?? Auth::id()];
 
