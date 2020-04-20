@@ -11,7 +11,7 @@ The [AGEPAC](http://www.agepac.org "View the AGEPAC website") is a non-profit as
 - To work in cooperation with any entity on topics relating to aeronautics
 - To assist members encountering personal or professional difficulties during training
 
-The AGEPAC is registered in France as an _Association Loi de 1901_ and appearing in the _Journal Officiel_ with RNA number W313017548.
+<sub><sup>The AGEPAC is registered in France as an _Association Loi de 1901_ and appearing in the _Journal Officiel_ with RNA number W313017548.</sup></sub>
 
 ## Installation
 
