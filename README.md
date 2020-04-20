@@ -41,6 +41,12 @@ The [AGEPAC](http://www.agepac.org "View the AGEPAC website") is a non-profit as
  DB_PASSWORD=
  ```
 
+ Then, migrate your database to create tables.
+
+ ```
+ php artisan migrate
+ ```
+
  ### Step 3.
 
  Until an administration portal is available, manually insert any number of "channels" (think of these as forum categories) into the "channels" table in your database.
