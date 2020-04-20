@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\Thread;
 use App\Favorite;
+use App\Reputation;
 use App\RecordsActivity;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,24 @@ class Reply extends Model
      * @var array
      */
     protected $touches = ['thread'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($reply) {
+            Reputation::award($reply->owner, Reputation::REPLY_POSTED);
+        });
+
+        static::deleting(function ($reply) {
+            Reputation::reduce($reply->owner, Reputation::REPLY_POSTED);
+        });
+    }
 
     /**
      * Get the user that owns the reply.

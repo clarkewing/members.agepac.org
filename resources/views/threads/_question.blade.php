@@ -27,7 +27,9 @@
     <div class="card-header d-flex align-items-center">
         <img src="{{  $thread->creator->avatar_path }}" alt="{{ $thread->creator->name }}" width="25" height="25" class="mr-2">
         <div class="flex-grow-1">
-            <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted: <span v-text="title"></span>
+            <a href="{{ route('profile', $thread->creator) }}">
+                {{ $thread->creator->name }} ({{ $thread->creator->reputation }} XP)
+            </a> posted: <span v-text="title"></span>
         </div>
     </div>
     <div class="card-body" v-html="body"></div>

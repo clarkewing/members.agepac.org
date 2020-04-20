@@ -7082,6 +7082,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user'],
@@ -7100,6 +7104,9 @@ __webpack_require__.r(__webpack_exports__);
       return this.authorize(function (user) {
         return user.id === _this.user.id;
       });
+    },
+    reputation: function reputation() {
+      return this.user.reputation + ' XP';
     }
   },
   methods: {
@@ -85641,10 +85648,12 @@ var render = function() {
           attrs: { src: _vm.avatar, width: "50", height: "50" }
         }),
         _vm._v(" "),
-        _c("h1", {
-          staticClass: "mb-0",
-          domProps: { textContent: _vm._s(_vm.user.name) }
-        })
+        _c("h1", { staticClass: "d-flex align-items-center mb-0" }, [
+          _vm._v("\n            " + _vm._s(_vm.user.name) + "\n            "),
+          _c("span", { staticClass: "badge badge-pill badge-secondary ml-2" }, [
+            _vm._v(_vm._s(_vm.reputation))
+          ])
+        ])
       ]
     ),
     _vm._v(" "),

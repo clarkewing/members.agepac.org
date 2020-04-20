@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\Reply;
 use App\Channel;
+use App\Reputation;
 use App\RecordsActivity;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
@@ -75,13 +76,17 @@ class Thread extends Model
     {
         parent::boot();
 
+        static::created(function ($thread) {
+            $thread->update(['slug' => $thread->title]);
+
+            Reputation::award($thread->creator, Reputation::THREAD_PUBLISHED);
+        });
+
         // Cascase deleting of thread.
         static::deleting(function ($thread) {
             $thread->replies->each->delete();
-        });
 
-        static::created(function ($thread) {
-            $thread->update(['slug' => $thread->title]);
+            Reputation::reduce($thread->creator, Reputation::THREAD_PUBLISHED);
         });
     }
 
@@ -245,6 +250,8 @@ class Thread extends Model
     public function markBestReply(Reply $reply): void
     {
         $this->update(['best_reply_id' => $reply->id]);
+
+        Reputation::award($reply->owner, Reputation::BEST_REPLY_AWARDED);
     }
 
     /**
