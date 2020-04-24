@@ -1,4 +1,4 @@
-# AGEPAC Members area
+# AGEPAC Members area [![Build Status](https://travis-ci.org/clarkewing/agepac.org-members.svg?branch=master)](https://travis-ci.org/clarkewing/agepac.org-members)
 
 This is the forum that will be put into production in a members only area on agepac.org.
 
