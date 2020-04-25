@@ -43,14 +43,12 @@ class Reply extends Model
     protected $touches = ['thread'];
 
     /**
-     * The "booting" method of the model.
+     * The "booted" method of the model.
      *
      * @return void
      */
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::created(function ($reply) {
             Reputation::award($reply->owner, Reputation::REPLY_POSTED);
         });

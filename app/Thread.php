@@ -63,21 +63,19 @@ class Thread extends Model
     }
 
     /**
-     * The "booting" method of the model.
+     * The "booted" method of the model.
      *
      * @return void
      */
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::created(function ($thread) {
             $thread->update(['slug' => $thread->title]);
 
             Reputation::award($thread->creator, Reputation::THREAD_PUBLISHED);
         });
 
-        // Cascase deleting of thread.
+        // Cascade deleting of thread.
         static::deleting(function ($thread) {
             $thread->replies->each->delete();
 
