@@ -4,6 +4,9 @@ php:
   - 7.2
   - 7.3
 
+before_install:
+  - yes '' | pecl install -f redis || echo 'PHP Redis extension already installed.'
+
 before_script:
   - cp .env.travis .env
   - composer install --no-interaction
