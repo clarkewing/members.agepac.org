@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Thread;
 use App\Trending;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Redis;
 
 class TrendingThreadsTest extends TestCase
 {

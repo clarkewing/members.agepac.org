@@ -2,12 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Thread;
-use Tests\TestCase;
+use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProfilesTest extends TestCase
 {

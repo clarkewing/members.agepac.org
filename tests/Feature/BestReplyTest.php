@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Reply;
 use App\Thread;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class BestReplyTest extends TestCase
 {

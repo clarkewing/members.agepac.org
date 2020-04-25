@@ -2,14 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\User;
+use App\Activity;
 use App\Reply;
 use App\Thread;
-use App\Activity;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {

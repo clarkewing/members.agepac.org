@@ -2,15 +2,9 @@
 
 namespace App;
 
-use App\User;
-use App\Thread;
-use App\Favorite;
-use App\Reputation;
-use App\RecordsActivity;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Stevebauman\Purify\Facades\Purify;
 
 class Reply extends Model
 {

@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Listeners\NotifySubscribers;
-use Illuminate\Support\Facades\Event;
 use App\Events\ThreadReceivedNewReply;
-use Illuminate\Auth\Events\Registered;
 use App\Listeners\NotifyMentionedUsers;
+use App\Listeners\NotifySubscribers;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {

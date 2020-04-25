@@ -3,15 +3,15 @@
 namespace App\Events;
 
 use App\Reply;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class ThreadReceivedNewReply
 {
     use Dispatchable, SerializesModels;
 
     /**
-     * \App\Reply
+     * \App\Reply.
      */
     public $reply;
 

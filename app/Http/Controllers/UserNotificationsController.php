@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class UserNotificationsController extends Controller
 {

@@ -2,12 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\User;
 use App\Reply;
-use Tests\TestCase;
+use App\User;
 use Illuminate\Support\Str;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -22,6 +20,7 @@ class UserTest extends TestCase
 
         $this->assertEquals($reply->id, $user->lastReply->id);
     }
+
     /**
      * @test
      */

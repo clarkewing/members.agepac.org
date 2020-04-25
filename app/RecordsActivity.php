@@ -2,9 +2,8 @@
 
 namespace App;
 
-use App\Activity;
-use ReflectionClass;
 use Illuminate\Support\Facades\Auth;
+use ReflectionClass;
 
 trait RecordsActivity
 {

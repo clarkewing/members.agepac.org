@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\User;
-
 class Reputation
 {
     const THREAD_PUBLISHED = 10;

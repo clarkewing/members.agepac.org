@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Thread;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class UpdateThreadsTest extends TestCase
 {

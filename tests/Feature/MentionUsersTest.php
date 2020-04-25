@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Reply;
 use App\Thread;
+use App\User;
 use Tests\TestCase;
 
 class MentionUsersTest extends TestCase

@@ -2,17 +2,12 @@
 
 namespace App;
 
-use App\User;
-use App\Reply;
-use App\Channel;
-use App\Reputation;
-use App\RecordsActivity;
+use App\Events\ThreadReceivedNewReply;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
-use Illuminate\Support\Facades\Auth;
-use App\Events\ThreadReceivedNewReply;
 use Stevebauman\Purify\Facades\Purify;
-use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
@@ -160,7 +155,7 @@ class Thread extends Model
     public function subscribe(?int $userId = null)
     {
         $this->subscriptions()->create([
-            'user_id' => $userId ?? Auth::id()
+            'user_id' => $userId ?? Auth::id(),
         ]);
 
         return $this;

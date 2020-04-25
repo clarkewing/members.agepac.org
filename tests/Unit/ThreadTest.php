@@ -2,15 +2,14 @@
 
 namespace Tests\Unit;
 
-use App\User;
-use App\Thread;
 use App\Channel;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redis;
 use App\Notifications\ThreadWasUpdated;
+use App\Thread;
+use App\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {

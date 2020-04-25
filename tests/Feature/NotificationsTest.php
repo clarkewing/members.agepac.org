@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Thread;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Auth;
+use App\User;
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Thread;
 use Illuminate\Support\Facades\Redis;
 
 class Trending

@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Thread;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Auth;
 
 class SubscribeToThreadsTest extends TestCase
 {

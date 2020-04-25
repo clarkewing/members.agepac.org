@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Activity;
+use App\Channel;
 use App\Reply;
 use App\Thread;
-use App\Channel;
-use App\Activity;
-use Tests\TestCase;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
 {
@@ -102,7 +102,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = $this->postJson(route('threads'), $thread->toArray())->json();
 
-        $this->assertEquals('foo-title-'.strtotime($thread['created_at']), $thread['slug']);
+        $this->assertEquals('foo-title-' . strtotime($thread['created_at']), $thread['slug']);
     }
 
     /**
@@ -116,7 +116,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = $this->postJson(route('threads'), $thread->toArray())->json();
 
-        $this->assertEquals('financials-2020-'.strtotime($thread['created_at']), $thread['slug']);
+        $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
     }
 
     /**

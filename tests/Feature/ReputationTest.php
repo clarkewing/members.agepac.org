@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Reply;
-use App\Thread;
 use App\Reputation;
-use Tests\TestCase;
+use App\Thread;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class ReputationTest extends TestCase
 {

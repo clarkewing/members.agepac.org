@@ -13,7 +13,7 @@ class SearchTest extends TestCase
     public function testAUserCanSearchThreads()
     {
         if (! config('scout.algolia.id')) {
-            $this->markTestSkipped("Algolia is not configured.");
+            $this->markTestSkipped('Algolia is not configured.');
         }
 
         config(['scout.driver' => 'algolia']);
@@ -26,7 +26,7 @@ class SearchTest extends TestCase
         do {
             sleep(.25);
 
-            $results = $this->getJson(route('threads.search')."?q=$search")->json()['data'];
+            $results = $this->getJson(route('threads.search') . "?q=$search")->json()['data'];
         } while (empty($results));
 
         $this->assertCount(2, $results);

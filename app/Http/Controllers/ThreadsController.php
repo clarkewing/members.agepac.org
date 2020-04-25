@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
 use App\Channel;
-use App\Trending;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
+use App\Thread;
+use App\Trending;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Database\Eloquent\Collection;
 
 class ThreadsController extends Controller
 {

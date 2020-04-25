@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Thread;
-use Tests\TestCase;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class LockThreadsTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\User;
 use App\Reply;
+use App\User;
 use Tests\TestCase;
 
 class ReplyTest extends TestCase
@@ -41,7 +41,7 @@ class ReplyTest extends TestCase
         $john = create(User::class, ['name' => 'JohnDoe']);
 
         $reply = new Reply([
-            'body' => '@JaneDoe wants to talk to @JohnDoe but not @FakeUser'
+            'body' => '@JaneDoe wants to talk to @JohnDoe but not @FakeUser',
         ]);
 
         $this->assertCount(2, $reply->mentionedUsers());
@@ -55,7 +55,7 @@ class ReplyTest extends TestCase
     public function testWrapsMentionedUsernamesInTheBodyWithinAnchorTags()
     {
         $reply = new Reply([
-            'body' => 'Hello @JaneDoe.'
+            'body' => 'Hello @JaneDoe.',
         ]);
 
         $this->assertEquals(

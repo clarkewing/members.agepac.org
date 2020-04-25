@@ -8,6 +8,7 @@ class Spam
         InvalidKeywords::class,
         KeyHeldDown::class,
     ];
+
     /**
      * Detect whether body is spam.
      *

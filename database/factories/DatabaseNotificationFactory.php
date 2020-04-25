@@ -3,9 +3,9 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\User;
-use Ramsey\Uuid\Uuid;
 use Faker\Generator as Faker;
 use Illuminate\Notifications\DatabaseNotification;
+use Ramsey\Uuid\Uuid;
 
 $factory->define(DatabaseNotification::class, function (Faker $faker) {
     return [

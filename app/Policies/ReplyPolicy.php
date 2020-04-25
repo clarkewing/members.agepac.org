@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Reply;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ReplyPolicy
@@ -44,6 +44,7 @@ class ReplyPolicy
         if (is_null($lastReply = $user->fresh()->lastReply)) {
             return true;
         }
+
         return ! $lastReply->wasJustPublished();
     }
 

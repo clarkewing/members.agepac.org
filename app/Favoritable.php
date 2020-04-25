@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Favorite;
-use App\Reputation;
 use Illuminate\Support\Facades\Auth;
 
 trait Favoritable

@@ -2,10 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
-use App\Thread;
 use App\Channel;
-use Illuminate\Support\Str;
+use App\Thread;
+use App\User;
 use Faker\Generator as Faker;
 
 $factory->define(Thread::class, function (Faker $faker) {

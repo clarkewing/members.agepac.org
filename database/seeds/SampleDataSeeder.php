@@ -1,11 +1,10 @@
 <?php
 
-use App\User;
+use App\Activity;
+use App\Channel;
+use App\Favorite;
 use App\Reply;
 use App\Thread;
-use App\Channel;
-use App\Activity;
-use App\Favorite;
 use App\ThreadSubscription;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;

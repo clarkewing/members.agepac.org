@@ -2,13 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Reply;
-use Exception;
 use App\Thread;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\AuthenticationException;
+use Tests\TestCase;
 
 class ParticipateInThreadsTest extends TestCase
 {

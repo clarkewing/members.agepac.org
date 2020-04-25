@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Channel;
 use App\Reply;
 use App\Thread;
-use App\Channel;
-use Tests\TestCase;
+use App\User;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
 {
