@@ -1,4 +1,9 @@
-# AGEPAC Members area [![Build Status](https://travis-ci.org/clarkewing/agepac.org-members.svg?branch=master)](https://travis-ci.org/clarkewing/agepac.org-members)
+<p>
+    <a href="https://travis-ci.org/clarkewing/agepac.org-members"><img src="https://travis-ci.org/clarkewing/agepac.org-members.svg?branch=master" alt="Build Status"></a>
+    <a href="https://github.styleci.io/repos/257234373"><img src="https://github.styleci.io/repos/257234373/shield?branch=master" alt="StyleCI"></a>
+</p>
+
+# AGEPAC Members area
 
 This is the forum that will be put into production in a members only area on agepac.org.
 
