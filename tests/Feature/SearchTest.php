@@ -12,6 +12,10 @@ class SearchTest extends TestCase
      */
     public function testAUserCanSearchThreads()
     {
+        if (! config('scout.algolia.id')) {
+            $this->markTestSkipped("Algolia is not configured.");
+        }
+
         config(['scout.driver' => 'algolia']);
 
         $search = 'foobar';
