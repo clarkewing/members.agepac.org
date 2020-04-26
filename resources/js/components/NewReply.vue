@@ -2,7 +2,7 @@
     <div>
         <div v-if="signedIn">
             <div class="form-group">
-                <wysiwyg id="body" name="body" placeholder="Quelque chose à ajouter ?" required v-model="body" :shouldClear="completed"></wysiwyg>
+                <wysiwyg id="body" name="body" v-model="body" placeholder="Quelque chose à ajouter ?" required></wysiwyg>
             </div>
             <button class="btn btn-primary"
                 @click="addReply">Publier</button>
@@ -15,8 +15,7 @@
     export default {
         data() {
             return {
-                body: '',
-                completed: false
+                body: ''
             }
         },
 
@@ -43,7 +42,6 @@
                 axios.post(location.pathname + '/replies', { body: this.body })
                     .then(({data}) => {
                         this.body = ''; // Reset for a new reply
-                        this.completed = true;
 
                         flash('Ta réponse a étée publiée !');
 

@@ -5,6 +5,7 @@
         <trix-editor
             ref="trix"
             input="trix"
+            @trix-change="change"
             :placeholder="placeholder">
         </trix-editor>
     </div>
@@ -18,16 +19,20 @@
     import Trix from 'trix';
 
     export default {
-        props: ['name', 'value', 'placeholder', 'shouldClear'],
+        props: ['name', 'value', 'placeholder'],
 
-        mounted () {
-            this.$refs.trix.addEventListener('trix-change', e => {
-                this.$emit('input', e.target.innerHTML);
-            });
+        methods: {
+            change({target}) {
+                this.$emit('input', target.value)
+            }
+        },
 
-            this.$watch('shouldClear', () => {
-                this.$refs.trix.value = '';
-            });
+        watch: {
+            value(val) {
+                if (val === '') {
+                    this.$refs.trix.value = '';
+                }
+            }
         }
     }
 </script>
