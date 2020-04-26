@@ -37,7 +37,3 @@
         <button class="btn btn-sm btn-outline-secondary" @click="editing = true">Modifier</button>
     </div>
 </div>
-
-@push('styles')
-    <link href="{{ asset('css/vendor/trix.css') }}" rel="stylesheet">
-@endpush

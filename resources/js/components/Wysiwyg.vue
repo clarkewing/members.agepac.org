@@ -2,9 +2,17 @@
     <div>
         <input id="trix" type="hidden" :name="name" :value="value">
 
-        <trix-editor ref="trix" input="trix" :placeholder="placeholder" class="form-control"></trix-editor>
+        <trix-editor
+            ref="trix"
+            input="trix"
+            :placeholder="placeholder">
+        </trix-editor>
     </div>
 </template>
+
+<style lang="scss">
+    @import '~trix/dist/trix.css';
+</style>
 
 <script>
     import Trix from 'trix';

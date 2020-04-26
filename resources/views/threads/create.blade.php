@@ -50,7 +50,3 @@
     </div>
 </div>
 @endsection
-
-@push('styles')
-    <link href="{{ asset('css/vendor/trix.css') }}" rel="stylesheet">
-@endpush
