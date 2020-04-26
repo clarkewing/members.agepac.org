@@ -34,22 +34,22 @@ class ParticipateInThreadsTest extends TestCase
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
-    /**
-     * @test
-     */
-    public function testRepliesThatContainSpamMayNotBeCreated()
-    {
-        $this->withExceptionHandling();
-        $this->signIn();
-
-        $thread = create(Thread::class);
-        $reply = make(Reply::class, [
-            'body' => 'Yahoo Customer Support',
-        ]);
-
-        $this->json('post', $thread->path() . '/replies', $reply->toArray())
-            ->assertStatus(422);
-    }
+//    /**
+//     * @test
+//     */
+//    public function testRepliesThatContainSpamMayNotBeCreated()
+//    {
+//        $this->withExceptionHandling();
+//        $this->signIn();
+//
+//        $thread = create(Thread::class);
+//        $reply = make(Reply::class, [
+//            'body' => 'Yahoo Customer Support',
+//        ]);
+//
+//        $this->json('post', $thread->path() . '/replies', $reply->toArray())
+//            ->assertStatus(422);
+//    }
 
     /**
      * @test

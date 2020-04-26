@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Response;
 class ThreadsController extends Controller
 {
     /**
-     * Create a new ThreadCOntroller instance.
+     * Create a new ThreadController instance.
      */
     public function __construct()
     {
@@ -64,8 +64,8 @@ class ThreadsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|spamfree',
-            'body' => 'required|spamfree',
+            'title' => 'required',
+            'body' => 'required',
             'channel_id' => 'required|exists:channels,id',
         ]);
 
@@ -118,8 +118,8 @@ class ThreadsController extends Controller
         $this->authorize('update', $thread);
 
         return tap($thread)->update($request->validate([
-            'title' => 'required|spamfree',
-            'body' => 'required|spamfree',
+            'title' => 'required',
+            'body' => 'required',
         ]));
     }
 
