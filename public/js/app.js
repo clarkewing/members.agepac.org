@@ -7616,24 +7616,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialActive'],
+  props: ['active'],
   data: function data() {
     return {
-      active: this.initialActive
+      isActive: this.active
     };
   },
   computed: {
     classes: function classes() {
-      return this.active ? 'btn-primary' : 'btn-outline-primary';
+      return this.isActive ? 'btn-primary' : 'btn-outline-primary';
     }
   },
   methods: {
     toggleSubscription: function toggleSubscription() {
       var _this = this;
 
-      axios[this.active ? 'delete' : 'post'](location.pathname + '/subscriptions').then(function () {
-        _this.active = !_this.active;
-        flash(_this.active ? 'Tu as été abonné !' : 'Tu as été désabonné.');
+      axios[this.isActive ? 'delete' : 'post'](location.pathname + '/subscriptions').then(function () {
+        _this.isActive = !_this.isActive;
+        flash(_this.isActive ? 'Tu as été abonné !' : 'Tu as été désabonné.');
       });
     }
   }
@@ -86160,7 +86160,7 @@ var render = function() {
       on: { click: _vm.toggleSubscription }
     },
     [
-      _vm.active
+      _vm.isActive
         ? _c("span", [
             _c(
               "svg",

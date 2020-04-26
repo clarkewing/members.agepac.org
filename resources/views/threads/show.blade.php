@@ -26,7 +26,7 @@
 
 
                         <div class="d-flex">
-                            <subscribe-button class="mr-2" :initial-active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
+                            <subscribe-button class="mr-2" :active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
                             <button class="btn btn-outline-dark"
                                     @click="toggleLock"
                                     v-if="authorize('isAdmin')"
