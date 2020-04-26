@@ -14,10 +14,10 @@
             <div v-if="editing">
                 <form @submit.prevent="update">
                     <div class="form-group">
-                        <wysiwyg v-model="body"></wysiwyg>
+                        <wysiwyg v-model="tempBody"></wysiwyg>
                     </div>
                     <button class="btn btn-sm btn-primary" type="submit">Sauvegarder</button>
-                    <button class="btn btn-sm btn-link" @click="editing = false" type="button">Annuler</button>
+                    <button class="btn btn-sm btn-link" @click="cancel" type="button">Annuler</button>
                 </form>
             </div>
 
@@ -49,6 +49,7 @@
                 id: this.reply.id,
                 body: this.reply.body,
                 isBest: this.reply.is_best,
+                tempBody: this.reply.body
             }
         },
 
@@ -68,9 +69,10 @@
         methods: {
             update() {
                 axios.patch('/replies/' + this.id, {
-                    body: this.body
+                    body: this.tempBody
                 })
                 .then(({data}) => {
+                    this.body = this.tempBody; // Update value
                     this.editing = false;
 
                     flash('Sauvegardé !');
@@ -78,6 +80,11 @@
                 .catch(error => {
                     flash(error.response.data, 'danger');
                 });
+            },
+
+            cancel() {
+                this.tempBody = this.body; // Reset to previously set value
+                this.editing = false;
             },
 
             destroy() {
