@@ -101,6 +101,28 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /* @test */
+    public function testThreadSubscriptionsStore()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
+            'thread-subscriptions.store', [$thread->channel, $thread]
+        );
+    }
+
+    /* @test */
+    public function testThreadSubscriptionsDestroy()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
+            'thread-subscriptions.destroy', [$thread->channel, $thread]
+        );
+    }
+
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(
