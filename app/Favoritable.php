@@ -40,7 +40,7 @@ trait Favoritable
         $attributes = ['user_id' => $userId ?? Auth::id()];
 
         if (! $this->favorites()->where($attributes)->exists()) {
-            Reputation::award($this->owner, Reputation::REPLY_FAVORITED);
+            Reputation::gain($this->owner, Reputation::REPLY_FAVORITED);
 
             return $this->favorites()->create($attributes);
         }
@@ -59,7 +59,7 @@ trait Favoritable
 
         $this->favorites()->where($attributes)->get()->each->delete();
 
-        Reputation::reduce($this->owner, Reputation::REPLY_FAVORITED);
+        Reputation::lose($this->owner, Reputation::REPLY_FAVORITED);
     }
 
     /**

@@ -72,14 +72,14 @@ class Thread extends Model
         static::created(function ($thread) {
             $thread->update(['slug' => $thread->title]);
 
-            Reputation::award($thread->creator, Reputation::THREAD_PUBLISHED);
+            Reputation::gain($thread->creator, Reputation::THREAD_PUBLISHED);
         });
 
         // Cascade deleting of thread.
         static::deleting(function ($thread) {
             $thread->replies->each->delete();
 
-            Reputation::reduce($thread->creator, Reputation::THREAD_PUBLISHED);
+            Reputation::lose($thread->creator, Reputation::THREAD_PUBLISHED);
         });
     }
 
@@ -251,12 +251,12 @@ class Thread extends Model
     public function markBestReply(Reply $reply): void
     {
         if ($this->hasBestReply()) {
-            Reputation::reduce($this->bestReply->owner, Reputation::BEST_REPLY_AWARDED);
+            Reputation::lose($this->bestReply->owner, Reputation::BEST_REPLY_AWARDED);
         }
 
         $this->update(['best_reply_id' => $reply->id]);
 
-        Reputation::award($reply->owner, Reputation::BEST_REPLY_AWARDED);
+        Reputation::gain($reply->owner, Reputation::BEST_REPLY_AWARDED);
     }
 
     /**

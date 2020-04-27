@@ -16,7 +16,7 @@ class Reputation
      * @param  int $points
      * @return void
      */
-    public static function award(?User $user, int $points): void
+    public static function gain(?User $user, int $points): void
     {
         $user->increment('reputation', $points);
     }
