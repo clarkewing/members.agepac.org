@@ -35,10 +35,11 @@ Route::delete('/locked-threads/{thread}', 'LockedThreadsController@destroy')->na
 Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('threads.subscribe');
 Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->name('threads.unsubscribe');
 
-Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index');
-Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
-Route::patch('/replies/{reply}', 'RepliesController@update');
-Route::delete('/replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
+Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index')->name('replies.index');
+Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store')->name('replies.store');
+Route::apiResource('replies', 'RepliesController')->only([
+    'update', 'destroy',
+]);
 
 Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
 
