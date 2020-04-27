@@ -59,7 +59,7 @@ class ReplyTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'Hello <a href="/profiles/JaneDoe">@JaneDoe</a>.',
+            'Hello <a href="'. route('profiles.show', 'JaneDoe', false) .'">@JaneDoe</a>.',
             $reply->body
         );
     }
