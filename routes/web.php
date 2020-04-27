@@ -43,8 +43,8 @@ Route::apiResource('replies', 'RepliesController')->only([
 
 Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('replies.mark_best');
 
-Route::post('/replies/{reply}/favorites', 'FavoritesController@store');
-Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy');
+Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorite');
+Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name('replies.unfavorite');
 
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
