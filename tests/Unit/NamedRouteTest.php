@@ -248,7 +248,6 @@ class NamedRouteTest extends TestCase
         );
     }
 
-
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(

@@ -105,6 +105,7 @@ class ReputationTest extends TestCase
         $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED;
         $this->assertEquals($total, $secondReply->owner->reputation);
     }
+
     /**
      * @test
      */
