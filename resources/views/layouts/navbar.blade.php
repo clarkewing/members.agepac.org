@@ -36,19 +36,19 @@
                     <a class="nav-link" href="#">Fly EPL</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{{ route('threads') }}" id="forumDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="{{ route('threads.index') }}" id="forumDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Forum
                     </a>
                     <div class="dropdown-menu" aria-labelledby="forumDropdown">
-                        <a class="dropdown-item" href="{{ route('threads') }}">Tout voir</a>
-                        <a class="dropdown-item" href="{{ route('threads') }}?by={{ Auth::user()->name }}">Mes discussions</a>
-                        <a class="dropdown-item" href="{{ route('threads') }}?popular=1">Discussions populaires</a>
-                        <a class="dropdown-item" href="{{ route('threads') }}?unanswered=1">Discussions sans réponse</a>
+                        <a class="dropdown-item" href="{{ route('threads.index') }}">Tout voir</a>
+                        <a class="dropdown-item" href="{{ route('threads.index') }}?by={{ Auth::user()->name }}">Mes discussions</a>
+                        <a class="dropdown-item" href="{{ route('threads.index') }}?popular=1">Discussions populaires</a>
+                        <a class="dropdown-item" href="{{ route('threads.index') }}?unanswered=1">Discussions sans réponse</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('threads.create') }}">Nouvelle discussion</a>
                         <div class="dropdown-divider"></div>
                         @foreach($channels as $channel)
-                            <a class="dropdown-item" href="{{ '/threads/' . $channel->slug }}">{{ $channel->name }}</a>
+                            <a class="dropdown-item" href="{{ route('threads.index', $channel) }}">{{ $channel->name }}</a>
                         @endforeach
                     </div>
                 </li>
