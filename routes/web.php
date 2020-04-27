@@ -20,9 +20,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('threads', 'ThreadsController')->only([
-    'create', 'store',
-]);
+/* Threads */
+Route::resource('threads', 'ThreadsController')->only(['create', 'store']);
 Route::get('/threads/search', 'SearchController@show')->name('threads.search');
 Route::get('/threads/{channel?}', 'ThreadsController@index')->name('threads.index');
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
@@ -35,21 +34,23 @@ Route::delete('/locked-threads/{thread}', 'LockedThreadsController@destroy')->na
 Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('threads.subscribe');
 Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->name('threads.unsubscribe');
 
+/* Replies */
 Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index')->name('replies.index');
 Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store')->name('replies.store');
-Route::apiResource('replies', 'RepliesController')->only([
-    'update', 'destroy',
-]);
+Route::apiResource('replies', 'RepliesController')->only(['update', 'destroy']);
 
 Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('replies.mark_best');
 
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorite');
 Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name('replies.unfavorite');
 
+/* Profiles */
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');
 
+/* Notifications */
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
 
+/* Api */
 Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
     Route::get('/users', 'UsersController@index')->name('users.index');
 
