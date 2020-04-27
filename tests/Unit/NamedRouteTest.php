@@ -79,6 +79,27 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /* @test */
+    public function testLockThread()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertRoutePathIs(
+            "/locked-threads/{$thread->slug}",
+            'locked-threads.store', $thread
+        );
+    }
+
+    /* @test */
+    public function testUnlockThread()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertRoutePathIs(
+            "/locked-threads/{$thread->slug}",
+            'locked-threads.destroy', $thread
+        );
+    }
 
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
