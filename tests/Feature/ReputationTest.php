@@ -84,6 +84,27 @@ class ReputationTest extends TestCase
         $this->assertEquals($total, $reply->owner->reputation);
     }
 
+    public function testOnBestReplyChangeThePointsShouldBeTransferred()
+    {
+        $thread = create(Thread::class);
+        [$firstReply, $secondReply] = create(Reply::class, [], 2);
+
+        $thread->markBestReply($firstReply);
+
+        $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED;
+        $this->assertEquals($total, $firstReply->owner->reputation);
+
+        // If the owner of the thread decides to choose a different best reply...
+        $thread->markBestReply($secondReply);
+
+        // Then the original recipient of the best reply reputation should be stripped of those points.
+        $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED - Reputation::BEST_REPLY_AWARDED;
+        $this->assertEquals($total, $firstReply->owner->fresh()->reputation);
+
+        // And those points should now be reflected on the account of the new best reply owner.
+        $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED;
+        $this->assertEquals($total, $secondReply->owner->reputation);
+    }
     /**
      * @test
      */

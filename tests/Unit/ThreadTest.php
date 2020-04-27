@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Channel;
 use App\Notifications\ThreadWasUpdated;
+use App\Reply;
 use App\Thread;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -169,5 +170,17 @@ class ThreadTest extends TestCase
         $thread = make(Thread::class, ['body' => '<script>alert("bad");</script><p>This is okay.</p>']);
 
         $this->assertEquals($thread->body, '<p>This is okay.</p>');
+    }
+
+    /**
+     * @test
+     */
+    public function testCanHaveABestReply()
+    {
+        $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
+
+        $this->thread->markBestReply($reply);
+
+        $this->assertEquals($reply->id, $this->thread->bestReply->id);
     }
 }

@@ -102,6 +102,14 @@ class Thread extends Model
     }
 
     /**
+     * Get the thread's best reply.
+     */
+    public function bestReply()
+    {
+        return $this->hasOne(Reply::class, 'id', 'best_reply_id');
+    }
+
+    /**
      * Get the channel that the thread belongs to.
      */
     public function channel()
@@ -242,6 +250,10 @@ class Thread extends Model
      */
     public function markBestReply(Reply $reply): void
     {
+        if ($this->hasBestReply()) {
+            Reputation::reduce($this->bestReply->owner, Reputation::BEST_REPLY_AWARDED);
+        }
+
         $this->update(['best_reply_id' => $reply->id]);
 
         Reputation::award($reply->owner, Reputation::BEST_REPLY_AWARDED);
@@ -266,5 +278,15 @@ class Thread extends Model
     public function getBodyAttribute($value)
     {
         return Purify::clean($value);
+    }
+
+    /**
+     * Determine if the thread has a best reply.
+     *
+     * @return bool
+     */
+    public function hasBestReply(): bool
+    {
+        return ! is_null($this->best_reply_id);
     }
 }
