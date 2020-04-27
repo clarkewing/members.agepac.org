@@ -30,7 +30,7 @@ class ReputationTest extends TestCase
 
         $thread = create(Thread::class, ['user_id' => Auth::id()]);
 
-        $this->assertEquals(Reputation::THREAD_PUBLISHED, $thread->creator->fresh()->reputation);
+        $this->assertEquals(Reputation::THREAD_PUBLISHED, $thread->creator->reputation);
 
         $this->delete($thread->path());
 
@@ -61,7 +61,7 @@ class ReputationTest extends TestCase
 
         $reply = create(Reply::class, ['user_id' => Auth::id()]);
 
-        $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->fresh()->reputation);
+        $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->reputation);
 
         $this->delete("/replies/$reply->id");
 
