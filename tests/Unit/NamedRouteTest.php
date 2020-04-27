@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Channel;
+use App\Reply;
 use App\Thread;
 use Tests\TestCase;
 
@@ -120,6 +121,50 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
             'threads.unsubscribe', [$thread->channel, $thread]
+        );
+    }
+
+    /* @test */
+    public function testRepliesIndex()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$thread->channel->slug}/{$thread->slug}/replies",
+            'replies.index', [$thread->channel, $thread]
+        );
+    }
+
+    /* @test */
+    public function testRepliesStore()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$thread->channel->slug}/{$thread->slug}/replies",
+            'replies.store', [$thread->channel, $thread]
+        );
+    }
+
+    /* @test */
+    public function testRepliesUpdate()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertRoutePathIs(
+            "/replies/{$reply->id}",
+            'replies.update', [$reply]
+        );
+    }
+
+    /* @test */
+    public function testRepliesDestroy()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertRoutePathIs(
+            "/replies/{$reply->id}",
+            'replies.destroy', [$reply]
         );
     }
 
