@@ -86,7 +86,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/locked-threads/{$thread->slug}",
-            'locked-threads.store', $thread
+            'threads.lock', $thread
         );
     }
 
@@ -97,7 +97,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/locked-threads/{$thread->slug}",
-            'locked-threads.destroy', $thread
+            'threads.unlock', $thread
         );
     }
 
@@ -108,7 +108,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
-            'thread-subscriptions.store', [$thread->channel, $thread]
+            'threads.subscribe', [$thread->channel, $thread]
         );
     }
 
@@ -119,7 +119,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
-            'thread-subscriptions.destroy', [$thread->channel, $thread]
+            'threads.unsubscribe', [$thread->channel, $thread]
         );
     }
 

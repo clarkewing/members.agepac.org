@@ -29,11 +29,11 @@ Route::get('/threads/{channel}/{thread}', 'ThreadsController@show')->name('threa
 Route::patch('/threads/{channel}/{thread}', 'ThreadsController@update')->name('threads.update');
 Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy')->name('threads.destroy');
 
-Route::post('/locked-threads/{thread}', 'LockedThreadsController@store')->name('locked-threads.store');
-Route::delete('/locked-threads/{thread}', 'LockedThreadsController@destroy')->name('locked-threads.destroy');
+Route::post('/locked-threads/{thread}', 'LockedThreadsController@store')->name('threads.lock');
+Route::delete('/locked-threads/{thread}', 'LockedThreadsController@destroy')->name('threads.unlock');
 
-Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('thread-subscriptions.store');
-Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->name('thread-subscriptions.destroy');
+Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('threads.subscribe');
+Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->name('threads.unsubscribe');
 
 Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index');
 Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
