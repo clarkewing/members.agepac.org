@@ -168,6 +168,17 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /* @test */
+    public function testRepliesMarkBest()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertRoutePathIs(
+            "/replies/{$reply->id}/best",
+            'replies.mark_best', [$reply]
+        );
+    }
+
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(
