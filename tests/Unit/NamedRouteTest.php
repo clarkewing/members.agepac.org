@@ -6,6 +6,7 @@ use App\Channel;
 use App\Reply;
 use App\Thread;
 use App\User;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class NamedRouteTest extends TestCase
@@ -210,6 +211,23 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             '/profiles/' . rawurlencode($user->name),
             'profiles.show', $user
+        );
+    }
+
+    /* @test */
+    public function testNotificationsIndex()
+    {
+        $this->assertRoutePathIs('/notifications', 'notifications.index');
+    }
+
+    /* @test */
+    public function testNotificationsDestroy()
+    {
+        $notificationId = Str::orderedUuid();
+
+        $this->assertRoutePathIs(
+            "/notifications/{$notificationId}",
+            'notifications.destroy', $notificationId
         );
     }
 

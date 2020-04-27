@@ -48,8 +48,7 @@ Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name
 
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');
 
-Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
-Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
+Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
 
 Route::get('/api/users', 'Api\UsersController@index');
 Route::post('/api/users/{user}/avatar', 'Api\UserAvatarController@store');
