@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Channel;
 use App\Reply;
 use App\Thread;
+use App\User;
 use Tests\TestCase;
 
 class NamedRouteTest extends TestCase
@@ -198,6 +199,17 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             "/replies/{$reply->id}/favorites",
             'replies.unfavorite', $reply
+        );
+    }
+
+    /* @test */
+    public function testProfilesShow()
+    {
+        $user = make(User::class);
+
+        $this->assertRoutePathIs(
+            '/profiles/' . rawurlencode($user->name),
+            'profile', $user
         );
     }
 
