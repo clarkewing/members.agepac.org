@@ -18,14 +18,14 @@ class ThreadsController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
-        $this->middleware('verified:threads,Tu dois vérifier ton adresse email avant de pouvoir publier.')
+        $this->middleware('verified:threads.index,Tu dois vérifier ton adresse email avant de pouvoir publier.')
             ->only(['create', 'store']);
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Channel $channel
+     * @param  \App\Channel|null $channel
      * @param  \App\Filters\ThreadFilters $filters
      * @param  \App\Trending $trending
      * @param  \Illuminate\Http\Request  $request
@@ -141,7 +141,7 @@ class ThreadsController extends Controller
             return Response::make([], 204);
         }
 
-        return redirect()->route('threads');
+        return redirect()->route('threads.index');
     }
 
     /**

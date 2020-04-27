@@ -25,7 +25,7 @@ class ReadThreadsTest extends TestCase
      */
     public function testUserCanViewAllThreads()
     {
-        $this->get('/threads')
+        $this->get(route('threads.index'))
             ->assertSee($this->thread->title);
     }
 
@@ -47,7 +47,7 @@ class ReadThreadsTest extends TestCase
         $threadInChannel = create(Thread::class, ['channel_id' => $channel->id]);
         $threadNotInChannel = create(Thread::class);
 
-        $this->get('/threads/' . $channel->slug)
+        $this->get(route('threads.index', $channel))
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title);
     }
@@ -62,7 +62,7 @@ class ReadThreadsTest extends TestCase
         $threadByJohn = create(Thread::class, ['user_id' => Auth::id()]);
         $threadNotByJohn = create(Thread::class);
 
-        $this->get('threads?by=JohnDoe')
+        $this->get(route('threads.index') . '?by=JohnDoe')
             ->assertSee($threadByJohn->title)
             ->assertDontSee($threadNotByJohn->title);
     }
@@ -80,7 +80,7 @@ class ReadThreadsTest extends TestCase
 
         $threadWithNoReplies = $this->thread;
 
-        $response = $this->getJson('/threads?popular=1')->json();
+        $response = $this->getJson(route('threads.index') . '?popular=1')->json();
 
         $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
@@ -95,7 +95,7 @@ class ReadThreadsTest extends TestCase
         $threadWithReply = create(Thread::class);
         create(Reply::class, ['thread_id' => $threadWithReply->id]);
 
-        $response = $this->getJson('/threads?unanswered=1')->json();
+        $response = $this->getJson(route('threads.index') . '?unanswered=1')->json();
 
         $this->assertEquals([$threadWithNoReplies->id], array_column($response['data'], 'id'));
     }

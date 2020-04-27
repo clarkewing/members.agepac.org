@@ -40,7 +40,7 @@ class MentionUsersTest extends TestCase
         create(User::class, ['name' => 'JohnDoe2']);
         create(User::class, ['name' => 'JaneDoe']);
 
-        $results = $this->getJson('/api/users?' . http_build_query([
+        $results = $this->getJson(route('api.users.index', [
             'name' => 'john',
         ]));
 

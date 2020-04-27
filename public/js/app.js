@@ -7683,14 +7683,14 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    axios.get('/profiles/' + App.user.name + '/notifications').then(function (_ref) {
+    axios.get('/notifications').then(function (_ref) {
       var data = _ref.data;
       _this.notifications = data;
     });
   },
   methods: {
     markAsRead: function markAsRead(notification) {
-      axios["delete"]('/profiles/' + App.user.name + '/notifications/' + notification.id);
+      axios["delete"]('/notifications/' + notification.id);
     }
   }
 });

@@ -9,7 +9,7 @@
                     Créer une nouvelle discussion
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('threads') }}">
+                    <form method="POST" action="{{ route('threads.index') }}">
                         @csrf
                         <div class="form-group">
                             <label for="channel_id">Chaîne</label>

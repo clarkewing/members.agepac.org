@@ -21,7 +21,7 @@ class BestReplyTest extends TestCase
 
         $this->assertFalse($replies[1]->isBest());
 
-        $this->postJson(route('best-replies.store', [$replies[1]]));
+        $this->postJson(route('replies.mark_best', [$replies[1]]));
 
         $this->assertTrue($replies[1]->fresh()->isBest());
     }
@@ -39,7 +39,7 @@ class BestReplyTest extends TestCase
 
         $this->signIn();
 
-        $this->postJson(route('best-replies.store', $replies[1]))
+        $this->postJson(route('replies.mark_best', $replies[1]))
             ->assertStatus(403);
 
         $this->assertFalse($replies[1]->fresh()->isBest());

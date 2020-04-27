@@ -13,7 +13,7 @@ class FavoritesTest extends TestCase
     public function testGuestsCannotFavoriteAnyReply()
     {
         $this->withExceptionHandling()
-            ->post('/replies/1/favorites')
+            ->post(route('replies.favorite', 1))
             ->assertRedirect('/login');
     }
 
@@ -26,7 +26,7 @@ class FavoritesTest extends TestCase
 
         $reply = create('App\Reply');
 
-        $this->post('/replies/' . $reply->id . '/favorites');
+        $this->post(route('replies.favorite', $reply));
 
         $this->assertCount(1, $reply->favorites);
     }
@@ -41,7 +41,7 @@ class FavoritesTest extends TestCase
         $reply = create('App\Reply');
         $reply->favorite();
 
-        $this->delete('/replies/' . $reply->id . '/favorites');
+        $this->delete(route('replies.unfavorite', $reply));
         $this->assertCount(0, $reply->favorites);
     }
 
@@ -55,8 +55,8 @@ class FavoritesTest extends TestCase
         $reply = create('App\Reply');
 
         try {
-            $this->post('/replies/' . $reply->id . '/favorites');
-            $this->post('/replies/' . $reply->id . '/favorites');
+            $this->post(route('replies.favorite', $reply));
+            $this->post(route('replies.favorite', $reply));
         } catch (QueryException $e) {
             if ($e->errorInfo[1] === 19) { // SQLite UNIQUE constraint code
                 $this->fail('Attempted to insert same record set twice.');

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class UserNotificationsController extends Controller
@@ -14,7 +12,7 @@ class UserNotificationsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of unread notifications.
      *
      * @return \Illuminate\Http\Response
      */
@@ -24,68 +22,12 @@ class UserNotificationsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mark the specified notification as read.
      *
+     * @param  string $notificationId
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  mixed $userName
-     * @param  mixed $notification
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($userName, $notificationId)
+    public function destroy($notificationId)
     {
         Auth::user()->notifications()->findOrFail($notificationId)->markAsRead();
     }

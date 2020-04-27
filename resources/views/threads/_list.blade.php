@@ -12,7 +12,7 @@
                     </a>
                 </h5>
                 <h6 class="mb-0">
-                    Publié par <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a>
+                    Publié par <a href="{{ route('profiles.show', $thread->creator) }}">{{ $thread->creator->name }}</a>
                 </h6>
             </div>
 
