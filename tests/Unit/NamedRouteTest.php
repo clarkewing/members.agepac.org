@@ -179,6 +179,28 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /* @test */
+    public function testRepliesFavorite()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertRoutePathIs(
+            "/replies/{$reply->id}/favorites",
+            'replies.favorite', $reply
+        );
+    }
+
+    /* @test */
+    public function testRepliesUnfavorite()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertRoutePathIs(
+            "/replies/{$reply->id}/favorites",
+            'replies.unfavorite', $reply
+        );
+    }
+
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(
