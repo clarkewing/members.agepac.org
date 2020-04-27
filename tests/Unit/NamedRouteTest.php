@@ -153,7 +153,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/replies/{$reply->id}",
-            'replies.update', [$reply]
+            'replies.update', $reply
         );
     }
 
@@ -164,7 +164,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/replies/{$reply->id}",
-            'replies.destroy', [$reply]
+            'replies.destroy', $reply
         );
     }
 
@@ -175,7 +175,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/replies/{$reply->id}/best",
-            'replies.mark_best', [$reply]
+            'replies.mark_best', $reply
         );
     }
 
