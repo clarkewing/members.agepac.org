@@ -50,5 +50,8 @@ Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show')
 
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
 
-Route::get('/api/users', 'Api\UsersController@index');
-Route::post('/api/users/{user}/avatar', 'Api\UserAvatarController@store');
+Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
+    Route::get('/users', 'UsersController@index')->name('users.index');
+
+    Route::post('/users/{user}/avatar', 'UserAvatarController@store')->name('users.avatar.store');
+});

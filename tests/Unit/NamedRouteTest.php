@@ -231,6 +231,24 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /* @test */
+    public function testApiUsersIndex()
+    {
+        $this->assertRoutePathIs('/api/users', 'api.users.index');
+    }
+
+    /* @test */
+    public function testApiUsersAvatarStore()
+    {
+        $user = make(User::class);
+
+        $this->assertRoutePathIs(
+            '/api/users/' . rawurlencode($user->name) . '/avatar',
+            'api.users.avatar.store', $user
+        );
+    }
+
+
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(
