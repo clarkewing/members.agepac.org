@@ -22,7 +22,7 @@ class CreateThreadsTest extends TestCase
         $this->get(route('threads.create'))
             ->assertRedirect(route('login'));
 
-        $this->post(route('threads'))
+        $this->post(route('threads.index'))
             ->assertRedirect(route('login'));
     }
 
@@ -36,13 +36,13 @@ class CreateThreadsTest extends TestCase
         );
 
         $this->get(route('threads.create'))
-            ->assertRedirect(route('threads'))
+            ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
 
         $thread = make(Thread::class);
 
-        $this->post(route('threads'), $thread->toArray())
-            ->assertRedirect(route('threads'))
+        $this->post(route('threads.store'), $thread->toArray())
+            ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
     }
 
@@ -100,7 +100,7 @@ class CreateThreadsTest extends TestCase
 
         $this->assertEquals($thread->fresh()->slug, 'foo-title');
 
-        $thread = $this->postJson(route('threads'), $thread->toArray())->json();
+        $thread = $this->postJson(route('threads.index'), $thread->toArray())->json();
 
         $this->assertEquals('foo-title-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -114,7 +114,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = create(Thread::class, ['title' => 'Financials 2020']);
 
-        $thread = $this->postJson(route('threads'), $thread->toArray())->json();
+        $thread = $this->postJson(route('threads.index'), $thread->toArray())->json();
 
         $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -167,6 +167,6 @@ class CreateThreadsTest extends TestCase
 
         $thread = make(Thread::class, $overrides);
 
-        return $this->post(route('threads'), $thread->toArray());
+        return $this->post(route('threads.index'), $thread->toArray());
     }
 }

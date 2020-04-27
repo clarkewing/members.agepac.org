@@ -74,11 +74,11 @@ class ParticipateInThreadsTest extends TestCase
 
         $reply = create(Reply::class);
 
-        $this->delete('/replies/' . $reply->id)
+        $this->delete(route('replies.destroy', $reply))
             ->assertRedirect('/login');
 
         $this->signIn()
-            ->delete('/replies/' . $reply->id)
+            ->delete(route('replies.destroy', $reply))
             ->assertStatus(403);
     }
 
@@ -91,7 +91,7 @@ class ParticipateInThreadsTest extends TestCase
 
         $reply = create(Reply::class, ['user_id' => Auth::id()]);
 
-        $this->delete('/replies/' . $reply->id)
+        $this->delete(route('replies.destroy', $reply))
             ->assertStatus(302);
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
@@ -106,11 +106,11 @@ class ParticipateInThreadsTest extends TestCase
 
         $reply = create(Reply::class);
 
-        $this->patch('/replies/' . $reply->id)
+        $this->patch(route('replies.update', $reply))
             ->assertRedirect('/login');
 
         $this->signIn()
-            ->patch('/replies/' . $reply->id)
+            ->patch(route('replies.update', $reply))
             ->assertStatus(403);
     }
 
@@ -124,7 +124,7 @@ class ParticipateInThreadsTest extends TestCase
         $reply = create(Reply::class, ['user_id' => Auth::id()]);
 
         $updatedReply = 'You been changed, fool.';
-        $this->patch('/replies/' . $reply->id, ['body' => $updatedReply]);
+        $this->patch(route('replies.update', $reply), ['body' => $updatedReply]);
 
         $this->assertDatabaseHas('replies', [
             'id' => $reply->id,

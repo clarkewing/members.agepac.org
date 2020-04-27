@@ -50,7 +50,7 @@ class NotificationsTest extends TestCase
 
         $this->assertCount(
             1,
-            $this->getJson('/profiles/' . Auth::user()->name . '/notifications')->json()
+            $this->getJson(route('notifications.index'))->json()
         );
     }
 
@@ -63,9 +63,7 @@ class NotificationsTest extends TestCase
 
         $this->assertCount(1, Auth::user()->unreadNotifications);
 
-        $this->delete(
-            '/profiles/' . Auth::user()->name . '/notifications/' . Auth::user()->unreadNotifications()->first()->id
-        );
+        $this->delete(route('notifications.destroy', Auth::user()->unreadNotifications()->first()));
 
         $this->assertCount(0, Auth::user()->fresh()->unreadNotifications);
     }

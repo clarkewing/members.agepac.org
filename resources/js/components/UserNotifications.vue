@@ -25,7 +25,7 @@
         },
 
         created() {
-            axios.get('/profiles/' + App.user.name + '/notifications')
+            axios.get('/notifications')
                 .then(({data}) => {
                     this.notifications = data;
                 })
@@ -33,7 +33,7 @@
 
         methods: {
             markAsRead(notification) {
-                axios.delete('/profiles/' + App.user.name + '/notifications/' + notification.id)
+                axios.delete('/notifications/' + notification.id)
             }
         }
     }

@@ -63,7 +63,7 @@ class ReputationTest extends TestCase
 
         $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->reputation);
 
-        $this->delete("/replies/$reply->id");
+        $this->delete(route('replies.destroy', $reply));
 
         $this->assertEquals(0, $reply->owner->fresh()->reputation);
     }
@@ -105,6 +105,7 @@ class ReputationTest extends TestCase
         $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED;
         $this->assertEquals($total, $secondReply->owner->reputation);
     }
+
     /**
      * @test
      */
