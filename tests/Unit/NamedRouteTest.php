@@ -209,7 +209,7 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             '/profiles/' . rawurlencode($user->name),
-            'profile', $user
+            'profiles.show', $user
         );
     }
 

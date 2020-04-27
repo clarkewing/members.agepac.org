@@ -46,7 +46,8 @@ Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('repli
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorite');
 Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name('replies.unfavorite');
 
-Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
+Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');
+
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 
