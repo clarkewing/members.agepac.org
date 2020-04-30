@@ -52,10 +52,14 @@ class Channel extends Resource
             ID::make()->asBigInt()->sortable(),
             SluggableText::make('Name')
                 ->rules('required')
+                ->creationRules('unique:channels,name')
+                ->updateRules('unique:channels,name,{{resourceId}}')
                 ->sortable(),
             Slug::make('Slug')
                 ->hideFromIndex()
                 ->rules('required')
+                ->creationRules('unique:channels,slug')
+                ->updateRules('unique:channels,slug,{{resourceId}}')
                 ->help('Used for the channel URL')
                 ->slugUnique()
                 ->slugModel(static::$model),
