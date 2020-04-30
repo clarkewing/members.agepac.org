@@ -6,7 +6,7 @@ use Drobee\NovaSluggable\Slug;
 use Drobee\NovaSluggable\SluggableText;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Text;
 
 class Channel extends Resource
 {
@@ -63,6 +63,8 @@ class Channel extends Resource
                 ->help('Used for the channel URL')
                 ->slugUnique()
                 ->slugModel(static::$model),
+            Text::make('Description')
+                ->rules('required'),
         ];
     }
 
