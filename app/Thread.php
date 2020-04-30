@@ -69,9 +69,11 @@ class Thread extends Model
      */
     protected static function booted()
     {
-        static::created(function ($thread) {
-            $thread->update(['slug' => $thread->title]);
+        static::creating(function ($thread) {
+            $thread->slug = $thread->title;
+        });
 
+        static::created(function ($thread) {
             Reputation::gain($thread->creator, Reputation::THREAD_PUBLISHED);
         });
 
@@ -236,7 +238,7 @@ class Thread extends Model
         $slug = Str::slug($title);
 
         if (static::where('slug', $slug)->exists()) {
-            $slug = $slug . '-' . $this->created_at->timestamp;
+            $slug = $slug . '-' . ($this->created_at ?? now())->timestamp;
         }
 
         $this->attributes['slug'] = $slug;
