@@ -50,11 +50,11 @@ class Reply extends Model
     protected static function booted()
     {
         static::created(function ($reply) {
-            Reputation::gain($reply->owner, Reputation::REPLY_POSTED);
+            $reply->owner->gainReputation('reply_posted');
         });
 
         static::deleting(function ($reply) {
-            Reputation::lose($reply->owner, Reputation::REPLY_POSTED);
+            $reply->owner->loseReputation('reply_posted');
         });
     }
 

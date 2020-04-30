@@ -12,13 +12,30 @@ use Tests\TestCase;
 class ReputationTest extends TestCase
 {
     /**
+     * @var array Reputation points
+     */
+    protected $points;
+
+    /**
+     * Fetch current reputation points on class initialization.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->points = config('council.reputation');
+    }
+
+    /**
      * @test
      */
     public function testUserEarnsPointsWhenCreatingAThread()
     {
         $thread = create(Thread::class);
 
-        $this->assertEquals(Reputation::THREAD_PUBLISHED, $thread->creator->reputation);
+        $this->assertEquals($this->points['thread_published'], $thread->creator->reputation);
     }
 
     /**
@@ -30,7 +47,7 @@ class ReputationTest extends TestCase
 
         $thread = create(Thread::class, ['user_id' => Auth::id()]);
 
-        $this->assertEquals(Reputation::THREAD_PUBLISHED, $thread->creator->reputation);
+        $this->assertEquals($this->points['thread_published'], $thread->creator->reputation);
 
         $this->delete($thread->path());
 
@@ -49,7 +66,7 @@ class ReputationTest extends TestCase
             'body' => 'Here is a reply.',
         ]);
 
-        $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->reputation);
+        $this->assertEquals($this->points['reply_posted'], $reply->owner->reputation);
     }
 
     /**
@@ -61,7 +78,7 @@ class ReputationTest extends TestCase
 
         $reply = create(Reply::class, ['user_id' => Auth::id()]);
 
-        $this->assertEquals(Reputation::REPLY_POSTED, $reply->owner->reputation);
+        $this->assertEquals($this->points['reply_posted'], $reply->owner->reputation);
 
         $this->delete(route('replies.destroy', $reply));
 
@@ -80,7 +97,7 @@ class ReputationTest extends TestCase
             'body' => 'Here is a reply.',
         ]));
 
-        $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED;
+        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'];
         $this->assertEquals($total, $reply->owner->reputation);
     }
 
@@ -91,18 +108,18 @@ class ReputationTest extends TestCase
 
         $thread->markBestReply($firstReply);
 
-        $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED;
+        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'];
         $this->assertEquals($total, $firstReply->owner->reputation);
 
         // If the owner of the thread decides to choose a different best reply...
         $thread->markBestReply($secondReply);
 
         // Then the original recipient of the best reply reputation should be stripped of those points.
-        $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED - Reputation::BEST_REPLY_AWARDED;
+        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'] - $this->points['best_reply_awarded'];
         $this->assertEquals($total, $firstReply->owner->fresh()->reputation);
 
         // And those points should now be reflected on the account of the new best reply owner.
-        $total = Reputation::REPLY_POSTED + Reputation::BEST_REPLY_AWARDED;
+        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'];
         $this->assertEquals($total, $secondReply->owner->reputation);
     }
 
@@ -117,7 +134,7 @@ class ReputationTest extends TestCase
 
         $reply->favorite();
 
-        $total = Reputation::REPLY_POSTED + Reputation::REPLY_FAVORITED;
+        $total = $this->points['reply_posted'] + $this->points['reply_favorited'];
         $this->assertEquals($total, $reply->owner->fresh()->reputation);
     }
 
@@ -132,12 +149,12 @@ class ReputationTest extends TestCase
 
         $reply->favorite();
 
-        $total = Reputation::REPLY_POSTED + Reputation::REPLY_FAVORITED;
+        $total = $this->points['reply_posted'] + $this->points['reply_favorited'];
         $this->assertEquals($total, $reply->owner->fresh()->reputation);
 
         $reply->unfavorite();
 
-        $total = Reputation::REPLY_POSTED + Reputation::REPLY_FAVORITED - Reputation::REPLY_FAVORITED;
+        $total = $this->points['reply_posted'] + $this->points['reply_favorited'] - $this->points['reply_favorited'];
         $this->assertEquals($total, $reply->owner->fresh()->reputation);
 
         $this->assertEquals(0, Auth::user()->reputation);
