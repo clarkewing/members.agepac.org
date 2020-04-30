@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
+    use HasReputation, Notifiable;
 
     /**
      * The attributes that are mass assignable.
