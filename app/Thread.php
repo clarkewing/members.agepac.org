@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Events\ThreadReceivedNewReply;
+use App\Events\ThreadPublished;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -11,7 +11,7 @@ use Stevebauman\Purify\Facades\Purify;
 
 class Thread extends Model
 {
-    use RecordsActivity, Searchable;
+    use MentionsUsers, RecordsActivity, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -86,6 +86,15 @@ class Thread extends Model
     }
 
     /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'created' => ThreadPublished::class,
+    ];
+
+    /**
      * Returns the URL of the thread.
      *
      * @return string
@@ -136,8 +145,6 @@ class Thread extends Model
     public function addReply(array $reply)
     {
         $reply = $this->replies()->create($reply);
-
-        event(new ThreadReceivedNewReply($reply));
 
         return $reply;
     }

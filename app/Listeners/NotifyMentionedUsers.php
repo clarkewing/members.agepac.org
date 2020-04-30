@@ -2,20 +2,22 @@
 
 namespace App\Listeners;
 
-use App\Events\ThreadReceivedNewReply;
 use App\Notifications\YouWereMentioned;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class NotifyMentionedUsers
 {
     /**
      * Handle the event.
      *
-     * @param  \App\Events\ThreadReceivedNewReply  $event
+     * @param  \Symfony\Contracts\EventDispatcher\Event  $event
      * @return void
      */
-    public function handle(ThreadReceivedNewReply $event): void
+    public function handle(Event $event): void
     {
-        $event->reply->mentionedUsers()
-            ->each->notify(new YouWereMentioned($event->reply));
+        $subject = $event->reply ?? $event->thread;
+
+        $subject->mentionedUsers()
+            ->each->notify(new YouWereMentioned($subject));
     }
 }

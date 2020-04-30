@@ -2,13 +2,13 @@
 
 namespace App;
 
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Stevebauman\Purify\Facades\Purify;
 
 class Reply extends Model
 {
-    use Favoritable, RecordsActivity;
+    use Favoritable, MentionsUsers, RecordsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +59,15 @@ class Reply extends Model
     }
 
     /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'created' => ThreadReceivedNewReply::class,
+    ];
+
+    /**
      * Get the user that owns the reply.
      */
     public function owner()
@@ -82,18 +91,6 @@ class Reply extends Model
     public function wasJustPublished(): bool
     {
         return $this->created_at->greaterThan(now()->subMinute());
-    }
-
-    /**
-     * Returns an array of users mentioned in body.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function mentionedUsers(): Collection
-    {
-        preg_match_all('/@([\w-]+)/', $this->body, $matches);
-
-        return User::whereIn('name', $matches[1])->get();
     }
 
     /**

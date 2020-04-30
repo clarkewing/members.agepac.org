@@ -2,24 +2,51 @@
 
 namespace App\Notifications;
 
+use App\Reply;
+use App\Thread;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class YouWereMentioned extends Notification
 {
     use Queueable;
 
-    protected $reply;
+    /**
+     * @var string
+     */
+    protected $subjectTitle;
+
+    /**
+     * @var \App\User
+     */
+    protected $subjectOwner;
+
+    /**
+     * @var string
+     */
+    protected $subjectPath;
 
     /**
      * Create a new notification instance.
      *
+     * @param  \App\Reply|\App\Thread  $subject
      * @return void
+     * @throws \Exception
      */
-    public function __construct($reply)
+    public function __construct($subject)
     {
-        $this->reply = $reply;
+        if ($subject instanceof Reply) {
+            $this->subjectTitle = $subject->thread->title;
+            $this->subjectOwner = $subject->owner;
+
+        } elseif ($subject instanceof Thread) {
+            $this->subjectTitle = $subject->title;
+            $this->subjectOwner = $subject->creator;
+        } else {
+            throw new \Exception('Unhandled model passed.');
+        }
+
+        $this->subjectPath = $subject->path();
     }
 
     /**
@@ -56,8 +83,8 @@ class YouWereMentioned extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->reply->owner->name . ' t\'a mentionné dans ' . $this->reply->thread->title,
-            'link' => $this->reply->path(),
+            'message' => $this->subjectOwner->name . ' t\'a mentionné dans ' . $this->subjectTitle,
+            'link' => $this->subjectPath,
         ];
     }
 }

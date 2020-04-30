@@ -34,6 +34,24 @@ class MentionUsersTest extends TestCase
     /**
      * @test
      */
+    public function testMentionedUsersInAThreadAreNotified()
+    {
+        $john = create(User::class, ['name' => 'JohnDoe']);
+
+        $this->signIn($john);
+
+        $jane = create(User::class, ['name' => 'JaneDoe']);
+
+        $this->postJson(route('threads.store'), make(Thread::class, [
+            'body' => 'Hey @JaneDoe look at this!',
+        ])->toArray());
+
+        $this->assertCount(1, $jane->notifications);
+    }
+
+    /**
+     * @test
+     */
     public function testCanFetchAllMentionedUsersStartingWithGivenCharacters()
     {
         create(User::class, ['name' => 'JohnDoe']);

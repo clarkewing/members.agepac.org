@@ -2,28 +2,28 @@
 
 namespace App\Events;
 
-use App\Reply;
+use App\Thread;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class ThreadReceivedNewReply extends Event
+class ThreadPublished extends Event
 {
     use Dispatchable, SerializesModels;
 
     /**
-     * \App\Reply.
+     * \App\Thread.
      */
-    public $reply;
+    public $thread;
 
     /**
      * Create a new event instance.
      *
-     * @param  \App\Reply $reply
+     * @param  \App\Thread  $thread
      * @return void
      */
-    public function __construct(Reply $reply)
+    public function __construct(Thread $thread)
     {
-        $this->reply = $reply;
+        $this->thread = $thread;
     }
 }
