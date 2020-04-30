@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\ThreadReceivedNewReply;
+use App\Events\ReplyPosted;
 use App\Events\ThreadPublished;
 use App\Listeners\NotifyMentionedUsers;
 use App\Listeners\NotifySubscribers;
@@ -25,7 +25,7 @@ class EventServiceProvider extends ServiceProvider
         ThreadPublished::class => [
             NotifyMentionedUsers::class,
         ],
-        ThreadReceivedNewReply::class => [
+        ReplyPosted::class => [
             NotifyMentionedUsers::class,
             NotifySubscribers::class,
         ],

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class ThreadReceivedNewReply extends Event
+class ReplyPosted extends Event
 {
     use Dispatchable, SerializesModels;
 

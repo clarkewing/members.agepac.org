@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Events\ThreadReceivedNewReply;
+use App\Events\ReplyPosted;
 use Illuminate\Database\Eloquent\Model;
 use Stevebauman\Purify\Facades\Purify;
 
@@ -64,7 +64,7 @@ class Reply extends Model
      * @var array
      */
     protected $dispatchesEvents = [
-        'created' => ThreadReceivedNewReply::class,
+        'created' => ReplyPosted::class,
     ];
 
     /**
