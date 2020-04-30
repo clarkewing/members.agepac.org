@@ -159,4 +159,18 @@ class ReputationTest extends TestCase
 
         $this->assertEquals(0, Auth::user()->reputation);
     }
+
+    /**
+     * @test
+     */
+    public function testUserCanHaveTheirReputationReset()
+    {
+        $user = create(User::class, ['reputation' => 100]);
+
+        $this->assertEquals(100, $user->reputation);
+
+        $user->resetReputation();
+
+        $this->assertEquals(0, $user->reputation);
+    }
 }

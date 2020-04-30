@@ -10,6 +10,16 @@ trait HasReputation
     }
 
     /**
+     * Reset user reputation.
+     *
+     * @return void
+     */
+    public function resetReputation(): void
+    {
+        $this->update(['reputation' => 0]);
+    }
+
+    /**
      * Award reputation points to the model.
      *
      * @param  int|string  $points
