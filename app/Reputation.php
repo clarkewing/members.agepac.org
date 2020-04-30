@@ -28,7 +28,7 @@ class Reputation
      * @param  int $points
      * @return void
      */
-    public static function reduce(?User $user, int $points): void
+    public static function lose(?User $user, int $points): void
     {
         $user->decrement('reputation', $points);
     }
