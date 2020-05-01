@@ -21,7 +21,7 @@ class LockThreadsTest extends TestCase
         $this->post(route('threads.lock', $thread))
             ->assertStatus(403);
 
-        $this->assertFalse($thread->fresh()->locked);
+        $this->assertFalse($thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
     }
 
     /**
@@ -36,7 +36,7 @@ class LockThreadsTest extends TestCase
         $this->delete(route('threads.unlock', $thread))
             ->assertStatus(403);
 
-        $this->assertTrue($thread->fresh()->locked);
+        $this->assertTrue($thread->fresh()->locked, 'Failed asserting that the thread was locked.');
     }
 
     /**
