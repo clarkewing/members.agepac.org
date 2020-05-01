@@ -31,6 +31,9 @@ Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy')->name(
 Route::post('/locked-threads/{thread}', 'LockedThreadsController@store')->name('threads.lock');
 Route::delete('/locked-threads/{thread}', 'LockedThreadsController@destroy')->name('threads.unlock');
 
+Route::post('pinned-threads/{thread}', 'PinnedThreadsController@store')->name('threads.pin');
+Route::delete('pinned-threads/{thread}', 'PinnedThreadsController@destroy')->name('threads.unpin');
+
 Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('threads.subscribe');
 Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->name('threads.unsubscribe');
 

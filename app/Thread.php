@@ -26,6 +26,7 @@ class Thread extends Model
         'slug',
         'best_reply_id',
         'locked',
+        'pinned',
     ];
 
     /**
@@ -50,6 +51,7 @@ class Thread extends Model
      */
     protected $casts = [
         'locked' => 'boolean',
+        'pinned' => 'boolean',
     ];
 
     /**

@@ -3,6 +3,12 @@
         <div class="card-header d-flex align-items-center">
             <div class="flex-grow-1">
                 <h5>
+                    @if($thread->pinned)
+                        <svg class="d-inline bi-bookmark-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3 3a2 2 0 012-2h6a2 2 0 012 2v12l-5-3-5 3V3z" clip-rule="evenodd"/>
+                        </svg>
+                    @endif
+
                     <a href="{{ $thread->path() }}">
                         @if(Auth::check() && $thread->hasUpdatesFor(Auth::user()))
                             <strong>{{ $thread->title }}</strong>

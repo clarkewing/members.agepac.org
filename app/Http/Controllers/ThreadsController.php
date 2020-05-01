@@ -153,12 +153,14 @@ class ThreadsController extends Controller
      */
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
-        $threads = Thread::filter($filters);
+        $threads = Thread::orderBy('pinned', 'desc')
+            ->latest()
+            ->filter($filters);
 
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }
 
-        return $threads->latest()->paginate(25);
+        return $threads->paginate(25);
     }
 }

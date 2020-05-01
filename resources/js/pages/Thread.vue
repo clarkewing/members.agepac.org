@@ -11,6 +11,7 @@
             return {
                 repliesCount: this.thread.replies_count,
                 locked: this.thread.locked,
+                pinned: this.thread.pinned,
                 title: this.thread.title,
                 body: this.thread.body,
                 form: {},
@@ -29,6 +30,16 @@
                 axios[this.locked ? 'delete' : 'post'](uri)
                     .then(() => {
                         this.locked = ! this.locked;
+                    });
+            },
+
+
+            togglePin () {
+                let uri = `/pinned-threads/${this.thread.slug}`;
+
+                axios[this.pinned ? 'delete' : 'post'](uri)
+                    .then(() => {
+                        this.pinned = ! this.pinned;
                     });
             },
 
@@ -53,6 +64,13 @@
                 };
 
                 this.editing = false;
+            },
+
+            classes(target) {
+                return [
+                    'btn',
+                    this[target] ? 'btn-dark' : 'btn-outline-dark'
+                ];
             }
         }
     }

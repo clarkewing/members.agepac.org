@@ -20,5 +20,6 @@ $factory->define(Thread::class, function (Faker $faker) {
         'title' => $title,
         'body' => $faker->paragraph,
         'locked' => false,
+        'pinned' => false,
     ];
 });

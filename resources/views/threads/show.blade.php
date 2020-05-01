@@ -27,10 +27,15 @@
 
                         <div class="d-flex">
                             <subscribe-button class="mr-2" :active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
-                            <button class="btn btn-outline-dark"
+                            <button :class="[classes('locked'), 'mr-2']"
                                     @click="toggleLock"
                                     v-if="authorize('isAdmin')"
                                     v-text="locked ? 'Dévérouiller' : 'Vérouiller'"></button>
+
+                            <button :class="classes('pinned')"
+                                    @click="togglePin"
+                                    v-if="authorize('isAdmin')"
+                                    v-text="pinned ? 'Désépingler' : 'Épingler'"></button>
                         </div>
                     </div>
                 </div>
