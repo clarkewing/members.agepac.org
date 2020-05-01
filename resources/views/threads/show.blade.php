@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <p>
                             Cette discussion a été publiée {{ $thread->created_at->diffForHumans() }} par
-                            <a href="#">{{ $thread->creator->name }}</a>, et a actuellement
+                            <a href="{{ route('profiles.show', $thread->creator) }}">{{ $thread->creator->name }}</a>, et a actuellement
                             <span v-text="repliesCount"></span> {{ Str::plural('réponse', $thread->replies_count) }}.
                         </p>
 
