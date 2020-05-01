@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserAvatarController extends Controller
 {
@@ -27,6 +28,9 @@ class UserAvatarController extends Controller
         $request->validate([
             'avatar' => 'required|image',
         ]);
+
+        // Delete existing avatar from disk.
+        Storage::disk('public')->delete($request->user()->getRawOriginal('avatar_path'));
 
         $request->user()->update([
             'avatar_path' => $request->file('avatar')->store('avatars', 'public'),
