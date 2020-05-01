@@ -7,7 +7,7 @@
 
 This is the forum that will be put into production in a members only area on agepac.org.
 
-### What is the AGEPAC?
+What is the AGEPAC?
 -----
 The [AGEPAC](http://www.agepac.org "View the AGEPAC website") is a non-profit association representing [EPL](http://www.enac.fr/en/pilot-training)'s (Airline Pilot Degree students) from the [ENAC](http://www.enac.fr "View the ENAC website") (French National Civil Aviation Academy) whose primary objectives are as follows:
 
@@ -16,41 +16,41 @@ The [AGEPAC](http://www.agepac.org "View the AGEPAC website") is a non-profit as
 - To work in cooperation with any entity on topics relating to aeronautics
 - To assist members encountering personal or professional difficulties during training
 
-<sub><sup>The AGEPAC is registered in France as an _Association Loi de 1901_ and appearing in the _Journal Officiel_ with RNA number W313017548.</sup></sub>
+<sub><sup>The AGEPAC is registered in France as an _Association Loi de 1901_ and appears in the _Journal Officiel_ with RNA number W313017548.</sup></sub>
 
 ## Installation
 
 ### Step 1.
 
- > To run this project, you must have PHP 7.2 or higher installed as a prerequisite.
+> To run this project, you must have PHP 7.2 or higher installed as a prerequisite.
 
- Begin by cloning this repository to your machine, and installing all Composer dependencies.
+Begin by cloning this repository to your machine, and installing all Composer dependencies.
 
- ```bash
- git clone git@github.com:clarkewing/agepac.org-members.git
- cd agepac.org-members && composer install
- php artisan key:generate
- mv .env.example .env
- ```
+```bash
+git clone git@github.com:clarkewing/agepac.org-members.git
+cd agepac.org-members && composer install
+php artisan key:generate
+mv .env.example .env
+```
 
- ### Step 2.
+### Step 2.
 
- Next, create a new database and reference its name and username/password within the project's `.env` file. In the example below, we've named the database, "agepac."
+Next, create a new database and reference its name and username/password within the project's `.env` file. In the example below, we've named the database, "agepac."
 
- ```
- DB_CONNECTION=mysql
- DB_HOST=127.0.0.1
- DB_PORT=3306
- DB_DATABASE=agepac
- DB_USERNAME=root
- DB_PASSWORD=
- ```
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=agepac
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
- Then, migrate your database to create tables.
+Then, migrate your database to create tables.
 
- ```
- php artisan migrate
- ```
+```
+php artisan migrate
+```
 
 ### Step 3.
 
