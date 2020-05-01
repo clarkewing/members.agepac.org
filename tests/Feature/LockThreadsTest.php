@@ -44,7 +44,7 @@ class LockThreadsTest extends TestCase
      */
     public function testAdministratorsCanLockThreads()
     {
-        $this->signIn(factory(User::class)->states('administrator')->create());
+        $this->signInAdmin();
 
         $thread = create(Thread::class);
 
@@ -59,7 +59,7 @@ class LockThreadsTest extends TestCase
      */
     public function testAdministratorsCanUnlockThreads()
     {
-        $this->signIn(factory(User::class)->states('administrator')->create());
+        $this->signInAdmin();
 
         $thread = create(Thread::class, ['locked' => true]);
 
