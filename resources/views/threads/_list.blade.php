@@ -23,8 +23,10 @@
             <div class="body">{!! $thread->body !!}</div>
         </div>
 
-        <div class="card-footer text-muted">
-            {{ $thread->visits()->count() }} vues
+        <div class="card-footer text-muted d-flex align-items-center justify-content-between">
+            <div>{{ $thread->visits()->count() }} vues</div>
+
+            <a href="{{ route('threads.index', $thread->channel) }}" class="badge badge-pill badge-info font-weight-normal" style="font-size: 1em;">{{ $thread->channel->name }}</a>
         </div>
     </div>
 @empty
