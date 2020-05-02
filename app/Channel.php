@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -26,6 +27,14 @@ class Channel extends Model
     {
         static::saved(function () {
             Cache::forget('channels');
+        });
+
+        static::addGlobalScope('alphabetized', function (Builder $builder) {
+            $builder->orderBy('name');
+        });
+
+        static::addGlobalScope('active', function (Builder $builder) {
+            $builder->where('archived', false);
         });
     }
 

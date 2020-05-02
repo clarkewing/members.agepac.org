@@ -69,8 +69,7 @@ class ThreadsController extends Controller
             'body' => 'required',
             'channel_id' => [
                 'required',
-                'exists:channels,id',
-                Rule::notIn(Channel::where('archived', true)->pluck('id'))
+                Rule::in(Channel::pluck('id'))
             ],
         ]);
 

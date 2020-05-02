@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Channel extends Resource
 {
@@ -40,6 +41,18 @@ class Channel extends Resource
     public static $search = [
         'name',
     ];
+
+    /**
+     * Override model global scopes.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->withoutGlobalScopes(['active', 'alphabetized']);
+    }
 
     /**
      * Get the fields displayed by the resource.
