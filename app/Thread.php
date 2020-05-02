@@ -201,6 +201,10 @@ class Thread extends Model
      */
     public function getIsSubscribedToAttribute(): bool
     {
+        if (Auth::guest()) {
+            return false;
+        }
+
         return $this->subscriptions()
             ->where('user_id', Auth::id())
             ->exists();
