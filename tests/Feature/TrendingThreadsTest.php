@@ -17,9 +17,7 @@ class TrendingThreadsTest extends TestCase
         $this->trending->reset();
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testIncrementsThreadScoreEveryTimeItIsRead()
     {
         $this->assertCount(0, $this->trending->get());

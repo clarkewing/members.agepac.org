@@ -8,9 +8,7 @@ use Tests\TestCase;
 
 class ReplyTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testHasAnOwner()
     {
         $reply = create(Reply::class);
@@ -18,9 +16,7 @@ class ReplyTest extends TestCase
         $this->assertInstanceOf(User::class, $reply->owner);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testKnowsIfItWasJustPublished()
     {
         $reply = create(Reply::class);
@@ -32,9 +28,7 @@ class ReplyTest extends TestCase
         $this->assertFalse($reply->wasJustPublished());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testDetectsAllMentionedUsersInTheBody()
     {
         $jane = create(User::class, ['name' => 'JaneDoe']);
@@ -49,9 +43,7 @@ class ReplyTest extends TestCase
         $this->assertTrue($reply->mentionedUsers()->contains('id', $john->id));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testWrapsMentionedUsernamesInTheBodyWithinAnchorTags()
     {
         $reply = new Reply([
@@ -64,9 +56,7 @@ class ReplyTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testKnowsIfItIsTheBestReply()
     {
         $reply = create(Reply::class);
@@ -78,9 +68,7 @@ class ReplyTest extends TestCase
         $this->assertTrue($reply->fresh()->isBest());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testBodyIsSanitizedAutomatically()
     {
         $reply = make(Reply::class, ['body' => '<script>alert("bad");</script><p>This is okay.</p>']);

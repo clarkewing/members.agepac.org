@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanFetchTheirMostRecentReply()
     {
         $user = create(User::class);
@@ -21,9 +19,7 @@ class UserTest extends TestCase
         $this->assertEquals($reply->id, $user->lastReply->id);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanDetermineTheirAvatarPath()
     {
         $user = create(User::class);

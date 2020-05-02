@@ -23,9 +23,7 @@ class ThreadTest extends TestCase
         $this->thread = create(Thread::class);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testHasAPath()
     {
         $this->assertEquals(
@@ -34,25 +32,19 @@ class ThreadTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testHasACreator()
     {
         $this->assertInstanceOf(User::class, $this->thread->creator);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testHasReplies()
     {
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testCanAddAReply()
     {
         $this->thread->addReply([
@@ -63,9 +55,7 @@ class ThreadTest extends TestCase
         $this->assertCount(1, $this->thread->replies);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testNotifiesAllSubscribersWhenAReplyIsAdded()
     {
         Notification::fake();
@@ -81,17 +71,13 @@ class ThreadTest extends TestCase
         Notification::assertSentTo(Auth::user(), ThreadWasUpdated::class);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testBelongsToAChannel()
     {
         $this->assertInstanceOf(Channel::class, $this->thread->channel);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testCanBeSubscribedTo()
     {
         $this->thread->subscribe($userId = 1);
@@ -102,9 +88,7 @@ class ThreadTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testCanBeUnsubscribedFrom()
     {
         $this->thread->subscribe($userId = 1);
@@ -116,9 +100,7 @@ class ThreadTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testKnowsIfAuthenticatedUserIsSubscribedToIt()
     {
         $this->signIn();
@@ -130,9 +112,7 @@ class ThreadTest extends TestCase
         $this->assertTrue($this->thread->isSubscribedTo);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testCanCheckIfTheAuthenticatedUserHasReadAllReplies()
     {
         $this->signIn($user = create(User::class));
@@ -144,9 +124,7 @@ class ThreadTest extends TestCase
         $this->assertFalse($this->thread->hasUpdatesFor($user));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testRecordsEachVisit()
     {
         $this->thread->visits()->reset();
@@ -162,9 +140,7 @@ class ThreadTest extends TestCase
         $this->assertEquals(2, $this->thread->visits()->count());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testBodyIsSanitizedAutomatically()
     {
         $thread = make(Thread::class, ['body' => '<script>alert("bad");</script><p>This is okay.</p>']);
@@ -172,9 +148,7 @@ class ThreadTest extends TestCase
         $this->assertEquals($thread->body, '<p>This is okay.</p>');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testCanHaveABestReply()
     {
         $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
@@ -184,9 +158,7 @@ class ThreadTest extends TestCase
         $this->assertEquals($reply->id, $this->thread->bestReply->id);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testDetectsAllMentionedUsersInTheBody()
     {
         $jane = create(User::class, ['name' => 'JaneDoe']);
@@ -201,9 +173,7 @@ class ThreadTest extends TestCase
         $this->assertTrue($thread->mentionedUsers()->contains('id', $john->id));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testWrapsMentionedUsernamesInTheBodyWithinAnchorTags()
     {
         $thread = new Thread([

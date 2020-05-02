@@ -15,9 +15,7 @@ class UpdateThreadsTest extends TestCase
         $this->withExceptionHandling()->signIn();
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUnauthorizedUsersMayNotUpdateThreads()
     {
         $thread = create(Thread::class);
@@ -26,9 +24,7 @@ class UpdateThreadsTest extends TestCase
             ->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAThreadRequiresATitleAndBodyToBeUpdated()
     {
         $thread = create(Thread::class, ['user_id' => Auth::id()]);
@@ -42,9 +38,7 @@ class UpdateThreadsTest extends TestCase
         ])->assertSessionHasErrors('title');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAThreadCanBeUpdatedByItsCreator()
     {
         $thread = create(Thread::class, ['user_id' => Auth::id()]);

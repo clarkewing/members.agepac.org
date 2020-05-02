@@ -8,9 +8,7 @@ use Tests\TestCase;
 
 class SpamTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testChecksForInvalidKeywords()
     {
         $spam = new Spam;
@@ -22,9 +20,7 @@ class SpamTest extends TestCase
         $spam->detect('Yahoo Customer Support');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testChecksForAnyKeyBeingHeldDown()
     {
         $spam = new Spam;

@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class AddAvatarTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testOnlyMembersCanAddAvatars()
     {
         $this->withExceptionHandling();
@@ -20,9 +18,7 @@ class AddAvatarTest extends TestCase
             ->assertStatus(401);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAValidAvatarMustBeProvided()
     {
         $this->withExceptionHandling()->signIn();
@@ -32,9 +28,7 @@ class AddAvatarTest extends TestCase
         ])->assertStatus(422);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAUserMayAddAnAvatarToTheirProfile()
     {
         $this->signIn();
@@ -50,9 +44,7 @@ class AddAvatarTest extends TestCase
         Storage::disk('public')->assertExists('avatars/' . $file->hashName());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAddingANewAvatarDeletesTheOldOneFromDisk()
     {
         $this->signIn();

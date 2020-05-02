@@ -7,9 +7,7 @@ use Tests\TestCase;
 
 class SubscribeToThreadsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanSubscribeToAThread()
     {
         $this->signIn();
@@ -21,9 +19,7 @@ class SubscribeToThreadsTest extends TestCase
         $this->assertCount(1, $thread->subscriptions);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanUnsubscribeFromAThread()
     {
         $this->signIn();

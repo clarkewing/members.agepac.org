@@ -17,9 +17,7 @@ class NotificationsTest extends TestCase
         $this->signIn();
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testNotificationIsPreparedWhenASubscribedThreadReceivesANewReplyThatIsNotByTheAuthenticatedUser()
     {
         $thread = create(Thread::class)->subscribe();
@@ -41,9 +39,7 @@ class NotificationsTest extends TestCase
         $this->assertCount(1, Auth::user()->fresh()->notifications);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAUserCanFetchTheirUnreadNotifications()
     {
         create(DatabaseNotification::class);
@@ -54,9 +50,7 @@ class NotificationsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAUserCanMarkANotificationAsRead()
     {
         create(DatabaseNotification::class);

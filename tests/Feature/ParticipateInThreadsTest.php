@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class ParticipateInThreadsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testUnauthenticatedUsersMayNotAddReplies()
     {
         $this->withExceptionHandling()
@@ -19,9 +17,7 @@ class ParticipateInThreadsTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAuthenticatedUserMayParticipateInForumThreads()
     {
         $this->signIn();
@@ -51,9 +47,7 @@ class ParticipateInThreadsTest extends TestCase
 //            ->assertStatus(422);
 //    }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testReplyRequiresABody()
     {
         $this->withExceptionHandling()->signIn();
@@ -65,9 +59,7 @@ class ParticipateInThreadsTest extends TestCase
             ->assertSessionHasErrors('body');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUnauthorizedUsersCannotDeleteReplies()
     {
         $this->withExceptionHandling();
@@ -82,9 +74,7 @@ class ParticipateInThreadsTest extends TestCase
             ->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAuthorizedUsersCanDeleteReplies()
     {
         $this->signIn();
@@ -97,9 +87,7 @@ class ParticipateInThreadsTest extends TestCase
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUnauthorizedUsersCannotUpdateReplies()
     {
         $this->withExceptionHandling();
@@ -114,9 +102,7 @@ class ParticipateInThreadsTest extends TestCase
             ->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAuthorizedUsersCanUpdateReplies()
     {
         $this->signIn();
@@ -132,9 +118,7 @@ class ParticipateInThreadsTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUsersMayOnlyReplyAMaximumOfOncePerMinute()
     {
         $this->withExceptionHandling();

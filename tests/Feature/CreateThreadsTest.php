@@ -12,9 +12,7 @@ use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testGuestCannotCreateThread()
     {
         $this->withExceptionHandling();
@@ -26,9 +24,7 @@ class CreateThreadsTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testNewUserMustFirstVerifyEmailBeforeCreatingThreads()
     {
         $this->signIn(
@@ -46,9 +42,7 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanCreateNewThreads()
     {
         $this->followingRedirects()
@@ -57,27 +51,21 @@ class CreateThreadsTest extends TestCase
             ->assertSee('This is the body.');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testThreadRequiresATitle()
     {
         $this->publishThread(['title' => null])
             ->assertSessionHasErrors('title');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testThreadRequiresABody()
     {
         $this->publishThread(['body' => null])
             ->assertSessionHasErrors('body');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testThreadRequiresAValidChannel()
     {
         factory(Channel::class, 2)->create();
@@ -89,9 +77,7 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('channel_id');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testThreadRequiresAUniqueSlug()
     {
         $this->signIn();
@@ -105,9 +91,7 @@ class CreateThreadsTest extends TestCase
         $this->assertEquals('foo-title-' . strtotime($thread['created_at']), $thread['slug']);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testThreadWithATitleEndingInANumberShouldGenerateTheProperSlug()
     {
         $this->signIn();
@@ -119,9 +103,7 @@ class CreateThreadsTest extends TestCase
         $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUnauthorizedUsersMayNotDeleteThreads()
     {
         $this->withExceptionHandling();
@@ -136,9 +118,7 @@ class CreateThreadsTest extends TestCase
             ->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAuthorizedUsersCanDeleteThreads()
     {
         $this->signIn();

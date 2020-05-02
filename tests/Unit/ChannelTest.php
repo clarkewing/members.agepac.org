@@ -8,9 +8,7 @@ use Tests\TestCase;
 
 class ChannelTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testConsistsOfThreads()
     {
         $channel = create(Channel::class);

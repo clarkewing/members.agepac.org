@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class ProfilesTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserHasAProfile()
     {
         $user = create(User::class);
@@ -22,9 +20,7 @@ class ProfilesTest extends TestCase
             ]]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testProfilesDisplayAllThreadsCreatedByAssociatedUser()
     {
         $this->signIn();

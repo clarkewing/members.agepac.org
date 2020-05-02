@@ -10,9 +10,7 @@ use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testRecordsActivityWhenAThreadIsCreated()
     {
         $this->signIn();
@@ -31,9 +29,7 @@ class ActivityTest extends TestCase
         $this->assertEquals($activity->subject->id, $thread->id);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testRecordsActivityWhenAReplyIsCreated()
     {
         $this->signIn();
@@ -44,9 +40,7 @@ class ActivityTest extends TestCase
         $this->assertEquals(2, Activity::count());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testFetchesAnActivityFeedForAnyUser()
     {
         $this->signIn();

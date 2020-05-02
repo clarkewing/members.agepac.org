@@ -20,27 +20,21 @@ class ReadThreadsTest extends TestCase
         $this->thread = create(Thread::class);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanViewAllThreads()
     {
         $this->get(route('threads.index'))
             ->assertSee($this->thread->title);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanViewASingleThread()
     {
         $this->get($this->thread->path())
             ->assertSee($this->thread->title);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanFilterThreadsByChannel()
     {
         $channel = create(Channel::class);
@@ -52,9 +46,7 @@ class ReadThreadsTest extends TestCase
             ->assertDontSee($threadNotInChannel->title);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanFilterThreadsByUsername()
     {
         $this->signIn(create(User::class, ['name' => 'JohnDoe']));
@@ -67,9 +59,7 @@ class ReadThreadsTest extends TestCase
             ->assertDontSee($threadNotByJohn->title);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanFilterThreadsByPopularity()
     {
         $threadWithTwoReplies = create(Thread::class);
@@ -85,9 +75,7 @@ class ReadThreadsTest extends TestCase
         $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanFilterThreadsByThoseThatAreUnanswered()
     {
         $threadWithNoReplies = $this->thread;
@@ -100,9 +88,7 @@ class ReadThreadsTest extends TestCase
         $this->assertEquals([$threadWithNoReplies->id], array_column($response['data'], 'id'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanRequestAllRepliesForAGivenThread()
     {
         create(Reply::class, ['thread_id' => $this->thread->id], 2);
@@ -113,9 +99,7 @@ class ReadThreadsTest extends TestCase
         $this->assertEquals(2, $response['total']);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testRecordsNewVisitEachTimeThreadIsRead()
     {
         $thread = create(Thread::class);

@@ -28,9 +28,7 @@ class ReputationTest extends TestCase
         $this->points = config('council.reputation');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserEarnsPointsWhenCreatingAThread()
     {
         $thread = create(Thread::class);
@@ -38,9 +36,7 @@ class ReputationTest extends TestCase
         $this->assertEquals($this->points['thread_published'], $thread->creator->reputation);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserLosesPointsWhenTheirThreadIsDeleted()
     {
         $this->signIn();
@@ -54,9 +50,7 @@ class ReputationTest extends TestCase
         $this->assertEquals(0, $thread->creator->fresh()->reputation);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserEarnsPointsWhenReplyingToAThread()
     {
         $thread = create(Thread::class);
@@ -69,9 +63,7 @@ class ReputationTest extends TestCase
         $this->assertEquals($this->points['reply_posted'], $reply->owner->reputation);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserLosesPointsWhenTheirReplyToAThreadIsDeleted()
     {
         $this->signIn();
@@ -85,9 +77,7 @@ class ReputationTest extends TestCase
         $this->assertEquals(0, $reply->owner->fresh()->reputation);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserEarnsPointsWhenTheirReplyIsMarkedAsBest()
     {
         $thread = create(Thread::class);
@@ -123,9 +113,7 @@ class ReputationTest extends TestCase
         $this->assertEquals($total, $secondReply->owner->reputation);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserEarnsPointsWhenTheirReplyIsFavorited()
     {
         $this->signIn();
@@ -138,9 +126,7 @@ class ReputationTest extends TestCase
         $this->assertEquals($total, $reply->owner->fresh()->reputation);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserLosesPointsWhenTheirReplyIsUnfavorited()
     {
         $reply = create(Reply::class);
@@ -160,9 +146,7 @@ class ReputationTest extends TestCase
         $this->assertEquals(0, Auth::user()->reputation);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testUserCanHaveTheirReputationReset()
     {
         $user = create(User::class, ['reputation' => 100]);

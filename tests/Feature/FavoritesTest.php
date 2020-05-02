@@ -7,9 +7,7 @@ use Tests\TestCase;
 
 class FavoritesTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testGuestsCannotFavoriteAnyReply()
     {
         $this->withExceptionHandling()
@@ -17,9 +15,7 @@ class FavoritesTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAuthenticatedUserCanFavoriteAnyReply()
     {
         $this->signIn();
@@ -31,9 +27,7 @@ class FavoritesTest extends TestCase
         $this->assertCount(1, $reply->favorites);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAuthenticatedUserCanUnfavoriteAnyReply()
     {
         $this->signIn();
@@ -45,9 +39,7 @@ class FavoritesTest extends TestCase
         $this->assertCount(0, $reply->favorites);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAuthenticatedUserMayOnlyFavoriteAReplyOnce()
     {
         $this->signIn();

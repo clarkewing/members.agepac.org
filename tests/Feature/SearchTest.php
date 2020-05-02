@@ -7,9 +7,7 @@ use Tests\TestCase;
 
 class SearchTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testAUserCanSearchThreads()
     {
         if (! config('scout.algolia.id')) {

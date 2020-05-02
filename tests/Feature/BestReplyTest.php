@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class BestReplyTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testThreadCreatorCanMarkAnyReplyAsTheBestReply()
     {
         $this->signIn();
@@ -26,9 +24,7 @@ class BestReplyTest extends TestCase
         $this->assertTrue($replies[1]->fresh()->isBest());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testOnlyThreadCreatorMayMarkReplyAsBest()
     {
         $this->withExceptionHandling();
@@ -45,9 +41,7 @@ class BestReplyTest extends TestCase
         $this->assertFalse($replies[1]->fresh()->isBest());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testIfABestReplyIsDeletedThenTheThreadIsProperlyUpdated()
     {
         $this->signIn();

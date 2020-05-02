@@ -9,9 +9,7 @@ use Tests\TestCase;
 
 class MentionUsersTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testMentionedUsersInAReplyAreNotified()
     {
         $john = create(User::class, ['name' => 'JohnDoe']);
@@ -31,9 +29,7 @@ class MentionUsersTest extends TestCase
         $this->assertCount(1, $jane->notifications);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testMentionedUsersInAThreadAreNotified()
     {
         $john = create(User::class, ['name' => 'JohnDoe']);
@@ -49,9 +45,7 @@ class MentionUsersTest extends TestCase
         $this->assertCount(1, $jane->notifications);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testCanFetchAllMentionedUsersStartingWithGivenCharacters()
     {
         create(User::class, ['name' => 'JohnDoe']);

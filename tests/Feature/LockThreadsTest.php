@@ -8,9 +8,7 @@ use Tests\TestCase;
 
 class LockThreadsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function testNonAdministratorsCannotLockThreads()
     {
         $this->withExceptionHandling()->signIn();
@@ -23,9 +21,7 @@ class LockThreadsTest extends TestCase
         $this->assertFalse($thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testNonAdministratorsCannotUnlockThreads()
     {
         $this->withExceptionHandling()->signIn();
@@ -38,9 +34,7 @@ class LockThreadsTest extends TestCase
         $this->assertTrue($thread->fresh()->locked, 'Failed asserting that the thread was locked.');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAdministratorsCanLockThreads()
     {
         $this->signInAdmin();
@@ -53,9 +47,7 @@ class LockThreadsTest extends TestCase
         $this->assertTrue($thread->fresh()->locked, 'Failed asserting that the thread was locked.');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testAdministratorsCanUnlockThreads()
     {
         $this->signInAdmin();
@@ -68,9 +60,7 @@ class LockThreadsTest extends TestCase
         $this->assertFalse($thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function testALockedThreadMayNotReceiveNewReplies()
     {
         $this->signIn();
