@@ -16,7 +16,8 @@
         methods: {
             logout() {
                 axios.post(this.route)
-                    .then(() => window.location.href = '/');
+                    .then(() => window.location.href = '/')
+                    .catch(() => window.location.reload());
             }
         }
     }
