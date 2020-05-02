@@ -16,11 +16,11 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query('name');
+        $search = $request->query('username');
 
-        return User::where('name', 'LIKE', "$search%")
+        return User::where('username', 'LIKE', "$search%")
             ->take(5)
-            ->get('name');
+            ->pluck('username');
     }
 
     /**

@@ -41,7 +41,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="forumDropdown">
                         <a class="dropdown-item" href="{{ route('threads.index') }}">Tout voir</a>
-                        <a class="dropdown-item" href="{{ route('threads.index') }}?by={{ Auth::user()->name }}">Mes discussions</a>
+                        <a class="dropdown-item" href="{{ route('threads.index') }}?by={{ Auth::user()->username }}">Mes discussions</a>
                         <a class="dropdown-item" href="{{ route('threads.index') }}?popular=1">Discussions populaires</a>
                         <a class="dropdown-item" href="{{ route('threads.index') }}?unanswered=1">Discussions sans réponse</a>
                         <div class="dropdown-divider"></div>

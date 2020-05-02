@@ -209,7 +209,7 @@ class NamedRouteTest extends TestCase
         $user = make(User::class);
 
         $this->assertRoutePathIs(
-            '/profiles/' . rawurlencode($user->name),
+            '/profiles/' . $user->username,
             'profiles.show', $user
         );
     }
@@ -243,7 +243,7 @@ class NamedRouteTest extends TestCase
         $user = make(User::class);
 
         $this->assertRoutePathIs(
-            '/api/users/' . rawurlencode($user->name) . '/avatar',
+            '/api/users/' . $user->username . '/avatar',
             'api.users.avatar.store', $user
         );
     }

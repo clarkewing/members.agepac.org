@@ -50,7 +50,7 @@
 
                 data.append('avatar', avatar);
 
-                axios.post(`/api/users/${this.user.name}/avatar`, data)
+                axios.post(`/api/users/${this.user.username}/avatar`, data)
                     .then(() => flash('Photo de profil chargée !'))
             }
         }
