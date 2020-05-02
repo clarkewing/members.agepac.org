@@ -1,4 +1,4 @@
-<footer class="container" style="padding-top: 100px;">
+<footer class="container">
     <div class="row flex-column-reverse flex-md-row">
         <div class="col-md-auto d-flex">
             <p class="d-flex align-self-center align-self-md-start my-2 mx-auto mx-md-0">&copy; AGEPAC 2019. Tous droits réservés.</p>
