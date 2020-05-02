@@ -5,6 +5,7 @@ namespace App\Nova;
 use Drobee\NovaSluggable\Slug;
 use Drobee\NovaSluggable\SluggableText;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
@@ -61,10 +62,14 @@ class Channel extends Resource
                 ->creationRules('unique:channels,slug')
                 ->updateRules('unique:channels,slug,{{resourceId}}')
                 ->help('Used for the channel URL')
-                ->slugUnique()
                 ->slugModel(static::$model),
             Text::make('Description')
                 ->rules('required'),
+            Boolean::make('Archived')
+                ->onlyOnForms()->hideWhenCreating(),
+            Boolean::make('Visible', function () {
+                return ! $this->archived;
+            })->exceptOnForms(),
         ];
     }
 

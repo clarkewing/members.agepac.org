@@ -9,5 +9,6 @@ $factory->define(Channel::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->word,
         'description' => $faker->sentence,
+        'archived' => false,
     ];
 });

@@ -9,6 +9,7 @@ use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\Rule;
 
 class ThreadsController extends Controller
 {
@@ -66,7 +67,11 @@ class ThreadsController extends Controller
         $request->validate([
             'title' => 'required',
             'body' => 'required',
-            'channel_id' => 'required|exists:channels,id',
+            'channel_id' => [
+                'required',
+                'exists:channels,id',
+                Rule::notIn(Channel::where('archived', true)->pluck('id'))
+            ],
         ]);
 
         $thread = Thread::create([

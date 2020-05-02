@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $channels = Cache::rememberForever('channels', function () {
-                return Channel::all();
+                return Channel::where('archived', false)->orderBy('name')->get();
             });
 
             $view->with('channels', $channels);

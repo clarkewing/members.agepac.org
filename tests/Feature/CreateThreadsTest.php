@@ -78,6 +78,15 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
+    public function testThreadCantBeCreatedInAnArchivedChannel()
+    {
+        $archivedChannel = create(Channel::class, ['archived' => true]);
+
+        $this->publishThread(['channel_id' => $archivedChannel->id])
+            ->assertSessionHasErrors('channel_id');
+    }
+
+    /** @test */
     public function testThreadRequiresAUniqueSlug()
     {
         $this->signIn();

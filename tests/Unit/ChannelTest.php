@@ -16,4 +16,28 @@ class ChannelTest extends TestCase
 
         $this->assertTrue($channel->threads->contains($thread));
     }
+
+    /** @test */
+    public function testCanBeArchived()
+    {
+        $channel = create(Channel::class);
+
+        $this->assertFalse($channel->archived);
+
+        $channel->archive();
+
+        $this->assertTrue($channel->archived);
+    }
+
+    /** @test */
+    public function testCanBeUnarchived()
+    {
+        $channel = create(Channel::class, ['archived' => true]);
+
+        $this->assertTrue($channel->archived);
+
+        $channel->unarchive();
+
+        $this->assertFalse($channel->archived);
+    }
 }

@@ -9,6 +9,15 @@ use Illuminate\Support\Str;
 class Channel extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'archived',
+    ];
+
+    /**
      * The "booted" method of the model.
      *
      * @return void
@@ -19,6 +28,15 @@ class Channel extends Model
             Cache::forget('channels');
         });
     }
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'archived' => 'boolean',
+    ];
 
     /**
      * Get the route key for the model.
@@ -36,6 +54,26 @@ class Channel extends Model
     public function threads()
     {
         return $this->hasMany(Thread::class);
+    }
+
+    /**
+     * Archive the channel.
+     *
+     * @return void
+     */
+    public function archive(): void
+    {
+        $this->update(['archived' => true]);
+    }
+
+    /**
+     * Unarchive the channel.
+     *
+     * @return void
+     */
+    public function unarchive(): void
+    {
+        $this->update(['archived' => false]);
     }
 
     /**
