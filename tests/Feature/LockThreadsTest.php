@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Thread;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 

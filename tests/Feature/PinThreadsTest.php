@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Thread;
-use App\User;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class PinThreadsTest extends TestCase
 {
-
     /** @test */
     public function testNonAdministratorsCannotPinThreads()
     {
@@ -72,7 +69,7 @@ class PinThreadsTest extends TestCase
                 ['id' => $threadOne->id],
                 ['id' => $threadTwo->id],
                 ['id' => $threadThree->id],
-            ]
+            ],
         ]);
 
         $this->signInAdmin()->post(route('threads.pin', $pinned = $threadThree))
@@ -83,7 +80,7 @@ class PinThreadsTest extends TestCase
                 ['id' => $pinned->id],
                 ['id' => $threadOne->id],
                 ['id' => $threadTwo->id],
-            ]
+            ],
         ]);
     }
 }

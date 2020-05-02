@@ -38,7 +38,6 @@ class YouWereMentioned extends Notification
         if ($subject instanceof Reply) {
             $this->subjectTitle = $subject->thread->title;
             $this->subjectOwner = $subject->owner;
-
         } elseif ($subject instanceof Thread) {
             $this->subjectTitle = $subject->title;
             $this->subjectOwner = $subject->creator;
