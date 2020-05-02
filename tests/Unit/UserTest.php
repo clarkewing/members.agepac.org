@@ -28,4 +28,42 @@ class UserTest extends TestCase
         $user->avatar_path = 'avatars/me.jpg';
         $this->assertTrue(Str::endsWith($user->avatar_path, 'avatars/me.jpg'));
     }
+
+    /** @test */
+    public function testHasUsername()
+    {
+        $user = create(User::class, ['username' => 'foo.bar']);
+
+        $this->assertEquals('foo.bar', $user->username);
+    }
+
+    /** @test */
+    public function testHasFirstName()
+    {
+        $user = create(User::class, ['first_name' => 'John']);
+
+        $this->assertEquals('John', $user->first_name);
+    }
+
+    /** @test */
+    public function testHasLastName()
+    {
+        $user = create(User::class, ['last_name' => 'Doe']);
+
+        $this->assertEquals('Doe', $user->last_name);
+    }
+
+    /** @test */
+    public function testKnowsItsFullName()
+    {
+        $user = create(User::class, ['first_name' => 'John', 'last_name' => 'Doe']);
+
+        $this->assertEquals('John Doe', $user->name);
+    }
+
+    /** @test */
+    public function testCanMakeUsernameFromFirstAndLastName()
+    {
+        $this->assertEquals('john.doe', User::makeUsername('John', 'Doe'));
+    }
 }

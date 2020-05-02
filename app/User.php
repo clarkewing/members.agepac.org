@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -18,7 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar_path',
+        'username', 'first_name', 'last_name', 'email', 'password', 'avatar_path',
     ];
 
     /**
@@ -29,6 +30,13 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'email', 'password', 'remember_token', 'email_verified_at',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['name'];
 
     /**
      * The attributes that should be cast to native types.
@@ -46,7 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getRouteKeyName()
     {
-        return 'name';
+        return 'username';
     }
 
     /**
@@ -97,6 +105,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
      * Get the path of the User's avatar.
      *
      * @param  string $avatar
@@ -118,5 +136,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function visitedThreadCacheKey(Thread $thread)
     {
         return sprintf('users.%s.visits.%s', $this->id, $thread->id);
+    }
+
+    /**
+     * Make a username string from a first and last name.
+     *
+     * @param  string  $firstName
+     * @param  string  $lastName
+     * @return string
+     */
+    public static function makeUsername(string $firstName, string $lastName): string
+    {
+        return strtolower(URLify::filter($firstName) . '.' . URLify::filter($lastName));
     }
 }

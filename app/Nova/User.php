@@ -46,8 +46,15 @@ class User extends Resource
 
             Gravatar::make()->maxWidth(50),
 
-            Text::make('Name')
+            Text::make('First name')
                 ->sortable()
+                ->rules('required', 'max:255'),
+
+            Text::make('Last name')
+                ->sortable()
+                ->rules('required', 'max:255'),
+
+            Text::make('Username')
                 ->rules('required', 'max:255'),
 
             Text::make('Email')

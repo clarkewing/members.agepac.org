@@ -27,7 +27,7 @@ trait MentionsUsers
     {
         preg_match_all($this->mentionPattern(), $this->body, $matches);
 
-        return User::whereIn('name', $matches[1])->get();
+        return User::whereIn('username', $matches[1])->get();
     }
 
     /**

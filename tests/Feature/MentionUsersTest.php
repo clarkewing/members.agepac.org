@@ -12,16 +12,16 @@ class MentionUsersTest extends TestCase
     /** @test */
     public function testMentionedUsersInAReplyAreNotified()
     {
-        $john = create(User::class, ['name' => 'JohnDoe']);
+        $john = create(User::class, ['username' => 'john.doe']);
 
         $this->signIn($john);
 
-        $jane = create(User::class, ['name' => 'JaneDoe']);
+        $jane = create(User::class, ['username' => 'jane.doe']);
 
         $thread = create(Thread::class);
 
         $reply = make(Reply::class, [
-            'body' => 'Hey @JaneDoe look at this!',
+            'body' => 'Hey @jane.doe look at this!',
         ]);
 
         $this->postJson($thread->path() . '/replies', $reply->toArray());
@@ -32,14 +32,14 @@ class MentionUsersTest extends TestCase
     /** @test */
     public function testMentionedUsersInAThreadAreNotified()
     {
-        $john = create(User::class, ['name' => 'JohnDoe']);
+        $john = create(User::class, ['username' => 'john.doe']);
 
         $this->signIn($john);
 
-        $jane = create(User::class, ['name' => 'JaneDoe']);
+        $jane = create(User::class, ['username' => 'jane.doe']);
 
         $this->postJson(route('threads.store'), make(Thread::class, [
-            'body' => 'Hey @JaneDoe look at this!',
+            'body' => 'Hey @jane.doe look at this!',
         ])->toArray());
 
         $this->assertCount(1, $jane->notifications);
@@ -48,13 +48,11 @@ class MentionUsersTest extends TestCase
     /** @test */
     public function testCanFetchAllMentionedUsersStartingWithGivenCharacters()
     {
-        create(User::class, ['name' => 'JohnDoe']);
-        create(User::class, ['name' => 'JohnDoe2']);
-        create(User::class, ['name' => 'JaneDoe']);
+        create(User::class, ['username' => 'john.doe']);
+        create(User::class, ['username' => 'john.doe2']);
+        create(User::class, ['username' => 'jane.doe']);
 
-        $results = $this->getJson(route('api.users.index', [
-            'name' => 'john',
-        ]));
+        $results = $this->getJson(route('api.users.index', ['username' => 'john']));
 
         $results->assertJsonCount(2);
     }

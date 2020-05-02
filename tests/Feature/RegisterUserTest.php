@@ -2,12 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Thread;
 use App\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -62,17 +60,31 @@ class RegisterUserTest extends TestCase
     }
 
     /** @test */
-    public function testNameIsRequired()
+    public function testFirstNameIsRequired()
     {
-        $this->createAccount(['name' => ''])
-            ->assertSessionHasErrors('name');
+        $this->createAccount(['first_name' => ''])
+            ->assertSessionHasErrors('first_name');
     }
 
     /** @test */
-    public function testNameCannotExceed255Characters()
+    public function testFirstNameCannotExceed255Characters()
     {
-        $this->createAccount(['name' => str_repeat('a', 256)])
-            ->assertSessionHasErrors('name');
+        $this->createAccount(['first_name' => str_repeat('a', 256)])
+            ->assertSessionHasErrors('first_name');
+    }
+
+    /** @test */
+    public function testLastNameIsRequired()
+    {
+        $this->createAccount(['last_name' => ''])
+            ->assertSessionHasErrors('last_name');
+    }
+
+    /** @test */
+    public function testLastNameCannotExceed255Characters()
+    {
+        $this->createAccount(['last_name' => str_repeat('a', 256)])
+            ->assertSessionHasErrors('last_name');
     }
 
     /** @test */
@@ -137,7 +149,8 @@ class RegisterUserTest extends TestCase
         $this->withExceptionHandling();
 
         return $this->post(route('register'), array_merge([
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
             'password' => 'HugoWasHere',
             'password_confirmation' => 'HugoWasHere',

@@ -20,8 +20,13 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    $firstName = $faker->firstName;
+    $lastName = $faker->lastName;
+
     return [
-        'name' => $faker->name,
+        'first_name' => $firstName,
+        'last_name' => $lastName,
+        'username' => User::makeUsername($firstName, $lastName),
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => Hash::make('password'), // password

@@ -24,10 +24,10 @@
                 trigger: '@',
 
                 // column to search against in the object (accepts function or string)
-                lookup: 'name',
+                lookup: 'username',
 
                 // column that contains the content to insert by default
-                fillAttr: 'name',
+                fillAttr: 'username',
 
                 values: (query, cb) => {
                     this.remoteSearch(query, users => cb(users));

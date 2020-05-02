@@ -172,11 +172,11 @@ class ThreadTest extends TestCase
     /** @test */
     public function testDetectsAllMentionedUsersInTheBody()
     {
-        $jane = create(User::class, ['name' => 'JaneDoe']);
-        $john = create(User::class, ['name' => 'JohnDoe']);
+        $jane = create(User::class, ['username' => 'jane.doe']);
+        $john = create(User::class, ['username' => 'john.doe']);
 
         $thread = new Thread([
-            'body' => '@JaneDoe wants to talk to @JohnDoe but not @FakeUser',
+            'body' => '@jane.doe wants to talk to @john.doe but not @fake.user',
         ]);
 
         $this->assertCount(2, $thread->mentionedUsers());
@@ -188,11 +188,11 @@ class ThreadTest extends TestCase
     public function testWrapsMentionedUsernamesInTheBodyWithinAnchorTags()
     {
         $thread = new Thread([
-            'body' => 'Hello @JaneDoe.',
+            'body' => 'Hello @jane.doe.',
         ]);
 
         $this->assertEquals(
-            'Hello <a href="' . route('profiles.show', 'JaneDoe', false) . '">@JaneDoe</a>.',
+            'Hello <a href="' . route('profiles.show', 'jane.doe', false) . '">@jane.doe</a>.',
             $thread->body
         );
     }

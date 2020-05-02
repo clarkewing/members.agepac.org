@@ -82,7 +82,7 @@ class YouWereMentioned extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->subjectOwner->name . ' t\'a mentionné dans ' . $this->subjectTitle,
+            'message' => $this->subjectOwner->username . ' t\'a mentionné dans ' . $this->subjectTitle,
             'link' => $this->subjectPath,
         ];
     }

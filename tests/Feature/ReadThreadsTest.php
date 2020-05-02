@@ -68,12 +68,12 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByUsername()
     {
-        $this->signIn(create(User::class, ['name' => 'JohnDoe']));
+        $this->signIn(create(User::class, ['username' => 'john.doe']));
 
         $threadByJohn = create(Thread::class, ['user_id' => Auth::id()]);
         $threadNotByJohn = create(Thread::class);
 
-        $this->get(route('threads.index') . '?by=JohnDoe')
+        $this->get(route('threads.index') . '?by=john.doe')
             ->assertSee($threadByJohn->title)
             ->assertDontSee($threadNotByJohn->title);
     }
