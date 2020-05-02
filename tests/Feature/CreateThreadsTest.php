@@ -93,7 +93,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = create(Thread::class, ['title' => 'Foo Title']);
 
-        $this->assertEquals($thread->fresh()->slug, 'foo-title');
+        $this->assertEquals('foo-title', $thread->fresh()->slug);
 
         $thread = $this->postJson(route('threads.index'), $thread->toArray())->json();
 
@@ -148,7 +148,7 @@ class CreateThreadsTest extends TestCase
      * Submits a post request to publish a thread.
      *
      * @param  array $overrides
-     * @return $this;
+     * @return \Illuminate\Testing\TestResponse
      */
     public function publishThread(array $overrides = [])
     {
