@@ -84,6 +84,8 @@ class CreateThreadsTest extends TestCase
 
         $this->publishThread(['channel_id' => $archivedChannel->id])
             ->assertSessionHasErrors('channel_id');
+
+        $this->assertCount(0, $archivedChannel->threads);
     }
 
     /** @test */
