@@ -33,6 +33,17 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
+    public function testPathUnaffectedByArchivedChannel()
+    {
+        $thread = create(Thread::class);
+        $path = $thread->path();
+
+        $thread->channel->archive();
+
+        $this->assertEquals($path, $thread->fresh()->path());
+    }
+
+    /** @test */
     public function testHasACreator()
     {
         $this->assertInstanceOf(User::class, $this->thread->creator);
