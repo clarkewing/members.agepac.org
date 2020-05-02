@@ -79,10 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isAdmin()
     {
-        return in_array($this->name, [
-            'JohnDoe',
-            'JaneDoe',
-        ]);
+        return in_array($this->email, config('council.administrators'));
     }
 
     /**
