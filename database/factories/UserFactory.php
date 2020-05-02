@@ -1,8 +1,10 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use App\User;
 use Faker\Generator as Faker;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -35,6 +37,6 @@ $factory->state(User::class, 'unverified_email', function (Faker $faker) {
 
 $factory->state(User::class, 'administrator', function (Faker $faker) {
     return [
-        'name' => 'JohnDoe',
+        'email' => Arr::random(config('council.administrators')),
     ];
 });
