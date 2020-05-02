@@ -5,13 +5,6 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <avatar-form :user="{{ $profileUser }}"></avatar-form>
-
-            <noscript>
-                <h1 class="d-flex align-items-center pb-3 border-bottom mb-4">
-                    {{ $profileUser->name }}
-                    <span class="badge badge-pill badge-secondary ml-2">{{ $profileUser->reputation }}</span>
-                </h1>
-            </noscript>
         </div>
     </div>
     <div class="row">

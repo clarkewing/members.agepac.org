@@ -16,8 +16,10 @@ class ProfilesTest extends TestCase
     {
         $user = create(User::class);
 
-        $this->get(route('profiles.show', $user))
-            ->assertSee($user->name);
+        $this->getJson(route('profiles.show', $user))
+            ->assertJson(['profileUser' => [
+                'name' => $user->name,
+            ]]);
     }
 
     /**

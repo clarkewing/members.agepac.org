@@ -4,20 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\User;
+use Illuminate\Http\Request;
 
 class ProfilesController extends Controller
 {
     /**
      * Display the specified resource.
      *
-     * @param  \App\User $user
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
-        return view('profiles.show', [
+        $profile = [
             'profileUser' => $user,
             'activities' => Activity::feed($user),
-        ]);
+        ];
+
+        if ($request->expectsJson()) {
+            return $profile;
+        }
+
+        return view('profiles.show', $profile);
     }
 }
