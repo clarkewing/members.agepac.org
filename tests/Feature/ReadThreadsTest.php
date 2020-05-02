@@ -35,6 +35,15 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
+    public function testUserCanViewAThreadFromAnArchivedChannel()
+    {
+        $this->thread->channel->archive();
+
+        $this->get($this->thread->path())
+            ->assertSee($this->thread->title);
+    }
+
+    /** @test */
     public function testUserCanFilterThreadsByChannel()
     {
         $channel = create(Channel::class);
@@ -44,6 +53,16 @@ class ReadThreadsTest extends TestCase
         $this->get(route('threads.index', $channel))
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title);
+    }
+
+    /** @test */
+    public function testUserCanFilterThreadsByArchivedChannel()
+    {
+        $channel = create(Channel::class, ['archived' => true]);
+        $thread = create(Thread::class, ['channel_id' => $channel->id]);
+
+        $this->get(route('threads.index', $channel))
+            ->assertSee($thread->title);
     }
 
     /** @test */
