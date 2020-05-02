@@ -19,7 +19,8 @@ class RegisterUserTest extends TestCase
     }
 
     /** @test */
-    public function testGuestCanRegisterAnAccount() {
+    public function testGuestCanRegisterAnAccount()
+    {
         $this->createAccount()
             ->assertRedirect(route('home'));
 
