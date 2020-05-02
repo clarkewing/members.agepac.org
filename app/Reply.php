@@ -104,17 +104,6 @@ class Reply extends Model
     }
 
     /**
-     * Sets the body of the reply.
-     *
-     * @param  string $body
-     * @return void
-     */
-    public function setBodyAttribute($body): void
-    {
-        $this->attributes['body'] = preg_replace('/@([\w-]+)/', '<a href="/profiles/$1">$0</a>', $body);
-    }
-
-    /**
      * Determines whether the reply is marked as the best one on its thread.
      *
      * @return bool
