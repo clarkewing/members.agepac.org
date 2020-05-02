@@ -49,4 +49,21 @@ class ChannelTest extends TestCase
 
         $this->assertEquals(1, Channel::count());
     }
+
+    /** @test */
+    public function testSortedAlphabeticallyByDefault()
+    {
+        $channelOne = create(Channel::class, ['name' => 'Brontosaurus']);
+        $channelTwo = create(Channel::class, ['name' => 'Antelope']);
+        $channelThree = create(Channel::class, ['name' => 'Zebra']);
+
+        $this->assertEquals(
+            [
+                $channelTwo->id,
+                $channelOne->id,
+                $channelThree->id,
+            ],
+            Channel::pluck('id')->all()
+        );
+    }
 }
