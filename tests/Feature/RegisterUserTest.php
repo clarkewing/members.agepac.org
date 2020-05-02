@@ -27,7 +27,7 @@ class RegisterUserTest extends TestCase
         $this->assertTrue(Auth::check());
         $this->assertCount(1, User::all());
 
-        tap(User::first(), function($user) {
+        tap(User::first(), function ($user) {
             $this->assertEquals('John Doe', $user->name);
             $this->assertEquals('john@example.com', $user->email);
             $this->assertTrue(Hash::check('HugoWasHere', $user->password));
