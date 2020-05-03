@@ -28,11 +28,10 @@ class ThreadsController extends Controller
      *
      * @param  \App\Channel|null $channel
      * @param  \App\Filters\ThreadFilters $filters
-     * @param  \App\Trending $trending
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel, ThreadFilters $filters, Trending $trending, Request $request)
+    public function index(Channel $channel, ThreadFilters $filters, Request $request)
     {
         $threads = $this->getThreads($channel, $filters);
 
@@ -40,10 +39,7 @@ class ThreadsController extends Controller
             return $threads;
         }
 
-        return view('threads.index', [
-            'threads' => $threads,
-            'trending' => $trending->get(),
-        ]);
+        return view('threads.index', compact('threads'));
     }
 
     /**
