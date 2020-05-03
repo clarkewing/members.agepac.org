@@ -5,11 +5,11 @@
         </a>
 
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li v-for="notification in notifications">
+            <li v-for="notification in notifications" :key="notification.id">
                 <a class="dropdown-item"
                     :href="notification.data.link"
                     v-text="notification.data.message"
-                    @click="markAsRead(notification)"
+                    @click.prevent="markAsRead(notification)"
                 ></a>
             </li>
         </ul>
@@ -20,20 +20,28 @@
     export default {
         data() {
             return {
+                endpoint: '/notifications',
                 notifications: false
             }
         },
 
         created() {
-            axios.get('/notifications')
-                .then(({data}) => {
-                    this.notifications = data;
-                })
+            this.fetchNotifications();
         },
 
         methods: {
+            fetchNotifications() {
+                axios.get(this.endpoint)
+                    .then(({data}) => this.notifications = data);
+            },
+
             markAsRead(notification) {
-                axios.delete('/notifications/' + notification.id)
+                axios.delete(this.endpoint + '/' + notification.id)
+                    .then(({data}) => {
+                        this.fetchNotifications();
+
+                        document.location.replace(data.link);
+                    });
             }
         }
     }
