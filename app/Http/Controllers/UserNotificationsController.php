@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Auth;
 
 class UserNotificationsController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -24,10 +29,10 @@ class UserNotificationsController extends Controller
     /**
      * Mark the specified notification as read.
      *
-     * @param  string $notificationId
-     * @return \Illuminate\Http\Response
+     * @param  string  $notificationId
+     * @return void
      */
-    public function destroy($notificationId)
+    public function destroy(string $notificationId)
     {
         Auth::user()->notifications()->findOrFail($notificationId)->markAsRead();
     }

@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Thread;
-use Illuminate\Http\Request;
 
 class ThreadSubscriptionsController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -15,12 +19,11 @@ class ThreadSubscriptionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string $channel
-     * @param  \App\Thread $thread
-     * @return \Illuminate\Http\Response
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
+     * @return void
      */
-    public function store(Request $request, string $channelSlug, Thread $thread)
+    public function store(string $channelSlug, Thread $thread): void
     {
         $thread->subscribe();
     }
@@ -28,11 +31,11 @@ class ThreadSubscriptionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string $channel
-     * @param  \App\Thread $thread
-     * @return \Illuminate\Http\Response
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
+     * @return void
      */
-    public function destroy(string $channelSlug, Thread $thread)
+    public function destroy(string $channelSlug, Thread $thread): void
     {
         $thread->unsubscribe();
     }

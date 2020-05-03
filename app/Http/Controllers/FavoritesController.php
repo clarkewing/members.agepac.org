@@ -6,6 +6,11 @@ use App\Reply;
 
 class FavoritesController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -28,9 +33,9 @@ class FavoritesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Reply  $reply
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function destroy(Reply $reply)
+    public function destroy(Reply $reply): void
     {
         $reply->unfavorite();
     }
