@@ -36,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['name'];
+    protected $appends = ['name', 'isAdmin'];
 
     /**
      * The attributes that should be cast to native types.
@@ -88,6 +88,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAdmin()
     {
         return in_array($this->email, config('council.administrators'));
+    }
+
+    /**
+     * Determine whether the user is an admin.
+     *
+     * @return bool
+     */
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->isAdmin();
     }
 
     /**
