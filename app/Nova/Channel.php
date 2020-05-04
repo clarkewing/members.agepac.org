@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Drobee\NovaSluggable\Slug;
 use Drobee\NovaSluggable\SluggableText;
+use Gkermer\TextAutoComplete\TextAutoComplete;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
@@ -64,6 +65,8 @@ class Channel extends Resource
     {
         return [
             ID::make()->asBigInt()->sortable(),
+            TextAutoComplete::make('Parent')
+                ->items(\App\Channel::pluck('parent')),
             SluggableText::make('Name')
                 ->rules('required')
                 ->creationRules('unique:channels,name')

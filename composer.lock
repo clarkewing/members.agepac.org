@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6c17fcb093730050f251522077db743",
+    "content-hash": "dac5cc65af3c2be1eef0910c19c9cc1b",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -1038,6 +1038,56 @@
                 }
             ],
             "time": "2020-03-11T21:05:07+00:00"
+        },
+        {
+            "name": "gkermer/nova-text-auto-complete",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gkermer/nova-text-auto-complete.git",
+                "reference": "151d4ba84c7954d61b1a9aca2ecfab8928ff8552"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gkermer/nova-text-auto-complete/zipball/151d4ba84c7954d61b1a9aca2ecfab8928ff8552",
+                "reference": "151d4ba84c7954d61b1a9aca2ecfab8928ff8552",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Gkermer\\TextAutoComplete\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gkermer\\TextAutoComplete\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriel Kermer",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Nova text autocomplete field.",
+            "keywords": [
+                "auto-complete",
+                "autocomplete",
+                "laravel",
+                "nova",
+                "text"
+            ],
+            "time": "2019-12-05T22:34:41+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

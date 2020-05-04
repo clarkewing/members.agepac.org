@@ -93,12 +93,23 @@
 @endif
 
 <x-linklist title="Catégories" spacing="0">
-    @foreach($channels as $channel)
+    @foreach($channels->sortBy('parent')->groupBy('parent') as $parent => $channels)
         <li>
-            <a class="link-muted{{ Route::is('threads.index') && Route::input('channel') == $channel ? ' active' : '' }}"
-               href="{{ route('threads.index', $channel) }}">
-                {{ $channel->name }}
-            </a>
+            @if($parent)
+                <span class="text-muted">{{ ucwords($parent) }}</span>
+                <ul class="pl-2">
+            @endif
+                @foreach($channels as $channel)
+                    <li class="list-unstyled">
+                        <a class="link-muted{{ Route::is('threads.index') && Route::input('channel') == $channel ? ' active' : '' }}"
+                           href="{{ route('threads.index', $channel) }}">
+                            {{ ucwords($channel->name) }}
+                        </a>
+                    </li>
+                @endforeach
+            @if($parent)
+                </ul>
+            @endif
         </li>
     @endforeach
 </x-linklist>
