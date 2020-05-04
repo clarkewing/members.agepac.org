@@ -1,12 +1,70 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import 'bootstrap-icons';
 
 .font-size-normal {
     font-size: 1em !important;
+}
+
+.btn.btn-pill {
+    border-radius: $rounded-pill;
+}
+
+.link-muted {
+    color: inherit;
+
+    &:hover,
+    &.active {
+        color: $link-color;
+        text-decoration: none;
+    }
+    &.active {
+        font-weight: bolder;
+    }
+}
+
+.cover {
+    object-fit: cover;
+}
+
+// Create spacing utilities
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        @each $modifier, $spacing in $spacers {
+            .#{'spacing' + $infix + '-' + $modifier} > :not(:last-child) {
+                margin-bottom: $spacing;
+            }
+        }
+    }
+}
+
+// Gray color utilities
+@each $shade, $hex in $grays {
+    .#{'bg-gray-' + $shade} {
+        background-color: $hex;
+    }
+    .#{'text-gray-' + $shade} {
+        color: $hex;
+    }
+    .#{'border-gray-' + $shade} {
+        border-color: $hex;
+    }
+}
+
+// Color utilities
+@each $color, $hex in $colors {
+    .#{'bg-' + $color} {
+        background-color: $hex;
+    }
+    .#{'text-' + $color} {
+        color: $hex;
+    }
+    .#{'border-' + $color} {
+        border-color: $hex;
+    }
 }

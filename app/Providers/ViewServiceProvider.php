@@ -27,13 +27,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['layouts.navbar', 'threads.create'], function ($view) {
+        View::composer('threads.*', function ($view) {
             $view->with('channels', Cache::rememberForever('channels', function () {
                 return Channel::all();
             }));
-        });
 
-        View::composer('threads.*', function ($view) {
             $view->with('trending', (new Trending)->get());
         });
     }

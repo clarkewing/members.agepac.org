@@ -27,6 +27,9 @@ Vue.component('logout-button', require('./components/LogoutButton').default);
 Vue.component('thread-view', require('./pages/Thread.vue').default);
 Vue.component('instant-search', require('./pages/InstantSearch.vue').default);
 
+import lineClamp from 'vue-line-clamp';
+Vue.use(lineClamp, {textOverflow: ' ...'});
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
