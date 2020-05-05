@@ -29,7 +29,7 @@
                 Publié par : <a href="{{ route('profiles.show', $thread->creator) }}">{{ $thread->creator->name }}</a>
             </p>
 
-            <p class="mb-4" v-line-clamp="3">
+            <p class="mb-4" v-line-clamp="3" style="word-break: normal !important;">
                 {{ strip_tags($thread->body) }}
             </p>
 
