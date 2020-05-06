@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Collection;
+use Stevebauman\Purify\Facades\Purify;
 
 trait MentionsUsers
 {
@@ -16,6 +17,17 @@ trait MentionsUsers
     {
         // TODO: Replace hardcoded href with dynamic route.
         $this->attributes['body'] = preg_replace($this->mentionPattern(), '<a href="/profiles/$1">$0</a>', $body);
+    }
+
+    /**
+     * Get the sanitized body.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getBodyAttribute($value)
+    {
+        return Purify::clean($value);
     }
 
     /**

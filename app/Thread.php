@@ -278,17 +278,6 @@ class Thread extends Model
     }
 
     /**
-     * Get the sanitized body.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getBodyAttribute($value)
-    {
-        return Purify::clean($value);
-    }
-
-    /**
      * Determine if the thread has a best reply.
      *
      * @return bool
