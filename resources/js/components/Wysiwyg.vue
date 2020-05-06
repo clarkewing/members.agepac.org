@@ -126,10 +126,12 @@
             ref="editor"
             :input="'trix' + _uid"
             :toolbar="'trixToolbar' + _uid"
-            class="form-control"
+            :class="['form-control', error ? 'is-invalid' : '']"
             @trix-change="change"
             :placeholder="placeholder">
         </trix-editor>
+
+        <div class="invalid-feedback" v-text="error"></div>
     </div>
 </template>
 
@@ -138,7 +140,7 @@
     import Trix from 'trix';
 
     export default {
-        props: ['name', 'value', 'placeholder'],
+        props: ['name', 'value', 'placeholder', 'error'],
 
         data() {
             return {

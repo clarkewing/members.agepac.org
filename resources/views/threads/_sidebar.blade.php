@@ -1,4 +1,7 @@
-<a class="btn btn-block btn-success mb-3" href="{{ route('threads.create') }}">Nouvelle discussion</a>
+<a href="{{ route('threads.create', ['channel_id' => optional(Route::input('channel'))->id]) }}"
+   class="btn btn-block btn-success mb-3">
+    Nouvelle discussion
+</a>
 
 <form method="get" action="{{ route('threads.search') }}" class="input-group mb-4">
     <input type="text"
