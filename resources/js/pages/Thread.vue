@@ -68,8 +68,7 @@
 
             classes(target) {
                 return [
-                    'btn',
-                    this[target] ? 'btn-dark' : 'btn-outline-dark'
+                    this[target] ? 'text-primary' : 'text-muted'
                 ];
             }
         }

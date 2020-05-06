@@ -136,7 +136,6 @@
 <script>
     import Tribute from 'tributejs';
     import Trix from 'trix';
-    import 'trix/dist/trix.css';
 
     export default {
         props: ['name', 'value', 'placeholder'],

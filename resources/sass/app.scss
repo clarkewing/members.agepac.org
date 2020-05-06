@@ -70,6 +70,49 @@
     }
 }
 
+.border-placeholder {
+    border-width: 2px;
+    border-style: dashed;
+    border-color: $gray-300;
+}
+
+.btn.border-placeholder:hover {
+    border-color: color('blue');
+}
+
+// Trix
+@import '~trix/dist/trix.css';
+
+.tribute-container {
+    > ul {
+        margin: 0;
+        padding: 0;
+    }
+    .dropdown-item {
+        cursor: pointer;
+        &.hover {
+            @extend .dropdown-item, :hover;
+        }
+    }
+}
+trix-editor {
+    height: auto;
+
+    &:empty:not(:focus)::before {
+        color: $gray-600;
+        opacity: 1;
+    }
+
+    .attachment--content {
+        display: inline-block;
+
+        .attachment__caption,
+        .attachment__toolbar {
+            display: none;
+        }
+    }
+}
+
 .trix-wrapper:focus {
     outline: none;
 
@@ -82,34 +125,16 @@
     @extend .active;
 }
 
-.border-placeholder {
-    border-width: 2px;
-    border-style: dashed;
-    border-color: $gray-300;
-}
-
-.btn.border-placeholder:hover {
-    border-color: color('blue');
-}
-
-.tribute-container {
-    > ul {
-        @extend .m-0;
-        @extend .p-0;
+trix-editor,
+.trix-content {
+    h1 {
+        font-size: 1.5em;
     }
-    .dropdown-item {
-        cursor: pointer;
-        &.hover {
-            @extend .dropdown-item, :hover;
-        }
+    h2 {
+        font-size: 1.2em;
     }
-}
-trix-editor .attachment--content {
-    display: inline-block;
-
-    .attachment__caption,
-    .attachment__toolbar {
-        display: none;
+    h3 {
+        font-size: 1em;
     }
 }
 

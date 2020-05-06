@@ -1,7 +1,9 @@
 <template>
-    <button class="btn" :class="classes" @click="toggleSubscription">
+    <button :class="[classes, 'btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal']" @click="toggleSubscription">
         <span v-if="isActive">
-            <svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22" fill="#FFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            <svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+            </svg>
             Abonné
         </span>
 
@@ -24,8 +26,8 @@
         computed: {
             classes() {
                 return this.isActive
-                    ? 'btn-primary'
-                    : 'btn-outline-primary';
+                    ? 'text-primary font-weight-bolder'
+                    : 'text-muted';
             }
         },
 
@@ -33,7 +35,7 @@
             toggleSubscription() {
                 axios[
                     (this.isActive ? 'delete' : 'post')
-                ](location.pathname + '/subscriptions')
+                    ](location.pathname + '/subscriptions')
                     .then(() => {
                         this.isActive = !this.isActive;
 

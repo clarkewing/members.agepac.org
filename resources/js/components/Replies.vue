@@ -6,9 +6,13 @@
 
         <paginator :dataSet="dataSet" @changed="fetch"></paginator>
 
-        <p v-if="$parent.locked">
-            Cette discussion a été vérouillée. Il n'est plus possible d'y répondre.
-        </p>
+        <div class="d-flex text-red px-5 py-3 rounded border-placeholder border-danger align-items-center" v-if="$parent.locked">
+            <svg class="bi bi-lock-fill mr-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <rect width="11" height="9" x="2.5" y="7" rx="2"/>
+                <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 117 0v3h-1V4a2.5 2.5 0 00-5 0v3h-1V4z" clip-rule="evenodd"/>
+            </svg>
+            <p class="mb-0">Cette discussion a été vérouillée. Il n'est plus possible d'y répondre.</p>
+        </div>
         <new-reply @created="add" v-else></new-reply>
     </div>
 </template>
