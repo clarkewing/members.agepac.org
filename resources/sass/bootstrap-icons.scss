@@ -17,7 +17,12 @@
 .dropdown {
     .bi {
         transform: scale(1.25);
-        // reset the bottom margin from above
         margin-bottom: 0;
+    }
+}
+.btn-link,
+.btn-group > .btn {
+    .bi {
+        margin-bottom: calc(-0.125em / 2);
     }
 }

@@ -21,6 +21,7 @@
         color: $link-color;
         text-decoration: none;
     }
+
     &.active {
         font-weight: bolder;
     }
@@ -67,4 +68,53 @@
     .#{'border-' + $color} {
         border-color: $hex;
     }
+}
+
+.trix-wrapper:focus {
+    outline: none;
+
+    .form-control {
+        @extend .form-control, :focus;
+    }
+}
+
+.trix-active {
+    @extend .active;
+}
+
+.border-placeholder {
+    border-width: 2px;
+    border-style: dashed;
+    border-color: $gray-300;
+}
+
+.btn.border-placeholder:hover {
+    border-color: color('blue');
+}
+
+.tribute-container {
+    > ul {
+        @extend .m-0;
+        @extend .p-0;
+    }
+    .dropdown-item {
+        cursor: pointer;
+        &.hover {
+            @extend .dropdown-item, :hover;
+        }
+    }
+}
+trix-editor .attachment--content {
+    display: inline-block;
+
+    .attachment__caption,
+    .attachment__toolbar {
+        display: none;
+    }
+}
+
+.mention {
+    @extend .bg-gray-300;
+    @extend .rounded;
+    @extend .px-2;
 }
