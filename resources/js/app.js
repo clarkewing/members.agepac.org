@@ -23,12 +23,16 @@ Vue.component('user-notifications', require('./components/UserNotifications.vue'
 Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 Vue.component('wysiwyg', require('./components/Wysiwyg.vue').default);
 Vue.component('logout-button', require('./components/LogoutButton').default);
+Vue.component('thread-result', require('./components/ThreadResult').default);
 
 Vue.component('thread-view', require('./pages/Thread.vue').default);
 Vue.component('instant-search', require('./pages/InstantSearch.vue').default);
 
 import lineClamp from 'vue-line-clamp';
 Vue.use(lineClamp, {textOverflow: ' ...'});
+
+import VuePluralize from 'vue-pluralize';
+Vue.use(VuePluralize);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

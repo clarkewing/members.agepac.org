@@ -40,7 +40,7 @@
                         this.isActive = !this.isActive;
 
                         flash(this.isActive
-                            ? 'Tu as été abonné !'
+                            ? 'Ok, on te notifiera lorsque cette discussion est mise à jour !'
                             : 'Tu as été désabonné.');
                     });
             }

@@ -17,8 +17,9 @@
     color: inherit;
 
     &:hover,
+    &:focus,
     &.active {
-        color: $link-color;
+        color: $link-color !important;
         text-decoration: none;
     }
 
@@ -96,7 +97,7 @@
     }
 }
 trix-editor {
-    height: auto;
+    height: auto !important;
 
     &:empty:not(:focus)::before {
         color: $gray-600;
@@ -138,8 +139,6 @@ trix-editor,
     }
 }
 
-.mention {
-    @extend .bg-gray-300;
-    @extend .rounded;
-    @extend .px-2;
+[v-cloak] {
+    display: none;
 }

@@ -13,6 +13,7 @@
             </svg>
             <p class="mb-0">Cette discussion a été vérouillée. Il n'est plus possible d'y répondre.</p>
         </div>
+
         <new-reply @created="add" v-else></new-reply>
     </div>
 </template>

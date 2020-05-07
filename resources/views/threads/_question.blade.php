@@ -17,6 +17,7 @@
         </div>
 
         <div class="form-group d-flex">
+            <!-- TODO: Determine if we need a delete button, or if Nova suffices -->
 {{--            <button class="btn btn-sm btn-outline-danger mr-2" @click="destroy">Supprimer</button>--}}
 
             <button class="btn btn-sm btn-link ml-auto mr-2" @click="resetForm" type="button">Annuler</button>

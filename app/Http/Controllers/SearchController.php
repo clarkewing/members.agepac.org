@@ -16,7 +16,7 @@ class SearchController extends Controller
     public function show(Request $request)
     {
         if ($request->expectsJson()) {
-            return Thread::search($request->query('q'))->paginate(25);
+            return Thread::search($request->query('query'))->paginate(25);
         }
 
         return view('threads.search');
