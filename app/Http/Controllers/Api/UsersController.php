@@ -17,7 +17,7 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->query('username');
+        $search = $request->query('name');
 
         return User::where(Builder::concat('`first_name`', '" "', '`last_name`'), 'LIKE', "%$search%")
             ->take(5)

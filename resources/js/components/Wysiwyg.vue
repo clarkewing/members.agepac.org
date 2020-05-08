@@ -183,7 +183,7 @@
             remoteSearch(query, cb) {
                 axios.get('/api/users', {
                     params: {
-                        username: query
+                        name: query
                     }
                 })
                     .then(function (response) {
