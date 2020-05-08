@@ -36,7 +36,8 @@
         <input type="seach"
                placeholder="Rechercher..."
                name="query"
-               class="form-control">
+               class="form-control"
+               required>
         <div class="input-group-append">
             <button class="btn btn-secondary" type="submit">
                 <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
