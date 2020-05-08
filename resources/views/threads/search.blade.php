@@ -1,15 +1,15 @@
 @extends('threads._layout')
 
-@section('main')
-    <div class="d-flex align-items-center justify-content-between mb-3">
+@section('breadcrumbs')
+    <div class="d-flex justify-content-between mb-3">
         <ais-breadcrumb :attributes="[
             'channel.parent',
             'channel.name',
         ]">
             <nav aria-label="breadcrumb" slot-scope="{ items, refine, createURL }">
-                <ol class="breadcrumb bg-transparent mb-0">
+                <ol class="breadcrumb bg-transparent pl-0 pt-0 mb-0">
                     <li class="breadcrumb-item">
-                        <a :href="{{ route('threads.index') }}">
+                        <a href="{{ route('threads.index') }}">
                             Forum
                         </a>
                     </li>
@@ -32,7 +32,9 @@
 
         <ais-powered-by></ais-powered-by>
     </div>
+@endsection
 
+@section('main')
     <ais-hits>
         <div slot-scope="{ items }">
             <thread-result v-for="item in items" :key="item.objectID" :thread="item"></thread-result>
