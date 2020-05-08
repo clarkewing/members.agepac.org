@@ -16,7 +16,7 @@
     </li>
     @auth
         <li>
-            <a class="link-muted{{ Request::query('by') ? ' active' : '' }}"
+            <a class="link-muted{{ Request::has('by') ? ' active' : '' }}"
                href="{{ route('threads.index') }}?by={{ Auth::user()->username }}">
                 <svg class="bi bi-person-lines-fill text-muted mr-1" width="1em" height="1em"
                      viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +29,7 @@
         </li>
     @endauth
     <li>
-        <a class="link-muted{{ Request::query('popular') ? ' active' : '' }}"
+        <a class="link-muted{{ Request::has('popular') ? ' active' : '' }}"
            href="{{ route('threads.index') }}?popular=1" class="link">
             <svg class="bi bi-star-fill text-muted mr-1" width="1em" height="1em" viewBox="0 0 16 16"
                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +40,7 @@
         </a>
     </li>
     <li>
-        <a class="link-muted{{ Request::query('unanswered') ? ' active' : '' }}"
+        <a class="link-muted{{ Request::has('unanswered') ? ' active' : '' }}"
            href="{{ route('threads.index') }}?unanswered=1">
             <svg class="bi bi-inbox text-muted mr-1" width="1em" height="1em" viewBox="0 0 16 16"
                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">

@@ -4,6 +4,7 @@ namespace App\Filters;
 
 use App\Reply;
 use App\User;
+use Illuminate\Support\Facades\View;
 
 class ThreadFilters extends Filters
 {
@@ -27,6 +28,8 @@ class ThreadFilters extends Filters
     public function by(string $username)
     {
         $user = User::where('username', $username)->firstOrFail();
+
+        View::share(['threadsUser' => $user]);
 
         return $this->builder->where('user_id', $user->id);
     }

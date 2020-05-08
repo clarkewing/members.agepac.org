@@ -17,6 +17,10 @@
                         </div>
 
                         <div class="col py-4 px-sm-3 px-md-5 bg-white">
+                            @section('breadcrumbs')
+                                @include('threads._breadcrumbs')
+                            @show
+
                             @yield('main')
                         </div>
                     </div>
