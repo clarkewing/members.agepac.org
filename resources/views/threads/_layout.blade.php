@@ -7,7 +7,7 @@
                 <ais-configure query="{{ Request::query('query') }}"></ais-configure>
                 @endif
 
-                <div class="container-lg border-left border-right mt-n4">
+                <div class="container-lg border-bottom border-lg-x rounded-bottom my-n4">
                     <div class="row">
                         <div class="col-sm-4 py-4 px-sm-3 px-md-4 bg-light border-right"
                              style="min-width: 200px; max-width: 280px;">
