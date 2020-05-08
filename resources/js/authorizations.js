@@ -7,5 +7,9 @@ module.exports = {
 
     isAdmin () {
         return user.isAdmin;
+    },
+
+    isVerified () {
+        return user.isVerified;
     }
 };

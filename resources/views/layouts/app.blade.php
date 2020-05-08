@@ -14,7 +14,9 @@
     <script>
         window.App = {!! json_encode([
             'signedIn' => Auth::check(),
-            'user' => Auth::user(),
+            'user' => Auth::check()
+                ? Auth::user()->toArray() + ['isVerified' => Auth::user()->hasVerifiedEmail()]
+                : null,
             'config' => [
                 'scout' => [
                     'algolia' => Arr::except(config('scout.algolia'), ['secret']),
