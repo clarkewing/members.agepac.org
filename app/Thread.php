@@ -102,8 +102,12 @@ class Thread extends Model
      *
      * @return string
      */
-    public function path()
+    public function path(): string
     {
+        if (! $this->exists) {
+            return '';
+        }
+
         return route('threads.show', [$this->channel, $this]);
     }
 
