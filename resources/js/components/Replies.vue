@@ -4,7 +4,7 @@
             <reply :reply="reply" @deleted="remove(index)"></reply>
         </div>
 
-        <paginator :dataSet="dataSet" @changed="fetch"></paginator>
+        <pagination :data="dataSet" @pagination-change-page="fetch"></pagination>
 
         <div class="d-flex text-red px-5 py-3 rounded border-placeholder border-danger align-items-center" v-if="$parent.locked">
             <svg class="bi bi-lock-fill mr-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -21,15 +21,16 @@
 <script>
     import Reply from './Reply.vue';
     import NewReply from './NewReply.vue';
+    import Pagination from './Pagination';
     import collection from '../mixins/collection';
 
     export default {
-        components: { Reply, NewReply },
+        components: { Reply, NewReply, Pagination },
 
         mixins: [collection],
 
         data() {
-            return { dataSet: false }
+            return { dataSet: {} }
         },
 
         created() {
@@ -39,6 +40,11 @@
         methods: {
             fetch(page) {
                 axios.get(this.url(page)).then(this.refresh);
+
+                if (page) {
+                    history.pushState(null, null, '?page=' + page);
+                    window.scrollTo(0, 0);
+                }
             },
 
             url(page) {
@@ -53,8 +59,6 @@
             refresh({data}) {
                 this.dataSet = data;
                 this.items = data.data;
-
-                window.scrollTo(0, 0);
             }
         }
     }
