@@ -52,8 +52,17 @@ class ThreadWasUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->reply->owner->name . ' a répondu à ' . $this->thread->title,
+            'message' => $this->message(),
+            'notifier' => $this->reply->owner,
             'link' => $this->reply->path(),
         ];
+    }
+
+    /**
+     * Get a message string for the notification.
+     */
+    public function message()
+    {
+        return sprintf('%s a répondu à "%s"', $this->reply->owner->name, $this->thread->title);
     }
 }
