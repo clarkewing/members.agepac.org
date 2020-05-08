@@ -9,6 +9,7 @@ use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 
 class ThreadsController extends Controller
@@ -161,6 +162,8 @@ class ThreadsController extends Controller
 
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
+
+            View::share(['channel' => $channel]);
         }
 
         return $threads->paginate(25);

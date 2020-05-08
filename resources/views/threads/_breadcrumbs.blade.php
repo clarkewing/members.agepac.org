@@ -12,7 +12,7 @@
 
         @if (Route::is('threads.index') && Route::input('channel'))
             <li class="breadcrumb-item">
-                {{ ucwords($channel->name) }}
+                {{ $channel->name }}
             </li>
         @endif
 
