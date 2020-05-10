@@ -56,7 +56,7 @@ class SampleDataSeeder extends Seeder
         Activity::truncate();
         Favorite::truncate();
 
-        factory(Thread::class, 50)->create()
+        factory(Thread::class, 30)->create()
             ->each(function ($thread) {
                 factory(Reply::class, $this->faker->numberBetween(0, 10))
                     ->create([
