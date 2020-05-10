@@ -21,6 +21,7 @@
         "laravel/scout": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
+        "propaganistas/laravel-phone": "^4.2",
         "stevebauman/purify": "^3.0"
     },
     "require-dev": {

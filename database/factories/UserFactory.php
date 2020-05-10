@@ -29,7 +29,18 @@ $factory->define(User::class, function (Faker $faker) {
         'username' => User::makeUsername($firstName, $lastName),
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => Hash::make('password'), // password
+        'password' => Hash::make('password'),
+        'class_course' => Arr::random(config('council.courses')),
+        'class_year' => $faker->year,
+        'gender' => Arr::random(array_keys(config('council.genders'))),
+        'birthdate' => $faker->date('Y-m-d', today()->subYears(18)), // At least 18 years old
+        'phone' => Arr::random([ // Use predefined numbers for testing as Faker can generate some weirdos
+            '0669696969',
+            '07 68 12 34 56',
+            '06.12.34.56.78',
+            '+44 7375 123456',
+            '+1-202-555-5555',
+        ]),
         'remember_token' => Str::random(10),
     ];
 });

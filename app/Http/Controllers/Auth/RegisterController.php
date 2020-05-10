@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -56,6 +57,15 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'class_course' => ['required', Rule::in(config('council.courses'))],
+            'class_year' => ['required', 'digits:4'],
+            'gender' => ['required', Rule::in(array_keys(config('council.genders')))],
+            'birthdate' => ['required', 'date_format:Y-m-d', 'before:13 years ago'],
+            'phone' => [
+                'required',
+                Rule::phone()->detect() // Auto-detect country if country code supplied
+                    ->country('FR'), // Fallback to France if unable to auto-detect
+            ],
         ]);
     }
 
@@ -67,12 +77,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'username' => User::makeUsername($data['first_name'], $data['last_name']),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'class_course' => $data['class_course'],
+            'class_year' => $data['class_year'],
+            'gender' => $data['gender'],
+            'birthdate' => $data['birthdate'],
+            'phone' => $data['phone'],
         ]);
     }
 }
