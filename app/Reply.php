@@ -4,7 +4,6 @@ namespace App;
 
 use App\Events\ReplyPosted;
 use Illuminate\Database\Eloquent\Model;
-use Stevebauman\Purify\Facades\Purify;
 
 class Reply extends Model
 {

@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
-use Stevebauman\Purify\Facades\Purify;
 
 class Thread extends Model
 {
