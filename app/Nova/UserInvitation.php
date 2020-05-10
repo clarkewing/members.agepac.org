@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\UserClassCourse;
+use App\Nova\Filters\UserClassYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
@@ -89,6 +91,8 @@ class UserInvitation extends Resource
     public function filters(Request $request)
     {
         return [
+            new UserClassCourse,
+            new UserClassYear,
         ];
     }
 
