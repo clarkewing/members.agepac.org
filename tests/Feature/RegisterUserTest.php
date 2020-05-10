@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use App\UserInvitation;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,27 @@ class RegisterUserTest extends TestCase
             $this->assertEquals('john@example.com', $user->email);
             $this->assertTrue(Hash::check('HugoWasHere', $user->password));
         });
+    }
+
+    /** @test */
+    public function testUserMustBeInvitedToRegister()
+    {
+        $this->createAccount([], $invited = false)
+            ->assertSessionHasErrors('invitation');
+    }
+
+    /** @test */
+    public function testUserInvitationIsDeletedAfterRegistration()
+    {
+        $userInvitation = create(UserInvitation::class);
+        $this->assertDatabaseHas('user_invitations', ['id' => $userInvitation->id]);
+
+        $this->createAccount(Arr::only(
+            $userInvitation->toArray(),
+            ['first_name', 'last_name', 'class_course', 'class_year']
+        ));
+
+        $this->assertDatabaseMissing('user_invitations', ['id' => $userInvitation->id]);
     }
 
     /** @test */
@@ -242,6 +264,7 @@ class RegisterUserTest extends TestCase
      * Submits a post request to create an account.
      *
      * @param  array  $overrides
+     * @param  bool  $invited
      * @return \Illuminate\Testing\TestResponse
      */
     public function createAccount(array $overrides = [], bool $invited = true)
@@ -260,9 +283,31 @@ class RegisterUserTest extends TestCase
             ['password' => 'HugoWasHere', 'password_confirmation' => 'HugoWasHere']
         );
 
+        if ($invited) {
+            $this->inviteUser($userData, $overrides);
+        }
+
         return $this->post(route('register'), array_merge(
             $userData,
             $overrides
+        ));
+    }
+
+    /**
+     * Creates a UserInvitation with the given data.
+     *
+     * @param  array  $userData
+     * @param  array  $overrides
+     * @return \Illuminate\Testing\TestResponse
+     */
+    public function inviteUser(array $userData, array $overrides = [])
+    {
+        return create(UserInvitation::class, Arr::only(
+            array_merge(
+                $userData,
+                array_filter($overrides) // Only override values that aren't null for invitation
+            ),
+            ['first_name', 'last_name', 'class_course', 'class_year']
         ));
     }
 }

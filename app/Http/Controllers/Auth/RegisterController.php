@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\UserInvitation;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
 {
@@ -74,9 +76,14 @@ class RegisterController extends Controller
      *
      * @param  array  $data
      * @return \App\User
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     protected function create(array $data)
     {
+        $userInvitation = $this->validateInvited($data);
+
+        $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'username' => User::makeUsername($data['first_name'], $data['last_name']),
@@ -88,5 +95,35 @@ class RegisterController extends Controller
             'birthdate' => $data['birthdate'],
             'phone' => $data['phone'],
         ]);
+
+        $userInvitation->delete();
+
+        return $user;
+    }
+
+    /**
+     * Validate that the attempted registration is for an invited user.
+     *
+     * @param  array  $data
+     * @return \App\UserInvitation
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateInvited(array $data): UserInvitation
+    {
+        $userInvitation = UserInvitation::where([
+            ['first_name', $data['first_name']],
+            ['last_name', $data['last_name']],
+            ['class_course', $data['class_course']],
+            ['class_year', $data['class_year']],
+        ])->first();
+
+        if (is_null($userInvitation)) {
+            throw ValidationException::withMessages([
+                'invitation' => 'Impossible de créer un compte sans invitation',
+            ]);
+        }
+
+        return $userInvitation;
     }
 }
