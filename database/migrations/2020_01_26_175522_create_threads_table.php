@@ -19,7 +19,6 @@ class CreateThreadsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('channel_id');
             $table->string('title');
-            $table->text('body');
             $table->unsignedBigInteger('best_reply_id')->nullable();
             $table->boolean('locked')->default(false);
             $table->boolean('pinned')->default(false);

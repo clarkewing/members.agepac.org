@@ -19,7 +19,8 @@ class SearchTest extends TestCase
         $search = 'foobar';
 
         create(Thread::class, [], 2);
-        create(Thread::class, ['body' => "A body with the {$search} term."], 2);
+        create(Thread::class, ['title' => "A title with the {$search} term"]);
+        create(Thread::class, ['title' => "Another title with the {$search} term"]);
 
         $maxTime = now()->addSeconds(20);
 

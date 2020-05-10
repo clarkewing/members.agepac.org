@@ -76,6 +76,10 @@ class ThreadsController extends Controller
             'user_id' => Auth::id(),
             'channel_id' => $request->input('channel_id'),
             'title' => $request->input('title'),
+        ]);
+
+        $thread->addReply([
+            'user_id' => Auth::id(),
             'body' => $request->input('body'),
         ]);
 
@@ -122,7 +126,6 @@ class ThreadsController extends Controller
 
         return tap($thread)->update($request->validate([
             'title' => 'required',
-            'body' => 'required',
         ]));
     }
 

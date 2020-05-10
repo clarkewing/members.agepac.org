@@ -75,6 +75,6 @@
                               v-if="signedIn"></subscribe-button>
         </div>
 
-        <p class="mb-4" v-html="body"></p>
+{{--        <p class="mb-4" v-html="body"></p>--}}
     </div>
 </div>

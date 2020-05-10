@@ -58,7 +58,7 @@ class SampleDataSeeder extends Seeder
 
         factory(Thread::class, 30)->create()
             ->each(function ($thread) {
-                factory(Reply::class, $this->faker->numberBetween(0, 10))
+                factory(Reply::class, $this->faker->numberBetween(1, 10))
                     ->create([
                         'thread_id' => $thread->id,
                     ]);

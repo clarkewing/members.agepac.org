@@ -18,8 +18,13 @@ $factory->define(Thread::class, function (Faker $faker) {
             return factory(Channel::class)->create()->id;
         },
         'title' => $title,
-        'body' => $faker->paragraph,
         'locked' => false,
         'pinned' => false,
+    ];
+});
+
+$factory->state(Thread::class, 'with_body', function (Faker $faker) {
+    return [
+        'body' => $faker->paragraph,
     ];
 });

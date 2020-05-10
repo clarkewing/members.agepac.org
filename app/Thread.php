@@ -22,7 +22,6 @@ class Thread extends Model
         'user_id',
         'channel_id',
         'title',
-        'body',
         'slug',
         'best_reply_id',
         'locked',

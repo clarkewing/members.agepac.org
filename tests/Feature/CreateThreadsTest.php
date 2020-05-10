@@ -47,8 +47,18 @@ class CreateThreadsTest extends TestCase
     {
         $this->followingRedirects()
             ->publishThread(['title' => 'Some title', 'body' => 'This is the body.'])
-            ->assertSee('Some title')
-            ->assertSee('This is the body.');
+            ->assertSee('Some title');
+
+        $this->assertDatabaseHas('replies', ['body' => 'This is the body.']);
+    }
+
+    /** @test */
+    public function testNewThreadCreatesAReply()
+    {
+        $this->publishThread(['title' => 'Some title', 'body' => 'This is the body.']);
+
+        $this->assertDatabaseHas('threads', ['title' => 'Some title']);
+        $this->assertDatabaseHas('replies', ['body' => 'This is the body.']);
     }
 
     /** @test */
@@ -93,11 +103,11 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['title' => 'Foo Title']);
+        $existingThread = create(Thread::class, ['title' => 'Foo Title']);
 
-        $this->assertEquals('foo-title', $thread->fresh()->slug);
+        $this->assertEquals('foo-title', $existingThread->fresh()->slug);
 
-        $thread = $this->postJson(route('threads.store'), $thread->toArray())->json();
+        $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
         $this->assertEquals('foo-title-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -107,9 +117,9 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['title' => 'Financials 2020']);
+        $existingThread = create(Thread::class, ['title' => 'Financials 2020']);
 
-        $thread = $this->postJson(route('threads.store'), $thread->toArray())->json();
+        $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
         $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -149,14 +159,19 @@ class CreateThreadsTest extends TestCase
     /**
      * Submits a post request to publish a thread.
      *
-     * @param  array $overrides
+     * @param  array  $overrides
+     * @param  bool  $wantsJson
      * @return \Illuminate\Testing\TestResponse
      */
-    public function publishThread(array $overrides = [])
+    public function publishThread(array $overrides = [], bool $wantsJson = false)
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = make(Thread::class, $overrides);
+        $thread = factory(Thread::class)->states('with_body')->make($overrides);
+
+        if ($wantsJson) {
+            return $this->postJson(route('threads.store'), $thread->toArray());
+        }
 
         return $this->post(route('threads.store'), $thread->toArray());
     }

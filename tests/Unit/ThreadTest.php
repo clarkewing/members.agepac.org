@@ -168,32 +168,4 @@ class ThreadTest extends TestCase
 
         $this->assertEquals($reply->id, $this->thread->bestReply->id);
     }
-
-    /** @test */
-    public function testDetectsAllMentionedUsersInTheBody()
-    {
-        $jane = create(User::class, ['username' => 'jane.doe']);
-        $john = create(User::class, ['username' => 'john.doe']);
-
-        $thread = new Thread([
-            'body' => '@jane.doe wants to talk to @john.doe but not @fake.user',
-        ]);
-
-        $this->assertCount(2, $thread->mentionedUsers());
-        $this->assertTrue($thread->mentionedUsers()->contains('id', $jane->id));
-        $this->assertTrue($thread->mentionedUsers()->contains('id', $john->id));
-    }
-
-    /** @test */
-    public function testWrapsMentionedUsernamesInTheBodyWithinAnchorTags()
-    {
-        $thread = new Thread([
-            'body' => 'Hello @jane.doe.',
-        ]);
-
-        $this->assertEquals(
-            'Hello <a href="' . route('profiles.show', 'jane.doe', false) . '">@jane.doe</a>.',
-            $thread->body
-        );
-    }
 }
