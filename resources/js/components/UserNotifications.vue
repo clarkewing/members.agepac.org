@@ -41,20 +41,23 @@
     export default {
         data() {
             return {
+                endpoint: '/notifications',
                 notifications: false
             }
         },
 
         created() {
-            axios.get('/notifications')
-                .then(({data}) => {
-                    this.notifications = data;
-                })
+            this.fetchNotifications();
         },
 
         methods: {
+            fetchNotifications() {
+                axios.get(this.endpoint)
+                    .then(({data}) => this.notifications = data);
+            },
+
             markAsRead(notification) {
-                axios.delete('/notifications/' + notification.id)
+                axios.delete(this.endpoint + '/' + notification.id)
                     .then(() => {
                         document.location.replace(notification.data.link);
                     });
