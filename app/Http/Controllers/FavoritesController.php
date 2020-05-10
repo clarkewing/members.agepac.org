@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Reply;
+use App\Post;
 
 class FavoritesController extends Controller
 {
@@ -19,12 +19,12 @@ class FavoritesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Reply  $reply
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function store(Reply $reply)
+    public function store(Post $post)
     {
-        $reply->favorite();
+        $post->favorite();
 
         return back();
     }
@@ -32,11 +32,11 @@ class FavoritesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Reply  $reply
+     * @param  \App\Post  $post
      * @return void
      */
-    public function destroy(Reply $reply): void
+    public function destroy(Post $post): void
     {
-        $reply->unfavorite();
+        $post->unfavorite();
     }
 }

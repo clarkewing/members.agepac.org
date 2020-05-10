@@ -18,22 +18,22 @@ class NotificationsTest extends TestCase
     }
 
     /** @test */
-    public function testNotificationIsPreparedWhenASubscribedThreadReceivesANewReplyThatIsNotByTheAuthenticatedUser()
+    public function testNotificationIsPreparedWhenASubscribedThreadReceivesANewPostThatIsNotByTheAuthenticatedUser()
     {
         $thread = create(Thread::class)->subscribe();
 
         $this->assertCount(0, Auth::user()->notifications);
 
-        $thread->addReply([
+        $thread->addPost([
             'user_id' => Auth::user()->id,
-            'body' => 'This is a reply.',
+            'body' => 'This is a post.',
         ]);
 
         $this->assertCount(0, Auth::user()->fresh()->notifications);
 
-        $thread->addReply([
+        $thread->addPost([
             'user_id' => create(User::class)->id,
-            'body' => 'This is a reply.',
+            'body' => 'This is a post.',
         ]);
 
         $this->assertCount(1, Auth::user()->fresh()->notifications);

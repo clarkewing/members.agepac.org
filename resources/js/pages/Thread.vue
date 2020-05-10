@@ -1,15 +1,15 @@
 <script>
-    import Replies from '../components/Replies.vue';
+    import Posts from '../components/Posts.vue';
     import SubscribeButton from '../components/SubscribeButton.vue';
 
     export default {
         props: ['thread'],
 
-        components: { Replies, SubscribeButton },
+        components: { Posts, SubscribeButton },
 
         data() {
             return {
-                repliesCount: this.thread.replies_count,
+                postsCount: this.thread.posts_count,
                 locked: this.thread.locked,
                 pinned: this.thread.pinned,
                 title: this.thread.title,

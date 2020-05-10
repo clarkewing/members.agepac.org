@@ -5,7 +5,7 @@
         <div>
             @include('threads._question')
 
-            <replies @added="repliesCount++" @removed="repliesCount--"></replies>
+            <posts @added="postsCount++" @removed="postsCount--"></posts>
         </div>
     </thread-view>
 @endsection

@@ -21,18 +21,18 @@
 
 <script>
     export default {
-        props: ['reply'],
+        props: ['post'],
 
         data() {
             return {
-                count: this.reply.favorites_count || 0,
-                active: this.reply.is_favorited
+                count: this.post.favorites_count || 0,
+                active: this.post.is_favorited
             }
         },
 
         computed: {
             endpoint() {
-                return '/replies/' + this.reply.id + '/favorites';
+                return '/posts/' + this.post.id + '/favorites';
             }
         },
 

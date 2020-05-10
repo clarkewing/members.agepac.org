@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Activity;
 use App\Channel;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -49,16 +49,16 @@ class CreateThreadsTest extends TestCase
             ->publishThread(['title' => 'Some title', 'body' => 'This is the body.'])
             ->assertSee('Some title');
 
-        $this->assertDatabaseHas('replies', ['body' => 'This is the body.']);
+        $this->assertDatabaseHas('posts', ['body' => 'This is the body.']);
     }
 
     /** @test */
-    public function testNewThreadCreatesAReply()
+    public function testNewThreadCreatesAPost()
     {
         $this->publishThread(['title' => 'Some title', 'body' => 'This is the body.']);
 
         $this->assertDatabaseHas('threads', ['title' => 'Some title']);
-        $this->assertDatabaseHas('replies', ['body' => 'This is the body.']);
+        $this->assertDatabaseHas('posts', ['body' => 'This is the body.']);
     }
 
     /** @test */
@@ -145,13 +145,13 @@ class CreateThreadsTest extends TestCase
         $this->signIn();
 
         $thread = create(Thread::class, ['user_id' => Auth::id()]);
-        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+        $post = create(Post::class, ['thread_id' => $thread->id]);
 
         $this->json('DELETE', $thread->path())
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
-        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
 
         $this->assertEquals(0, Activity::count());
     }

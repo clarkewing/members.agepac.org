@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Channel;
 use App\Notifications\ThreadWasUpdated;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -50,31 +50,31 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function testHasReplies()
+    public function testHasPosts()
     {
-        $this->assertInstanceOf(Collection::class, $this->thread->replies);
+        $this->assertInstanceOf(Collection::class, $this->thread->posts);
     }
 
     /** @test */
-    public function testCanAddAReply()
+    public function testCanAddAPost()
     {
-        $this->thread->addReply([
+        $this->thread->addPost([
             'body' => 'Foobar',
             'user_id' => 1,
         ]);
 
-        $this->assertCount(1, $this->thread->replies);
+        $this->assertCount(1, $this->thread->posts);
     }
 
     /** @test */
-    public function testNotifiesAllSubscribersWhenAReplyIsAdded()
+    public function testNotifiesAllSubscribersWhenAPostIsAdded()
     {
         Notification::fake();
 
         $this->signIn()
             ->thread
             ->subscribe()
-            ->addReply([
+            ->addPost([
                 'body' => 'Foobar',
                 'user_id' => create(User::class)->id,
             ]);
@@ -124,7 +124,7 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function testCanCheckIfTheAuthenticatedUserHasReadAllReplies()
+    public function testCanCheckIfTheAuthenticatedUserHasReadAllPosts()
     {
         $this->signIn($user = create(User::class));
 
@@ -160,12 +160,12 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function testCanHaveABestReply()
+    public function testCanHaveABestPost()
     {
-        $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
+        $post = create(Post::class, ['thread_id' => $this->thread->id]);
 
-        $this->thread->markBestReply($reply);
+        $this->thread->markBestPost($post);
 
-        $this->assertEquals($reply->id, $this->thread->bestReply->id);
+        $this->assertEquals($post->id, $this->thread->bestPost->id);
     }
 }

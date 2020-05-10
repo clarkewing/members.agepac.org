@@ -5,7 +5,7 @@ namespace App;
 use App\Events\ReplyPosted;
 use Illuminate\Database\Eloquent\Model;
 
-class Reply extends Model
+class Post extends Model
 {
     use Favoritable, MentionsUsers, RecordsActivity;
 
@@ -48,12 +48,12 @@ class Reply extends Model
      */
     protected static function booted()
     {
-        static::created(function ($reply) {
-            $reply->owner->gainReputation('reply_posted');
+        static::created(function ($post) {
+            $post->owner->gainReputation('reply_posted');
         });
 
-        static::deleting(function ($reply) {
-            $reply->owner->loseReputation('reply_posted');
+        static::deleting(function ($post) {
+            $post->owner->loseReputation('reply_posted');
         });
     }
 
@@ -67,7 +67,7 @@ class Reply extends Model
     ];
 
     /**
-     * Get the user that owns the reply.
+     * Get the user that owns the post.
      */
     public function owner()
     {
@@ -75,7 +75,7 @@ class Reply extends Model
     }
 
     /**
-     * Get the thread that the reply belongs to.
+     * Get the thread that the post belongs to.
      */
     public function thread()
     {
@@ -83,7 +83,7 @@ class Reply extends Model
     }
 
     /**
-     * Determines whether the reply was just published.
+     * Determines whether the post was just published.
      *
      * @return bool
      */
@@ -93,27 +93,27 @@ class Reply extends Model
     }
 
     /**
-     * Returns the URL of the reply.
+     * Returns the URL of the post.
      *
      * @return string
      */
     public function path()
     {
-        return $this->thread->path() . "#reply-{$this->id}";
+        return $this->thread->path() . "#post-{$this->id}";
     }
 
     /**
-     * Determines whether the reply is marked as the best one on its thread.
+     * Determines whether the post is marked as the best one on its thread.
      *
      * @return bool
      */
     public function isBest(): bool
     {
-        return $this->thread->best_reply_id == $this->id;
+        return $this->thread->best_post_id == $this->id;
     }
 
     /**
-     * Get the best reply flag for the reply.
+     * Get the best post flag for the post.
      *
      * @return bool
      */

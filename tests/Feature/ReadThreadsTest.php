@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Channel;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -81,38 +81,38 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByPopularity()
     {
-        $threadWithTwoReplies = create(Thread::class);
-        create(Reply::class, ['thread_id' => $threadWithTwoReplies->id], 2);
+        $threadWithTwoPosts = create(Thread::class);
+        create(Post::class, ['thread_id' => $threadWithTwoPosts->id], 2);
 
-        $threadWithThreeReplies = create(Thread::class);
-        create(Reply::class, ['thread_id' => $threadWithThreeReplies->id], 3);
+        $threadWithThreePosts = create(Thread::class);
+        create(Post::class, ['thread_id' => $threadWithThreePosts->id], 3);
 
-        $threadWithNoReplies = $this->thread;
+        $threadWithNoPosts = $this->thread;
 
         $response = $this->getJson(route('threads.index') . '?popular=1')->json();
 
-        $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
+        $this->assertEquals([3, 2, 0], array_column($response['data'], 'posts_count'));
     }
 
     /** @test */
     public function testUserCanFilterThreadsByThoseThatAreUnanswered()
     {
-        $threadWithNoReplies = $this->thread;
+        $threadWithNoPosts = $this->thread;
 
-        $threadWithReply = create(Thread::class);
-        create(Reply::class, ['thread_id' => $threadWithReply->id]);
+        $threadWithPost = create(Thread::class);
+        create(Post::class, ['thread_id' => $threadWithPost->id]);
 
         $response = $this->getJson(route('threads.index') . '?unanswered=1')->json();
 
-        $this->assertEquals([$threadWithNoReplies->id], array_column($response['data'], 'id'));
+        $this->assertEquals([$threadWithNoPosts->id], array_column($response['data'], 'id'));
     }
 
     /** @test */
-    public function testUserCanRequestAllRepliesForAGivenThread()
+    public function testUserCanRequestAllPostsForAGivenThread()
     {
-        create(Reply::class, ['thread_id' => $this->thread->id], 2);
+        create(Post::class, ['thread_id' => $this->thread->id], 2);
 
-        $response = $this->getJson($this->thread->path() . '/replies')->json();
+        $response = $this->getJson($this->thread->path() . '/posts')->json();
 
         $this->assertCount(2, $response['data']);
         $this->assertEquals(2, $response['total']);

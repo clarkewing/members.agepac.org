@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Reply;
+use App\Post;
 use App\Thread;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -10,10 +10,10 @@ use Tests\TestCase;
 class ParticipateInThreadsTest extends TestCase
 {
     /** @test */
-    public function testUnauthenticatedUsersMayNotAddReplies()
+    public function testUnauthenticatedUsersMayNotAddPosts()
     {
         $this->withExceptionHandling()
-            ->post('threads/some-channel/1/replies', [])
+            ->post('threads/some-channel/1/posts', [])
             ->assertRedirect('/login');
     }
 
@@ -23,117 +23,117 @@ class ParticipateInThreadsTest extends TestCase
         $this->signIn();
 
         $thread = create(Thread::class);
-        $reply = make(Reply::class);
+        $post = make(Post::class);
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post($thread->path() . '/posts', $post->toArray());
 
-        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
+        $this->assertDatabaseHas('posts', ['body' => $post->body]);
     }
 
 //    /**
 //     * @test
 //     */
-//    public function testRepliesThatContainSpamMayNotBeCreated()
+//    public function testPostsThatContainSpamMayNotBeCreated()
 //    {
 //        $this->withExceptionHandling();
 //        $this->signIn();
 //
 //        $thread = create(Thread::class);
-//        $reply = make(Reply::class, [
+//        $post = make(Post::class, [
 //            'body' => 'Yahoo Customer Support',
 //        ]);
 //
-//        $this->json('post', $thread->path() . '/replies', $reply->toArray())
+//        $this->json('post', $thread->path() . '/posts', $post->toArray())
 //            ->assertStatus(422);
 //    }
 
     /** @test */
-    public function testReplyRequiresABody()
+    public function testPostRequiresABody()
     {
         $this->withExceptionHandling()->signIn();
 
         $thread = create(Thread::class);
-        $reply = make(Reply::class, ['body' => null]);
+        $post = make(Post::class, ['body' => null]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post($thread->path() . '/posts', $post->toArray())
             ->assertSessionHasErrors('body');
     }
 
     /** @test */
-    public function testUnauthorizedUsersCannotDeleteReplies()
+    public function testUnauthorizedUsersCannotDeletePosts()
     {
         $this->withExceptionHandling();
 
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
-        $this->delete(route('replies.destroy', $reply))
+        $this->delete(route('posts.destroy', $post))
             ->assertRedirect('/login');
 
         $this->signIn()
-            ->delete(route('replies.destroy', $reply))
+            ->delete(route('posts.destroy', $post))
             ->assertStatus(403);
     }
 
     /** @test */
-    public function testAuthorizedUsersCanDeleteReplies()
+    public function testAuthorizedUsersCanDeletePosts()
     {
         $this->signIn();
 
-        $reply = create(Reply::class, ['user_id' => Auth::id()]);
+        $post = create(Post::class, ['user_id' => Auth::id()]);
 
-        $this->delete(route('replies.destroy', $reply))
+        $this->delete(route('posts.destroy', $post))
             ->assertStatus(302);
 
-        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
     }
 
     /** @test */
-    public function testUnauthorizedUsersCannotUpdateReplies()
+    public function testUnauthorizedUsersCannotUpdatePosts()
     {
         $this->withExceptionHandling();
 
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
-        $this->patch(route('replies.update', $reply))
+        $this->patch(route('posts.update', $post))
             ->assertRedirect('/login');
 
         $this->signIn()
-            ->patch(route('replies.update', $reply))
+            ->patch(route('posts.update', $post))
             ->assertStatus(403);
     }
 
     /** @test */
-    public function testAuthorizedUsersCanUpdateReplies()
+    public function testAuthorizedUsersCanUpdatePosts()
     {
         $this->signIn();
 
-        $reply = create(Reply::class, ['user_id' => Auth::id()]);
+        $post = create(Post::class, ['user_id' => Auth::id()]);
 
-        $updatedReply = 'You been changed, fool.';
-        $this->patch(route('replies.update', $reply), ['body' => $updatedReply]);
+        $updatedPost = 'You been changed, fool.';
+        $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
 
-        $this->assertDatabaseHas('replies', [
-            'id' => $reply->id,
-            'body' => $updatedReply,
+        $this->assertDatabaseHas('posts', [
+            'id' => $post->id,
+            'body' => $updatedPost,
         ]);
     }
 
     /** @test */
-    public function testUsersMayOnlyReplyAMaximumOfOncePerMinute()
+    public function testUsersMayOnlyPostAMaximumOfOncePerMinute()
     {
         $this->withExceptionHandling();
         $this->signIn();
 
         $thread = create(Thread::class);
 
-        $reply = make(Reply::class, [
-            'body' => 'My simple reply.',
+        $post = make(Post::class, [
+            'body' => 'My simple post.',
         ]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post($thread->path() . '/posts', $post->toArray())
             ->assertStatus(201);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post($thread->path() . '/posts', $post->toArray())
             ->assertStatus(429); // Too many requests
     }
 }

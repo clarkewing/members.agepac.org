@@ -78,7 +78,7 @@ class ThreadsController extends Controller
             'title' => $request->input('title'),
         ]);
 
-        $thread->addReply([
+        $thread->addPost([
             'user_id' => Auth::id(),
             'body' => $request->input('body'),
         ]);

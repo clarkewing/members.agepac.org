@@ -23,7 +23,7 @@ class Thread extends Model
         'channel_id',
         'title',
         'slug',
-        'best_reply_id',
+        'best_post_id',
         'locked',
         'pinned',
     ];
@@ -41,7 +41,7 @@ class Thread extends Model
      * @var array
      */
     protected $with = ['creator', 'channel'];
-    protected $withCount = ['replies'];
+    protected $withCount = ['posts'];
 
     /**
      * The attributes that should be cast to native types.
@@ -80,7 +80,7 @@ class Thread extends Model
 
         // Cascade deleting of thread.
         static::deleting(function ($thread) {
-            $thread->replies->each->delete();
+            $thread->posts->each->delete();
 
             $thread->creator->loseReputation('thread_published');
         });
@@ -120,19 +120,19 @@ class Thread extends Model
     }
 
     /**
-     * Get the replies for the thread.
+     * Get the posts for the thread.
      */
-    public function replies()
+    public function posts()
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Post::class);
     }
 
     /**
-     * Get the thread's best reply.
+     * Get the thread's best post.
      */
-    public function bestReply()
+    public function bestPost()
     {
-        return $this->hasOne(Reply::class, 'id', 'best_reply_id');
+        return $this->hasOne(Post::class, 'id', 'best_post_id');
     }
 
     /**
@@ -152,16 +152,16 @@ class Thread extends Model
     }
 
     /**
-     * Add a reply to the thread.
+     * Add a post to the thread.
      *
-     * @param  array $reply
-     * @return \App\Reply
+     * @param  array $post
+     * @return \App\Post
      */
-    public function addReply(array $reply)
+    public function addPost(array $post)
     {
-        $reply = $this->replies()->create($reply);
+        $post = $this->posts()->create($post);
 
-        return $reply;
+        return $post;
     }
 
     /**
@@ -281,20 +281,20 @@ class Thread extends Model
     }
 
     /**
-     * Set the thread's best reply.
+     * Set the thread's best post.
      *
-     * @param  \App\Reply $reply
+     * @param  \App\Post $post
      * @return void
      */
-    public function markBestReply(Reply $reply): void
+    public function markBestPost(Post $post): void
     {
-        if ($this->hasBestReply()) {
-            $this->bestReply->owner->loseReputation('best_reply_awarded');
+        if ($this->hasBestPost()) {
+            $this->bestPost->owner->loseReputation('best_post_awarded');
         }
 
-        $this->update(['best_reply_id' => $reply->id]);
+        $this->update(['best_post_id' => $post->id]);
 
-        $reply->owner->gainReputation('best_reply_awarded');
+        $post->owner->gainReputation('best_post_awarded');
     }
 
     /**
@@ -310,12 +310,12 @@ class Thread extends Model
     }
 
     /**
-     * Determine if the thread has a best reply.
+     * Determine if the thread has a best post.
      *
      * @return bool
      */
-    public function hasBestReply(): bool
+    public function hasBestPost(): bool
     {
-        return ! is_null($this->best_reply_id);
+        return ! is_null($this->best_post_id);
     }
 }

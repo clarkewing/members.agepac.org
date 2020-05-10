@@ -8,47 +8,47 @@ use Tests\TestCase;
 class FavoritesTest extends TestCase
 {
     /** @test */
-    public function testGuestsCannotFavoriteAnyReply()
+    public function testGuestsCannotFavoriteAnyPost()
     {
         $this->withExceptionHandling()
-            ->post(route('replies.favorite', 1))
+            ->post(route('posts.favorite', 1))
             ->assertRedirect('/login');
     }
 
     /** @test */
-    public function testAuthenticatedUserCanFavoriteAnyReply()
+    public function testAuthenticatedUserCanFavoriteAnyPost()
     {
         $this->signIn();
 
-        $reply = create('App\Reply');
+        $post = create('App\Post');
 
-        $this->post(route('replies.favorite', $reply));
+        $this->post(route('posts.favorite', $post));
 
-        $this->assertCount(1, $reply->favorites);
+        $this->assertCount(1, $post->favorites);
     }
 
     /** @test */
-    public function testAuthenticatedUserCanUnfavoriteAnyReply()
+    public function testAuthenticatedUserCanUnfavoriteAnyPost()
     {
         $this->signIn();
 
-        $reply = create('App\Reply');
-        $reply->favorite();
+        $post = create('App\Post');
+        $post->favorite();
 
-        $this->delete(route('replies.unfavorite', $reply));
-        $this->assertCount(0, $reply->favorites);
+        $this->delete(route('posts.unfavorite', $post));
+        $this->assertCount(0, $post->favorites);
     }
 
     /** @test */
-    public function testAuthenticatedUserMayOnlyFavoriteAReplyOnce()
+    public function testAuthenticatedUserMayOnlyFavoriteAPostOnce()
     {
         $this->signIn();
 
-        $reply = create('App\Reply');
+        $post = create('App\Post');
 
         try {
-            $this->post(route('replies.favorite', $reply));
-            $this->post(route('replies.favorite', $reply));
+            $this->post(route('posts.favorite', $post));
+            $this->post(route('posts.favorite', $post));
         } catch (QueryException $e) {
             if ($e->errorInfo[1] === 19) { // SQLite UNIQUE constraint code
                 $this->fail('Attempted to insert same record set twice.');
@@ -56,6 +56,6 @@ class FavoritesTest extends TestCase
             throw $e;
         }
 
-        $this->assertCount(1, $reply->favorites);
+        $this->assertCount(1, $post->favorites);
     }
 }

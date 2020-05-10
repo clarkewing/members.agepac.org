@@ -2,12 +2,12 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Faker\Generator as Faker;
 
-$factory->define(Reply::class, function (Faker $faker) {
+$factory->define(Post::class, function (Faker $faker) {
     return [
         'thread_id' => function () {
             return factory(Thread::class)->create()->id;

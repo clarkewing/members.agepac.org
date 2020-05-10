@@ -2,7 +2,7 @@
 
 namespace App\Filters;
 
-use App\Reply;
+use App\Post;
 use App\User;
 use Illuminate\Support\Facades\View;
 
@@ -41,7 +41,7 @@ class ThreadFilters extends Filters
      */
     public function popular()
     {
-        return $this->builder->orderBy('replies_count', 'desc');
+        return $this->builder->orderBy('posts_count', 'desc');
     }
 
     /**
@@ -53,10 +53,10 @@ class ThreadFilters extends Filters
     {
         return $this->builder->whereNotIn('id', function ($query) {
             $query->select('thread_id')
-                ->from((new Reply)->getTable());
+                ->from((new Post)->getTable());
         });
 
         // Fails testing with SQLite:
-        // return $this->builder->having('replies_count', 0);
+        // return $this->builder->having('posts_count', 0);
     }
 }
