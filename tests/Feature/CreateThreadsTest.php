@@ -20,7 +20,7 @@ class CreateThreadsTest extends TestCase
         $this->get(route('threads.create'))
             ->assertRedirect(route('login'));
 
-        $this->post(route('threads.index'))
+        $this->post(route('threads.store'))
             ->assertRedirect(route('login'));
     }
 
@@ -97,7 +97,7 @@ class CreateThreadsTest extends TestCase
 
         $this->assertEquals('foo-title', $thread->fresh()->slug);
 
-        $thread = $this->postJson(route('threads.index'), $thread->toArray())->json();
+        $thread = $this->postJson(route('threads.store'), $thread->toArray())->json();
 
         $this->assertEquals('foo-title-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -109,7 +109,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = create(Thread::class, ['title' => 'Financials 2020']);
 
-        $thread = $this->postJson(route('threads.index'), $thread->toArray())->json();
+        $thread = $this->postJson(route('threads.store'), $thread->toArray())->json();
 
         $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -158,6 +158,6 @@ class CreateThreadsTest extends TestCase
 
         $thread = make(Thread::class, $overrides);
 
-        return $this->post(route('threads.index'), $thread->toArray());
+        return $this->post(route('threads.store'), $thread->toArray());
     }
 }
