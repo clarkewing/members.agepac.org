@@ -26,32 +26,18 @@
                     <a class="nav-link" href="#">Les EPL</a>
                 </li>
                 @auth
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Trajectoire EPL</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Réseau EPL</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Fly EPL</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{{ route('threads.index') }}" id="forumDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Forum
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="forumDropdown">
-                        <a class="dropdown-item" href="{{ route('threads.index') }}">Tout voir</a>
-                        <a class="dropdown-item" href="{{ route('threads.index') }}?by={{ Auth::user()->username }}">Mes discussions</a>
-                        <a class="dropdown-item" href="{{ route('threads.index') }}?popular=1">Discussions populaires</a>
-                        <a class="dropdown-item" href="{{ route('threads.index') }}?unanswered=1">Discussions sans réponse</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('threads.create') }}">Nouvelle discussion</a>
-                        <div class="dropdown-divider"></div>
-                        @foreach($channels as $channel)
-                            <a class="dropdown-item" href="{{ route('threads.index', $channel) }}">{{ $channel->name }}</a>
-                        @endforeach
-                    </div>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Trajectoire EPL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Réseau EPL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Fly EPL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('threads.index') }}">Forum</a>
+                    </li>
                 @endauth
             </ul>
 

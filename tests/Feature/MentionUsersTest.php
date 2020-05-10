@@ -46,14 +46,16 @@ class MentionUsersTest extends TestCase
     }
 
     /** @test */
-    public function testCanFetchAllMentionedUsersStartingWithGivenCharacters()
+    public function testCanFetchUsersMatchingSearch()
     {
-        create(User::class, ['username' => 'john.doe']);
-        create(User::class, ['username' => 'john.doe2']);
-        create(User::class, ['username' => 'jane.doe']);
+        create(User::class, ['first_name' => 'John', 'last_name' => 'Doe']);
+        create(User::class, ['first_name' => 'John', 'last_name' => 'Smith']);
+        create(User::class, ['first_name' => 'Jane', 'last_name' => 'Doe']);
 
-        $results = $this->getJson(route('api.users.index', ['username' => 'john']));
+        $this->getJson(route('api.users.index', ['name' => 'john']))
+            ->assertJsonCount(2);
 
-        $results->assertJsonCount(2);
+        $this->getJson(route('api.users.index', ['name' => 'smith']))
+            ->assertJsonCount(1);
     }
 }

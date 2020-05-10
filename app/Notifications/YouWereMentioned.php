@@ -82,8 +82,17 @@ class YouWereMentioned extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->subjectOwner->username . ' t\'a mentionné dans ' . $this->subjectTitle,
+            'message' => $this->message(),
+            'notifier' => $this->subjectOwner,
             'link' => $this->subjectPath,
         ];
+    }
+
+    /**
+     * Get a message string for the notification.
+     */
+    public function message()
+    {
+        return sprintf('%s t\'a mentionné dans "%s"', $this->subjectOwner->name, $this->subjectTitle);
     }
 }

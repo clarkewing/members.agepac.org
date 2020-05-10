@@ -9,12 +9,15 @@ use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 
 class ThreadsController extends Controller
 {
     /**
-     * Create a new ThreadController instance.
+     * Create a new controller instance.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -26,13 +29,12 @@ class ThreadsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Channel|null $channel
-     * @param  \App\Filters\ThreadFilters $filters
-     * @param  \App\Trending $trending
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Channel|null  $channel
+     * @param  \App\Filters\ThreadFilters  $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel, ThreadFilters $filters, Trending $trending, Request $request)
+    public function index(Request $request, Channel $channel, ThreadFilters $filters)
     {
         $threads = $this->getThreads($channel, $filters);
 
@@ -40,10 +42,7 @@ class ThreadsController extends Controller
             return $threads;
         }
 
-        return view('threads.index', [
-            'threads' => $threads,
-            'trending' => $trending->get(),
-        ]);
+        return view('threads.index', compact('threads'));
     }
 
     /**
@@ -59,7 +58,7 @@ class ThreadsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -69,7 +68,7 @@ class ThreadsController extends Controller
             'body' => 'required',
             'channel_id' => [
                 'required',
-                Rule::in(Channel::pluck('id'))
+                Rule::in(Channel::pluck('id')),
             ],
         ]);
 
@@ -91,12 +90,12 @@ class ThreadsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Channel  $channel
+     * @param  string  $channelSlug
      * @param  \App\Thread  $thread
-     * @param  \App\Trending $trending
+     * @param  \App\Trending  $trending
      * @return \Illuminate\Http\Response
      */
-    public function show(Channel $channel, Thread $thread, Trending $trending)
+    public function show(string $channelSlug, Thread $thread, Trending $trending)
     {
         if (Auth::check()) {
             Auth::user()->read($thread);
@@ -112,12 +111,12 @@ class ThreadsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Channel  $channel
-     * @param  \App\Thread  $thread
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Channel $channel, Thread $thread, Request $request)
+    public function update(Request $request, string $channelSlug, Thread $thread)
     {
         $this->authorize('update', $thread);
 
@@ -130,12 +129,12 @@ class ThreadsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Channel  $channel
-     * @param  \App\Thread  $thread
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Channel $channel, Thread $thread, Request $request)
+    public function destroy(Request $request, string $channelSlug, Thread $thread)
     {
         $this->authorize('update', $thread);
 
@@ -151,8 +150,8 @@ class ThreadsController extends Controller
     /**
      * Return threads from given channel matching filters.
      *
-     * @param  \App\Channel $channel
-     * @param  \App\Filters\ThreadFilters $filters
+     * @param  \App\Channel  $channel
+     * @param  \App\Filters\ThreadFilters  $filters
      * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function getThreads(Channel $channel, ThreadFilters $filters)
@@ -163,6 +162,8 @@ class ThreadsController extends Controller
 
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
+
+            View::share(['channel' => $channel]);
         }
 
         return $threads->paginate(25);

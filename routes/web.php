@@ -57,5 +57,7 @@ Route::apiResource('notifications', 'UserNotificationsController')->only(['index
 Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
     Route::get('/users', 'UsersController@index')->name('users.index');
 
+    Route::get('/user-invitations', 'UserInvitationsController@index')->name('user-invitations.index');
+
     Route::post('/users/{user}/avatar', 'UserAvatarController@store')->name('users.avatar.store');
 });

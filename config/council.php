@@ -32,4 +32,36 @@ return [
         'reply_favorited' => 5,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Promotion courses
+    |--------------------------------------------------------------------------
+    |
+    | The courses that users can sign up from.
+    |
+    */
+
+    'courses' => [
+        'EPL/S',
+        'EPL/U',
+        'EPL/P',
+        'Cursus Prépa ATPL',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Genders
+    |--------------------------------------------------------------------------
+    |
+    | The genders users can select from.
+    |
+    */
+
+    'genders' => [
+        'M' => 'Homme', // M for Male
+        'F' => 'Femme', // F for Female
+        'O' => 'Autre', // O for Other
+        'U' => 'Ne se déclare pas', // U for Unknown
+    ],
+
 ];

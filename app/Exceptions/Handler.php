@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,12 +49,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ValidationException) {
-            if ($request->wantsJson()) {
-                return Response::make('Validation échouée.', 422);
-            }
-        }
-
         if ($exception instanceof ThrottleException) {
             return Response::make('Du calme moussaillon. Tu postes beaucoup, prends une petite pause.', 429);
         }

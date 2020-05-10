@@ -4,7 +4,6 @@ namespace App;
 
 use App\Events\ReplyPosted;
 use Illuminate\Database\Eloquent\Model;
-use Stevebauman\Purify\Facades\Purify;
 
 class Reply extends Model
 {
@@ -121,16 +120,5 @@ class Reply extends Model
     public function getIsBestAttribute(): bool
     {
         return $this->isBest();
-    }
-
-    /**
-     * Get the sanitized body.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getBodyAttribute($value)
-    {
-        return Purify::clean($value);
     }
 }

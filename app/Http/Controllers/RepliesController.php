@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Response;
 
 class RepliesController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth')->except('index');
@@ -21,8 +26,8 @@ class RepliesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  string $channel
-     * @param  \App\Thread $thread
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
     public function index(string $channelSlug, Thread $thread)
@@ -34,8 +39,8 @@ class RepliesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\CreatePostRequest  $request
-     * @param  string $channel
-     * @param  \App\Thread $thread
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
     public function store(CreatePostRequest $request, string $channelSlug, Thread $thread)
@@ -56,6 +61,7 @@ class RepliesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Reply  $reply
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Reply $reply)
     {
@@ -72,6 +78,7 @@ class RepliesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Reply  $reply
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Request $request, Reply $reply)
     {

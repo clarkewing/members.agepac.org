@@ -66,4 +66,14 @@ class ChannelTest extends TestCase
             Channel::pluck('id')->all()
         );
     }
+
+    /** @test */
+    public function testCanGroupByParent()
+    {
+        $fooChannels = create(Channel::class, ['parent' => 'Foo'], 1);
+        $barChannels = create(Channel::class, ['parent' => 'Bar'], 2);
+        $bazChannels = create(Channel::class, ['parent' => 'Baz'], 3);
+
+        $this->assertCount(3, Channel::all()->groupBy('parent'));
+    }
 }

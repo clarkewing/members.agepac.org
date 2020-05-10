@@ -1,40 +1,34 @@
 <template>
-    <div>
-        <div v-if="signedIn">
+    <div class="mt-3">
+        <div v-if="editing">
             <div class="form-group">
-                <wysiwyg id="body" name="body" v-model="body" placeholder="Quelque chose à ajouter ?" required></wysiwyg>
+                <wysiwyg ref="wysiwyg" name="body" v-model="body" placeholder="Quelque chose à ajouter ?" required></wysiwyg>
             </div>
-            <button class="btn btn-primary"
-                @click="addReply">Publier</button>
+
+            <div class="form-group d-flex">
+                <button class="btn btn-link ml-auto mr-2" @click="toggleEditing">Annuler</button>
+                <button class="btn btn-success" @click="addReply">Publier</button>
+            </div>
         </div>
+
+        <button type="button" v-else class="btn btn-block border-placeholder p-5 d-flex align-items-center" @click="toggleEditing">
+            <img :src="App.user.avatar_path"
+                 :alt="App.user.name"
+                 class="rounded-circle cover mr-3"
+                 style="width: 2.5rem; height: 2.5rem;">
+
+            <p class="mb-0">Participer à la discussion</p>
+        </button>
     </div>
 </template>
 
 <script>
-    import Tribute from 'tributejs';
     export default {
         data() {
             return {
-                body: ''
+                body: '',
+                editing: false
             }
-        },
-
-        mounted() {
-            var tribute = new Tribute({
-                trigger: '@',
-
-                // column to search against in the object (accepts function or string)
-                lookup: 'username',
-
-                // column that contains the content to insert by default
-                fillAttr: 'username',
-
-                values: (query, cb) => {
-                    this.remoteSearch(query, users => cb(users));
-                }
-            });
-
-            tribute.attach(document.getElementById('body'));
         },
 
         methods: {
@@ -51,18 +45,16 @@
                         flash(error.response.data, 'danger');
                     });
             },
-            remoteSearch(query, cb) {
-                axios.get('/api/users', {
-                    params: {
-                        name: query
-                    }
-                })
-                .then(function (response) {
-                    cb(response.data);
-                })
-                .catch(function (error) {
-                    cb([]);
-                });
+
+            toggleEditing() {
+                this.editing = ! this.editing;
+
+                if (this.editing) {
+                    this.$nextTick(() => {
+                        console.log(this.$refs.wysiwyg);
+                        this.$refs.wysiwyg.$refs.editor.focus();
+                    });
+                }
             }
         }
     }

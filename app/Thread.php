@@ -4,10 +4,10 @@ namespace App;
 
 use App\Events\ThreadPublished;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
-use Stevebauman\Purify\Facades\Purify;
 
 class Thread extends Model
 {
@@ -28,6 +28,13 @@ class Thread extends Model
         'locked',
         'pinned',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['path', 'visits_count'];
 
     /**
      * The relationships that should always be loaded.
@@ -94,9 +101,23 @@ class Thread extends Model
      *
      * @return string
      */
-    public function path()
+    public function path(): string
     {
+        if (! $this->exists) {
+            return '';
+        }
+
         return route('threads.show', [$this->channel, $this]);
+    }
+
+    /**
+     * Get the path for the thread.
+     *
+     * @return string
+     */
+    public function getPathAttribute(): string
+    {
+        return $this->path();
     }
 
     /**
@@ -120,7 +141,7 @@ class Thread extends Model
      */
     public function channel()
     {
-        return $this->belongsTo(Channel::class)->withoutGlobalScope('active');
+        return $this->belongsTo(Channel::class)->withoutGlobalScopes();
     }
 
     /**
@@ -234,6 +255,16 @@ class Thread extends Model
     }
 
     /**
+     * Get the visits_count for the thread.
+     *
+     * @return int
+     */
+    public function getVisitsCountAttribute(): int
+    {
+        return $this->visits()->count();
+    }
+
+    /**
      * Sets a unique slug for the thread.
      *
      * @param  string $title
@@ -274,18 +305,9 @@ class Thread extends Model
      */
     public function toSearchableArray()
     {
-        return $this->toArray() + ['path' => $this->path()];
-    }
-
-    /**
-     * Get the sanitized body.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getBodyAttribute($value)
-    {
-        return Purify::clean($value);
+        return Arr::except($this->toArray(), [
+            'visits_count',
+        ]);
     }
 
     /**

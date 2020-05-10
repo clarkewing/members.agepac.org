@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Propaganistas\LaravelPhone\PhoneNumber;
 use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -19,7 +20,17 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'username', 'first_name', 'last_name', 'email', 'password', 'avatar_path',
+        'first_name',
+        'last_name',
+        'username',
+        'email',
+        'password',
+        'class_course',
+        'class_year',
+        'gender',
+        'birthdate',
+        'phone',
+        'avatar_path',
     ];
 
     /**
@@ -36,7 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['name'];
+    protected $appends = ['name', 'isAdmin'];
 
     /**
      * The attributes that should be cast to native types.
@@ -91,6 +102,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Determine whether the user is an admin.
+     *
+     * @return bool
+     */
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    /**
      * Get the cache key for visited threads.
      *
      * @param  \App\Thread $thread
@@ -112,6 +133,30 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameAttribute(): string
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
+     * Set the user's phone number.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setPhoneAttribute($value): void
+    {
+        $this->attributes['phone'] = PhoneNumber::make($value)
+            ->ofCountry('AUTO')
+            ->ofCountry('FR');
+    }
+
+    /**
+     * Get the user's phone number.
+     *
+     * @param  string  $value
+     * @return \Propaganistas\LaravelPhone\PhoneNumber
+     */
+    public function getPhoneAttribute($value): PhoneNumber
+    {
+        return PhoneNumber::make($value);
     }
 
     /**

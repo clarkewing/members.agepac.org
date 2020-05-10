@@ -1,12 +1,167 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import 'bootstrap-icons';
 
 .font-size-normal {
     font-size: 1em !important;
+}
+
+.link-muted {
+    color: inherit;
+
+    &:hover,
+    &:focus,
+    &.active {
+        color: $link-color !important;
+        text-decoration: none;
+    }
+
+    &.active {
+        font-weight: bolder;
+    }
+}
+
+.cover {
+    object-fit: cover;
+}
+
+// Create spacing utilities
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        @each $modifier, $spacing in $spacers {
+            .#{'spacing' + $infix + '-' + $modifier} > :not(:last-child) {
+                margin-bottom: $spacing;
+            }
+        }
+    }
+}
+
+// Gray color utilities
+@each $shade, $hex in $grays {
+    .#{'bg-gray-' + $shade} {
+        background-color: $hex;
+    }
+    .#{'text-gray-' + $shade} {
+        color: $hex;
+    }
+    .#{'border-gray-' + $shade} {
+        border-color: $hex;
+    }
+}
+
+// Color utilities
+@each $color, $hex in $colors {
+    .#{'bg-' + $color} {
+        background-color: $hex;
+    }
+    .#{'text-' + $color} {
+        color: $hex;
+    }
+    .#{'border-' + $color} {
+        border-color: $hex;
+    }
+}
+
+// Responsive border utilities
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .border#{$infix}-top {      border-top: $border-width solid $border-color !important; }
+        .border#{$infix}-right {    border-right: $border-width solid $border-color !important; }
+        .border#{$infix}-bottom {   border-bottom: $border-width solid $border-color !important; }
+        .border#{$infix}-left {     border-left: $border-width solid $border-color !important; }
+
+        .border#{$infix}-top-0 {    border-top: 0 !important; }
+        .border#{$infix}-right-0 {  border-right: 0 !important; }
+        .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
+        .border#{$infix}-left-0 {   border-left: 0 !important; }
+
+        .border#{$infix}-x {
+            border-left: $border-width solid $border-color !important;
+            border-right: $border-width solid $border-color !important;
+        }
+
+        .border#{$infix}-y {
+            border-top: $border-width solid $border-color !important;
+            border-bottom: $border-width solid $border-color !important;
+        }
+    }
+}
+
+.border-placeholder {
+    border-width: 2px;
+    border-style: dashed;
+    border-color: $gray-300;
+}
+
+.btn.border-placeholder:hover {
+    border-color: color('blue');
+}
+
+// Trix
+@import '~trix/dist/trix.css';
+
+.tribute-container {
+    > ul {
+        margin: 0;
+        padding: 0;
+    }
+    .dropdown-item {
+        cursor: pointer;
+        &.hover {
+            @extend .dropdown-item, :hover;
+        }
+    }
+}
+trix-editor {
+    height: auto !important;
+
+    &:empty:not(:focus)::before {
+        color: $gray-600;
+        opacity: 1;
+    }
+
+    .attachment--content {
+        display: inline-block;
+
+        .attachment__caption,
+        .attachment__toolbar {
+            display: none;
+        }
+    }
+}
+
+.trix-wrapper:focus {
+    outline: none;
+
+    .form-control {
+        @extend .form-control, :focus;
+    }
+}
+
+.trix-active {
+    @extend .active;
+}
+
+trix-editor,
+.trix-content {
+    h1 {
+        font-size: 1.5em;
+    }
+    h2 {
+        font-size: 1.2em;
+    }
+    h3 {
+        font-size: 1em;
+    }
+}
+
+[v-cloak] {
+    display: none;
 }

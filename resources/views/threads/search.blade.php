@@ -1,60 +1,75 @@
-@extends('layouts.app')
+@extends('threads._layout')
 
-@section('content')
-    <div class="container">
-        <instant-search inline-template>
-            <ais-instant-search :search-client="searchClient" index-name="threads">
+@section('breadcrumbs')
+    <div class="d-flex justify-content-between mb-3">
+        <ais-breadcrumb :attributes="[
+            'channel.parent',
+            'channel.name',
+        ]">
+            <nav aria-label="breadcrumb" slot-scope="{ items, refine, createURL }">
+                <ol class="breadcrumb bg-transparent pl-0 pt-0 mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('threads.index') }}">
+                            Forum
+                        </a>
+                    </li>
 
-                <ais-configure query="{{ Request::query('q') }}"></ais-configure>
+                    <li class="breadcrumb-item" v-for="(item, index) in items" :key="item.label">
+                        <a v-if="item.value"
+                           :href="createURL(item.value)"
+                           @click.prevent="refine(item.value)"
+                           :aria-current="index == items.length - 1 ? 'page' : false"
+                           v-text="item.label"></a>
+                        <span v-else v-text="item.label"></span>
+                    </li>
 
-                <div class="row">
-                    <div class="col-md-8">
-                        <ais-hits>
-                            <div slot="item" slot-scope="{ item }">
-                                <a :href="item.path">
-                                    <ais-highlight :hit="item" attribute="title"></ais-highlight>
-                                </a>
-                            </div>
-                        </ais-hits>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-header">Recherche</div>
+                    <li class="breadcrumb-item">
+                        <span>Recherche</span>
+                    </li>
+                </ol>
+            </nav>
+        </ais-breadcrumb>
 
-                            <div class="card-body">
-                                <ais-search-box placeholder="Rechercher quelque chose..."
-                                                autofocus
-                                                :class-names="{
-                                                    'ais-SearchBox-input': 'form-control',
-                                                    'ais-SearchBox-submit': 'd-none',
-                                                    'ais-SearchBox-reset': 'd-none'
-                                                }">
-                                </ais-search-box>
-                            </div>
-                        </div>
-
-                        <div class="card mb-4">
-                            <div class="card-header">Filtrer par Canal</div>
-
-                            <div class="card-body">
-                                <ais-refinement-list attribute="channel.name"></ais-refinement-list>
-                            </div>
-                        </div>
-
-                        @if(count($trending))
-                            <div class="card mb-4">
-                                <div class="card-header">Sujets chauds</div>
-
-                                <div class="list-group list-group-flush">
-                                    @foreach($trending as $thread)
-                                        <a href="{{ $thread->path }}" class="list-group-item list-group-item-action">{{ $thread->title }}</a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </ais-instant-search>
-        </instant-search>
+        <ais-powered-by></ais-powered-by>
     </div>
+@endsection
+
+@section('main')
+    <ais-hits>
+        <div slot-scope="{ items }">
+            <thread-result v-for="item in items" :key="item.objectID" :thread="item"></thread-result>
+
+            <div v-if="! items.length">
+                @include('threads._no-results')
+            </div>
+        </div>
+    </ais-hits>
+
+    <ais-pagination v-on:page-change="onPageChange">
+        <ul class="pagination justify-content-center"
+            slot-scope="{currentRefinement, nbPages, pages, isFirstPage, isLastPage, refine, createURL}"
+        >
+            <li :class="['page-item', isFirstPage ? 'disabled' : '']">
+                <a class="page-link"
+                   :href="createURL(currentRefinement - 1)"
+                   @click.prevent="refine(currentRefinement - 1)">
+                    ‹
+                </a>
+            </li>
+            <li class="page-item" v-for="page in pages" :key="page">
+                <a :class="['page-link', page === currentRefinement ? 'active' : '']"
+                   :href="createURL(page)"
+                   @click.prevent="refine(page)"
+                   v-text="page + 1">
+                </a>
+            </li>
+            <li :class="['page-item', isLastPage ? 'disabled' : '']">
+                <a class="page-link"
+                   :href="createURL(currentRefinement + 1)"
+                   @click.prevent="refine(currentRefinement + 1)">
+                    ›
+                </a>
+            </li>
+        </ul>
+    </ais-pagination>
 @endsection
