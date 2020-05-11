@@ -16,5 +16,6 @@ $factory->define(Post::class, function (Faker $faker) {
             return factory(User::class)->create()->id;
         },
         'body' => $faker->paragraph,
+        'is_thread_initiator' => false,
     ];
 });

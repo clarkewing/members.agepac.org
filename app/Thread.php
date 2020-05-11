@@ -41,7 +41,7 @@ class Thread extends Model
      * @var array
      */
     protected $with = ['creator', 'channel'];
-    protected $withCount = ['posts'];
+    protected $withCount = ['replies'];
 
     /**
      * The attributes that should be cast to native types.
@@ -120,11 +120,29 @@ class Thread extends Model
     }
 
     /**
-     * Get the posts for the thread.
+     * Get the thread's posts.
      */
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Get the initiator post for the thread.
+     */
+    public function initiatorPost()
+    {
+        return $this->hasOne(Post::class)
+            ->where('is_thread_initiator', true);
+    }
+
+    /**
+     * Get the thread's replies.
+     */
+    public function replies()
+    {
+        return $this->posts()
+            ->where('is_thread_initiator', false);
     }
 
     /**

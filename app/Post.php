@@ -18,6 +18,7 @@ class Post extends Model
         'thread_id',
         'user_id',
         'body',
+        'is_thread_initiator',
     ];
 
     /**

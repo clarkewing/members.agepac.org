@@ -82,12 +82,12 @@ class PostsController extends Controller
      */
     public function destroy(Request $request, Post $post)
     {
-        $this->authorize('update', $post);
+        $this->authorize('delete', $post);
 
         $post->delete();
 
         if ($request->expectsJson()) {
-            return Response::make(['status' => 'Post deleted']);
+            return Response::make(['status' => 'Post deleted.']);
         }
 
         return back()

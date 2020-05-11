@@ -69,7 +69,8 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
+        return ! $post->is_thread_initiator
+            && $this->update($user, $post);
     }
 
     /**

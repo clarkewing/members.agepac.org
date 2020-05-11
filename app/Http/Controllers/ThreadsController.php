@@ -81,6 +81,7 @@ class ThreadsController extends Controller
         $thread->addPost([
             'user_id' => Auth::id(),
             'body' => $request->input('body'),
+            'is_thread_initiator' => true,
         ]);
 
         if ($request->wantsJson()) {

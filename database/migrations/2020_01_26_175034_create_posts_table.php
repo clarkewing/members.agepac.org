@@ -18,6 +18,7 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('thread_id');
             $table->unsignedBigInteger('user_id');
             $table->text('body');
+            $table->boolean('is_thread_initiator')->default(false);
             $table->timestamps();
         });
     }

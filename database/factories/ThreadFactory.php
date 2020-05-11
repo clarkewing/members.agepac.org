@@ -23,6 +23,14 @@ $factory->define(Thread::class, function (Faker $faker) {
     ];
 });
 
+$factory->afterCreating(Thread::class, function ($thread, $faker) {
+    $thread->addPost([
+        'user_id' => $thread->creator->id,
+        'body' => $faker->paragraph,
+        'is_thread_initiator' => true,
+    ]);
+});
+
 $factory->state(Thread::class, 'with_body', function (Faker $faker) {
     return [
         'body' => $faker->paragraph,
