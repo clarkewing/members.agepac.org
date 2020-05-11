@@ -35,7 +35,7 @@ class ActivityTest extends TestCase
         $this->signIn();
 
         // Will also create associated thread.
-        $thread = create(Post::class);
+        create(Post::class);
 
         $this->assertEquals(2, Activity::count());
     }

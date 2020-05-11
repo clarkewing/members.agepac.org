@@ -81,30 +81,30 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByPopularity()
     {
-        $threadWithTwoPosts = create(Thread::class);
-        create(Post::class, ['thread_id' => $threadWithTwoPosts->id], 2);
+        $threadWithTwoReplies = create(Thread::class);
+        create(Post::class, ['thread_id' => $threadWithTwoReplies->id], 2);
 
-        $threadWithThreePosts = create(Thread::class);
-        create(Post::class, ['thread_id' => $threadWithThreePosts->id], 3);
+        $threadWithThreeReplies = create(Thread::class);
+        create(Post::class, ['thread_id' => $threadWithThreeReplies->id], 3);
 
         $threadWithNoPosts = $this->thread;
 
         $response = $this->getJson(route('threads.index') . '?popular=1')->json();
 
-        $this->assertEquals([3, 2, 0], array_column($response['data'], 'posts_count'));
+        $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
 
     /** @test */
     public function testUserCanFilterThreadsByThoseThatAreUnanswered()
     {
-        $threadWithNoPosts = $this->thread;
+        $threadWithNoReplies = $this->thread;
 
-        $threadWithPost = create(Thread::class);
-        create(Post::class, ['thread_id' => $threadWithPost->id]);
+        $threadWithReply = create(Thread::class);
+        create(Post::class, ['thread_id' => $threadWithReply->id]);
 
         $response = $this->getJson(route('threads.index') . '?unanswered=1')->json();
 
-        $this->assertEquals([$threadWithNoPosts->id], array_column($response['data'], 'id'));
+        $this->assertEquals([$threadWithNoReplies->id], array_column($response['data'], 'id'));
     }
 
     /** @test */
@@ -114,8 +114,9 @@ class ReadThreadsTest extends TestCase
 
         $response = $this->getJson($this->thread->path() . '/posts')->json();
 
-        $this->assertCount(2, $response['data']);
-        $this->assertEquals(2, $response['total']);
+        // Thread initiator post + 2 posts.
+        $this->assertCount(1 + 2, $response['data']);
+        $this->assertEquals(1 + 2, $response['total']);
     }
 
     /** @test */

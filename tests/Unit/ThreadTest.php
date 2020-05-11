@@ -52,18 +52,45 @@ class ThreadTest extends TestCase
     /** @test */
     public function testHasPosts()
     {
+        $this->assertCount(1, $this->thread->posts);
         $this->assertInstanceOf(Collection::class, $this->thread->posts);
+
+        create(Post::class, ['thread_id' => $this->thread->id]);
+
+        $this->assertCount(2, $this->thread->fresh()->posts);
+        $this->assertInstanceOf(Collection::class, $this->thread->fresh()->posts);
+    }
+
+    /** @test */
+    public function testHasInitiatorPost()
+    {
+        $this->assertInstanceOf(Post::class, $this->thread->initiatorPost);
+    }
+
+    /** @test */
+    public function testHasReplies()
+    {
+        $this->assertCount(0, $this->thread->replies);
+        $this->assertInstanceOf(Collection::class, $this->thread->replies);
+
+        create(Post::class, ['thread_id' => $this->thread->id]);
+
+        $this->assertCount(1, $this->thread->fresh()->replies);
+        $this->assertInstanceOf(Collection::class, $this->thread->fresh()->replies);
     }
 
     /** @test */
     public function testCanAddAPost()
     {
+        // There should already be the thread initiator post.
+        $this->assertCount(1, $this->thread->posts);
+
         $this->thread->addPost([
             'body' => 'Foobar',
             'user_id' => 1,
         ]);
 
-        $this->assertCount(1, $this->thread->posts);
+        $this->assertCount(2, $this->thread->fresh()->posts);
     }
 
     /** @test */

@@ -53,12 +53,15 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testNewThreadCreatesAPost()
+    public function testNewThreadCreatesAThreadInitiatorPost()
     {
         $this->publishThread(['title' => 'Some title', 'body' => 'This is the body.']);
 
         $this->assertDatabaseHas('threads', ['title' => 'Some title']);
-        $this->assertDatabaseHas('posts', ['body' => 'This is the body.']);
+        $this->assertDatabaseHas('posts', [
+            'body' => 'This is the body.',
+            'is_thread_initiator' => true,
+        ]);
     }
 
     /** @test */
