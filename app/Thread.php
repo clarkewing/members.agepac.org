@@ -297,6 +297,20 @@ class Thread extends Model
 
         $reply->owner->gainReputation('best_reply_awarded');
     }
+    
+    /**
+     * Unset the thread's best reply.
+     *
+     * @return void
+     */
+    public function unmarkBestReply(): void
+    {
+        if ($this->hasBestReply()) {
+            $this->bestReply->owner->loseReputation('best_reply_awarded');
+        }
+
+        $this->update(['best_reply_id' => null]);
+    }
 
     /**
      * Get the indexable data array for the thread.

@@ -40,6 +40,24 @@ class BestReplyTest extends TestCase
 
         $this->assertFalse($replies[1]->fresh()->isBest());
     }
+    
+    /** @test */
+    public function testOnlyThreadCreatorMayUnmarkReplyAsBest()
+    {
+        $this->withExceptionHandling();
+        $this->signIn();
+
+        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $replies = create(Reply::class, ['thread_id' => $thread->id], 2);
+
+        $this->signIn();
+
+        $this->deleteJson(route('replies.unmark_best', $replies[1]))
+            ->assertStatus(403);
+
+        $this->assertFalse($replies[1]->fresh()->isBest());
+    }
+
 
     /** @test */
     public function testIfABestReplyIsDeletedThenTheThreadIsProperlyUpdated()

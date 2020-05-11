@@ -180,6 +180,17 @@ class NamedRouteTest extends TestCase
             'replies.mark_best', $reply
         );
     }
+    
+    /* @test */
+    public function testRepliesUnmarkBest()
+    {
+        $reply = create(Reply::class);
+
+        $this->assertRoutePathIs(
+            "/replies/{$reply->id}/best",
+            'replies.unmark_best', $reply
+        );
+    }
 
     /* @test */
     public function testRepliesFavorite()

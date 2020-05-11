@@ -27,6 +27,10 @@
                         v-if="authorize('owns', reply.thread) && !isBest">
                     Marquer comme meilleure réponse
                 </button>
+                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted" @click="unmarkBestReply"
+                        v-if="authorize('owns', reply.thread) && isBest">
+                    Enlever comme meilleure réponse
+                </button>
             </div>
 
             <!-- Editing -->
@@ -128,6 +132,13 @@
                 axios.post('/replies/' + this.id + '/best')
                     .then(({data}) => {
                         window.events.$emit('best-reply-selected', this.id);
+                    });
+            },
+            
+            unmarkBestReply() {
+                axios.delete('/replies/' + this.id + '/best')
+                    .then(({data}) => {
+                        window.events.$emit('best-reply-selected', null);
                     });
             }
         }
