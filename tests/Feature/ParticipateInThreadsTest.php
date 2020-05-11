@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Post;
 use App\Thread;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -85,6 +86,23 @@ class ParticipateInThreadsTest extends TestCase
             ->assertStatus(302);
 
         $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+    }
+
+    /** @test */
+    public function testThreadInitiatorPostCannotBeDeleted()
+    {
+        $this->withExceptionHandling()
+            ->signIn();
+
+        $post = create(Post::class, [
+            'user_id' => Auth::id(),
+            'is_thread_initiator' => true,
+        ]);
+
+        $this->delete(route('posts.destroy', $post))
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+
+        $this->assertDatabaseHas('posts', ['id' => $post->id]);
     }
 
     /** @test */

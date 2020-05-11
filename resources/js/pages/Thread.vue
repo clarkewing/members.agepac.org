@@ -9,7 +9,7 @@
 
         data() {
             return {
-                postsCount: this.thread.posts_count,
+                repliesCount: this.thread.replies_count,
                 locked: this.thread.locked,
                 pinned: this.thread.pinned,
                 title: this.thread.title,

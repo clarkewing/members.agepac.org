@@ -36,9 +36,14 @@
                 </div>
 
                 <div class="form-group d-flex">
-                    <button class="btn btn-sm btn-outline-danger mr-2" @click="destroy">Supprimer</button>
+                    <button class="btn btn-sm btn-outline-danger mr-2"
+                            type="button"
+                            v-if="! isThreadInitiator"
+                            @click="destroy">
+                        Supprimer
+                    </button>
 
-                    <button class="btn btn-sm btn-link ml-auto mr-2" @click="cancel" type="button">Annuler</button>
+                    <button class="btn btn-sm btn-link ml-auto mr-2" @click="cancel">Annuler</button>
                     <button class="btn btn-sm btn-success" type="submit">Sauvegarder</button>
                 </div>
             </form>
@@ -75,6 +80,7 @@
                 id: this.post.id,
                 body: this.post.body,
                 isBest: this.post.is_best,
+                isThreadInitiator: this.post.is_thread_initiator,
                 tempBody: this.post.body
             }
         },

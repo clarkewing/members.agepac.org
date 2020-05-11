@@ -162,6 +162,7 @@ class ThreadsController extends Controller
     {
         $threads = Thread::orderBy('pinned', 'desc')
             ->latest()
+            ->with('initiatorPost')
             ->filter($filters);
 
         if ($channel->exists) {
@@ -170,6 +171,14 @@ class ThreadsController extends Controller
             View::share(['channel' => $channel]);
         }
 
-        return $threads->paginate(25);
+        $threads = $threads->paginate(25);
+
+        $threads->getCollection()->transform(function ($thread) {
+            $thread->snippet = $thread->initiatorPost->body;
+
+            return $thread;
+        });
+
+        return $threads;
     }
 }

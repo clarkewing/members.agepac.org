@@ -41,7 +41,7 @@ class ThreadFilters extends Filters
      */
     public function popular()
     {
-        return $this->builder->orderBy('posts_count', 'desc');
+        return $this->builder->orderBy('replies_count', 'desc');
     }
 
     /**
@@ -53,10 +53,8 @@ class ThreadFilters extends Filters
     {
         return $this->builder->whereNotIn('id', function ($query) {
             $query->select('thread_id')
-                ->from((new Post)->getTable());
+                ->from((new Post)->getTable())
+                ->where('is_thread_initiator', false);
         });
-
-        // Fails testing with SQLite:
-        // return $this->builder->having('posts_count', 0);
     }
 }

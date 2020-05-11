@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use Favoritable, MentionsUsers, RecordsActivity;
+    use Favoritable, MentionsUsers;
+    use RecordsActivity {
+        recordActivity as protected traitRecordActivity;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +36,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $with = ['owner'];
+    protected $with = ['owner', 'thread'];
 
     /**
      * All of the relationships to be touched.
@@ -50,11 +53,15 @@ class Post extends Model
     protected static function booted()
     {
         static::created(function ($post) {
-            $post->owner->gainReputation('reply_posted');
+            if (! $post->is_thread_initiator) {
+                $post->owner->gainReputation('reply_posted');
+            }
         });
 
         static::deleting(function ($post) {
-            $post->owner->loseReputation('reply_posted');
+            if (! $post->is_thread_initiator) {
+                $post->owner->loseReputation('reply_posted');
+            }
         });
     }
 
@@ -66,6 +73,22 @@ class Post extends Model
     protected $dispatchesEvents = [
         'created' => ReplyPosted::class,
     ];
+
+    /**
+     * Don't record activity for thread initiator,
+     * as it is already handled by the thread.
+     *
+     * @param  \Symfony\Contracts\EventDispatcher\Event  $event
+     * @return void
+     */
+    protected function recordActivity($event): void
+    {
+        if ($this->is_thread_initiator) {
+            return;
+        }
+
+        $this->traitRecordActivity($event);
+    }
 
     /**
      * Get the user that owns the post.
