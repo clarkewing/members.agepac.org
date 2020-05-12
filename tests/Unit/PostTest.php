@@ -111,7 +111,7 @@ class PostTest extends TestCase
         $this->assertEquals('Line 1<br />Line 2', $post->body);
 
         $post = create(Post::class, [
-            'body' => '<img src="/greatimage.jpg" alt="Image with src, alt, width, and height" width="12" height="34" />'
+            'body' => '<img src="/greatimage.jpg" alt="Image with src, alt, width, and height" width="12" height="34" />',
         ]);
         $this->assertEquals(
             '<img src="/greatimage.jpg" alt="Image with src, alt, width, and height" width="12" height="34" />',
