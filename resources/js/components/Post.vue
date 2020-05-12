@@ -23,14 +23,19 @@
                     Modifier
                 </button>
 
-                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted" @click="markBestPost"
-                        v-if="authorize('owns', post.thread) && !isBest">
-                    Marquer comme meilleure réponse
-                </button>
-                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted" @click="unmarkBestPost"
-                        v-if="authorize('owns', post.thread) && isBest">
-                    Enlever comme meilleure réponse
-                </button>
+                <div v-if="authorize('owns', post.thread)">
+                    <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted"
+                            v-if="isBest"
+                            @click="unmarkBestPost">
+                        Enlever comme meilleure réponse
+                    </button>
+
+                    <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted"
+                            v-else
+                            @click="markBestPost">
+                        Marquer comme meilleure réponse
+                    </button>
+                </div>
             </div>
 
             <!-- Editing -->
