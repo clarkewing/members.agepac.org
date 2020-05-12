@@ -2,13 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Post;
 use App\Thread;
 use Tests\TestCase;
 
 class SearchTest extends TestCase
 {
     /** @test */
-    public function testAUserCanSearchThreads()
+    public function testAUserCanSearchTheForum()
     {
         if (! config('scout.algolia.id')) {
             $this->markTestSkipped('Algolia is not configured.');
@@ -32,6 +33,7 @@ class SearchTest extends TestCase
 
         $this->assertCount(2, $results);
 
-        Thread::latest()->take(4)->unsearchable();
+        // Clean up index.
+        Post::latest()->take(4)->unsearchable();
     }
 }
