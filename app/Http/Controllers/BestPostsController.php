@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Reply;
+use App\Post;
 use Illuminate\Http\Request;
 
-class BestRepliesController extends Controller
+class BestPostsController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Reply  $reply
+     * @param  \App\Post  $post
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Reply $reply, Request $request)
+    public function store(Post $post, Request $request)
     {
-        $this->authorize('update', $reply->thread);
+        $this->authorize('update', $post->thread);
 
-        $reply->thread->markBestReply($reply);
+        $post->thread->markBestPost($post);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Reply  $reply
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reply $reply)
+    public function destroy(Post $post)
     {
         //
     }

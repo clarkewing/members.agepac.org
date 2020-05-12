@@ -25,16 +25,12 @@ class UpdateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testAThreadRequiresATitleAndBodyToBeUpdated()
+    public function testAThreadRequiresATitleToBeUpdated()
     {
         $thread = create(Thread::class, ['user_id' => Auth::id()]);
 
         $this->patch($thread->path(), [
-            'title' => 'Changed',
-        ])->assertSessionHasErrors('body');
-
-        $this->patch($thread->path(), [
-            'body' => 'Changed body.',
+            'title' => null,
         ])->assertSessionHasErrors('title');
     }
 
@@ -45,12 +41,8 @@ class UpdateThreadsTest extends TestCase
 
         $this->patch($thread->path(), [
             'title' => 'Changed',
-            'body' => 'Changed body.',
         ]);
 
-        tap($thread->fresh(), function ($thread) {
-            $this->assertEquals('Changed', $thread->title);
-            $this->assertEquals('Changed body.', $thread->body);
-        });
+        $this->assertEquals('Changed', $thread->fresh()->title);
     }
 }

@@ -61,13 +61,13 @@ class LockThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testALockedThreadMayNotReceiveNewReplies()
+    public function testALockedThreadMayNotReceiveNewPosts()
     {
         $this->signIn();
 
         $thread = create(Thread::class, ['locked' => true]);
 
-        $this->post($thread->path() . '/replies', [
+        $this->post($thread->path() . '/posts', [
             'body' => 'Foobar',
             'user_id' => Auth::id(),
         ])->assertStatus(422);

@@ -85,11 +85,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the latest reply posted by the user.
+     * Get the latest post posted by the user.
      */
-    public function lastReply()
+    public function lastPost()
     {
-        return $this->hasOne(Reply::class)->latest();
+        return $this->hasOne(Post::class)->latest();
     }
 
     /** Determine if user is administrator.

@@ -7,7 +7,7 @@
                  style="width: 2.5rem; height: 2.5rem;">
         </div>
 
-        <div class="col border-bottom">
+        <div class="col border-gray-700 border-bottom">
             <h3 class="h5 mb-1">
                 <svg v-if="thread.pinned" class="bi bi-flag-fill text-orange" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M3.5 1a.5.5 0 01.5.5v13a.5.5 0 01-1 0v-13a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
@@ -15,7 +15,7 @@
                 </svg>
 
                 <a :href="thread.path">
-                    <ais-highlight :hit="thread" attribute="title" v-if="isInstantSearchResult"></ais-highlight>
+                    <ais-highlight :hit="data" attribute="thread.title" v-if="isInstantSearchResult"></ais-highlight>
                     <span v-text="thread.title" v-else></span>
                 </a>
             </h3>
@@ -24,14 +24,17 @@
                 Publié par : <a :href="'/profiles/' + thread.creator.username" v-text="thread.creator.name"></a>
             </p>
 
-            <p class="mb-4" style="word-break: normal !important;">
-                <span v-if="isInstantSearchResult">
-                    <span v-if="! bodyStartsWithSnippet">...</span>
-                    <ais-snippet :hit="thread" attribute="body"></ais-snippet>
-                    <span v-if="! bodyEndsWithSnippet">...</span>
-                </span>
+            <p class="mb-4"
+               v-if="isInstantSearchResult">
+                <span v-if="! bodyStartsWithSnippet(data)">...</span>
+                <ais-snippet :hit="data" attribute="body"></ais-snippet>
+                <span v-if="! bodyEndsWithSnippet(data)">...</span>
+            </p>
 
-                <span v-text="striptags(thread.body)" v-line-clamp="3" v-else></span>
+            <p class="mb-4"
+               v-else
+               v-text="striptags(thread.snippet)"
+               v-line-clamp="3" style="word-break: normal !important;">
             </p>
 
             <div class="d-flex align-items-center small mb-4">
@@ -68,26 +71,32 @@
 
 <script>
     export default {
-        props: ['thread'],
+        props: ['data'],
 
-        data() {
-            return {
-                isInstantSearchResult: this.thread.__position !== undefined
+        computed: {
+            isInstantSearchResult: function () {
+                return this.data.__position !== undefined;
+            },
+
+            thread: function () {
+                return this.isInstantSearchResult
+                    ? this.data.thread
+                    : this.data;
             }
         },
 
-        computed: {
-            bodyStartsWithSnippet: function () {
-                return this.striptags(this.thread.body)
+        methods: {
+            bodyStartsWithSnippet: function (hit) {
+                return this.striptags(hit.body)
                     .startsWith(
-                        _.unescape(this.striptags(this.thread._snippetResult.body.value))
+                        _.unescape(this.striptags(hit._snippetResult.body.value))
                     );
             },
 
-            bodyEndsWithSnippet: function () {
-                return this.striptags(this.thread.body)
+            bodyEndsWithSnippet: function (hit) {
+                return this.striptags(hit.body)
                     .endsWith(
-                        _.unescape(this.striptags(this.thread._snippetResult.body.value))
+                        _.unescape(this.striptags(hit._snippetResult.body.value))
                     );
             }
         }

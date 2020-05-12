@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Reply;
+use App\Post;
 use App\Reputation;
 use App\Thread;
 use App\User;
@@ -51,97 +51,97 @@ class ReputationTest extends TestCase
     }
 
     /** @test */
-    public function testUserEarnsPointsWhenReplyingToAThread()
+    public function testUserEarnsPointsWhenPostingOnAThread()
     {
         $thread = create(Thread::class);
 
-        $reply = $thread->addReply([
+        $post = $thread->addPost([
             'user_id' => create(User::class)->id,
-            'body' => 'Here is a reply.',
+            'body' => 'Here is a post.',
         ]);
 
-        $this->assertEquals($this->points['reply_posted'], $reply->owner->reputation);
+        $this->assertEquals($this->points['reply_posted'], $post->owner->reputation);
     }
 
     /** @test */
-    public function testUserLosesPointsWhenTheirReplyToAThreadIsDeleted()
+    public function testUserLosesPointsWhenTheirPostOnAThreadIsDeleted()
     {
         $this->signIn();
 
-        $reply = create(Reply::class, ['user_id' => Auth::id()]);
+        $post = create(Post::class, ['user_id' => Auth::id()]);
 
-        $this->assertEquals($this->points['reply_posted'], $reply->owner->reputation);
+        $this->assertEquals($this->points['reply_posted'], $post->owner->reputation);
 
-        $this->delete(route('replies.destroy', $reply));
+        $this->delete(route('posts.destroy', $post));
 
-        $this->assertEquals(0, $reply->owner->fresh()->reputation);
+        $this->assertEquals(0, $post->owner->fresh()->reputation);
     }
 
     /** @test */
-    public function testUserEarnsPointsWhenTheirReplyIsMarkedAsBest()
+    public function testUserEarnsPointsWhenTheirPostIsMarkedAsBest()
     {
         $thread = create(Thread::class);
 
-        $thread->markBestReply($reply = $thread->addReply([
+        $thread->markBestPost($post = $thread->addPost([
             'user_id' => create(User::class)->id,
-            'body' => 'Here is a reply.',
+            'body' => 'Here is a post.',
         ]));
 
-        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'];
-        $this->assertEquals($total, $reply->owner->reputation);
+        $total = $this->points['reply_posted'] + $this->points['best_post_awarded'];
+        $this->assertEquals($total, $post->owner->reputation);
     }
 
-    public function testOnBestReplyChangeThePointsShouldBeTransferred()
+    public function testOnBestPostChangeThePointsShouldBeTransferred()
     {
         $thread = create(Thread::class);
-        [$firstReply, $secondReply] = create(Reply::class, [], 2);
+        [$firstPost, $secondPost] = create(Post::class, [], 2);
 
-        $thread->markBestReply($firstReply);
+        $thread->markBestPost($firstPost);
 
-        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'];
-        $this->assertEquals($total, $firstReply->owner->reputation);
+        $total = $this->points['reply_posted'] + $this->points['best_post_awarded'];
+        $this->assertEquals($total, $firstPost->owner->reputation);
 
-        // If the owner of the thread decides to choose a different best reply...
-        $thread->markBestReply($secondReply);
+        // If the owner of the thread decides to choose a different best post...
+        $thread->markBestPost($secondPost);
 
-        // Then the original recipient of the best reply reputation should be stripped of those points.
-        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'] - $this->points['best_reply_awarded'];
-        $this->assertEquals($total, $firstReply->owner->fresh()->reputation);
+        // Then the original recipient of the best post reputation should be stripped of those points.
+        $total = $this->points['reply_posted'] + $this->points['best_post_awarded'] - $this->points['best_post_awarded'];
+        $this->assertEquals($total, $firstPost->owner->fresh()->reputation);
 
-        // And those points should now be reflected on the account of the new best reply owner.
-        $total = $this->points['reply_posted'] + $this->points['best_reply_awarded'];
-        $this->assertEquals($total, $secondReply->owner->reputation);
+        // And those points should now be reflected on the account of the new best post owner.
+        $total = $this->points['reply_posted'] + $this->points['best_post_awarded'];
+        $this->assertEquals($total, $secondPost->owner->reputation);
     }
 
     /** @test */
-    public function testUserEarnsPointsWhenTheirReplyIsFavorited()
+    public function testUserEarnsPointsWhenTheirPostIsFavorited()
     {
         $this->signIn();
 
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
-        $reply->favorite();
+        $post->favorite();
 
-        $total = $this->points['reply_posted'] + $this->points['reply_favorited'];
-        $this->assertEquals($total, $reply->owner->fresh()->reputation);
+        $total = $this->points['reply_posted'] + $this->points['post_favorited'];
+        $this->assertEquals($total, $post->owner->fresh()->reputation);
     }
 
     /** @test */
-    public function testUserLosesPointsWhenTheirReplyIsUnfavorited()
+    public function testUserLosesPointsWhenTheirPostIsUnfavorited()
     {
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
         $this->signIn();
 
-        $reply->favorite();
+        $post->favorite();
 
-        $total = $this->points['reply_posted'] + $this->points['reply_favorited'];
-        $this->assertEquals($total, $reply->owner->fresh()->reputation);
+        $total = $this->points['reply_posted'] + $this->points['post_favorited'];
+        $this->assertEquals($total, $post->owner->fresh()->reputation);
 
-        $reply->unfavorite();
+        $post->unfavorite();
 
-        $total = $this->points['reply_posted'] + $this->points['reply_favorited'] - $this->points['reply_favorited'];
-        $this->assertEquals($total, $reply->owner->fresh()->reputation);
+        $total = $this->points['reply_posted'] + $this->points['post_favorited'] - $this->points['post_favorited'];
+        $this->assertEquals($total, $post->owner->fresh()->reputation);
 
         $this->assertEquals(0, Auth::user()->reputation);
     }

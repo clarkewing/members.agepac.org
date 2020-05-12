@@ -3,7 +3,7 @@
 use App\Activity;
 use App\Channel;
 use App\Favorite;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\ThreadSubscription;
 use Faker\Factory as Faker;
@@ -51,14 +51,14 @@ class SampleDataSeeder extends Seeder
     protected function content()
     {
         Thread::truncate();
-        Reply::truncate();
+        Post::truncate();
         ThreadSubscription::truncate();
         Activity::truncate();
         Favorite::truncate();
 
         factory(Thread::class, 30)->create()
             ->each(function ($thread) {
-                factory(Reply::class, $this->faker->numberBetween(0, 10))
+                factory(Post::class, $this->faker->numberBetween(1, 10))
                     ->create([
                         'thread_id' => $thread->id,
                     ]);

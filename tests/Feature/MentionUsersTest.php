@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Tests\TestCase;
@@ -10,7 +10,7 @@ use Tests\TestCase;
 class MentionUsersTest extends TestCase
 {
     /** @test */
-    public function testMentionedUsersInAReplyAreNotified()
+    public function testMentionedUsersInAPostAreNotified()
     {
         $john = create(User::class, ['username' => 'john.doe']);
 
@@ -20,11 +20,11 @@ class MentionUsersTest extends TestCase
 
         $thread = create(Thread::class);
 
-        $reply = make(Reply::class, [
+        $post = make(Post::class, [
             'body' => 'Hey @jane.doe look at this!',
         ]);
 
-        $this->postJson($thread->path() . '/replies', $reply->toArray());
+        $this->postJson($thread->path() . '/posts', $post->toArray());
 
         $this->assertCount(1, $jane->notifications);
     }

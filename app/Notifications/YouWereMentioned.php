@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Reply;
+use App\Post;
 use App\Thread;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -29,13 +29,13 @@ class YouWereMentioned extends Notification
     /**
      * Create a new notification instance.
      *
-     * @param  \App\Reply|\App\Thread  $subject
+     * @param  \App\Post|\App\Thread  $subject
      * @return void
      * @throws \Exception
      */
     public function __construct($subject)
     {
-        if ($subject instanceof Reply) {
+        if ($subject instanceof Post) {
             $this->subjectTitle = $subject->thread->title;
             $this->subjectOwner = $subject->owner;
         } elseif ($subject instanceof Thread) {

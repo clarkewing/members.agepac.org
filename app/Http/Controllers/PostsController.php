@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
-class RepliesController extends Controller
+class PostsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -32,7 +32,7 @@ class RepliesController extends Controller
      */
     public function index(string $channelSlug, Thread $thread)
     {
-        return $thread->replies()->paginate(20);
+        return $thread->posts()->paginate(20);
     }
 
     /**
@@ -49,7 +49,7 @@ class RepliesController extends Controller
             return Response::make('Thread is locked.', 422);
         }
 
-        return $thread->addReply([
+        return $thread->addPost([
             'body' => $request->input('body'),
             'user_id' => Auth::id(),
         ])->load('owner');
@@ -59,38 +59,38 @@ class RepliesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Reply  $reply
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Reply $reply)
+    public function update(Request $request, Post $post)
     {
-        $this->authorize('update', $reply);
+        $this->authorize('update', $post);
 
         $request->validate(['body' => 'required']);
 
-        $reply->update($request->only('body'));
+        $post->update($request->only('body'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Reply  $reply
+     * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Request $request, Reply $reply)
+    public function destroy(Request $request, Post $post)
     {
-        $this->authorize('update', $reply);
+        $this->authorize('delete', $post);
 
-        $reply->delete();
+        $post->delete();
 
         if ($request->expectsJson()) {
-            return Response::make(['status' => 'Reply deleted']);
+            return Response::make(['status' => 'Post deleted.']);
         }
 
         return back()
-            ->with('flash', 'The reply was deleted.');
+            ->with('flash', 'The post was deleted.');
     }
 }

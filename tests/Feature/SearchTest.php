@@ -2,13 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Post;
 use App\Thread;
 use Tests\TestCase;
 
 class SearchTest extends TestCase
 {
     /** @test */
-    public function testAUserCanSearchThreads()
+    public function testAUserCanSearchTheForum()
     {
         if (! config('scout.algolia.id')) {
             $this->markTestSkipped('Algolia is not configured.');
@@ -19,7 +20,8 @@ class SearchTest extends TestCase
         $search = 'foobar';
 
         create(Thread::class, [], 2);
-        create(Thread::class, ['body' => "A body with the {$search} term."], 2);
+        create(Thread::class, ['title' => "A title with the {$search} term"]);
+        create(Thread::class, ['title' => "Another title with the {$search} term"]);
 
         $maxTime = now()->addSeconds(20);
 
@@ -31,6 +33,7 @@ class SearchTest extends TestCase
 
         $this->assertCount(2, $results);
 
-        Thread::latest()->take(4)->unsearchable();
+        // Clean up index.
+        Post::latest()->take(4)->unsearchable();
     }
 }

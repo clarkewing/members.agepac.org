@@ -3,9 +3,9 @@
 @section('main')
     <thread-view :thread="{{ $thread }}" inline-template>
         <div>
-            @include('threads._question')
+            @include('threads._title-header')
 
-            <replies @added="repliesCount++" @removed="repliesCount--"></replies>
+            <posts @added="repliesCount++" @removed="repliesCount--"></posts>
         </div>
     </thread-view>
 @endsection
