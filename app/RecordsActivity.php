@@ -24,12 +24,23 @@ trait RecordsActivity
         });
     }
 
-    protected static function getActivitiesToRecord()
+    /**
+     * Returns which activities should be recorded.
+     *
+     * @return array
+     */
+    protected static function getActivitiesToRecord(): array
     {
         return ['created'];
     }
 
-    protected function recordActivity($event)
+    /**
+     * Records model activity for given event.
+     *
+     * @param  \Symfony\Contracts\EventDispatcher\Event  $event
+     * @return void
+     */
+    protected function recordActivity($event): void
     {
         $this->activity()->create([
             'user_id' => Auth::id(),
@@ -45,7 +56,13 @@ trait RecordsActivity
         return $this->morphMany(Activity::class, 'subject');
     }
 
-    protected function getActivityType($event)
+    /**
+     * Return the name of the activity.
+     *
+     * @param  \Symfony\Contracts\EventDispatcher\Event  $event
+     * @return string
+     */
+    protected function getActivityType($event): string
     {
         $type = strtolower((new ReflectionClass($this))->getShortName());
 

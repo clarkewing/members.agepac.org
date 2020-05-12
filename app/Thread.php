@@ -4,14 +4,12 @@ namespace App;
 
 use App\Events\ThreadPublished;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
 
 class Thread extends Model
 {
-    use MentionsUsers, RecordsActivity, Searchable;
+    use MentionsUsers, RecordsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -22,9 +20,8 @@ class Thread extends Model
         'user_id',
         'channel_id',
         'title',
-        'body',
         'slug',
-        'best_reply_id',
+        'best_post_id',
         'locked',
         'pinned',
     ];
@@ -81,7 +78,7 @@ class Thread extends Model
 
         // Cascade deleting of thread.
         static::deleting(function ($thread) {
-            $thread->replies->each->delete();
+            $thread->posts->each->delete();
 
             $thread->creator->loseReputation('thread_published');
         });
@@ -121,19 +118,37 @@ class Thread extends Model
     }
 
     /**
-     * Get the replies for the thread.
+     * Get the thread's posts.
      */
-    public function replies()
+    public function posts()
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Post::class);
     }
 
     /**
-     * Get the thread's best reply.
+     * Get the initiator post for the thread.
      */
-    public function bestReply()
+    public function initiatorPost()
     {
-        return $this->hasOne(Reply::class, 'id', 'best_reply_id');
+        return $this->hasOne(Post::class)
+            ->where('is_thread_initiator', true);
+    }
+
+    /**
+     * Get the thread's replies.
+     */
+    public function replies()
+    {
+        return $this->posts()
+            ->where('is_thread_initiator', false);
+    }
+
+    /**
+     * Get the thread's best post.
+     */
+    public function bestPost()
+    {
+        return $this->hasOne(Post::class, 'id', 'best_post_id');
     }
 
     /**
@@ -153,16 +168,16 @@ class Thread extends Model
     }
 
     /**
-     * Add a reply to the thread.
+     * Add a post to the thread.
      *
-     * @param  array $reply
-     * @return \App\Reply
+     * @param  array $post
+     * @return \App\Post
      */
-    public function addReply(array $reply)
+    public function addPost(array $post)
     {
-        $reply = $this->replies()->create($reply);
+        $post = $this->posts()->create($post);
 
-        return $reply;
+        return $post;
     }
 
     /**
@@ -282,55 +297,43 @@ class Thread extends Model
     }
 
     /**
-     * Set the thread's best reply.
+     * Set the thread's best post.
      *
-     * @param  \App\Reply $reply
+     * @param  \App\Post $post
      * @return void
      */
-    public function markBestReply(Reply $reply): void
+    public function markBestPost(Post $post): void
     {
-        if ($this->hasBestReply()) {
-            $this->bestReply->owner->loseReputation('best_reply_awarded');
+        if ($this->hasBestPost()) {
+            $this->bestPost->owner->loseReputation('best_post_awarded');
         }
 
-        $this->update(['best_reply_id' => $reply->id]);
+        $this->update(['best_post_id' => $post->id]);
 
-        $reply->owner->gainReputation('best_reply_awarded');
+        $post->owner->gainReputation('best_post_awarded');
     }
-    
+
     /**
-     * Unset the thread's best reply.
+     * Unset the thread's best post.
      *
      * @return void
      */
-    public function unmarkBestReply(): void
+    public function unmarkBestPost(): void
     {
-        if ($this->hasBestReply()) {
-            $this->bestReply->owner->loseReputation('best_reply_awarded');
+        if ($this->hasBestPost()) {
+            $this->bestPost->owner->loseReputation('best_post_awarded');
         }
 
-        $this->update(['best_reply_id' => null]);
+        $this->update(['best_post_id' => null]);
     }
 
     /**
-     * Get the indexable data array for the thread.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return Arr::except($this->toArray(), [
-            'visits_count',
-        ]);
-    }
-
-    /**
-     * Determine if the thread has a best reply.
+     * Determine if the thread has a best post.
      *
      * @return bool
      */
-    public function hasBestReply(): bool
+    public function hasBestPost(): bool
     {
-        return ! is_null($this->best_reply_id);
+        return ! is_null($this->best_post_id);
     }
 }

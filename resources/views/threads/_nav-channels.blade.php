@@ -1,9 +1,9 @@
 @if(Route::is('threads.search'))
     <ais-hierarchical-menu
         :attributes="[
-                                'channel.parent',
-                                'channel.name',
-                            ]"
+            'thread.channel.parent',
+            'thread.channel.name',
+        ]"
     >
         <x-linklist title="Sections" spacing="0" slot-scope="{items, refine, createURL}">
             <li v-for="(parent, index) in items">

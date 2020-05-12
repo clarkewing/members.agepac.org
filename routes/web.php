@@ -37,16 +37,16 @@ Route::delete('pinned-threads/{thread}', 'PinnedThreadsController@destroy')->nam
 Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->name('threads.subscribe');
 Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->name('threads.unsubscribe');
 
-/* Replies */
-Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index')->name('replies.index');
-Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store')->name('replies.store');
-Route::apiResource('replies', 'RepliesController')->only(['update', 'destroy']);
+/* Posts */
+Route::get('/threads/{channel}/{thread}/posts', 'PostsController@index')->name('posts.index');
+Route::post('/threads/{channel}/{thread}/posts', 'PostsController@store')->name('posts.store');
+Route::apiResource('posts', 'PostsController')->only(['update', 'destroy']);
 
-Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('replies.mark_best');
-Route::delete('/replies/{reply}/best', 'BestRepliesController@destroy')->name('replies.unmark_best');
+Route::post('/posts/{post}/best', 'BestPostsController@store')->name('posts.mark_best');
+Route::delete('/posts/{post}/best', 'BestPostsController@destroy')->name('posts.unmark_best');
 
-Route::post('/replies/{reply}/favorites', 'FavoritesController@store')->name('replies.favorite');
-Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy')->name('replies.unfavorite');
+Route::post('/posts/{post}/favorites', 'FavoritesController@store')->name('posts.favorite');
+Route::delete('/posts/{post}/favorites', 'FavoritesController@destroy')->name('posts.unfavorite');
 
 /* Profiles */
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');

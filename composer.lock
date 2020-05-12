@@ -2698,7 +2698,7 @@
             "authors": [
                 {
                     "name": "Propaganistas",
-                    "email": "Propaganistas@users.noreply.github.com"
+                    "email": "Propaganistas@users.nopost.github.com"
                 }
             ],
             "description": "Adds phone number functionality to Laravel and Lumen based on Google's libphonenumber API.",

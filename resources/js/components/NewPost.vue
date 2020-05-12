@@ -7,7 +7,7 @@
 
             <div class="form-group d-flex">
                 <button class="btn btn-link ml-auto mr-2" @click="toggleEditing">Annuler</button>
-                <button class="btn btn-success" @click="addReply">Publier</button>
+                <button class="btn btn-success" @click="addPost">Publier</button>
             </div>
         </div>
 
@@ -32,10 +32,10 @@
         },
 
         methods: {
-            addReply() {
-                axios.post(location.pathname + '/replies', { body: this.body })
+            addPost() {
+                axios.post(location.pathname + '/posts', { body: this.body })
                     .then(({data}) => {
-                        this.body = ''; // Reset for a new reply
+                        this.body = ''; // Reset for a new post
 
                         flash('Ta réponse a étée publiée !');
 

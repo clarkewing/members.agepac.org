@@ -33,10 +33,10 @@ class ThreadSubscription extends Model
     /**
      * Notify the associated user.
      *
-     * @param  \App\Reply $reply
+     * @param  \App\Post $post
      */
-    public function notify(Reply $reply)
+    public function notify(Post $post)
     {
-        $this->user->notify(new ThreadWasUpdated($this->thread, $reply));
+        $this->user->notify(new ThreadWasUpdated($this->thread, $post));
     }
 }

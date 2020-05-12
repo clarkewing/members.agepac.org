@@ -76,7 +76,12 @@ class ThreadsController extends Controller
             'user_id' => Auth::id(),
             'channel_id' => $request->input('channel_id'),
             'title' => $request->input('title'),
+        ]);
+
+        $thread->addPost([
+            'user_id' => Auth::id(),
             'body' => $request->input('body'),
+            'is_thread_initiator' => true,
         ]);
 
         if ($request->wantsJson()) {
@@ -122,7 +127,6 @@ class ThreadsController extends Controller
 
         return tap($thread)->update($request->validate([
             'title' => 'required',
-            'body' => 'required',
         ]));
     }
 
@@ -158,6 +162,7 @@ class ThreadsController extends Controller
     {
         $threads = Thread::orderBy('pinned', 'desc')
             ->latest()
+            ->with('initiatorPost')
             ->filter($filters);
 
         if ($channel->exists) {
@@ -166,6 +171,14 @@ class ThreadsController extends Controller
             View::share(['channel' => $channel]);
         }
 
-        return $threads->paginate(25);
+        $threads = $threads->paginate(25);
+
+        $threads->getCollection()->transform(function ($thread) {
+            $thread->snippet = $thread->initiatorPost->body;
+
+            return $thread;
+        });
+
+        return $threads;
     }
 }

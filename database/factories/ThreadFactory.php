@@ -18,8 +18,21 @@ $factory->define(Thread::class, function (Faker $faker) {
             return factory(Channel::class)->create()->id;
         },
         'title' => $title,
-        'body' => $faker->paragraph,
         'locked' => false,
         'pinned' => false,
+    ];
+});
+
+$factory->afterCreating(Thread::class, function ($thread, $faker) {
+    $thread->addPost([
+        'user_id' => $thread->creator->id,
+        'body' => $faker->paragraph,
+        'is_thread_initiator' => true,
+    ]);
+});
+
+$factory->state(Thread::class, 'with_body', function (Faker $faker) {
+    return [
+        'body' => $faker->paragraph,
     ];
 });

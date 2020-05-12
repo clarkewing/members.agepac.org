@@ -21,7 +21,7 @@ trait Favoritable
     }
 
     /**
-     * Get all of the reply's favorites.
+     * Get all of the post's favorites.
      */
     public function favorites()
     {
@@ -29,7 +29,7 @@ trait Favoritable
     }
 
     /**
-     * Mark the reply as favorited by the given user.
+     * Mark the post as favorited by the given user.
      * If no userId is passed, authenticated user is used.
      *
      * @param  int|null $userId
@@ -40,7 +40,7 @@ trait Favoritable
         $attributes = ['user_id' => $userId ?? Auth::id()];
 
         if (! $this->favorites()->where($attributes)->exists()) {
-            $this->owner->gainReputation('reply_favorited');
+            $this->owner->gainReputation('post_favorited');
 
             return $this->favorites()->create($attributes);
         }
@@ -59,11 +59,11 @@ trait Favoritable
 
         $this->favorites()->where($attributes)->get()->each->delete();
 
-        $this->owner->loseReputation('reply_favorited');
+        $this->owner->loseReputation('post_favorited');
     }
 
     /**
-     * Returns whether the given user has favorited this reply.
+     * Returns whether the given user has favorited this post.
      * If no userId is passed, authenticated user is used.
      *
      * @param  int|null $userId

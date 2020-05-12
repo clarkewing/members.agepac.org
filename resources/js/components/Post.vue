@@ -1,34 +1,34 @@
 <template>
-    <div :id="'reply-'+id" class="row no-gutters pt-2 mb-4">
+    <div :id="'post-'+id" class="row no-gutters pt-2 mb-4">
         <div class="col-auto flex-column pr-3">
-            <img :src="reply.owner.avatar_path"
-                 :alt="reply.owner.name"
+            <img :src="post.owner.avatar_path"
+                 :alt="post.owner.name"
                  class="rounded-circle cover mb-4"
                  style="width: 2.5rem; height: 2.5rem;">
 
             <div v-if="signedIn">
-                <favorite :reply="reply"></favorite>
+                <favorite :post="post"></favorite>
             </div>
         </div>
 
         <div class="col border-bottom">
-            <h4 class="h6 mb-1"><a :href="'/profiles/'+reply.owner.name" v-text="reply.owner.name"></a></h4>
+            <h4 class="h6 mb-1"><a :href="'/profiles/'+post.owner.name" v-text="post.owner.name"></a></h4>
 
             <div class="d-flex align-items-center small mb-3">
                 <p class="mb-0" v-text="ago"></p>
 
                 <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted"
-                        v-if="authorize('owns', reply) && ! threadLocked"
+                        v-if="authorize('owns', post) && ! threadLocked"
                         @click="editing = true">
                     Modifier
                 </button>
 
-                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted" @click="markBestReply"
-                        v-if="authorize('owns', reply.thread) && !isBest">
+                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted" @click="markBestPost"
+                        v-if="authorize('owns', post.thread) && !isBest">
                     Marquer comme meilleure réponse
                 </button>
-                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted" @click="unmarkBestReply"
-                        v-if="authorize('owns', reply.thread) && isBest">
+                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted" @click="unmarkBestPost"
+                        v-if="authorize('owns', post.thread) && isBest">
                     Enlever comme meilleure réponse
                 </button>
             </div>
@@ -40,9 +40,14 @@
                 </div>
 
                 <div class="form-group d-flex">
-                    <button class="btn btn-sm btn-outline-danger mr-2" @click="destroy">Supprimer</button>
+                    <button class="btn btn-sm btn-outline-danger mr-2"
+                            type="button"
+                            v-if="! isThreadInitiator"
+                            @click="destroy">
+                        Supprimer
+                    </button>
 
-                    <button class="btn btn-sm btn-link ml-auto mr-2" @click="cancel" type="button">Annuler</button>
+                    <button class="btn btn-sm btn-link ml-auto mr-2" @click="cancel">Annuler</button>
                     <button class="btn btn-sm btn-success" type="submit">Sauvegarder</button>
                 </div>
             </form>
@@ -69,24 +74,25 @@
     import moment from 'moment';
 
     export default {
-        props: ['reply'],
+        props: ['post'],
 
         components: {Favorite},
 
         data() {
             return {
                 editing: false,
-                id: this.reply.id,
-                body: this.reply.body,
-                isBest: this.reply.is_best,
-                tempBody: this.reply.body
+                id: this.post.id,
+                body: this.post.body,
+                isBest: this.post.is_best,
+                isThreadInitiator: this.post.is_thread_initiator,
+                tempBody: this.post.body
             }
         },
 
         computed: {
             ago() {
                 moment.locale('fr');
-                return moment(this.reply.created_at).fromNow();
+                return moment(this.post.created_at).fromNow();
             },
 
             threadLocked() {
@@ -95,14 +101,14 @@
         },
 
         created() {
-            window.events.$on('best-reply-selected', (id) => {
+            window.events.$on('best-post-selected', (id) => {
                 this.isBest = (id === this.id);
             });
         },
 
         methods: {
             update() {
-                axios.patch('/replies/' + this.id, {
+                axios.patch('/posts/' + this.id, {
                     body: this.tempBody
                 })
                     .then(({data}) => {
@@ -122,23 +128,23 @@
             },
 
             destroy() {
-                axios.delete('/replies/' + this.id)
+                axios.delete('/posts/' + this.id)
                     .then(({data}) => {
                         this.$emit('deleted', this.id);
                     });
             },
 
-            markBestReply() {
-                axios.post('/replies/' + this.id + '/best')
+            markBestPost() {
+                axios.post('/posts/' + this.id + '/best')
                     .then(({data}) => {
-                        window.events.$emit('best-reply-selected', this.id);
+                        window.events.$emit('best-post-selected', this.id);
                     });
             },
-            
-            unmarkBestReply() {
-                axios.delete('/replies/' + this.id + '/best')
+
+            unmarkBestPost() {
+                axios.delete('/posts/' + this.id + '/best')
                     .then(({data}) => {
-                        window.events.$emit('best-reply-selected', null);
+                        window.events.$emit('best-post-selected', null);
                     });
             }
         }
