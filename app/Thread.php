@@ -4,14 +4,12 @@ namespace App;
 
 use App\Events\ThreadPublished;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
 
 class Thread extends Model
 {
-    use MentionsUsers, RecordsActivity, Searchable;
+    use MentionsUsers, RecordsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -313,18 +311,6 @@ class Thread extends Model
         $this->update(['best_post_id' => $post->id]);
 
         $post->owner->gainReputation('best_post_awarded');
-    }
-
-    /**
-     * Get the indexable data array for the thread.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return Arr::except($this->toArray(), [
-            'visits_count',
-        ]);
     }
 
     /**
