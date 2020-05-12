@@ -190,8 +190,8 @@ class Post extends Model
                     'name' => $this->thread->channel->name,
                     'slug' => $this->thread->channel->slug,
                     'archived' => $this->thread->channel->archived,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }
