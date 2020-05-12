@@ -67,7 +67,27 @@ return [
         |
         */
 
-        'HTML.Allowed' => 'h1,h2,h3,h4,h5,h6,b,strong,i,em,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src],del',
+        'HTML.Allowed' => implode(',', [
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'b',
+            'strong',
+            'i',
+            'em',
+            'del',
+            'a[href|title]',
+            'ul',
+            'ol',
+            'li',
+            'p[style]',
+            'br',
+            'span[style]',
+            'img[width|height|alt|src]',
+        ]),
 
         /*
         |--------------------------------------------------------------------------
