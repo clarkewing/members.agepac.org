@@ -3,8 +3,8 @@
 @section('breadcrumbs')
     <div class="d-flex justify-content-between mb-3">
         <ais-breadcrumb :attributes="[
-            'channel.parent',
-            'channel.name',
+            'thread.channel.parent',
+            'thread.channel.name',
         ]">
             <nav aria-label="breadcrumb" slot-scope="{ items, refine, createURL }">
                 <ol class="breadcrumb bg-transparent pl-0 pt-0 mb-0">
@@ -37,7 +37,7 @@
 @section('main')
     <ais-hits>
         <div slot-scope="{ items }">
-            <thread-result v-for="item in items" :key="item.objectID" :thread="item"></thread-result>
+            <thread-result v-for="posts in items" :key="posts.objectID" :data="posts"></thread-result>
 
             <div v-if="! items.length">
                 @include('threads._no-results')

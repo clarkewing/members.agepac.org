@@ -2,7 +2,7 @@
 
 @section('main')
     @forelse($threads as $thread)
-        <thread-result :thread="{{ json_encode($thread) }}"></thread-result>
+        <thread-result :data="{{ json_encode($thread) }}"></thread-result>
 
     @empty
         @include('threads._no-results')

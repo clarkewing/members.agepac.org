@@ -4,10 +4,11 @@ namespace App;
 
 use App\Events\ReplyPosted;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
-    use Favoritable, MentionsUsers;
+    use Favoritable, MentionsUsers, Searchable;
     use RecordsActivity {
         recordActivity as protected traitRecordActivity;
     }
@@ -144,5 +145,53 @@ class Post extends Model
     public function getIsBestAttribute(): bool
     {
         return $this->isBest();
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'body' => $this->body,
+            'is_thread_initiator' => $this->is_thread_initiator,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'favorites_count' => $this->favorites_count,
+            'is_best' => $this->is_best,
+
+            'owner' => [
+                'name' => $this->owner->name,
+                'username' => $this->owner->username,
+                'avatar_path' => $this->owner->avatar_path,
+                'reputation' => $this->owner->reputation,
+            ],
+
+            'thread' => [
+                'id' => $this->thread->id,
+                'title' => $this->thread->title,
+                'replies_count' => $this->thread->replies_count,
+                'path' => $this->thread->path,
+                'pinned' => $this->thread->pinned,
+                'created_at' => $this->thread->created_at,
+                'updated_at' => $this->thread->updated_at,
+
+                'creator' => [
+                    'name' => $this->thread->creator->name,
+                    'username' => $this->thread->creator->username,
+                    'avatar_path' => $this->thread->creator->avatar_path,
+                ],
+
+                'channel' => [
+                    'parent' => $this->thread->channel->parent,
+                    'name' => $this->thread->channel->name,
+                    'slug' => $this->thread->channel->slug,
+                    'archived' => $this->thread->channel->archived,
+                ]
+            ]
+        ];
     }
 }
