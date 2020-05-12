@@ -50,12 +50,14 @@ class BestPostTest extends TestCase
         $thread = create(Thread::class, ['user_id' => Auth::id()]);
         $posts = create(Post::class, ['thread_id' => $thread->id], 2);
 
+        $thread->markBestPost($posts[1]);
+
         $this->signIn();
 
         $this->deleteJson(route('posts.unmark_best', $posts[1]))
             ->assertStatus(403);
 
-        $this->assertFalse($posts[1]->fresh()->isBest());
+        $this->assertTrue($posts[1]->fresh()->isBest());
     }
 
     /** @test */
