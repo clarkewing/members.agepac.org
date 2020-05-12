@@ -15,21 +15,21 @@ class ThreadWasUpdated extends Notification
     protected $thread;
 
     /**
-     * @var \App\Reply
+     * @var \App\Post
      */
-    protected $reply;
+    protected $post;
 
     /**
      * Create a new notification instance.
      *
      * @param  \App\Thread $thread
-     * @param  \App\Reply $reply
+     * @param  \App\Post $post
      * @return void
      */
-    public function __construct($thread, $reply)
+    public function __construct($thread, $post)
     {
         $this->thread = $thread;
-        $this->reply = $reply;
+        $this->post = $post;
     }
 
     /**
@@ -53,8 +53,8 @@ class ThreadWasUpdated extends Notification
     {
         return [
             'message' => $this->message(),
-            'notifier' => $this->reply->owner,
-            'link' => $this->reply->path(),
+            'notifier' => $this->post->owner,
+            'link' => $this->post->path(),
         ];
     }
 
@@ -63,6 +63,6 @@ class ThreadWasUpdated extends Notification
      */
     public function message()
     {
-        return sprintf('%s a répondu à "%s"', $this->reply->owner->name, $this->thread->title);
+        return sprintf('%s a répondu à "%s"', $this->post->owner->name, $this->thread->title);
     }
 }

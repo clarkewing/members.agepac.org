@@ -15,7 +15,7 @@ class NotifyMentionedUsers
      */
     public function handle(Event $event): void
     {
-        $subject = $event->reply ?? $event->thread;
+        $subject = $event->post ?? $event->thread;
 
         $subject->mentionedUsers()
             ->each->notify(new YouWereMentioned($subject));

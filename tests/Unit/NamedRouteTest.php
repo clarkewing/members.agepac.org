@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Channel;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Illuminate\Support\Str;
@@ -127,79 +127,79 @@ class NamedRouteTest extends TestCase
     }
 
     /* @test */
-    public function testRepliesIndex()
+    public function testPostsIndex()
     {
         $thread = create(Thread::class);
 
         $this->assertRoutePathIs(
-            "/threads/{$thread->channel->slug}/{$thread->slug}/replies",
-            'replies.index', [$thread->channel, $thread]
+            "/threads/{$thread->channel->slug}/{$thread->slug}/posts",
+            'posts.index', [$thread->channel, $thread]
         );
     }
 
     /* @test */
-    public function testRepliesStore()
+    public function testPostsStore()
     {
         $thread = create(Thread::class);
 
         $this->assertRoutePathIs(
-            "/threads/{$thread->channel->slug}/{$thread->slug}/replies",
-            'replies.store', [$thread->channel, $thread]
+            "/threads/{$thread->channel->slug}/{$thread->slug}/posts",
+            'posts.store', [$thread->channel, $thread]
         );
     }
 
     /* @test */
-    public function testRepliesUpdate()
+    public function testPostsUpdate()
     {
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
         $this->assertRoutePathIs(
-            "/replies/{$reply->id}",
-            'replies.update', $reply
+            "/posts/{$post->id}",
+            'posts.update', $post
         );
     }
 
     /* @test */
-    public function testRepliesDestroy()
+    public function testPostsDestroy()
     {
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
         $this->assertRoutePathIs(
-            "/replies/{$reply->id}",
-            'replies.destroy', $reply
+            "/posts/{$post->id}",
+            'posts.destroy', $post
         );
     }
 
     /* @test */
-    public function testRepliesMarkBest()
+    public function testPostsMarkBest()
     {
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
         $this->assertRoutePathIs(
-            "/replies/{$reply->id}/best",
-            'replies.mark_best', $reply
+            "/posts/{$post->id}/best",
+            'posts.mark_best', $post
         );
     }
 
     /* @test */
-    public function testRepliesFavorite()
+    public function testPostsFavorite()
     {
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
         $this->assertRoutePathIs(
-            "/replies/{$reply->id}/favorites",
-            'replies.favorite', $reply
+            "/posts/{$post->id}/favorites",
+            'posts.favorite', $post
         );
     }
 
     /* @test */
-    public function testRepliesUnfavorite()
+    public function testPostsUnfavorite()
     {
-        $reply = create(Reply::class);
+        $post = create(Post::class);
 
         $this->assertRoutePathIs(
-            "/replies/{$reply->id}/favorites",
-            'replies.unfavorite', $reply
+            "/posts/{$post->id}/favorites",
+            'posts.unfavorite', $post
         );
     }
 

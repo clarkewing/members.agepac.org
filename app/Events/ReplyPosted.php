@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Reply;
+use App\Post;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -12,18 +12,18 @@ class ReplyPosted extends Event
     use Dispatchable, SerializesModels;
 
     /**
-     * \App\Reply.
+     * \App\Post.
      */
-    public $reply;
+    public $post;
 
     /**
      * Create a new event instance.
      *
-     * @param  \App\Reply $reply
+     * @param  \App\Post $post
      * @return void
      */
-    public function __construct(Reply $reply)
+    public function __construct(Post $post)
     {
-        $this->reply = $reply;
+        $this->post = $post;
     }
 }

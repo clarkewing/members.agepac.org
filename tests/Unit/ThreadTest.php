@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Channel;
 use App\Notifications\ThreadWasUpdated;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -50,31 +50,58 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function testHasReplies()
+    public function testHasPosts()
     {
-        $this->assertInstanceOf(Collection::class, $this->thread->replies);
+        $this->assertCount(1, $this->thread->posts);
+        $this->assertInstanceOf(Collection::class, $this->thread->posts);
+
+        create(Post::class, ['thread_id' => $this->thread->id]);
+
+        $this->assertCount(2, $this->thread->fresh()->posts);
+        $this->assertInstanceOf(Collection::class, $this->thread->fresh()->posts);
     }
 
     /** @test */
-    public function testCanAddAReply()
+    public function testHasInitiatorPost()
     {
-        $this->thread->addReply([
+        $this->assertInstanceOf(Post::class, $this->thread->initiatorPost);
+    }
+
+    /** @test */
+    public function testHasReplies()
+    {
+        $this->assertCount(0, $this->thread->replies);
+        $this->assertInstanceOf(Collection::class, $this->thread->replies);
+
+        create(Post::class, ['thread_id' => $this->thread->id]);
+
+        $this->assertCount(1, $this->thread->fresh()->replies);
+        $this->assertInstanceOf(Collection::class, $this->thread->fresh()->replies);
+    }
+
+    /** @test */
+    public function testCanAddAPost()
+    {
+        // There should already be the thread initiator post.
+        $this->assertCount(1, $this->thread->posts);
+
+        $this->thread->addPost([
             'body' => 'Foobar',
             'user_id' => 1,
         ]);
 
-        $this->assertCount(1, $this->thread->replies);
+        $this->assertCount(2, $this->thread->fresh()->posts);
     }
 
     /** @test */
-    public function testNotifiesAllSubscribersWhenAReplyIsAdded()
+    public function testNotifiesAllSubscribersWhenAPostIsAdded()
     {
         Notification::fake();
 
         $this->signIn()
             ->thread
             ->subscribe()
-            ->addReply([
+            ->addPost([
                 'body' => 'Foobar',
                 'user_id' => create(User::class)->id,
             ]);
@@ -124,7 +151,7 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function testCanCheckIfTheAuthenticatedUserHasReadAllReplies()
+    public function testCanCheckIfTheAuthenticatedUserHasReadAllPosts()
     {
         $this->signIn($user = create(User::class));
 
@@ -160,40 +187,12 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function testCanHaveABestReply()
+    public function testCanHaveABestPost()
     {
-        $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
+        $post = create(Post::class, ['thread_id' => $this->thread->id]);
 
-        $this->thread->markBestReply($reply);
+        $this->thread->markBestPost($post);
 
-        $this->assertEquals($reply->id, $this->thread->bestReply->id);
-    }
-
-    /** @test */
-    public function testDetectsAllMentionedUsersInTheBody()
-    {
-        $jane = create(User::class, ['username' => 'jane.doe']);
-        $john = create(User::class, ['username' => 'john.doe']);
-
-        $thread = new Thread([
-            'body' => '@jane.doe wants to talk to @john.doe but not @fake.user',
-        ]);
-
-        $this->assertCount(2, $thread->mentionedUsers());
-        $this->assertTrue($thread->mentionedUsers()->contains('id', $jane->id));
-        $this->assertTrue($thread->mentionedUsers()->contains('id', $john->id));
-    }
-
-    /** @test */
-    public function testWrapsMentionedUsernamesInTheBodyWithinAnchorTags()
-    {
-        $thread = new Thread([
-            'body' => 'Hello @jane.doe.',
-        ]);
-
-        $this->assertEquals(
-            'Hello <a href="' . route('profiles.show', 'jane.doe', false) . '">@jane.doe</a>.',
-            $thread->body
-        );
+        $this->assertEquals($post->id, $this->thread->bestPost->id);
     }
 }

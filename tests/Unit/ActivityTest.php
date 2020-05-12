@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Activity;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -30,12 +30,12 @@ class ActivityTest extends TestCase
     }
 
     /** @test */
-    public function testRecordsActivityWhenAReplyIsCreated()
+    public function testRecordsActivityWhenAPostIsCreated()
     {
         $this->signIn();
 
         // Will also create associated thread.
-        $thread = create(Reply::class);
+        create(Post::class);
 
         $this->assertEquals(2, Activity::count());
     }

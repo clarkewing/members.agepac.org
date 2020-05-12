@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
+use App\Post;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -16,7 +16,7 @@ class SearchController extends Controller
     public function show(Request $request)
     {
         if ($request->expectsJson()) {
-            return Thread::search($request->query('query'))->paginate(25);
+            return Post::search($request->query('query'))->paginate(25);
         }
 
         return view('threads.search');

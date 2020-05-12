@@ -21,7 +21,7 @@ class InvalidKeywords
     {
         foreach ($this->keywords as $keywords) {
             if (stripos($body, $keywords) !== false) {
-                throw new Exception('Your reply contains spam.');
+                throw new Exception('Your post contains spam.');
             }
         }
     }

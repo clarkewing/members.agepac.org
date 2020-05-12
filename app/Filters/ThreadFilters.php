@@ -2,7 +2,7 @@
 
 namespace App\Filters;
 
-use App\Reply;
+use App\Post;
 use App\User;
 use Illuminate\Support\Facades\View;
 
@@ -53,10 +53,8 @@ class ThreadFilters extends Filters
     {
         return $this->builder->whereNotIn('id', function ($query) {
             $query->select('thread_id')
-                ->from((new Reply)->getTable());
+                ->from((new Post)->getTable())
+                ->where('is_thread_initiator', false);
         });
-
-        // Fails testing with SQLite:
-        // return $this->builder->having('replies_count', 0);
     }
 }

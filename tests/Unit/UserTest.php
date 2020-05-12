@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Reply;
+use App\Post;
 use App\User;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -10,13 +10,13 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     /** @test */
-    public function testUserCanFetchTheirMostRecentReply()
+    public function testUserCanFetchTheirMostRecentPost()
     {
         $user = create(User::class);
 
-        $reply = create(Reply::class, ['user_id' => $user->id]);
+        $post = create(Post::class, ['user_id' => $user->id]);
 
-        $this->assertEquals($reply->id, $user->lastReply->id);
+        $this->assertEquals($post->id, $user->lastPost->id);
     }
 
     /** @test */

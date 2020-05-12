@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Activity;
 use App\Channel;
-use App\Reply;
+use App\Post;
 use App\Thread;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class CreateThreadsTest extends TestCase
         $this->get(route('threads.create'))
             ->assertRedirect(route('login'));
 
-        $this->post(route('threads.index'))
+        $this->post(route('threads.store'))
             ->assertRedirect(route('login'));
     }
 
@@ -47,8 +47,21 @@ class CreateThreadsTest extends TestCase
     {
         $this->followingRedirects()
             ->publishThread(['title' => 'Some title', 'body' => 'This is the body.'])
-            ->assertSee('Some title')
-            ->assertSee('This is the body.');
+            ->assertSee('Some title');
+
+        $this->assertDatabaseHas('posts', ['body' => 'This is the body.']);
+    }
+
+    /** @test */
+    public function testNewThreadCreatesAThreadInitiatorPost()
+    {
+        $this->publishThread(['title' => 'Some title', 'body' => 'This is the body.']);
+
+        $this->assertDatabaseHas('threads', ['title' => 'Some title']);
+        $this->assertDatabaseHas('posts', [
+            'body' => 'This is the body.',
+            'is_thread_initiator' => true,
+        ]);
     }
 
     /** @test */
@@ -93,11 +106,11 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['title' => 'Foo Title']);
+        $existingThread = create(Thread::class, ['title' => 'Foo Title']);
 
-        $this->assertEquals('foo-title', $thread->fresh()->slug);
+        $this->assertEquals('foo-title', $existingThread->fresh()->slug);
 
-        $thread = $this->postJson(route('threads.index'), $thread->toArray())->json();
+        $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
         $this->assertEquals('foo-title-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -107,9 +120,9 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['title' => 'Financials 2020']);
+        $existingThread = create(Thread::class, ['title' => 'Financials 2020']);
 
-        $thread = $this->postJson(route('threads.index'), $thread->toArray())->json();
+        $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
         $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
     }
@@ -135,13 +148,13 @@ class CreateThreadsTest extends TestCase
         $this->signIn();
 
         $thread = create(Thread::class, ['user_id' => Auth::id()]);
-        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+        $post = create(Post::class, ['thread_id' => $thread->id]);
 
         $this->json('DELETE', $thread->path())
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
-        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
 
         $this->assertEquals(0, Activity::count());
     }
@@ -149,15 +162,20 @@ class CreateThreadsTest extends TestCase
     /**
      * Submits a post request to publish a thread.
      *
-     * @param  array $overrides
+     * @param  array  $overrides
+     * @param  bool  $wantsJson
      * @return \Illuminate\Testing\TestResponse
      */
-    public function publishThread(array $overrides = [])
+    public function publishThread(array $overrides = [], bool $wantsJson = false)
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = make(Thread::class, $overrides);
+        $thread = factory(Thread::class)->states('with_body')->make($overrides);
 
-        return $this->post(route('threads.index'), $thread->toArray());
+        if ($wantsJson) {
+            return $this->postJson(route('threads.store'), $thread->toArray());
+        }
+
+        return $this->post(route('threads.store'), $thread->toArray());
     }
 }
