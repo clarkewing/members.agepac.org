@@ -43,6 +43,7 @@ Route::post('/threads/{channel}/{thread}/posts', 'PostsController@store')->name(
 Route::apiResource('posts', 'PostsController')->only(['update', 'destroy']);
 
 Route::post('/posts/{post}/best', 'BestPostsController@store')->name('posts.mark_best');
+Route::delete('/posts/{post}/best', 'BestPostsController@destroy')->name('posts.unmark_best');
 
 Route::post('/posts/{post}/favorites', 'FavoritesController@store')->name('posts.favorite');
 Route::delete('/posts/{post}/favorites', 'FavoritesController@destroy')->name('posts.unfavorite');

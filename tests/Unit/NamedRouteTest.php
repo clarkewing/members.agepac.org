@@ -182,6 +182,17 @@ class NamedRouteTest extends TestCase
     }
 
     /* @test */
+    public function testPostsUnmarkBest()
+    {
+        $posts = create(Post::class);
+
+        $this->assertRoutePathIs(
+            "/posts/{$posts->id}/best",
+            'posts.unmark_best', $posts
+        );
+    }
+
+    /* @test */
     public function testPostsFavorite()
     {
         $post = create(Post::class);

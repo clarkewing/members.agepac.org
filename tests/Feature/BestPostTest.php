@@ -25,6 +25,22 @@ class BestPostTest extends TestCase
     }
 
     /** @test */
+    public function testThreadCreatorCanUnmarkBestPost()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $posts = create(Post::class, ['thread_id' => $thread->id], 2);
+
+        $thread->markBestPost($posts[1]);
+        $this->assertTrue($posts[1]->fresh()->isBest());
+
+        $this->deleteJson(route('posts.unmark_best', $posts[1]));
+
+        $this->assertFalse($posts[1]->fresh()->isBest());
+    }
+
+    /** @test */
     public function testOnlyThreadCreatorMayMarkPostAsBest()
     {
         $this->withExceptionHandling();
@@ -39,6 +55,25 @@ class BestPostTest extends TestCase
             ->assertStatus(403);
 
         $this->assertFalse($posts[1]->fresh()->isBest());
+    }
+
+    /** @test */
+    public function testOnlyThreadCreatorMayUnmarkPostAsBest()
+    {
+        $this->withExceptionHandling();
+        $this->signIn();
+
+        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $posts = create(Post::class, ['thread_id' => $thread->id], 2);
+
+        $thread->markBestPost($posts[1]);
+
+        $this->signIn();
+
+        $this->deleteJson(route('posts.unmark_best', $posts[1]))
+            ->assertStatus(403);
+
+        $this->assertTrue($posts[1]->fresh()->isBest());
     }
 
     /** @test */

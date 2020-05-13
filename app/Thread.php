@@ -314,6 +314,20 @@ class Thread extends Model
     }
 
     /**
+     * Unset the thread's best post.
+     *
+     * @return void
+     */
+    public function unmarkBestPost(): void
+    {
+        if ($this->hasBestPost()) {
+            $this->bestPost->owner->loseReputation('best_post_awarded');
+        }
+
+        $this->update(['best_post_id' => null]);
+    }
+
+    /**
      * Determine if the thread has a best post.
      *
      * @return bool

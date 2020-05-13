@@ -29,6 +29,8 @@ class BestPostsController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $this->authorize('update', $post->thread);
+
+        $post->thread->unmarkBestPost();
     }
 }
