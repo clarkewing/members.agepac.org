@@ -108,6 +108,14 @@ class Post extends Model
     }
 
     /**
+     * Get the attachments for the post.
+     */
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+
+    /**
      * Determines whether the post was just published.
      *
      * @return bool
