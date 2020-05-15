@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\CleanupAttachments::class,
     ];
 
     /**
@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+         $schedule->command(Commands\CleanupAttachments::class)
+             ->cron('0 */2 * * *'); // Every two hours
     }
 
     /**

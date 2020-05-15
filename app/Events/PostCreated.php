@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class ReplyPosted extends Event
+class PostCreated extends Event
 {
     use Dispatchable, SerializesModels;
 

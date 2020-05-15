@@ -2,7 +2,8 @@
 
 namespace App;
 
-use App\Events\ReplyPosted;
+use App\Events\PostCreated;
+use App\Events\PostUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
@@ -63,6 +64,8 @@ class Post extends Model
             if (! $post->is_thread_initiator) {
                 $post->owner->loseReputation('reply_posted');
             }
+
+            $post->attachments->each->delete();
         });
     }
 
@@ -72,7 +75,8 @@ class Post extends Model
      * @var array
      */
     protected $dispatchesEvents = [
-        'created' => ReplyPosted::class,
+        'created' => PostCreated::class,
+        'updated' => PostUpdated::class,
     ];
 
     /**
