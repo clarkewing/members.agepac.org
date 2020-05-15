@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Attachment;
 use App\Channel;
 use App\Post;
 use App\Thread;
@@ -211,6 +212,26 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             "/posts/{$post->id}/favorites",
             'posts.unfavorite', $post
+        );
+    }
+
+    /* @test */
+    public function testAttachmentsStore()
+    {
+        $this->assertRoutePathIs(
+            '/attachments',
+            'attachments.store'
+        );
+    }
+
+    /* @test */
+    public function testAttachmentsDestroy()
+    {
+        $attachment = create(Attachment::class);
+
+        $this->assertRoutePathIs(
+            "/attachments/{$attachment->id}",
+            'attachments.destroy', $attachment
         );
     }
 
