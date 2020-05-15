@@ -218,7 +218,7 @@
                 inheritable: true,
                 parser: function (element) {
                     var style = window.getComputedStyle(element);
-                    return style.textDecoration === "underline";
+                    return style.textDecoration.includes("underline");
                 }
             };
             Trix.config.blockAttributes.heading2 = {
