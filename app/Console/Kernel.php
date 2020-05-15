@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command(Commands\CleanupAttachments::class)
+        $schedule->command(Commands\CleanupAttachments::class)
              ->cron('0 */2 * * *'); // Every two hours
     }
 

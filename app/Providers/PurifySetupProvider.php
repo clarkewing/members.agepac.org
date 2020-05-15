@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use HTMLPurifier_HTMLDefinition;
-use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Support\ServiceProvider;
+use Stevebauman\Purify\Facades\Purify;
 
 class PurifySetupProvider extends ServiceProvider
 {

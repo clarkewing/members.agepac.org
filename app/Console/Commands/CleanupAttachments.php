@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Attachment;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 
 class CleanupAttachments extends Command
 {

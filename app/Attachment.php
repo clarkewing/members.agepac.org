@@ -39,14 +39,12 @@ class Attachment extends Model
      */
     protected static function booted(): void
     {
-        static::creating(function ($attachment): void
-        {
+        static::creating(function ($attachment): void {
             // Set the attachment's id.
             $attachment->id = Str::uuid();
         });
 
-        static::deleting(function ($attachment): void
-        {
+        static::deleting(function ($attachment): void {
             Storage::disk('public')->delete($attachment->path);
         });
     }

@@ -8,7 +8,6 @@ use App\Thread;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,13 +85,13 @@ class PostAttachmentsTest extends TestCase
         $postResponse = $this->postJson(route('posts.store', [$thread->channel, $thread]), [
             'body' => '<figure data-trix-attachment="'
                       . htmlentities(json_encode([
-                            'contentType' => 'application/pdf',
-                            'filename' => 'document.pdf',
-                            'filesize' => 1000,
-                            'id' => $attachmentResponse->json('id'),
-                            'href' => '/storage/' . $attachmentResponse->json('path'),
-                            'url' => '/storage/' . $attachmentResponse->json('path'),
-                        ]))
+                          'contentType' => 'application/pdf',
+                          'filename' => 'document.pdf',
+                          'filesize' => 1000,
+                          'id' => $attachmentResponse->json('id'),
+                          'href' => '/storage/' . $attachmentResponse->json('path'),
+                          'url' => '/storage/' . $attachmentResponse->json('path'),
+                      ]))
                       . '" class="attachment attachment--file attachment--pdf"></figure>',
         ]);
 
