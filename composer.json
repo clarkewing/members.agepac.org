@@ -22,7 +22,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "propaganistas/laravel-phone": "^4.2",
-        "stevebauman/purify": "^3.0"
+        "stevebauman/purify": "^3.0",
+        "torann/geoip": "^1.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
