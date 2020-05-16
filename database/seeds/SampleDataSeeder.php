@@ -60,13 +60,36 @@ class SampleDataSeeder extends Seeder
         Activity::truncate();
         Favorite::truncate();
 
-        factory(Thread::class, 30)->create()
+        factory(Thread::class, 30)->states('from_existing_channel_and_user')->create()
             ->each(function ($thread) {
+                $this->recordActivity($thread, 'created', $thread->creator->id);
+
                 factory(Post::class, $this->faker->numberBetween(1, 10))
-                    ->states(random_int(0, 10) ? [] : ['with_attachment'])
-                    ->create([
+                    ->states($this->faker->boolean(10)
+                        ? ['from_existing_user']
+                        : ['from_existing_user', 'with_attachment']
+                    )->create([
                         'thread_id' => $thread->id,
-                    ]);
+                    ])->each(function ($post) {
+                        $this->recordActivity($post, 'created', $post->owner->id);
+                    });
             });
+    }
+
+    /**
+     * @param $model
+     * @param $event_type
+     * @param $user_id
+     *
+     * @throws ReflectionException
+     */
+    protected function recordActivity($model, $event_type, $user_id)
+    {
+        $type = strtolower((new \ReflectionClass($model))->getShortName());
+
+        $model->morphMany(Activity::class, 'subject')->create([
+            'user_id' => $user_id,
+            'type' => "{$event_type}_{$type}"
+        ]);
     }
 }

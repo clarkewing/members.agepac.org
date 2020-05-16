@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 $factory->define(Attachment::class, function (Faker $faker) {
-    $file = UploadedFile::fake()->create(
-        $fileName = "{$faker->word}.{$faker->fileExtension}",
-        $faker->numberBetween(20, 10000),
-        mimetype_from_filename($fileName)
-    );
+    $file = $faker->boolean
+        ? UploadedFile::fake()->image($fileName = "{$faker->word}.jpg")
+        : UploadedFile::fake()->create(
+            $fileName = "{$faker->word}.{$faker->fileExtension}",
+            $faker->numberBetween(20, 10000),
+            mimetype_from_filename($fileName)
+        );
 
     return [
         'post_id' => null,

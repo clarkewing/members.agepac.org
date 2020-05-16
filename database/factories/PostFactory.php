@@ -40,3 +40,11 @@ $factory->state(Post::class, 'with_attachment', function (Faker $faker) {
         'body' => $faker->paragraph . $trixAttachment . $faker->paragraph,
     ];
 });
+
+$factory->state(Post::class, 'from_existing_user', function (Faker $faker) {
+    return [
+        'user_id' => function () {
+            return User::all()->random()->id;
+        },
+    ];
+});

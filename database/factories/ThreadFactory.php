@@ -36,3 +36,14 @@ $factory->state(Thread::class, 'with_body', function (Faker $faker) {
         'body' => $faker->paragraph,
     ];
 });
+
+$factory->state(Thread::class, 'from_existing_channel_and_user', function (Faker $faker) {
+    return [
+        'user_id' => function () {
+            return User::all()->random()->id;
+        },
+        'channel_id' => function () {
+            return Channel::all()->random()->id;
+        },
+    ];
+});
