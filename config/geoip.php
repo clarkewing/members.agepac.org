@@ -112,7 +112,7 @@ return [
     |
     */
 
-    'cache' => 'all',
+    'cache' => 'none',
 
     /*
     |--------------------------------------------------------------------------
@@ -124,7 +124,7 @@ return [
     |
     */
 
-    'cache_tags' => ['torann-geoip-location'],
+    'cache_tags' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -148,18 +148,18 @@ return [
 
     'default_location' => [
         'ip' => '127.0.0.0',
-        'iso_code' => 'US',
-        'country' => 'United States',
-        'city' => 'New Haven',
-        'state' => 'CT',
-        'state_name' => 'Connecticut',
-        'postal_code' => '06510',
-        'lat' => 41.31,
-        'lon' => -72.92,
-        'timezone' => 'America/New_York',
-        'continent' => 'NA',
+        'iso_code' => 'FR',
+        'country' => 'France',
+        'city' => 'Toulouse',
+        'region' => 'OCC',
+        'region_name' => 'Occitanie',
+        'postal_code' => '31000',
+        'lat' => 43.6046,
+        'lon' => 1.4451,
+        'timezone' => 'Europe/Paris',
+        'continent' => 'EU',
         'default' => true,
-        'currency' => 'USD',
+        'currency' => 'EUR',
     ],
 
 ];
