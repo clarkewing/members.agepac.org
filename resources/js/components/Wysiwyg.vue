@@ -90,6 +90,15 @@
                     </button>
                 </div>
 
+                <div class="btn-group mb-2 ml-sm-auto mr-2" role="group" aria-label="File tools">
+                    <button type="button" class="btn btn-secondary px-2" tabindex="-1"
+                            data-trix-action="attachFiles" :title="lang.attachFiles">
+                        <svg class="bi bi-paperclip" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M4.5 3a2.5 2.5 0 015 0v9a1.5 1.5 0 01-3 0V5a.5.5 0 011 0v7a.5.5 0 001 0V3a1.5 1.5 0 10-3 0v9a2.5 2.5 0 005 0V5a.5.5 0 011 0v7a3.5 3.5 0 11-7 0V3z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+
                 <div class="btn-group mb-2 ml-sm-auto" role="group" aria-label="History tools">
                     <button type="button" class="btn btn-secondary px-2" tabindex="-1"
                             data-trix-action="undo" data-trix-key="z" :title="lang.undo">
@@ -128,6 +137,7 @@
             :toolbar="'trixToolbar' + _uid"
             :class="['form-control', error ? 'is-invalid' : '']"
             @trix-change="change"
+            @trix-attachment-add="addAttachment"
             :placeholder="placeholder">
         </trix-editor>
 
@@ -186,12 +196,41 @@
                         name: query
                     }
                 })
-                    .then(function (response) {
-                        cb(response.data);
-                    })
-                    .catch(function (error) {
-                        cb([]);
+                .then(function (response) {
+                    cb(response.data);
+                })
+                .catch(function () {
+                    cb([]);
+                });
+            },
+
+            addAttachment({attachment}) {
+                if (! attachment.file) return;
+
+                let formData = new FormData();
+                formData.append('file', attachment.file);
+
+                axios.post('/attachments', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+
+                    validateStatus: function (status) {
+                        return status === 201; // HTTP_CREATED
+                    },
+
+                    onUploadProgress: function (progressEvent) {
+                        attachment.setUploadProgress(
+                            progressEvent.loaded / progressEvent.total * 100
+                        );
+                    }
+                }).then(({data}) => {
+                    attachment.setAttributes({
+                        id: data.id,
+                        url: '/storage/' + data.path,
+                        href: '/storage/' + data.path
                     });
+                });
             }
         },
 
@@ -218,7 +257,7 @@
                 inheritable: true,
                 parser: function (element) {
                     var style = window.getComputedStyle(element);
-                    return style.textDecoration === "underline";
+                    return style.textDecoration.includes("underline");
                 }
             };
             Trix.config.blockAttributes.heading2 = {

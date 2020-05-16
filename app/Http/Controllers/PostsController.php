@@ -69,7 +69,9 @@ class PostsController extends Controller
 
         $request->validate(['body' => 'required']);
 
-        $post->update($request->only('body'));
+        $post->fill($request->only('body'))->save();
+
+        return $post;
     }
 
     /**

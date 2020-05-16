@@ -51,7 +51,6 @@
 
                 if (this.editing) {
                     this.$nextTick(() => {
-                        console.log(this.$refs.wysiwyg);
                         this.$refs.wysiwyg.$refs.editor.focus();
                     });
                 }

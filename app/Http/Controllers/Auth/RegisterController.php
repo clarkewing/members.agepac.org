@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
-use Torann\GeoIP\Facades\GeoIP;
 
 class RegisterController extends Controller
 {
@@ -67,7 +66,7 @@ class RegisterController extends Controller
             'phone' => [
                 'required',
                 Rule::phone()->detect() // Auto-detect country if country code supplied
-                    ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]), // Fallback to France then GeoIP if unable to auto-detect
+                    ->country('FR'), // Fallback to France if unable to auto-detect
             ],
         ]);
     }
