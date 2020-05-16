@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Post;
 use App\User;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class PostTest extends TestCase
@@ -59,6 +60,8 @@ class PostTest extends TestCase
     /** @test */
     public function testBodyPreservesAnyAllowedHtmlTags()
     {
+        Event::fake();
+
         $post = create(Post::class, ['body' => '<h1>Header 1</h1>']);
         $this->assertEquals('<h1>Header 1</h1>', $post->body);
 
@@ -107,14 +110,30 @@ class PostTest extends TestCase
         $post = create(Post::class, ['body' => '<span style="color:#0000FF;">Span with style</span>']);
         $this->assertEquals('<span style="color:#0000FF;">Span with style</span>', $post->body);
 
-        $post = create(Post::class, ['body' => 'Line 1<br />Line 2']);
-        $this->assertEquals('Line 1<br />Line 2', $post->body);
+        $post = create(Post::class, ['body' => 'Line 1<br>Line 2']);
+        $this->assertEquals('Line 1<br>Line 2', $post->body);
 
         $post = create(Post::class, [
-            'body' => '<img src="/greatimage.jpg" alt="Image with src, alt, width, and height" width="12" height="34" />',
+            'body' => '<figure class="attachment" data-trix-attachment="foobar" data-trix-attributes="baz" data-trix-content-type="foo/bar">Content</figure>',
         ]);
         $this->assertEquals(
-            '<img src="/greatimage.jpg" alt="Image with src, alt, width, and height" width="12" height="34" />',
+            '<figure class="attachment" data-trix-attachment="foobar" data-trix-attributes="baz" data-trix-content-type="foo/bar">Content</figure>',
+            $post->body
+        );
+
+        $post = create(Post::class, [
+            'body' => '<figcaption class="attachment__caption">This is a caption</figcaption>',
+        ]);
+        $this->assertEquals(
+            '<figcaption class="attachment__caption">This is a caption</figcaption>',
+            $post->body
+        );
+
+        $post = create(Post::class, [
+            'body' => '<img src="/greatimage.jpg" alt="Image with src, alt, width, and height" width="12" height="34">',
+        ]);
+        $this->assertEquals(
+            '<img src="/greatimage.jpg" alt="Image with src, alt, width, and height" width="12" height="34">',
             $post->body
         );
     }

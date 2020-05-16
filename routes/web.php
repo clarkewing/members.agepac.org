@@ -48,6 +48,9 @@ Route::delete('/posts/{post}/best', 'BestPostsController@destroy')->name('posts.
 Route::post('/posts/{post}/favorites', 'FavoritesController@store')->name('posts.favorite');
 Route::delete('/posts/{post}/favorites', 'FavoritesController@destroy')->name('posts.unfavorite');
 
+Route::post('/attachments', 'AttachmentsController@store')->name('attachments.store');
+Route::delete('/attachments/{attachment}', 'AttachmentsController@destroy')->name('attachments.destroy');
+
 /* Profiles */
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');
 

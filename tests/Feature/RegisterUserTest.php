@@ -260,39 +260,6 @@ class RegisterUserTest extends TestCase
             ->assertSessionHasErrors('phone');
     }
 
-    /** @test */
-    public function testPhoneCountryCanBeAutodetectedFromCountryCode()
-    {
-        $this->createAccount(['phone' => '+1 (202) 456-1414']) // White House
-            ->assertSessionDoesntHaveErrors();
-
-        $this->assertEquals('US', Auth::user()->phone->getCountry());
-    }
-
-    /** @test */
-    public function testPhoneWithoutCountryCodeFallsbackToFranceThenGeoIpBased()
-    {
-        // US IP address (using Google data)
-        $this->withServerVariables(['REMOTE_ADDR' => '8.8.8.8']);
-
-        $this->createAccount(['phone' => '05 62 17 40 00']) // ENAC Toulouse number
-            ->assertSessionDoesntHaveErrors();
-
-        $this->assertEquals('FR', Auth::user()->phone->getCountry());
-
-        Auth::logout();
-
-        $this->createAccount(['phone' => '(650) 253-0000']) // Google California number
-            ->assertSessionDoesntHaveErrors();
-
-        $this->assertEquals('US', Auth::user()->phone->getCountry());
-
-        Auth::logout();
-
-        $this->createAccount(['phone' => '0370 010 0222']) // BBC London number
-            ->assertSessionHasErrors('phone');
-    }
-
     /**
      * Submits a post request to create an account.
      *
