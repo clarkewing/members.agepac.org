@@ -67,7 +67,7 @@ class RegisterController extends Controller
             'phone' => [
                 'required',
                 Rule::phone()->detect() // Auto-detect country if country code supplied
-                    ->country(['FR', geoip()['iso_code']]), // Fallback to France if unable to auto-detect
+                    ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]), // Fallback to France then GeoIP if unable to auto-detect
             ],
         ]);
     }
