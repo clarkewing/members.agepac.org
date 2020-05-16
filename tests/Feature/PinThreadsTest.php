@@ -62,6 +62,8 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function testPinnedThreadsAreListedFirst()
     {
+        $this->signInAdmin();
+
         [$threadOne, $threadTwo, $threadThree] = create(Thread::class, [], 3);
 
         $this->getJson(route('threads.index'))->assertJson([
@@ -72,7 +74,7 @@ class PinThreadsTest extends TestCase
             ],
         ]);
 
-        $this->signInAdmin()->post(route('threads.pin', $pinned = $threadThree))
+        $this->post(route('threads.pin', $pinned = $threadThree))
             ->assertStatus(204);
 
         $this->getJson(route('threads.index'))->assertJson([

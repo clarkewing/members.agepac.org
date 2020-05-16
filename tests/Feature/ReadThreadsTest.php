@@ -7,6 +7,7 @@ use App\Post;
 use App\Thread;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
@@ -17,7 +18,18 @@ class ReadThreadsTest extends TestCase
     {
         parent::setUp();
 
+        $this->withExceptionHandling()->signIn();
+
         $this->thread = create(Thread::class);
+    }
+
+    /** @test */
+    public function testGuestCannotViewAllThreads()
+    {
+        Auth::logout();
+
+        $this->get(route('threads.index'))
+            ->assertRedirect(route('login'));
     }
 
     /** @test */
@@ -68,14 +80,12 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByUsername()
     {
-        $this->signIn(create(User::class, ['username' => 'john.doe']));
+        $threadByUser = create(Thread::class, ['user_id' => Auth::id()]);
+        $threadNotByUser = create(Thread::class);
 
-        $threadByJohn = create(Thread::class, ['user_id' => Auth::id()]);
-        $threadNotByJohn = create(Thread::class);
-
-        $this->get(route('threads.index') . '?by=john.doe')
-            ->assertSee($threadByJohn->title)
-            ->assertDontSee($threadNotByJohn->title);
+        $this->get(route('threads.index') . '?by=' . Auth::user()->username)
+            ->assertSee($threadByUser->title)
+            ->assertDontSee($threadNotByUser->title);
     }
 
     /** @test */

@@ -21,7 +21,7 @@ class ThreadsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth');
         $this->middleware('verified:threads.index,Tu dois vérifier ton adresse email avant de pouvoir publier.')
             ->only(['create', 'store']);
     }
