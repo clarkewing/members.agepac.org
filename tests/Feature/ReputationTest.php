@@ -113,6 +113,22 @@ class ReputationTest extends TestCase
         $this->assertEquals($total, $secondPost->owner->reputation);
     }
 
+    public function testUserLosesPointsWhenTheirBestPostIsUnmarked()
+    {
+        $post = create(Post::class);
+        $thread = $post->thread;
+
+        $thread->markBestPost($post);
+
+        $total = $this->points['reply_posted'] + $this->points['best_post_awarded'];
+        $this->assertEquals($total, $post->owner->reputation);
+
+        $thread->unmarkBestPost($post);
+
+        $total = $this->points['reply_posted'] + $this->points['best_post_awarded'] - $this->points['best_post_awarded'];
+        $this->assertEquals($total, $post->owner->fresh()->reputation);
+    }
+
     public function testUserLosesPointsWhenTheirBestPostIsDeleted()
     {
         $post = create(Post::class);
