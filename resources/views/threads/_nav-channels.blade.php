@@ -5,33 +5,35 @@
             'thread.channel.name',
         ]"
     >
-        <x-linklist title="Sections" spacing="0" slot-scope="{items, refine, createURL}">
-            <li v-for="(parent, index) in items">
-                <button class="btn btn-link p-0 font-weight-bold text-muted link-muted"
-                        type="button"
-                        @click.prevent="refine(parent.value)">
-                    @{{ parent.label ? parent.label.toUpperCase() : 'GÉNÉRAL' }}
+        <template #default="{ items, refine, createURL }">
+            <x-linklist title="Sections" spacing="0">
+                <li v-for="(parent, index) in items">
+                    <button class="btn btn-link p-0 font-weight-bold text-muted link-muted"
+                            type="button"
+                            @click.prevent="refine(parent.value)">
+                        @{{ parent.label ? parent.label.toUpperCase() : 'GÉNÉRAL' }}
 
-                    <span class="badge badge-pill badge-secondary align-middle ml-1"
-                          v-text="parent.count"></span>
-                </button>
+                        <span class="badge badge-pill badge-secondary align-middle ml-1"
+                              v-text="parent.count"></span>
+                    </button>
 
-                <ul :id="'subChannel_' + index"
-                    class="list-unstyled pl-2"
-                    v-if="parent.data">
-                    <li v-for="channel in parent.data">
-                        <a class="link-muted"
-                           :href="createURL(channel.value)"
-                           @click.prevent="refine(channel.value)">
-                            @{{ channel.label }}
+                    <ul :id="'subChannel_' + index"
+                        class="list-unstyled pl-2"
+                        v-if="parent.data">
+                        <li v-for="channel in parent.data">
+                            <a class="link-muted"
+                               :href="createURL(channel.value)"
+                               @click.prevent="refine(channel.value)">
+                                @{{ channel.label }}
 
-                            <span class="badge badge-pill badge-secondary align-middle ml-1"
-                                  v-text="channel.count"></span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </x-linklist>
+                                <span class="badge badge-pill badge-secondary align-middle ml-1"
+                                      v-text="channel.count"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </x-linklist>
+        </template>
     </ais-hierarchical-menu>
 
 @else

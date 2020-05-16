@@ -5,12 +5,12 @@
                 :size="size"
                 :align="align"
                 @pagination-change-page="onPaginationChangePage">
-        <span slot="prev-nav">
+        <template #prev-nav>
             <slot name="prev-nav">‹</slot>
-        </span>
-        <span slot="next-nav">
+        </template>
+        <template #next-nav>
             <slot name="next-nav">›</slot>
-        </span>
+        </template>
     </pagination>
 </template>
 

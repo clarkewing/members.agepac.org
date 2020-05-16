@@ -1,6 +1,6 @@
 @if(Route::is('threads.search'))
     <ais-search-box>
-        <div slot-scope="{ currentRefinement, isSearchStalled, refine }">
+        <template #default="{ currentRefinement, isSearchStalled, refine }">
             <div class="input-group mb-4">
                 <input type="search"
                        placeholder="Rechercher..."
@@ -28,7 +28,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </template>
     </ais-search-box>
 
 @else

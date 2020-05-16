@@ -1,6 +1,6 @@
 <template>
     <a :href="route" @click.prevent="logout">
-        <slot/>
+        <slot></slot>
     </a>
 </template>
 
