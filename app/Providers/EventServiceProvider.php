@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Events\PostCreated;
-use App\Events\PostUpdated;
+use App\Events\ReplyPosted;
 use App\Events\ThreadPublished;
 use App\Listeners\NotifyMentionedUsers;
 use App\Listeners\NotifySubscribers;
-use App\Listeners\ReconcileAttachments;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,13 +25,9 @@ class EventServiceProvider extends ServiceProvider
         ThreadPublished::class => [
             NotifyMentionedUsers::class,
         ],
-        PostCreated::class => [
-            ReconcileAttachments::class,
+        ReplyPosted::class => [
             NotifyMentionedUsers::class,
             NotifySubscribers::class,
-        ],
-        PostUpdated::class => [
-            ReconcileAttachments::class,
         ],
     ];
 

@@ -54,7 +54,7 @@ return [
         |
         */
 
-        'HTML.Doctype' => 'HTML 4.01 Transitional',
+        'HTML.Doctype' => 'XHTML 1.0 Strict',
 
         /*
         |--------------------------------------------------------------------------
@@ -79,15 +79,13 @@ return [
             'i',
             'em',
             'del',
-            'a[href|title|class]',
+            'a[href|title]',
             'ul',
             'ol',
             'li',
             'p[style]',
             'br',
-            'span[style|class]',
-            'figure[class|data-trix-attachment|data-trix-attributes|data-trix-content-type]',
-            'figcaption[class]',
+            'span[style]',
             'img[width|height|alt|src]',
         ]),
 
