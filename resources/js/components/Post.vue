@@ -12,7 +12,7 @@
         </div>
 
         <div class="col border-bottom">
-            <h4 class="h6 mb-1"><a :href="'/profiles/'+post.owner.name" v-text="post.owner.name"></a></h4>
+            <h4 class="h6 mb-1"><a :href="'/profiles/' + post.owner.username" v-text="post.owner.name"></a></h4>
 
             <div class="d-flex align-items-center small mb-3">
                 <p class="mb-0" v-text="ago"></p>
