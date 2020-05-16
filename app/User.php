@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use Torann\GeoIP\Facades\GeoIP;
 use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -145,7 +146,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->attributes['phone'] = PhoneNumber::make($value)
             ->ofCountry('AUTO')
-            ->ofCountry('FR');
+            ->ofCountry('FR')
+            ->ofCountry(GeoIP::getLocation(request()->ip())->iso_code);
     }
 
     /**
