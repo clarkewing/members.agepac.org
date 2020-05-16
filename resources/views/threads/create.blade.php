@@ -34,7 +34,7 @@
 
         <div class="form-group">
             <label for="body">Corps</label>
-            <wysiwyg name="body" :error="{{ json_encode($errors->first('body')) }}"></wysiwyg>
+            <wysiwyg name="body" value="{{ old('body') }}" :error="{{ json_encode($errors->first('body')) }}"></wysiwyg>
         </div>
 
         <div class="form-group d-flex">
