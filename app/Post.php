@@ -60,7 +60,7 @@ class Post extends Model
             }
         });
 
-        static::deleting(function ($post) {
+        static::deleted(function ($post) {
             if (! $post->is_thread_initiator) {
                 $post->owner->loseReputation('reply_posted');
             }
