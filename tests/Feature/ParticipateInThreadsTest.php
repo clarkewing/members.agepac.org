@@ -26,7 +26,8 @@ class ParticipateInThreadsTest extends TestCase
         $thread = create(Thread::class);
         $post = make(Post::class);
 
-        $this->post($thread->path() . '/posts', $post->toArray());
+        $this->post($thread->path() . '/posts', $post->toArray())
+            ->assertStatus(201);
 
         $this->assertDatabaseHas('posts', ['body' => $post->body]);
     }
