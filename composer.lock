@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32c54593e8f5b3b8d3596fe78271c23f",
+    "content-hash": "370d85d070845658be481ca383160cb7",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2698,7 +2698,7 @@
             "authors": [
                 {
                     "name": "Propaganistas",
-                    "email": "Propaganistas@users.nopost.github.com"
+                    "email": "Propaganistas@users.noreply.github.com"
                 }
             ],
             "description": "Adds phone number functionality to Laravel and Lumen based on Google's libphonenumber API.",
@@ -7663,7 +7663,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2.5"
+        "php": "^7.2.5",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
