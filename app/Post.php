@@ -65,6 +65,10 @@ class Post extends Model
                 $post->owner->loseReputation('reply_posted');
             }
 
+            if ($post->isBest()) {
+                $post->owner->loseReputation('best_post_awarded');
+            }
+
             $post->attachments->each->delete();
         });
     }
