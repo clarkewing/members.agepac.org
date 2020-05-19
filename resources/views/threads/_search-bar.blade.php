@@ -33,7 +33,7 @@
 
 @else
     <form method="get" action="{{ route('threads.search') }}" class="input-group mb-4">
-        <input type="seach"
+        <input type="search"
                placeholder="Rechercher..."
                name="query"
                class="form-control"
