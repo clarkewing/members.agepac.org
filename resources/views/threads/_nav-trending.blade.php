@@ -1,4 +1,4 @@
-<x-linklist title="Sujets chauds">
+<x-linklist title="Sujets chauds" class="d-none d-sm-block">
     <ul class="list-unstyled">
         @foreach($trending as $thread)
             <li>

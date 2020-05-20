@@ -4,6 +4,7 @@
             'thread.channel.parent',
             'thread.channel.name',
         ]"
+        class="d-none d-sm-block"
     >
         <template #default="{ items, refine, createURL }">
             <x-linklist title="Sections" spacing="0">
@@ -37,7 +38,7 @@
     </ais-hierarchical-menu>
 
 @else
-    <x-linklist title="Sections" spacing="0">
+    <x-linklist title="Sections" spacing="0" class="d-none d-sm-block">
         @foreach($channels->sortBy('parent')->groupBy('parent') as $parent => $channels)
             <li>
                 <button class="btn btn-link p-0 font-weight-bold text-muted link-muted"

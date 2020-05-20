@@ -95,6 +95,13 @@
             border-top: $border-width solid $border-color !important;
             border-bottom: $border-width solid $border-color !important;
         }
+
+        .rounded#{$infix} {
+            border-radius: .25rem;
+        }
+        .rounded#{$infix}-pill {
+            border-radius: 50rem;
+        }
     }
 }
 
@@ -168,4 +175,82 @@ trix-editor,
 
 [v-cloak] {
     display: none;
+}
+
+.input-group-expanding {
+    position: relative;
+    min-width: 2.25rem;
+    width: 0%;
+    height: 2.25rem;
+    transition: width .25s;
+    border-radius: .25rem;
+
+    &.open {
+        width: 100%;
+    }
+
+    &:not(.open) {
+        overflow: hidden;
+
+        .btn {
+            width: 2.25rem;
+        }
+    }
+
+    .form-control,
+    .btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .form-control {
+        height: 2.25rem;
+        padding-right: 2.25rem + .5rem;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        height: 2.25rem;
+        line-height: 1;
+        z-index: 4;
+    }
+}
+
+#forumSidebar {
+    @include media-breakpoint-up(sm) {
+        min-width: 200px;
+        max-width: 280px;
+    }
+
+    #forumSearchbar {
+        .input-group-expanding {
+            border-radius: 50rem;
+
+            .form-control, .btn {
+                border-radius: 50rem;
+            }
+
+            .btn {
+                width: 2.25rem;
+
+                svg {
+                    transform: scale(1.5);
+                }
+            }
+
+            @include media-breakpoint-up(sm) {
+                width: 100%;
+
+                &, .form-control {
+                    border-radius: .25rem;
+                }
+
+                .btn {
+                    border-radius: 0 .25rem .25rem 0;
+                }
+            }
+        }
+    }
 }

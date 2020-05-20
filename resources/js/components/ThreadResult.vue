@@ -1,13 +1,13 @@
 <template>
-    <div class="row no-gutters pt-2 mb-4">
-        <div class="col-auto pr-3">
+    <div class="row no-gutters flex-nowrap w-100 pt-2 mb-4">
+        <div class="d-flex pr-3">
             <img :src="thread.creator.avatar_path"
                  :alt="thread.creator.name"
                  class="rounded-circle cover"
                  style="width: 2.5rem; height: 2.5rem;">
         </div>
 
-        <div class="col border-gray-700 border-bottom">
+        <div class="d-flex flex-column flex-grow-0 border-gray-700 border-bottom">
             <h3 class="h5 mb-1">
                 <svg v-if="thread.pinned" class="bi bi-flag-fill text-orange" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M3.5 1a.5.5 0 01.5.5v13a.5.5 0 01-1 0v-13a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
@@ -37,7 +37,7 @@
                v-line-clamp="3" style="word-break: normal !important;">
             </p>
 
-            <div class="d-flex align-items-center small mb-4">
+            <div class="d-flex flex-wrap align-items-center small mb-4">
                 <a class="btn btn-sm bg-gray-300 mr-3"
                    :href="'/threads/' + thread.channel.slug"
                    v-text="thread.channel.name"
@@ -59,7 +59,7 @@
                     {{ thread.replies_count }} {{ 'réponse' | pluralize(thread.replies_count) }}
                 </div>
 
-                <a class="btn btn-sm btn-outline-secondary px-4 ml-auto"
+                <a class="btn btn-sm btn-outline-secondary px-4 ml-auto d-none d-md-inline-block"
                    :href="thread.path"
                 >
                     voir plus
