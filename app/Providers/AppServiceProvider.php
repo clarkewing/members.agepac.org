@@ -27,8 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
-
         Arr::macro('keysFromValues', function (array $array) {
             return array_combine($array, $array);
         });
@@ -47,5 +45,11 @@ class AppServiceProvider extends ServiceProvider
 
             throw new \Exception('Concat macro not defined for the current database driver.');
         });
+
+        Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {
+            return ! array_key_exists($attribute, $validator->getData());
+        });
+
+        Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }
 }
