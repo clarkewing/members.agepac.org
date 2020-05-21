@@ -74,7 +74,7 @@
                             @enderror
 
                             <div class="form-row">
-                                <div class="col-6 form-group mb-2">
+                                <div class="col-6 form-group">
                                     <label for="phone" class="small mb-1">Numéro de téléphone</label>
                                     <input type="tel" class="form-control @error('phone') is-invalid @enderror"
                                            id="phone" name="phone"
@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             @error('phone')
-                                <div class="d-block mt-n1 mb-3 invalid-feedback">{{ $message }}</div>
+                                <div class="d-block mt-n2 mb-3 invalid-feedback">{{ $message }}</div>
                             @enderror
 
                             <button type="submit" class="btn btn-success">Sauvegarder</button>
