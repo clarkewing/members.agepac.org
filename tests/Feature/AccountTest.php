@@ -164,7 +164,7 @@ class AccountTest extends TestCase
     {
         $this->updateAccount([
             'email' => 'not-an-email',
-            'current_password' => 'password'
+            'current_password' => 'password',
         ])->assertJsonValidationErrors('email');
     }
 
@@ -175,7 +175,7 @@ class AccountTest extends TestCase
 
         $this->updateAccount([
             'email' => 'existing@email.com',
-            'current_password' => 'password'
+            'current_password' => 'password',
         ])->assertJsonValidationErrors('email');
     }
 
@@ -187,7 +187,7 @@ class AccountTest extends TestCase
 
         $this->updateAccount([
             'email' => 'john@supercool.com',
-            'current_password' => 'password'
+            'current_password' => 'password',
         ])->assertJsonMissingValidationErrors();
     }
 
@@ -196,7 +196,7 @@ class AccountTest extends TestCase
     {
         $this->updateAccount([
             'email' => 'newinbox@example.com',
-            'current_password' => 'password'
+            'current_password' => 'password',
         ])->assertOk();
 
         $this->assertEquals('newinbox@example.com', Auth::user()->email);
@@ -207,7 +207,7 @@ class AccountTest extends TestCase
     {
         $this->updateAccount([
             'email' => 'newinbox@example.com',
-            'current_password' => 'password'
+            'current_password' => 'password',
         ])->assertOk();
 
         $this->assertNull(Auth::user()->email_verified_at);
@@ -220,7 +220,7 @@ class AccountTest extends TestCase
 
         $this->updateAccount([
             'email' => Auth::user()->email,
-            'current_password' => 'password'
+            'current_password' => 'password',
         ]);
 
         Notification::assertNothingSent();
@@ -233,7 +233,7 @@ class AccountTest extends TestCase
 
         $this->updateAccount([
             'email' => 'newinbox@example.com',
-            'current_password' => 'password'
+            'current_password' => 'password',
         ]);
 
         Notification::assertSentTo(

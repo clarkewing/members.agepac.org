@@ -53,7 +53,7 @@ class AccountController extends Controller
                 Rule::requiredIf(function () use ($request, $user) {
                     return ($request->has('email') && $request->input('email') !== $user->email)
                         || $request->has('new_password');
-                })
+                }),
             ],
             'new_password' => ['nullable', 'min:8', 'confirmed'],
 
