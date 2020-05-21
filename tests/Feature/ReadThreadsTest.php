@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\Channel;
 use App\Post;
 use App\Thread;
-use App\User;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase

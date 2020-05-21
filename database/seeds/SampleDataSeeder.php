@@ -89,7 +89,7 @@ class SampleDataSeeder extends Seeder
 
         $model->morphMany(Activity::class, 'subject')->create([
             'user_id' => $user_id,
-            'type' => "{$event_type}_{$type}"
+            'type' => "{$event_type}_{$type}",
         ]);
     }
 }
