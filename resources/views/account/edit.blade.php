@@ -92,7 +92,7 @@
 
                 <h5 class="font-weight-bold pb-2 border-bottom mb-4">Identifiants</h5>
 
-                <div class="row">
+                <div class="row mb-4">
                     <div class="col-md-4">
                         <p class="mb-2">
                             On te conseille d'utiliser ton adresse email personelle.
