@@ -65,3 +65,7 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
 
     Route::post('/users/{user}/avatar', 'UserAvatarController@store')->name('users.avatar.store');
 });
+
+/* Account */
+Route::get('/account', 'AccountController@edit')->name('account.edit');
+Route::patch('/account', 'AccountController@update')->name('account.update');

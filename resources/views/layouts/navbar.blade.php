@@ -62,9 +62,24 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('profiles.show', Auth::user()) }}">Mon Profil</a>
 
-                            <logout-button class="dropdown-item" route="{{ route('logout') }}">{{ __('Logout') }}</logout-button>
+                            <a class="dropdown-item" href="{{ route('profiles.show', Auth::user()) }}">
+                                Mon Profil
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <h6 class="dropdown-header">Mon Compte</h6>
+
+                            <a class="dropdown-item" href="{{ route('account.edit') }}">
+                                Mes informations
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <logout-button class="dropdown-item" route="{{ route('logout') }}">
+                                {{ __('Logout') }}
+                            </logout-button>
                         </div>
                     </li>
                 @endguest

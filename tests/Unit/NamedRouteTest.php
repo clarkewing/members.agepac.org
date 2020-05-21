@@ -280,6 +280,24 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /** @test */
+    public function testAccountEdit()
+    {
+        $this->assertRoutePathIs(
+            '/account',
+            'account.edit'
+        );
+    }
+
+    /** @test */
+    public function testAccountUpdate()
+    {
+        $this->assertRoutePathIs(
+            '/account',
+            'account.update'
+        );
+    }
+
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(
