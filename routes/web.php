@@ -68,8 +68,10 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
 
 /* Account */
 Route::prefix('/account')->name('account.')->group(function () {
-    Route::get('/', 'AccountController@edit')->name('edit');
-    Route::patch('/', 'AccountController@update')->name('update');
+    Route::prefix('/info')->name('info.')->group(function () {
+        Route::get('/', 'AccountInfoController@edit')->name('edit');
+        Route::patch('/', 'AccountInfoController@update')->name('update');
+    });
 
     Route::prefix('/billing')->name('billing.')->group(function () {
         Route::get('/', 'BillingController@edit')->name('edit');

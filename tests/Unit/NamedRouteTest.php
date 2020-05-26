@@ -281,20 +281,20 @@ class NamedRouteTest extends TestCase
     }
 
     /** @test */
-    public function testAccountEdit()
+    public function testAccountInfoEdit()
     {
         $this->assertRoutePathIs(
-            '/account',
-            'account.edit'
+            '/account/info',
+            'account.info.edit'
         );
     }
 
     /** @test */
-    public function testAccountUpdate()
+    public function testAccountInfoUpdate()
     {
         $this->assertRoutePathIs(
-            '/account',
-            'account.update'
+            '/account/info',
+            'account.info.update'
         );
     }
 

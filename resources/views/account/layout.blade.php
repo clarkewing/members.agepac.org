@@ -8,8 +8,8 @@
                     <h2 class="mb-5">Mon Compte</h2>
 
                     <nav class="nav nav-pills nav-fill flex-column">
-                        <a class="nav-item nav-link text-left{{ Route::is('account.edit') ? ' active' : '' }}"
-                           href="{{ route('account.edit') }}">
+                        <a class="nav-item nav-link text-left{{ Route::is('account.info.edit') ? ' active' : '' }}"
+                           href="{{ route('account.info.edit') }}">
                             <svg class="bi bi-person-lines-fill mr-2" width="1em" height="1em" viewBox="0 0 16 16"
                                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"

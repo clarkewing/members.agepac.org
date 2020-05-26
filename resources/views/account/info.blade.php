@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-md-8">
-            <form action="{{ route('account.update') }}" method="post">
+            <form action="{{ route('account.info.update') }}" method="post">
                 @csrf
                 @method('patch')
 
@@ -90,7 +90,7 @@
         </div>
 
         <div class="col-md-8">
-            <form action="{{ route('account.update') }}" method="post">
+            <form action="{{ route('account.info.update') }}" method="post">
                 @csrf
                 @method('patch')
 
