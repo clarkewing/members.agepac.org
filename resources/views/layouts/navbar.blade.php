@@ -75,6 +75,10 @@
                                 Mes informations
                             </a>
 
+                            <a class="dropdown-item" href="{{ route('account.billing.edit') }}">
+                                Ma cotisation
+                            </a>
+
                             <div class="dropdown-divider"></div>
 
                             <logout-button class="dropdown-item" route="{{ route('logout') }}">

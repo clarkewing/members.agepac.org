@@ -298,6 +298,55 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /** @test */
+    public function testAccountBillingEdit()
+    {
+        $this->assertRoutePathIs(
+            '/account/billing',
+            'account.billing.edit'
+        );
+    }
+
+    /** @test */
+    public function testAccountBillingPaymentMethodsCreate()
+    {
+        $this->assertRoutePathIs(
+            '/account/billing/payment-methods/create',
+            'account.billing.payment-methods.create'
+        );
+    }
+
+    /** @test */
+    public function testAccountBillingPaymentMethodsStore()
+    {
+        $this->assertRoutePathIs(
+            '/account/billing/payment-methods',
+            'account.billing.payment-methods.store'
+        );
+    }
+
+    /** @test */
+    public function testAccountBillingPaymentMethodsUpdate()
+    {
+        $paymentMethodId = 'pm_foobar';
+
+        $this->assertRoutePathIs(
+            "/account/billing/payment-methods/{$paymentMethodId}",
+            'account.billing.payment-methods.update', $paymentMethodId
+        );
+    }
+
+    /** @test */
+    public function testAccountBillingPaymentMethodsDestroy()
+    {
+        $paymentMethodId = 'pm_foobar';
+
+        $this->assertRoutePathIs(
+            "/account/billing/payment-methods/{$paymentMethodId}",
+            'account.billing.payment-methods.destroy', $paymentMethodId
+        );
+    }
+
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(

@@ -254,3 +254,15 @@ trix-editor,
         }
     }
 }
+
+.form-control.StripeElement {
+    padding-top: calc(#{$input-btn-padding-y} + .2em);
+
+    &.StripeElement--focus {
+        @extend .form-control, :focus;
+    }
+
+    &.StripeElement--invalid {
+        @extend .is-invalid;
+    }
+}

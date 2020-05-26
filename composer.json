@@ -17,6 +17,7 @@
         "gkermer/nova-text-auto-complete": "^0.0.3",
         "guzzlehttp/guzzle": "^6.3",
         "jbroadway/urlify": "^1.2",
+        "laravel/cashier": "^11.2",
         "laravel/framework": "^7.0",
         "laravel/nova": "~3.0",
         "laravel/scout": "^8.0",
