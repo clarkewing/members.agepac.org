@@ -129,7 +129,7 @@
                     return;
                 }
 
-                axios.get('/account/billing/payment-methods/create')
+                axios.get('/account/subscription/payment-methods/create')
                     .then(({data}) => {
                         this.intent = data.intent;
                     });
@@ -167,7 +167,7 @@
             },
 
             postCard(setupIntent) {
-                axios.post('/account/billing/payment-methods', {
+                axios.post('/account/subscription/payment-methods', {
                     payment_method: setupIntent.payment_method
                 }, {
                     validateStatus: function (status) {

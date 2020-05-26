@@ -65,7 +65,7 @@ class AccountInfoController extends Controller
             return $user;
         }
 
-        return redirect()->route('account.info.edit')
+        return redirect()->route('account.edit')
             ->with('flash', 'Tes informations ont été mises à jour.');
     }
 

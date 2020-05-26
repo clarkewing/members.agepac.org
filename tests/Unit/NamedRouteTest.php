@@ -281,69 +281,69 @@ class NamedRouteTest extends TestCase
     }
 
     /** @test */
-    public function testAccountInfoEdit()
+    public function testAccountEdit()
     {
         $this->assertRoutePathIs(
             '/account/info',
-            'account.info.edit'
+            'account.edit'
         );
     }
 
     /** @test */
-    public function testAccountInfoUpdate()
+    public function testAccountUpdate()
     {
         $this->assertRoutePathIs(
             '/account/info',
-            'account.info.update'
+            'account.update'
         );
     }
 
     /** @test */
-    public function testAccountBillingEdit()
+    public function testAccountSubscriptionEdit()
     {
         $this->assertRoutePathIs(
-            '/account/billing',
-            'account.billing.edit'
+            '/account/subscription',
+            'subscription.edit'
         );
     }
 
     /** @test */
-    public function testAccountBillingPaymentMethodsCreate()
+    public function testAccountSubscriptionPaymentMethodsCreate()
     {
         $this->assertRoutePathIs(
-            '/account/billing/payment-methods/create',
-            'account.billing.payment-methods.create'
+            '/account/subscription/payment-methods/create',
+            'subscription.payment-methods.create'
         );
     }
 
     /** @test */
-    public function testAccountBillingPaymentMethodsStore()
+    public function testAccountSubscriptionPaymentMethodsStore()
     {
         $this->assertRoutePathIs(
-            '/account/billing/payment-methods',
-            'account.billing.payment-methods.store'
+            '/account/subscription/payment-methods',
+            'subscription.payment-methods.store'
         );
     }
 
     /** @test */
-    public function testAccountBillingPaymentMethodsUpdate()
+    public function testAccountSubscriptionPaymentMethodsUpdate()
     {
         $paymentMethodId = 'pm_foobar';
 
         $this->assertRoutePathIs(
-            "/account/billing/payment-methods/{$paymentMethodId}",
-            'account.billing.payment-methods.update', $paymentMethodId
+            "/account/subscription/payment-methods/{$paymentMethodId}",
+            'subscription.payment-methods.update', $paymentMethodId
         );
     }
 
     /** @test */
-    public function testAccountBillingPaymentMethodsDestroy()
+    public function testAccountSubscriptionPaymentMethodsDestroy()
     {
         $paymentMethodId = 'pm_foobar';
 
         $this->assertRoutePathIs(
-            "/account/billing/payment-methods/{$paymentMethodId}",
-            'account.billing.payment-methods.destroy', $paymentMethodId
+            "/account/subscription/payment-methods/{$paymentMethodId}",
+            'subscription.payment-methods.destroy', $paymentMethodId
         );
     }
 

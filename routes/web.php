@@ -67,14 +67,14 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
 });
 
 /* Account */
-Route::prefix('/account')->name('account.')->group(function () {
-    Route::prefix('/info')->name('info.')->group(function () {
+Route::prefix('/account')->group(function () {
+    Route::prefix('/info')->name('account.')->group(function () {
         Route::get('/', 'AccountInfoController@edit')->name('edit');
         Route::patch('/', 'AccountInfoController@update')->name('update');
     });
 
-    Route::prefix('/billing')->name('billing.')->group(function () {
-        Route::get('/', 'BillingController@edit')->name('edit');
+    Route::prefix('/subscription')->name('subscription.')->group(function () {
+        Route::get('/', 'SubscriptionController@edit')->name('edit');
 
         Route::resource('payment-methods', 'PaymentMethodsController')
             ->only(['create', 'store', 'update', 'destroy']);

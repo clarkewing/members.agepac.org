@@ -24,14 +24,14 @@ class AccountTest extends TestCase
     {
         Auth::logout();
 
-        $this->get(route('account.info.edit'))
+        $this->get(route('account.edit'))
             ->assertRedirect(route('login'));
     }
 
     /** @test */
     public function testUserCanViewThePageToEditTheirAccountInfo()
     {
-        $this->get(route('account.info.edit'))
+        $this->get(route('account.edit'))
             ->assertOk()
             ->assertSee('Mes informations');
     }
@@ -40,7 +40,7 @@ class AccountTest extends TestCase
     public function testUserCanViewTheirCurrentInfoOnEditPage()
     {
         tap(Auth::user(), function ($user) {
-            $this->get(route('account.info.edit'))
+            $this->get(route('account.edit'))
                 ->assertSee($user->first_name)
                 ->assertSee($user->last_name)
                 ->assertSee($user->birthdate)
@@ -54,7 +54,7 @@ class AccountTest extends TestCase
     {
         Auth::logout();
 
-        $this->patchJson(route('account.info.update'))
+        $this->patchJson(route('account.update'))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
@@ -297,6 +297,6 @@ class AccountTest extends TestCase
      */
     public function updateAccount(array $data = [])
     {
-        return $this->patchJson(route('account.info.update'), $data);
+        return $this->patchJson(route('account.update'), $data);
     }
 }

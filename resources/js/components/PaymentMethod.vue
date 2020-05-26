@@ -72,7 +72,7 @@
 
         methods: {
             remove() {
-                axios.delete('/account/billing/payment-methods/' + this.paymentMethod.id)
+                axios.delete('/account/subscription/payment-methods/' + this.paymentMethod.id)
                     .then(() => {
                         flash('Le moyen de paiement a été supprimé.');
 
@@ -82,7 +82,7 @@
             },
 
             setDefault() {
-                axios.put('/account/billing/payment-methods/' + this.paymentMethod.id, {
+                axios.put('/account/subscription/payment-methods/' + this.paymentMethod.id, {
                     default: true
                 }).then(() => {
                     flash('Ton moyen de paiement par défaut a été modifié.');

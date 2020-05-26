@@ -71,11 +71,11 @@
 
                             <h6 class="dropdown-header">Mon Compte</h6>
 
-                            <a class="dropdown-item" href="{{ route('account.info.edit') }}">
+                            <a class="dropdown-item" href="{{ route('account.edit') }}">
                                 Mes informations
                             </a>
 
-                            <a class="dropdown-item" href="{{ route('account.billing.edit') }}">
+                            <a class="dropdown-item" href="{{ route('subscription.edit') }}">
                                 Ma cotisation
                             </a>
 

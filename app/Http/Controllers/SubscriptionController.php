@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class BillingController extends Controller
+class SubscriptionController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -22,7 +22,7 @@ class BillingController extends Controller
      */
     public function edit()
     {
-        return view('account.billing', [
+        return view('account.subscription', [
             'paymentMethods' => Auth::user()->paymentMethods(),
         ]);
     }

@@ -30,7 +30,7 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function testGuestCannotGetPaymentIntent()
     {
-        $this->get(route('account.billing.payment-methods.create'))
+        $this->get(route('subscription.payment-methods.create'))
             ->assertRedirect(route('login'));
     }
 
@@ -39,7 +39,7 @@ class PaymentMethodsTest extends TestCase
     {
         $this->signIn();
 
-        $this->get(route('account.billing.payment-methods.create'))
+        $this->get(route('subscription.payment-methods.create'))
             ->assertOk()
             ->assertJsonStructure(['intent' => ['client_secret']]);
     }
@@ -94,7 +94,7 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function testGuestCannotDeletePaymentMethod()
     {
-        $this->deleteJson(route('account.billing.payment-methods.destroy', 'pm_foobar'))
+        $this->deleteJson(route('subscription.payment-methods.destroy', 'pm_foobar'))
             ->assertUnauthorized();
     }
 
@@ -108,7 +108,7 @@ class PaymentMethodsTest extends TestCase
 
         // Other user attempts to delete.
         $this->signIn()
-            ->deleteJson(route('account.billing.payment-methods.destroy', $paymentMethod->id))
+            ->deleteJson(route('subscription.payment-methods.destroy', $paymentMethod->id))
             ->assertForbidden();
 
         $this->assertCount(1, $customer->paymentMethods());
@@ -124,7 +124,7 @@ class PaymentMethodsTest extends TestCase
         $this->assertCount(1, $customer->paymentMethods());
 
         $this->signIn($customer)
-            ->deleteJson(route('account.billing.payment-methods.destroy', $paymentMethod->id))
+            ->deleteJson(route('subscription.payment-methods.destroy', $paymentMethod->id))
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $this->assertCount(1, $customer->paymentMethods());
@@ -139,7 +139,7 @@ class PaymentMethodsTest extends TestCase
         $this->assertCount(1, $customer->paymentMethods());
 
         $this->signIn($customer)
-            ->deleteJson(route('account.billing.payment-methods.destroy', $paymentMethod->id))
+            ->deleteJson(route('subscription.payment-methods.destroy', $paymentMethod->id))
             ->assertNoContent();
 
         $this->assertCount(0, $customer->paymentMethods());
@@ -148,7 +148,7 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function testGuestCannotUpdatePaymentMethod()
     {
-        $this->patchJson(route('account.billing.payment-methods.update', 'pm_foobar'))
+        $this->patchJson(route('subscription.payment-methods.update', 'pm_foobar'))
             ->assertUnauthorized();
     }
 
@@ -160,7 +160,7 @@ class PaymentMethodsTest extends TestCase
 
         // Other user attempts to delete.
         $this->signIn()
-            ->putJson(route('account.billing.payment-methods.update', $paymentMethod->id))
+            ->putJson(route('subscription.payment-methods.update', $paymentMethod->id))
             ->assertForbidden();
     }
 
@@ -173,7 +173,7 @@ class PaymentMethodsTest extends TestCase
         $this->assertNull($customer->defaultPaymentMethod());
 
         $this->signIn($customer)
-            ->putJson(route('account.billing.payment-methods.update', $paymentMethod->id), [
+            ->putJson(route('subscription.payment-methods.update', $paymentMethod->id), [
                 'default' => true,
             ])->assertNoContent();
 
@@ -188,7 +188,7 @@ class PaymentMethodsTest extends TestCase
      */
     public function addPaymentMethod(array $overrides = [])
     {
-        return $this->postJson(route('account.billing.payment-methods.store'), array_merge([
+        return $this->postJson(route('subscription.payment-methods.store'), array_merge([
             'payment_method' => 'pm_card_visa',
         ], $overrides));
     }
