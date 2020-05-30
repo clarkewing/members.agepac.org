@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\Rule;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionController extends Controller
 {
@@ -34,10 +35,17 @@ class SubscriptionController extends Controller
             ],
         ]);
 
-        $subscription = $request->user()->newSubscription(
-            'default',
-            $this->planId($request->input('plan'))
-        )->add();
+        try {
+            $subscription = $request->user()->newSubscription(
+                'default',
+                $this->planId($request->input('plan'))
+            )->add();
+        } catch (IncompletePayment $exception) {
+            return redirect()->route(
+                'cashier.payment',
+                [$exception->payment->id, 'redirect' => route('subscription.edit')]
+            );
+        }
 
         if ($request->wantsJson()) {
             return Response::json($subscription);
@@ -82,7 +90,14 @@ class SubscriptionController extends Controller
             $request->has('plan')
             && $this->planId($request->input('plan')) !== $subscription->stripe_plan
         ) {
-            $subscription->swap($this->planId($request->input('plan')));
+            try {
+                $subscription->swap($this->planId($request->input('plan')));
+            } catch (IncompletePayment $exception) {
+                return redirect()->route(
+                    'cashier.payment',
+                    [$exception->payment->id, 'redirect' => route('subscription.edit')]
+                );
+            }
         }
 
         if ($request->has('active')) {
