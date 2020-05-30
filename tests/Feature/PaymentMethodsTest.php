@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\TestCase;
+use Tests\StripeTestCase;
 
-class PaymentMethodsTest extends TestCase
+class PaymentMethodsTest extends StripeTestCase
 {
 
     public function setUp(): void
@@ -15,16 +15,6 @@ class PaymentMethodsTest extends TestCase
         parent::setUp();
 
         $this->withExceptionHandling();
-    }
-
-    public function tearDown(): void
-    {
-        // Ensure created Stripe customers aren't persisted.
-        User::whereNotNull('stripe_id')->get()->map(function ($user) {
-            $user->asStripeCustomer()->delete();
-        });
-
-        parent::tearDown();
     }
 
     /** @test */
@@ -101,15 +91,16 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function testOnlyPaymentMethodOwnerCanDeleteIt()
     {
-        $customer = tap(create(User::class))->createAsStripeCustomer();
-        $paymentMethod = $customer->addPaymentMethod('pm_card_visa');
+        $customer = $this->createCustomer();
 
         $this->assertCount(1, $customer->paymentMethods());
 
         // Other user attempts to delete.
         $this->signIn()
-            ->deleteJson(route('subscription.payment-methods.destroy', $paymentMethod->id))
-            ->assertForbidden();
+            ->deleteJson(route(
+                'subscription.payment-methods.destroy',
+                $customer->paymentMethods()->first()->id
+            ))->assertForbidden();
 
         $this->assertCount(1, $customer->paymentMethods());
     }
@@ -117,15 +108,16 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function testUserCanDeleteDefaultPaymentMethod()
     {
-        $customer = tap(create(User::class))->createAsStripeCustomer();
-        $paymentMethod = $customer->updateDefaultPaymentMethod('pm_card_visa');
+        $customer = $this->createCustomer([], true);
 
         $this->assertNotNull($customer->defaultPaymentMethod());
         $this->assertCount(1, $customer->paymentMethods());
 
         $this->signIn($customer)
-            ->deleteJson(route('subscription.payment-methods.destroy', $paymentMethod->id))
-            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+            ->deleteJson(route(
+                'subscription.payment-methods.destroy',
+                $customer->paymentMethods()->first()->id
+            ))->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $this->assertCount(1, $customer->paymentMethods());
     }
@@ -133,14 +125,15 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function testUserCanDeletePaymentMethod()
     {
-        $customer = tap(create(User::class))->createAsStripeCustomer();
-        $paymentMethod = $customer->addPaymentMethod('pm_card_visa');
+        $customer = $this->createCustomer();
 
         $this->assertCount(1, $customer->paymentMethods());
 
         $this->signIn($customer)
-            ->deleteJson(route('subscription.payment-methods.destroy', $paymentMethod->id))
-            ->assertNoContent();
+            ->deleteJson(route(
+                'subscription.payment-methods.destroy',
+                $customer->paymentMethods()->first()->id
+            ))->assertNoContent();
 
         $this->assertCount(0, $customer->paymentMethods());
     }
@@ -155,20 +148,21 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function testOnlyPaymentMethodOwnerCanUpdateIt()
     {
-        $customer = tap(create(User::class))->createAsStripeCustomer();
-        $paymentMethod = $customer->addPaymentMethod('pm_card_visa');
+        $customer = $this->createCustomer();
 
         // Other user attempts to delete.
         $this->signIn()
-            ->putJson(route('subscription.payment-methods.update', $paymentMethod->id))
-            ->assertForbidden();
+            ->putJson(route(
+                'subscription.payment-methods.update',
+                $customer->paymentMethods()->first()->id
+            ))->assertForbidden();
     }
 
     /** @test */
     public function testUserCanSetPaymentMethodAsDefault()
     {
-        $customer = tap(create(User::class))->createAsStripeCustomer();
-        $paymentMethod = $customer->addPaymentMethod('pm_card_visa');
+        $customer = $this->createCustomer();
+        $paymentMethod = $customer->paymentMethods()->first();
 
         $this->assertNull($customer->defaultPaymentMethod());
 

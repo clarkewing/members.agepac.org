@@ -30,6 +30,7 @@ Vue.component('new-payment-method', require('./components/NewPaymentMethod').def
 Vue.component('registration-form', require('./pages/RegistrationForm').default);
 Vue.component('thread-view', require('./pages/Thread').default);
 Vue.component('instant-search', require('./pages/InstantSearch').default);
+Vue.component('subscription-plans', require('./pages/SubscriptionPlans').default);
 
 import lineClamp from 'vue-line-clamp';
 Vue.use(lineClamp, {textOverflow: ' ...'});

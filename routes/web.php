@@ -74,7 +74,9 @@ Route::prefix('/account')->group(function () {
     });
 
     Route::prefix('/subscription')->name('subscription.')->group(function () {
+        Route::post('/', 'SubscriptionController@store')->name('store');
         Route::get('/', 'SubscriptionController@edit')->name('edit');
+        Route::patch('/', 'SubscriptionController@update')->name('update');
 
         Route::resource('payment-methods', 'PaymentMethodsController')
             ->only(['create', 'store', 'update', 'destroy']);

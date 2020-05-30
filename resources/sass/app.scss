@@ -266,3 +266,10 @@ trix-editor,
         @extend .is-invalid;
     }
 }
+
+.pricing-card {
+    transition: $transition-base;
+    &:hover {
+        transform: scale(1.05);
+    }
+}

@@ -299,11 +299,29 @@ class NamedRouteTest extends TestCase
     }
 
     /** @test */
+    public function testAccountSubscriptionStore()
+    {
+        $this->assertRoutePathIs(
+            '/account/subscription',
+            'subscription.store'
+        );
+    }
+
+    /** @test */
     public function testAccountSubscriptionEdit()
     {
         $this->assertRoutePathIs(
             '/account/subscription',
             'subscription.edit'
+        );
+    }
+
+    /** @test */
+    public function testAccountSubscriptionUpdate()
+    {
+        $this->assertRoutePathIs(
+            '/account/subscription',
+            'subscription.update'
         );
     }
 
