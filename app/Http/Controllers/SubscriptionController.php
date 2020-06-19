@@ -80,7 +80,7 @@ class SubscriptionController extends Controller
                 Rule::in(array_keys(config('council.plans'))),
             ],
             'active' => [
-                'boolean'
+                'boolean',
             ],
         ]);
 

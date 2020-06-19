@@ -28,8 +28,7 @@ abstract class StripeTestCase extends TestCase
         array $overrides = [],
         bool $withDefaultPaymentMethod = false,
         string $paymentMethodId = 'pm_card_visa'
-    )
-    {
+    ) {
         $user = tap(create(User::class, $overrides))->createAsStripeCustomer();
 
         $user->{$withDefaultPaymentMethod ? 'updateDefaultPaymentMethod' : 'addPaymentMethod'}($paymentMethodId);

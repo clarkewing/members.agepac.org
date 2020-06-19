@@ -9,7 +9,6 @@ use Tests\StripeTestCase;
 
 class PaymentMethodsTest extends StripeTestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();
