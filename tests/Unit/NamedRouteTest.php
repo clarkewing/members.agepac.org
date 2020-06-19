@@ -326,6 +326,15 @@ class NamedRouteTest extends TestCase
     }
 
     /** @test */
+    public function testAccountSubscriptionInvoicesShow()
+    {
+        $this->assertRoutePathIs(
+            '/account/subscription/invoice/thisIsTheInvoiceId',
+            'subscription.invoices.show', 'thisIsTheInvoiceId'
+        );
+    }
+
+    /** @test */
     public function testAccountSubscriptionPaymentMethodsCreate()
     {
         $this->assertRoutePathIs(

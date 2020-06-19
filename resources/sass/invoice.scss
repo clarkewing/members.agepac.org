@@ -1,0 +1,192 @@
+$color-brand: #000a33;
+$color-accent: #3490dc;
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+a {
+    color: $color-brand;
+    text-decoration: none;
+}
+
+body {
+    position: relative;
+    width: 100%;
+    height: 29.7cm;
+    margin: 0 auto;
+    color: #555;
+    background: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #aaa;
+}
+
+#logo {
+    float: left;
+    margin-top: 8px;
+
+    img {
+        height: 50px;
+    }
+}
+
+#company {
+    float: right;
+    text-align: right;
+}
+
+
+#details {
+    margin-bottom: 50px;
+}
+
+#client {
+    padding-left: 6px;
+    border-left: 6px solid $color-brand;
+    float: left;
+}
+
+#client .to {
+    color: #777;
+}
+
+h2.name {
+    font-size: 1.4em;
+    font-weight: normal;
+    margin: 0;
+}
+
+#invoice {
+    float: right;
+    text-align: right;
+
+    h1 {
+        color: $color-brand;
+        font-size: 2.4em;
+        line-height: 1em;
+        font-weight: normal;
+        margin: 0 0 10px 0;
+    }
+
+    .date {
+        font-size: 1.1em;
+        color: #777;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 20px;
+
+    th,
+    td {
+        padding: 20px;
+        background: #eee;
+        text-align: center;
+        border-bottom: 1px solid #fff;
+    }
+
+    th {
+        white-space: nowrap;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+    td {
+        text-align: right;
+
+        h3 {
+            color: $color-accent;
+            font-size: 1.2em;
+            font-weight: normal;
+            margin: 0 0 0.2em 0;
+        }
+    }
+
+    .desc {
+        text-align: left;
+    }
+
+    .qty {
+        background: #ddd;
+    }
+
+    .tax {
+    }
+
+    .amount {
+        background: $color-accent;
+        color: #fff;
+    }
+
+    td.unit,
+    td.qty,
+    td.amount {
+        font-size: 1.2em;
+    }
+
+    tbody tr:last-child td {
+        border: none;
+    }
+
+    tfoot {
+        td {
+            padding: 10px 20px;
+            background: #fff;
+            border-bottom: none;
+            font-size: 1.2em;
+            white-space: nowrap;
+            border-top: 1px solid #aaa;
+        }
+
+        tr:first-child td {
+            border-top: none;
+        }
+
+        tr:last-child td {
+            color: $color-accent;
+            font-size: 1.4em;
+            border-top: 1px solid $color-accent;
+        }
+
+        tr td:first-child {
+            border: none;
+        }
+    }
+}
+
+#thanks {
+    font-size: 2em;
+    margin-bottom: 50px;
+}
+
+#notices {
+    padding-left: 6px;
+    border-left: 6px solid $color-brand;
+
+    .notice {
+        font-size: 1.2em;
+    }
+}
+
+footer {
+    color: #777;
+    width: 100%;
+    height: 30px;
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #aaa;
+    padding: 8px 0;
+    text-align: center;
+}
+
