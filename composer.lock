@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6b61313f09027681542e67b5c685cfa",
+    "content-hash": "65611764d30d61be7c2ebe0a4ed0e426",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -1592,6 +1592,50 @@
             "time": "2018-01-15T06:57:33+00:00"
         },
         {
+            "name": "inspheric/nova-indicator-field",
+            "version": "v1.43",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/inspheric/nova-indicator-field.git",
+                "reference": "256a2b7eb1febb7b829cd1a86adf6fe6e048354b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inspheric/nova-indicator-field/zipball/256a2b7eb1febb7b829cd1a86adf6fe6e048354b",
+                "reference": "256a2b7eb1febb7b829cd1a86adf6fe6e048354b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Inspheric\\Fields\\IndicatorFieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Inspheric\\Fields\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova indicator field.",
+            "keywords": [
+                "field",
+                "indicator",
+                "laravel",
+                "nova",
+                "status"
+            ],
+            "time": "2020-01-24T12:55:36+00:00"
+        },
+        {
             "name": "jbroadway/urlify",
             "version": "1.2.0-stable",
             "source": {
@@ -2443,6 +2487,53 @@
                 "library"
             ],
             "time": "2020-01-29T07:08:12+00:00"
+        },
+        {
+            "name": "limedeck/nova-cashier-overview",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LimeDeck/nova-cashier-overview.git",
+                "reference": "b2bf750b973419de3bd9975f894eb70248d0185e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LimeDeck/nova-cashier-overview/zipball/b2bf750b973419de3bd9975f894eb70248d0185e",
+                "reference": "b2bf750b973419de3bd9975f894eb70248d0185e",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^3.0",
+                "php": ">=7.2.5"
+            },
+            "require-dev": {
+                "limedeck/phpunit-detailed-printer": "^5.0",
+                "orchestra/testbench": "^5.10",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LimeDeck\\NovaCashierOverview\\Providers\\CashierOverviewServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LimeDeck\\NovaCashierOverview\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Interact with your Stripe subscriptions directly inside Nova.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "time": "2020-03-24T20:51:18+00:00"
         },
         {
             "name": "moneyphp/money",

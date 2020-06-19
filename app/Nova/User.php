@@ -3,10 +3,12 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Inspheric\Fields\Indicator;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use LimeDeck\NovaCashierOverview\Subscription;
 
 class User extends Resource
 {
@@ -67,6 +69,43 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
+
+            Indicator::make('Membership', function () {
+                if ($this->subscribed('default')) {
+                    if ($this->subscription('default')->ended()) {
+                        return 'ended';
+                    }
+
+                    if ($this->subscription('default')->onGracePeriod()) {
+                        return 'on-grace-period';
+                    }
+
+                    if ($this->subscription('default')->onTrial()) {
+                        return 'on-trial';
+                    }
+
+                    return 'active';
+                }
+
+                return 'inactive';
+            })
+                ->labels([
+                    'active' => 'Active',
+                    'on-trial' => 'On trial',
+                    'on-grace-period' => 'On grace period',
+                    'ended' => 'Ended',
+                    'inactive' => 'Inactive',
+                ])
+                ->colors([
+                    'active' => 'green',
+                    'on-trial' => 'green',
+                    'on-grace-period' => 'orange',
+                    'ended' => 'red',
+                    'inactive' => 'grey',
+                ])
+                ->onlyOnIndex(),
+
+            Subscription::make(),
         ];
     }
 
