@@ -24,10 +24,13 @@ Vue.component('wysiwyg', require('./components/Wysiwyg.vue').default);
 Vue.component('logout-button', require('./components/LogoutButton').default);
 Vue.component('thread-result', require('./components/ThreadResult').default);
 Vue.component('expanding-search-bar', require('./components/ExpandingSearchBar').default);
+Vue.component('payment-method', require('./components/PaymentMethod').default);
+Vue.component('new-payment-method', require('./components/NewPaymentMethod').default);
 
 Vue.component('registration-form', require('./pages/RegistrationForm').default);
 Vue.component('thread-view', require('./pages/Thread').default);
 Vue.component('instant-search', require('./pages/InstantSearch').default);
+Vue.component('subscription-plans', require('./pages/SubscriptionPlans').default);
 
 import lineClamp from 'vue-line-clamp';
 Vue.use(lineClamp, {textOverflow: ' ...'});

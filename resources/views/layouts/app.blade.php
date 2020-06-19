@@ -15,12 +15,15 @@
         window.App = {!! json_encode([
             'signedIn' => Auth::check(),
             'user' => Auth::check()
-                ? Auth::user()->toArray() + ['isVerified' => Auth::user()->hasVerifiedEmail()]
+                ? Auth::user()->toArray()
+                 + ['isVerified' => Auth::user()->hasVerifiedEmail()]
+                 + ['defaultPaymentMethod' => optional(Auth::user()->defaultPaymentMethod())->id]
                 : null,
             'config' => [
                 'scout' => [
                     'algolia' => Arr::except(config('scout.algolia'), ['secret']),
                 ],
+                'cashier' => Arr::only(config('cashier'), ['key']),
             ],
         ]) !!}
     </script>
@@ -47,5 +50,7 @@
         <flash message="{{ session('flash') }}"></flash>
     </div>
     @show
+
+    @stack('scripts')
 </body>
 </html>

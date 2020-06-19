@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Torann\GeoIP\Facades\GeoIP;
 
-class AccountController extends Controller
+class AccountInfoController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -26,7 +26,7 @@ class AccountController extends Controller
      */
     public function edit()
     {
-        return view('account.edit', ['user' => Auth::user()]);
+        return view('account.info', ['user' => Auth::user()]);
     }
 
     /**

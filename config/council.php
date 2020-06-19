@@ -64,4 +64,18 @@ return [
         'U' => 'Ne se déclare pas', // U for Unknown
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Stripe Subscription Plans
+    |--------------------------------------------------------------------------
+    |
+    | The stripe subscription plans identifiers.
+    |
+    */
+
+    'plans' => [
+        'agepac' => env('STRIPE_AGEPAC_PLAN_ID'),
+        'agepac+alumni' => env('STRIPE_AGEPAC_ALUMNI_PLAN_ID'),
+    ],
+
 ];

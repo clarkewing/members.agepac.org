@@ -7,13 +7,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Cashier\Billable;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Torann\GeoIP\Facades\GeoIP;
 use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasReputation, Notifiable;
+    use Billable, HasReputation, Notifiable;
 
     /**
      * The attributes that are mass assignable.
