@@ -62,6 +62,14 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function testKnowsItsFullClass()
+    {
+        $user = create(User::class, ['class_course' => 'EPL/S', 'class_year' => 2015]);
+
+        $this->assertEquals('EPL/S 2015', $user->class);
+    }
+
+    /** @test */
     public function testCanMakeUsernameFromFirstAndLastName()
     {
         $this->assertEquals('john.doe', User::makeUsername('John', 'Doe'));

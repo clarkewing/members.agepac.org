@@ -143,6 +143,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the user's class.
+     *
+     * @return string
+     */
+    public function getClassAttribute(): string
+    {
+        return $this->class_course . ' ' . $this->class_year;
+    }
+
+    /**
      * Set the user's phone number.
      *
      * @param  string  $value
