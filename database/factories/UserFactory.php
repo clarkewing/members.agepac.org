@@ -41,6 +41,8 @@ $factory->define(User::class, function (Faker $faker) {
             '+44 7375 123456',
             '+1-202-555-5555',
         ]),
+        'bio' => $faker->paragraph,
+        'flight_hours' => $faker->numberBetween(0, 15000),
         'remember_token' => Str::random(10),
     ];
 });

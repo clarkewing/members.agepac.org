@@ -28,6 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('phone', 20);
             $table->string('avatar_path')->nullable();
             $table->unsignedInteger('reputation')->default(0);
+            $table->text('bio')->nullable();
+            $table->unsignedMediumInteger('flight_hours')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

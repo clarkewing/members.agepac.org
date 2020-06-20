@@ -66,4 +66,20 @@ class UserTest extends TestCase
     {
         $this->assertEquals('john.doe', User::makeUsername('John', 'Doe'));
     }
+
+    /** @test */
+    public function testCanHaveBio()
+    {
+        $user = create(User::class, ['bio' => 'This is a pretty awesome bio.']);
+
+        $this->assertEquals('This is a pretty awesome bio.', $user->bio);
+    }
+
+    /** @test */
+    public function testCanHaveFlightHours()
+    {
+        $user = create(User::class, ['flight_hours' => 150]);
+
+        $this->assertSame(150, $user->flight_hours);
+    }
 }
