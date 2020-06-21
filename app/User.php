@@ -96,6 +96,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Post::class)->latest();
     }
 
+    /**
+     * Get the user's location.
+     */
+    public function location()
+    {
+        return $this->morphOne(Location::class, 'locatable');
+    }
+
     /** Determine if user is administrator.
      *
      * @return bool

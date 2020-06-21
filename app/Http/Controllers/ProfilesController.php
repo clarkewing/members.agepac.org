@@ -18,7 +18,7 @@ class ProfilesController extends Controller
     public function show(Request $request, User $user)
     {
         $profile = [
-            'profileUser' => $user,
+            'profileUser' => $user->load('location'),
             'activities' => Activity::feed($user),
         ];
 

@@ -53,10 +53,32 @@ class ProfilesTest extends TestCase
     }
 
     /** @test */
-    public function testProfileShowsAssociatedUsersFlightHours()
+    public function testProfileHidesLocationIfUnknown()
     {
         $this->getProfile()
-            ->assertSee($this->user->flight_hours . ' heures de vol');
+            ->assertDontSee('Lieu :');
+    }
+
+    /** @test */
+    public function testProfileShowsAssociatedUsersLocation()
+    {
+        $this->getProfile(
+            $user = factory(User::class)->states('with_location')->create()
+        )->assertSee("{$user->location->municipality}, {$user->location->country}");
+    }
+
+    /** @test */
+    public function testProfileHidesFlightHoursIfUnknown()
+    {
+        $this->getProfile(create(User::class, ['flight_hours' => null]))
+            ->assertDontSee('heures de vol');
+    }
+
+    /** @test */
+    public function testProfileShowsAssociatedUsersFlightHours()
+    {
+        $this->getProfile(create(User::class, ['flight_hours' => 150]))
+            ->assertSee('150 heures de vol');
     }
 
     /** @test */
