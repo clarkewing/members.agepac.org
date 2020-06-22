@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Course;
 use App\Location;
 use App\Occupation;
 use App\User;
@@ -152,5 +153,45 @@ class ProfileTest extends TestCase
             'end_date' => null,
         ]);
         $this->assertTrue($user->fresh()->hasOccupation());
+    }
+
+    /** @test */
+    public function testCanHaveEducation()
+    {
+        $user = create(User::class);
+
+        $this->assertEmpty($user->education);
+
+        create(Course::class, ['user_id' => $user->id]);
+
+        $this->assertCount(1, $user->fresh()->education);
+    }
+
+    /** @test */
+    public function testEducationOrderedLatestFirst()
+    {
+        $user = create(User::class);
+
+        $courseOne = create(Course::class, [
+            'user_id' => $user->id,
+            'start_date' => '2010-01-01',
+            'end_date' => '2012-01-01',
+        ]);
+
+        $courseTwo = create(Course::class, [
+            'user_id' => $user->id,
+            'start_date' => '2012-01-01',
+            'end_date' => '2012-12-31',
+        ]);
+
+        $courseThree = create(Course::class, [
+            'user_id' => $user->id,
+            'start_date' => '2015-01-01',
+            'end_date' => null,
+        ]);
+
+        $this->assertEquals($courseThree->id, $user->education[0]->id);
+        $this->assertEquals($courseTwo->id, $user->education[1]->id);
+        $this->assertEquals($courseOne->id, $user->education[2]->id);
     }
 }

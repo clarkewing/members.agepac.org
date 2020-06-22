@@ -135,6 +135,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return ! is_null($this->currentOccupation());
     }
 
+    /**
+     * Get the user's education.
+     */
+    public function education()
+    {
+        return $this->hasMany(Course::class)
+            ->orderBy('start_date', 'desc');
+    }
+
     /** Determine if user is administrator.
      *
      * @return bool

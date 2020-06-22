@@ -13,12 +13,16 @@ class ProfilesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @return array|\Illuminate\View\View
      */
     public function show(Request $request, User $user)
     {
         $profile = [
-            'profileUser' => $user->load('location', 'experience'),
+            'profileUser' => $user->load([
+                'location',
+                'experience',
+                'education',
+            ]),
             'activities' => Activity::feed($user),
         ];
 

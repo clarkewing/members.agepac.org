@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Course;
 use App\Location;
 use App\Occupation;
 use App\Thread;
@@ -152,6 +153,28 @@ class ViewProfileTest extends TestCase
             ->assertSee($occupation->start_date->isoFormat('LL'))
             ->assertSee(optional($occupation->end_date)->isoFormat('LL'))
             ->assertSee($occupation->description);
+    }
+
+    /** @test */
+    public function testProfileHidesEducationIfEmpty()
+    {
+        $this->getProfile()
+            ->assertDontSee('Éducation');
+    }
+
+    /** @test */
+    public function testProfileDisplaysEducation()
+    {
+        $course = create(Course::class, ['user_id' => $this->user->id]);
+
+        $this->getProfile()
+            ->assertSee('Éducation')
+            ->assertSee($course->title)
+            ->assertSee($course->school)
+            ->assertSee("{$course->location->municipality}, {$course->location->country}")
+            ->assertSee($course->start_date->isoFormat('LL'))
+            ->assertSee(optional($course->end_date)->isoFormat('LL'))
+            ->assertSee($course->description);
     }
 
     /** @test */
