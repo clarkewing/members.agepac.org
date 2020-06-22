@@ -131,14 +131,14 @@
 
                     <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                         @forelse($activities as $date => $activity)
-                            <h2 class="pb-2 border-bottom mb-4">{{ $date }}</h2>
+                            <h5 class="font-weight-bolder mb-3">{{ $date }}</h5>
                             @foreach($activity as $record)
                                 @if(View::exists("profiles.activities.{$record->type}"))
                                     @include("profiles.activities.{$record->type}", ['activity' => $record])
                                 @endif
                             @endforeach
                         @empty
-                            <p>Cet utilisateur n'a pas encore d'activité.</p>
+                            <p class="text-center py-5">Cet utilisateur n'a pas encore d'activité.</p>
                         @endforelse
                     </div>
                 </div>
