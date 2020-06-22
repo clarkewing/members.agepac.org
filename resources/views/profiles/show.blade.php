@@ -95,7 +95,7 @@
                 @endunless
 
                 @unless($profileUser->experience->isEmpty())
-                <h2 class="h3 font-weight-bold">Expérience Professionelle</h2>
+                    <h2 class="h3 font-weight-bold">Expérience Professionelle</h2>
                     @foreach($profileUser->experience as $occupation)
                         <div class="mb-5">
                             <div class="d-flex">
