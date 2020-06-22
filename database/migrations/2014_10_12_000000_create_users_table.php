@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('class_course', 30);
             $table->year('class_year');
             $table->string('gender', 1);
-            $table->date('birthdate');
-            $table->string('phone', 20);
+            $table->date('birthdate')->nullable();
+            $table->string('phone', 20)->nullable();
             $table->string('avatar_path')->nullable();
             $table->unsignedInteger('reputation')->default(0);
             $table->text('bio')->nullable();

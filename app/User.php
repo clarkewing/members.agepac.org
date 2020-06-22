@@ -168,20 +168,28 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function setPhoneAttribute($value): void
     {
-        $this->attributes['phone'] = PhoneNumber::make($value)
-            ->ofCountry('AUTO')
-            ->ofCountry('FR')
-            ->ofCountry(GeoIP::getLocation(request()->ip())->iso_code);
+        if (is_null($value)) {
+            $this->attributes['phone'] = null;
+        } else {
+            $this->attributes['phone'] = PhoneNumber::make($value)
+                ->ofCountry('AUTO')
+                ->ofCountry('FR')
+                ->ofCountry(GeoIP::getLocation(request()->ip())->iso_code);
+        }
     }
 
     /**
      * Get the user's phone number.
      *
      * @param  string  $value
-     * @return \Propaganistas\LaravelPhone\PhoneNumber
+     * @return \Propaganistas\LaravelPhone\PhoneNumber|null
      */
-    public function getPhoneAttribute($value): PhoneNumber
+    public function getPhoneAttribute($value)
     {
+        if (is_null($value)) {
+            return null;
+        }
+
         return PhoneNumber::make($value);
     }
 
