@@ -59,10 +59,3 @@ $factory->state(User::class, 'administrator', function (Faker $faker) {
         'email' => Arr::random(config('council.administrators')),
     ];
 });
-
-$factory->afterCreatingState(User::class, 'with_location', function ($user) {
-    factory(Location::class)->create([
-        'locatable_id' => $user->id,
-        'locatable_type' => get_class($user),
-    ]);
-});

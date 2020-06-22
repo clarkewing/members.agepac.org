@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
         User::truncate();
 
         factory(User::class)
-            ->states('with_location')
             ->create([
                 'first_name' => 'John',
                 'last_name' => 'Doe',
@@ -24,7 +23,6 @@ class UserSeeder extends Seeder
             ]);
 
         factory(User::class, 50)
-            ->states('with_location')
             ->create();
     }
 }

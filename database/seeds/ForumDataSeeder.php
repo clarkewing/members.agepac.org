@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
 
-class SampleDataSeeder extends Seeder
+class ForumDataSeeder extends Seeder
 {
     protected $faker;
 
