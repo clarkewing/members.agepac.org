@@ -104,6 +104,37 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphOne(Location::class, 'locatable');
     }
 
+    /**
+     * Get the user's work experience.
+     */
+    public function experience()
+    {
+        return $this->hasMany(Occupation::class)
+            ->orderBy('is_primary', 'desc')
+            ->orderBy('start_date', 'desc');
+    }
+
+    /**
+     * Get the user's current occupation.
+     *
+     * @return \App\Occupation|null
+     */
+    public function currentOccupation()
+    {
+        return $this->experience->where('is_primary', true)->first()
+               ?? $this->experience->whereNull('end_date')->first();
+    }
+
+    /**
+     * Get the user's current occupation.
+     *
+     * @return bool
+     */
+    public function hasOccupation(): bool
+    {
+        return ! is_null($this->currentOccupation());
+    }
+
     /** Determine if user is administrator.
      *
      * @return bool

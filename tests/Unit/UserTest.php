@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Location;
 use App\Post;
 use App\User;
 use Illuminate\Support\Str;
@@ -74,35 +73,6 @@ class UserTest extends TestCase
     public function testCanMakeUsernameFromFirstAndLastName()
     {
         $this->assertEquals('john.doe', User::makeUsername('John', 'Doe'));
-    }
-
-    /** @test */
-    public function testCanHaveBio()
-    {
-        $user = create(User::class, ['bio' => 'This is a pretty awesome bio.']);
-
-        $this->assertEquals('This is a pretty awesome bio.', $user->bio);
-    }
-
-    /** @test */
-    public function testCanHaveFlightHours()
-    {
-        $user = create(User::class, ['flight_hours' => 150]);
-
-        $this->assertSame(150, $user->flight_hours);
-    }
-
-    /** @test */
-    public function testCanHaveLocation()
-    {
-        $user = create(User::class);
-        $location = create(Location::class, [
-            'locatable_id' => $user->id,
-            'locatable_type' => get_class($user),
-        ]);
-
-        $this->assertNotNull($user->location);
-        $this->assertEquals($location->getAttributes(), $user->location->getAttributes());
     }
 
     /** @test */
