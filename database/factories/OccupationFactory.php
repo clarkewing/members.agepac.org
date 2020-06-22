@@ -40,5 +40,8 @@ $factory->state(Occupation::class, 'not_pilot', function ($faker) {
 });
 
 $factory->afterCreating(Occupation::class, function ($occupation) {
-    $occupation->location()->save(factory(Location::class)->make());
+    factory(Location::class)->create([
+        'locatable_id' => $occupation->id,
+        'locatable_type' => get_class($occupation),
+    ]);
 });

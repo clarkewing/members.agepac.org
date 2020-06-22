@@ -1,5 +1,6 @@
 <?php
 
+use App\Course;
 use App\Location;
 use App\Occupation;
 use App\User;
@@ -26,7 +27,7 @@ class ProfileDataSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
 
         $this->locations()
-            ->occupations();
+            ->resumes();
 
         Schema::enableForeignKeyConstraints();
     }
@@ -50,15 +51,19 @@ class ProfileDataSeeder extends Seeder
     }
 
     /**
-     * Seed the occupations table.
+     * Seed user resumes.
      */
-    protected function occupations()
+    protected function resumes()
     {
         Occupation::truncate();
-        Location::where('locatable_id', 'App\Occupation')->delete();
+        Course::truncate();
+        Location::whereIn('locatable_id', ['App\Occupation', 'App\Course'])->delete();
 
         User::inRandomOrder()->take(25)->each(function ($user) {
             factory(Occupation::class, $this->faker->numberBetween(1, 10))
+                ->create(['user_id' => $user->id]);
+
+            factory(Course::class, $this->faker->numberBetween(1, 10))
                 ->create(['user_id' => $user->id]);
         });
 
