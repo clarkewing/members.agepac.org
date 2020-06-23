@@ -4,6 +4,6 @@
     @endslot
 
     @slot('body')
-        {{ $activity->subject->body }}
+        {{ $activity->subject->initiatorPost->body }}
     @endslot
 @endcomponent
