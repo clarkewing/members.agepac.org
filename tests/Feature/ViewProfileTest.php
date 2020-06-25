@@ -7,6 +7,7 @@ use App\Location;
 use App\Occupation;
 use App\Thread;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class ViewProfileTest extends TestCase
@@ -17,7 +18,18 @@ class ViewProfileTest extends TestCase
     {
         parent::setUp();
 
+        $this->withExceptionHandling()->signIn();
+
         $this->user = create(User::class);
+    }
+
+    /** @test */
+    public function testGuestsCannotSeeProfiles()
+    {
+        Auth::logout();
+
+        $this->getProfile()
+            ->assertRedirect(route('login'));
     }
 
     /** @test */

@@ -52,7 +52,8 @@ Route::post('/attachments', 'AttachmentsController@store')->name('attachments.st
 Route::delete('/attachments/{attachment}', 'AttachmentsController@destroy')->name('attachments.destroy');
 
 /* Profiles */
-Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');
+Route::get('/profiles/{profile}', 'ProfilesController@show')->name('profiles.show');
+Route::patch('/profiles/{profile}', 'ProfilesController@update')->name('profiles.update');
 
 /* Notifications */
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);

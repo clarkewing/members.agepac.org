@@ -1,0 +1,102 @@
+<template>
+    <li class="d-flex align-items-center p-3 border-bottom">
+        <svg class="bi bi-stopwatch flex-shrink-0 mr-3" width="1em" height="1em" viewBox="0 0 16 16"
+             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+                  d="M8 15A6 6 0 1 0 8 3a6 6 0 0 0 0 12zm0 1A7 7 0 1 0 8 2a7 7 0 0 0 0 14z"/>
+            <path fill-rule="evenodd"
+                  d="M8 4.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1 0-1h3V5a.5.5 0 0 1 .5-.5zM5.5.5A.5.5 0 0 1 6 0h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+            <path d="M7 1h2v2H7V1z"/>
+        </svg>
+
+        <span v-if="flightHours">{{ flightHours }} heures de vol</span>
+
+        <button v-if="flightHours" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editFlightHours">
+            <span class="sr-only">Modifier</span>
+
+            <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+                <path fill-rule="evenodd"
+                      d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+            </svg>
+        </button>
+
+        <button v-else class="btn btn-sm btn-link p-0" data-toggle="modal" data-target="#editFlightHours">
+            Ajouter mes heures de vol
+        </button>
+
+        <div ref="modal" class="modal fade" id="editFlightHours" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-white">
+                        <h5 class="modal-title">Modifier heures de vol</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <svg class="bi bi-x" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+                                <path fill-rule="evenodd"
+                                      d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form @submit.prevent="update" @keydown="form.onKeydown($event)">
+                            <div class="form-group">
+                                <label for="flight_hours">Heures de vol</label>
+                                <input type="text"
+                                       id="flight_hours"
+                                       v-model="form.flight_hours"
+                                       :class="['form-control', form.errors.has('flight_hours') ? 'is-invalid' : '' ]">
+
+                                <div v-if="form.errors.has('flight_hours')"
+                                     class="invalid-feedback"
+                                     v-text="form.errors.get('flight_hours')">
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-link mr-2" data-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-success">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</template>
+
+<script>
+    import {Form} from 'vform';
+
+    export default {
+        props: ['value'],
+
+        data() {
+            return {
+                form: new Form({
+                    flight_hours: this.value,
+                }),
+
+                flightHours: this.value
+            };
+        },
+
+        methods: {
+            update() {
+                this.form.patch('')
+                    .then(({ data }) => {
+                        this.form.fill(data);
+                        this.flightHours = data.flight_hours;
+
+                        $(this.$refs.modal).modal('hide');
+                        flash('Heures de vol modifiées.');
+                    });
+            }
+        }
+    }
+</script>

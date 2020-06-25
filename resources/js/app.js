@@ -26,6 +26,9 @@ Vue.component('thread-result', require('./components/ThreadResult').default);
 Vue.component('expanding-search-bar', require('./components/ExpandingSearchBar').default);
 Vue.component('payment-method', require('./components/PaymentMethod').default);
 Vue.component('new-payment-method', require('./components/NewPaymentMethod').default);
+Vue.component('profile.bio', require('./components/ProfileBio').default);
+Vue.component('profile.flight-hours', require('./components/ProfileFlightHours').default);
+Vue.component('profile.location', require('./components/ProfileLocation').default);
 
 Vue.component('registration-form', require('./pages/RegistrationForm').default);
 Vue.component('thread-view', require('./pages/Thread').default);
