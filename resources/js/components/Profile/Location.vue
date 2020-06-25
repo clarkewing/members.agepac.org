@@ -12,7 +12,7 @@
 
         <span v-if="location" v-text="location"></span>
 
-        <button v-if="locationObject" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editLocation">
+        <button v-if="fields.location" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editLocation">
             <span class="sr-only">Modifier</span>
 
             <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form @submit.prevent.stop="update" @keydown="form.onKeydown($event)">
+                        <form @submit.prevent="update" @keydown="form.onKeydown($event)">
                             <div class="form-group">
                                 <label for="location">Localisation</label>
                                 <input type="text"
@@ -72,47 +72,38 @@
 </template>
 
 <script>
-    import {Form} from 'vform';
+    import updateProfile from "../../mixins/update-profile";
     import places from 'places.js';
 
     export default {
-        props: ['value'],
+        mixins: [updateProfile],
 
         data() {
             return {
-                form: new Form({
-                    location: this.value,
-                }),
-
-                locationObject: this.value,
                 places: null
             };
         },
 
         computed: {
             location() {
-                if (! this.locationObject) return null;
+                if (! this.fields.location) return null;
 
-                return this.locationObject.municipality + ', ' + this.locationObject.country;
+                return this.fields.location.municipality + ', ' + this.fields.location.country;
             }
         },
 
         methods: {
-            update() {
+            beforeUpdate() {
                 if (this.places.getVal() === '') {
                     this.form.fill({
                         location: null
                     });
                 }
+            },
 
-                this.form.patch('')
-                    .then(({ data }) => {
-                        this.form.fill(data);
-                        this.locationObject = data.location;
-
-                        $(this.$refs.modal).modal('hide');
-                        flash('Localisation modifiée.');
-                    });
+            success() {
+                $(this.$refs.modal).modal('hide');
+                flash('Localisation modifiée.');
             },
 
             fillLocation(place) {

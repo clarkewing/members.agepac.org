@@ -9,9 +9,9 @@
             <path d="M7 1h2v2H7V1z"/>
         </svg>
 
-        <span v-if="flightHours">{{ flightHours }} heures de vol</span>
+        <span v-if="fields.flight_hours">{{ fields.flight_hours }} heures de vol</span>
 
-        <button v-if="flightHours" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editFlightHours">
+        <button v-if="fields.flight_hours" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editFlightHours">
             <span class="sr-only">Modifier</span>
 
             <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
@@ -71,31 +71,15 @@
 </template>
 
 <script>
-    import {Form} from 'vform';
+    import updateProfile from "../../mixins/update-profile";
 
     export default {
-        props: ['value'],
-
-        data() {
-            return {
-                form: new Form({
-                    flight_hours: this.value,
-                }),
-
-                flightHours: this.value
-            };
-        },
+        mixins: [updateProfile],
 
         methods: {
-            update() {
-                this.form.patch('')
-                    .then(({ data }) => {
-                        this.form.fill(data);
-                        this.flightHours = data.flight_hours;
-
-                        $(this.$refs.modal).modal('hide');
-                        flash('Heures de vol modifiées.');
-                    });
+            success() {
+                $(this.$refs.modal).modal('hide');
+                flash('Heures de vol modifiées.');
             }
         }
     }

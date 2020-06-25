@@ -34,11 +34,15 @@
                     @endif
 
                     @if(Auth::user()->is($profile) || ! is_null($profile->location))
-                        <profile.location :value="{{ $profile->location ?? 'null' }}"></profile.location>
+                        <profile.location
+                            :data="{{ json_encode(Arr::only($profile->toArray(), ['location'])) }}">
+                        </profile.location>
                     @endif
 
                     @if(Auth::user()->is($profile) || ! is_null($profile->flight_hours))
-                        <profile.flight-hours :value="{{ $profile->flight_hours }}"></profile.flight-hours>
+                        <profile.flight-hours
+                            :data="{{ json_encode(Arr::only($profile->toArray(), ['flight_hours'])) }}">
+                        </profile.flight-hours>
                     @endif
 
                     @unless(is_null($profile->phone))
@@ -88,7 +92,9 @@
                     <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
                         @if(Auth::user()->is($profile) || ! is_null($profile->bio))
-                            <profile.bio :value="{{ json_encode($profile->bio) }}"></profile.bio>
+                            <profile.bio
+                                :data="{{ json_encode(Arr::only($profile->toArray(), ['bio'])) }}">
+                            </profile.bio>
                         @endif
 
                         @unless($profile->experience->isEmpty())
