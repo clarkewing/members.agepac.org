@@ -19,7 +19,7 @@ class CreateOccupationsTable extends Migration
             $table->string('position');
             $table->string('aircraft_id')->nullable();
             $table->string('company');
-            $table->unsignedTinyInteger('status');
+            $table->unsignedTinyInteger('status_code');
             $table->text('description')->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();

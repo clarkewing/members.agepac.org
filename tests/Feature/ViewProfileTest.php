@@ -159,7 +159,7 @@ class ViewProfileTest extends TestCase
         $this->getProfile()
             ->assertSee('Expérience Professionelle')
             ->assertSee($occupation->title)
-            ->assertSee($occupation->status())
+            ->assertSee($occupation->status)
             ->assertSee($occupation->company)
             ->assertSee("{$occupation->location->municipality}, {$occupation->location->country}")
             ->assertSee($occupation->start_date->isoFormat('LL'))

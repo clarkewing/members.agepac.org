@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\UnknownOccupationStatusException;
 use App\Occupation;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class OccupationTest extends TestCase
@@ -11,30 +13,6 @@ class OccupationTest extends TestCase
     public function testCanGetArrayOfDefinedStatuses()
     {
         $this->assertCount(4, Occupation::definedStatuses());
-    }
-
-    /** @test */
-    public function testHasPresentableStatus()
-    {
-        $this->assertEquals(
-            'Salarié à temps plein',
-            make(Occupation::class, ['status' => Occupation::EMPLOYED_FULL_TIME])->status()
-        );
-
-        $this->assertEquals(
-            'Salarié à temps partiel',
-            make(Occupation::class, ['status' => Occupation::EMPLOYED_PART_TIME])->status()
-        );
-
-        $this->assertEquals(
-            'Auto-entrepreneur',
-            make(Occupation::class, ['status' => Occupation::SELF_EMPLOYED])->status()
-        );
-
-        $this->assertEquals(
-            'Bénévole',
-            make(Occupation::class, ['status' => Occupation::UNPAID])->status()
-        );
     }
 
     /** @test */
@@ -62,5 +40,89 @@ class OccupationTest extends TestCase
         $otherOccupation = factory(Occupation::class)->states('not_pilot')->create();
 
         $this->assertEquals($otherOccupation->position, $otherOccupation->title);
+    }
+
+    /** @test */
+    public function testGetsStatusAsString()
+    {
+        $this->assertEquals(
+            'Salarié à temps plein',
+            make(Occupation::class, ['status_code' => Occupation::EMPLOYED_FULL_TIME])->status
+        );
+
+        $this->assertEquals(
+            'Salarié à temps partiel',
+            make(Occupation::class, ['status_code' => Occupation::EMPLOYED_PART_TIME])->status
+        );
+
+        $this->assertEquals(
+            'Auto-entrepreneur',
+            make(Occupation::class, ['status_code' => Occupation::SELF_EMPLOYED])->status
+        );
+
+        $this->assertEquals(
+            'Bénévole',
+            make(Occupation::class, ['status_code' => Occupation::UNPAID])->status
+        );
+    }
+
+    /** @test */
+    public function testGettingUnknownStatusThrowsException()
+    {
+        $this->expectException(UnknownOccupationStatusException::class);
+
+        $id = DB::table('occupations')->insertGetId(
+            array_merge(make(Occupation::class)->getAttributes(), ['status_code' => 999])
+        );
+
+        Occupation::find($id)->status;
+    }
+
+    /** @test */
+    public function testSetsStatusAsInt()
+    {
+        $occupation = create(Occupation::class, ['status' => 'Salarié à temps plein']);
+
+        $this->assertDatabaseHas('occupations', [
+            'id' => $occupation->id,
+            'status_code' => Occupation::EMPLOYED_FULL_TIME,
+        ]);
+
+        $occupation = create(Occupation::class, ['status' => 'Salarié à temps partiel']);
+
+        $this->assertDatabaseHas('occupations', [
+            'id' => $occupation->id,
+            'status_code' => Occupation::EMPLOYED_PART_TIME,
+        ]);
+
+        $occupation = create(Occupation::class, ['status' => 'Auto-entrepreneur']);
+
+        $this->assertDatabaseHas('occupations', [
+            'id' => $occupation->id,
+            'status_code' => Occupation::SELF_EMPLOYED,
+        ]);
+
+        $occupation = create(Occupation::class, ['status' => 'Bénévole']);
+
+        $this->assertDatabaseHas('occupations', [
+            'id' => $occupation->id,
+            'status_code' => Occupation::UNPAID,
+        ]);
+    }
+
+    /** @test */
+    public function testSettingUnknownStatusStringThrowsException()
+    {
+        $this->expectException(UnknownOccupationStatusException::class);
+
+        create(Occupation::class, ['status' => 'foobar']);
+    }
+
+    /** @test */
+    public function testSettingUnknownStatusIntegerThrowsException()
+    {
+        $this->expectException(UnknownOccupationStatusException::class);
+
+        create(Occupation::class, ['status' => 999]);
     }
 }

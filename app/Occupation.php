@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Exceptions\UnknownOccupationStatusException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use ReflectionClass;
 
 class Occupation extends Model
@@ -19,6 +21,17 @@ class Occupation extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'is_pilot',
+        'status',
+        'title',
+    ];
 
     /**
      * The attributes that should be cast.
@@ -61,28 +74,6 @@ class Occupation extends Model
     }
 
     /**
-     * Get status string.
-     *
-     * @return string
-     */
-    public function status()
-    {
-        switch ($this->status) {
-            case self::EMPLOYED_FULL_TIME:
-                return 'Salarié à temps plein';
-
-            case self::EMPLOYED_PART_TIME :
-                return 'Salarié à temps partiel';
-
-            case self::SELF_EMPLOYED :
-                return 'Auto-entrepreneur';
-
-            case self::UNPAID :
-                return 'Bénévole';
-        }
-    }
-
-    /**
      * Get the aircraft associated with the position.
      */
     public function aircraft()
@@ -109,7 +100,7 @@ class Occupation extends Model
     }
 
     /**
-     * Return occupation title.
+     * Get occupation title.
      *
      * @return string
      */
@@ -120,5 +111,64 @@ class Occupation extends Model
         }
 
         return $this->position;
+    }
+
+    /**
+     * Get the occupation's status.
+     *
+     * @return string
+     * @throws \App\Exceptions\UnknownOccupationStatusException
+     */
+    public function getStatusAttribute(): string
+    {
+        if (isset($this->statusStrings()[$this->status_code])) {
+            return $this->statusStrings()[$this->status_code];
+        }
+
+        Log::alert($this->getRawOriginal());
+        throw new UnknownOccupationStatusException('', $this);
+    }
+
+    /**
+     * Set the occupation's status.
+     *
+     * @param  mixed  $value
+     * @return void
+     * @throws \App\Exceptions\UnknownOccupationStatusException
+     */
+    public function setStatusAttribute($value): void
+    {
+        if (is_string($value)) {
+            $statusInt = array_search($value, $this->statusStrings());
+
+            if ($statusInt !== false) {
+                $this->attributes['status_code'] = $statusInt;
+
+                return;
+            }
+        }
+
+        if (is_int($value) && isset($this->statusStrings()[$value])) {
+            $this->attributes['status_code'] = $value;
+
+            return;
+        }
+
+        throw new UnknownOccupationStatusException('', $this, $value);
+    }
+
+    /**
+     * The array of strings corresponding to different statuses.
+     *
+     * @return array|string[]
+     */
+    public function statusStrings(): array
+    {
+        return [
+            self::EMPLOYED_FULL_TIME => 'Salarié à temps plein',
+            self::EMPLOYED_PART_TIME => 'Salarié à temps partiel',
+            self::SELF_EMPLOYED => 'Auto-entrepreneur',
+            self::UNPAID => 'Bénévole',
+        ];
     }
 }

@@ -6,7 +6,7 @@
 
         <h6 class="align-self-start small font-weight-bold flex-shrink-0 rounded-pill p-2 px-md-3"
             style="background: #9AE6B4;">
-            {{ $occupation->status() }}
+            {{ $occupation->status }}
         </h6>
     </div>
 
