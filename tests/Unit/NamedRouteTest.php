@@ -247,6 +247,17 @@ class NamedRouteTest extends TestCase
     }
 
     /* @test */
+    public function testProfilesUpdate()
+    {
+        $user = make(User::class);
+
+        $this->assertRoutePathIs(
+            '/profiles/' . $user->username,
+            'profiles.update', $user
+        );
+    }
+
+    /* @test */
     public function testNotificationsIndex()
     {
         $this->assertRoutePathIs('/notifications', 'notifications.index');
