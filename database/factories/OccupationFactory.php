@@ -19,7 +19,7 @@ $factory->define(Occupation::class, function (Faker $faker) {
         'position' => $is_pilot ? Arr::random(['CDB', 'OPL']) : $faker->jobTitle,
         'aircraft_id' => $is_pilot ? Aircraft::all()->random()->id : null,
         'company' => $faker->company,
-        'status' => Arr::random(Occupation::definedStatuses()),
+        'status' => Arr::random(array_keys(Occupation::statusStrings())),
         'description' => $faker->paragraph,
         'start_date' => $start_date = $faker->date,
         'end_date' => $faker->boolean ? $faker->dateTimeBetween($start_date, 'now') : null,

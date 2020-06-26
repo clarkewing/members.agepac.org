@@ -4,9 +4,7 @@ namespace App;
 
 use App\Exceptions\UnknownOccupationStatusException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use ReflectionClass;
 
 class Occupation extends Model
 {
@@ -60,17 +58,18 @@ class Occupation extends Model
     protected $with = ['aircraft', 'location'];
 
     /**
-     * Get an array containing the defined statuses.
+     * The array of strings corresponding to different statuses.
      *
-     * @return array
-     * @throws \ReflectionException
+     * @return array|string[]
      */
-    public static function definedStatuses()
+    public static function statusStrings(): array
     {
-        return Arr::except(
-            (new ReflectionClass(get_class()))->getConstants(),
-            ['CREATED_AT', 'UPDATED_AT']
-        );
+        return [
+            self::EMPLOYED_FULL_TIME => 'Salarié à temps plein',
+            self::EMPLOYED_PART_TIME => 'Salarié à temps partiel',
+            self::SELF_EMPLOYED => 'Auto-entrepreneur',
+            self::UNPAID => 'Bénévole',
+        ];
     }
 
     /**
@@ -155,20 +154,5 @@ class Occupation extends Model
         }
 
         throw new UnknownOccupationStatusException('', $this, $value);
-    }
-
-    /**
-     * The array of strings corresponding to different statuses.
-     *
-     * @return array|string[]
-     */
-    public function statusStrings(): array
-    {
-        return [
-            self::EMPLOYED_FULL_TIME => 'Salarié à temps plein',
-            self::EMPLOYED_PART_TIME => 'Salarié à temps partiel',
-            self::SELF_EMPLOYED => 'Auto-entrepreneur',
-            self::UNPAID => 'Bénévole',
-        ];
     }
 }

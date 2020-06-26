@@ -12,7 +12,7 @@ class OccupationTest extends TestCase
     /** @test */
     public function testCanGetArrayOfDefinedStatuses()
     {
-        $this->assertCount(4, Occupation::definedStatuses());
+        $this->assertCount(4, Occupation::statusStrings());
     }
 
     /** @test */
