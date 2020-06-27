@@ -10,7 +10,7 @@
 
         <span class="sr-only">Localisation :</span>
 
-        <span v-if="location" v-text="location"></span>
+        <span v-if="fields.location" v-text="fields.location.name"></span>
 
         <button v-if="fields.location" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editLocation">
             <span class="sr-only">Modifier</span>
@@ -48,13 +48,14 @@
                         <form @submit.prevent="update" @keydown="form.onKeydown($event)">
                             <div class="form-group">
                                 <label for="location">Localisation</label>
-                                <input type="text"
-                                       ref="input"
-                                       id="location"
-                                       :class="['form-control', form.errors.has('location') ? 'is-invalid' : '' ]">
+                                <location-input :options="locationOptions"
+                                                v-model="form.location"
+                                                id="location"
+                                                :class="{'is-invalid': form.errors.has('location')}"
+                                ></location-input>
 
                                 <div v-if="form.errors.has('location')"
-                                     class="invalid-feedback"
+                                     class="d-block invalid-feedback"
                                      v-text="form.errors.get('location')">
                                 </div>
                             </div>
@@ -73,74 +74,31 @@
 
 <script>
     import updateProfile from "../../mixins/update-profile";
-    import places from 'places.js';
+    import LocationInput from "../LocationInput";
 
     export default {
+        components: {LocationInput},
         mixins: [updateProfile],
 
         data() {
             return {
-                places: null
+                locationOptions: {
+                    type: 'city',
+                    aroundLatLngViaIP: false,
+                    templates: {
+                        value: (suggestion) => {
+                            return (suggestion.city || suggestion.name) + ', ' + suggestion.country;
+                        }
+                    },
+                }
             };
         },
 
-        computed: {
-            location() {
-                if (! this.fields.location) return null;
-
-                return this.fields.location.municipality + ', ' + this.fields.location.country;
-            }
-        },
-
         methods: {
-            beforeUpdate() {
-                if (this.places.getVal() === '') {
-                    this.form.fill({
-                        location: null
-                    });
-                }
-            },
-
             success() {
                 $(this.$refs.modal).modal('hide');
                 flash('Localisation modifiée.');
-            },
-
-            fillLocation(place) {
-                this.form.fill({
-                    location: {
-                        type: place.type,
-                        name: place.value,
-                        street_line_1: null,
-                        street_line_2: null,
-                        municipality: place.city || place.name,
-                        administrative_area: place.administrative,
-                        sub_administrative_area: place.country || place.suburb,
-                        postal_code: place.postcode,
-                        country: place.country,
-                        country_code: place.countryCode.toUpperCase()
-                    }
-                })
             }
-        },
-
-        mounted() {
-            this.places = places({
-                container: this.$refs.input,
-                language: 'fr',
-                type: 'city',
-                aroundLatLngViaIP: false,
-                templates: {
-                    value: (suggestion) => {
-                        return (suggestion.city || suggestion.name) + ', ' + suggestion.country;
-                    }
-                }
-            });
-
-            // Set initial value.
-            this.places.setVal(this.location);
-
-            this.places.on('change', e => this.fillLocation(e.suggestion));
         }
     }
 </script>
