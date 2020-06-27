@@ -35,14 +35,14 @@
 
                     @if(Auth::user()->is($profile) || ! is_null($profile->location))
                         <profile.location
-                            :data="{{ json_encode(Arr::only($profile->toArray(), ['location'])) }}">
-                        </profile.location>
+                            :data="{{ json_encode(Arr::only($profile->toArray(), ['location'])) }}"
+                        ></profile.location>
                     @endif
 
                     @if(Auth::user()->is($profile) || ! is_null($profile->flight_hours))
                         <profile.flight-hours
-                            :data="{{ json_encode(Arr::only($profile->toArray(), ['flight_hours'])) }}">
-                        </profile.flight-hours>
+                            :data="{{ json_encode(Arr::only($profile->toArray(), ['flight_hours'])) }}"
+                        ></profile.flight-hours>
                     @endif
 
                     @unless(is_null($profile->phone))
@@ -93,8 +93,8 @@
 
                         @if(Auth::user()->is($profile) || ! is_null($profile->bio))
                             <profile.bio
-                                :data="{{ json_encode(Arr::only($profile->toArray(), ['bio'])) }}">
-                            </profile.bio>
+                                :data="{{ json_encode(Arr::only($profile->toArray(), ['bio'])) }}"
+                            ></profile.bio>
                         @endif
 
                         @unless($profile->experience->isEmpty())
