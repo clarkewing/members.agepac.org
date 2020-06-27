@@ -95,7 +95,7 @@
         },
 
         methods: {
-            success() {
+            updated() {
                 $(this.$refs.modal).modal('hide');
                 flash('Localisation modifiée.');
             }

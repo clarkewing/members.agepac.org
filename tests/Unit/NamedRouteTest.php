@@ -266,6 +266,15 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /** @test */
+    public function testOccupationsDestroy()
+    {
+        $this->assertRoutePathIs(
+            '/occupations/1',
+            'occupations.destroy', 1
+        );
+    }
+
     /* @test */
     public function testNotificationsIndex()
     {

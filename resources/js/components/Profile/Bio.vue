@@ -74,7 +74,7 @@
         mixins: [updateProfile],
 
         methods: {
-            success() {
+            updated() {
                 $(this.$refs.modal).modal('hide');
                 flash('Biographie modifiée.');
             }

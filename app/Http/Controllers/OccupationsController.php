@@ -48,6 +48,23 @@ class OccupationsController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Occupation  $occupation
+     * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
+     */
+    public function destroy(Occupation $occupation)
+    {
+        $this->authorize('delete', $occupation);
+
+        $occupation->delete();
+
+        return Response::noContent();
+    }
+
+    /**
      * Validates an update request.
      *
      * @param  \Illuminate\Http\Request  $request

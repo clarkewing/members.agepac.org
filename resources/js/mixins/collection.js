@@ -16,8 +16,6 @@ export default {
             this.items.splice(index, 1);
 
             this.$emit('removed');
-
-            flash('Ta réponse a étée supprimée.');
         }
     }
 }

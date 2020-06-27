@@ -77,7 +77,7 @@
         mixins: [updateProfile],
 
         methods: {
-            success() {
+            updated() {
                 $(this.$refs.modal).modal('hide');
                 flash('Heures de vol modifiées.');
             }

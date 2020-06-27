@@ -185,9 +185,18 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn btn-link mr-2" data-dismiss="modal">Annuler
+                                    <button type="button" class="btn btn-outline-danger mr-auto"
+                                            @click="destroy">
+                                        Supprimer
                                     </button>
-                                    <button type="submit" class="btn btn-success">Enregistrer</button>
+
+                                    <button type="button" class="btn btn-link mr-2" data-dismiss="modal">
+                                        Annuler
+                                    </button>
+
+                                    <button type="submit" class="btn btn-success">
+                                        Enregistrer
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -274,7 +283,8 @@
 
         data() {
             return {
-                endpoint: '/occupations/' + this.id,
+                endpoint: '/occupations',
+                resourceId: this.id,
 
                 form: new Form(_.pick(this.$props, [
                     'position',
@@ -348,9 +358,17 @@
         },
 
         methods: {
-            success() {
+            updated() {
                 $(this.$refs.modal).modal('hide');
-                flash('Emploi modifié !');
+                flash('Emploi modifié.');
+            },
+
+            deleted() {
+                $(this.$refs.modal).modal('hide');
+
+                flash('Emploi supprimé.');
+
+                this.$emit('destroyed', this.fields.id);
             },
 
             uniqueId(name) {

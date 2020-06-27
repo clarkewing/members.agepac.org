@@ -6,6 +6,7 @@ export default {
     data() {
         return {
             endpoint: '',
+            resourceId: null,
 
             form: new Form(this.data),
 
@@ -15,25 +16,40 @@ export default {
 
     methods: {
         update() {
-            this.beforeUpdate();
-
-            this.form.patch(this.endpoint)
+            this.form.patch(this.resourceEndpoint())
                 .then(({data}) => {
                     this.form.fill(data);
                     this.fillFields(data);
 
-                    this.success();
+                    this.updated();
                 });
         },
 
-        beforeUpdate() {},
+        destroy() {
+            axios.delete(this.resourceEndpoint(), {
+                validateStatus: function (status) {
+                    return status === 204; // HTTP_NO_CONTENT
+                }
+            }).then(() => {
+                this.deleted();
+            });
+        },
 
-        success() {},
+        updated() {},
+        deleted() {},
 
         fillFields(data) {
             Object.keys(this.fields).forEach(key => {
                 this.fields[key] = data[key];
             });
+        },
+
+        resourceEndpoint() {
+            if (this.resourceId === null) {
+                return this.endpoint;
+            }
+
+            return this.endpoint + '/' + this.resourceId;
         }
     }
 }

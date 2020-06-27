@@ -1,23 +1,26 @@
 <template>
     <div>
-        <occupation v-for="occupation in experience"
-                    :key="occupation.id"
-                    v-bind="occupation"
-        ></occupation>
+        <div v-for="(occupation, index) in items" :key="occupation.id">
+            <occupation v-bind="occupation"
+                        @destroyed="remove(index)"
+            ></occupation>
+        </div>
     </div>
 </template>
 
 <script>
+    import collection from "../../mixins/collection";
     import Occupation from "./Occupation";
 
     export default {
         props: ['data'],
 
+        mixins: [collection],
         components: {Occupation},
 
         data() {
             return {
-                experience: this.data.experience
+                items: this.data.experience
             }
         }
     }

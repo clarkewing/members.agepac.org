@@ -21,4 +21,16 @@ class OccupationPolicy
     {
         return $occupation->user_id === $user->id;
     }
+
+    /**
+     * Determine whether the user can delete the occupation.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Occupation  $occupation
+     * @return bool
+     */
+    public function delete(User $user, Occupation $occupation): bool
+    {
+        return $this->update($user, $occupation);
+    }
 }
