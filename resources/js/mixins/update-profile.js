@@ -5,6 +5,8 @@ export default {
 
     data() {
         return {
+            endpoint: '',
+
             form: new Form(this.data),
 
             fields: this.data
@@ -15,7 +17,7 @@ export default {
         update() {
             this.beforeUpdate();
 
-            this.form.patch('')
+            this.form.patch(this.endpoint)
                 .then(({data}) => {
                     this.form.fill(data);
                     this.fillFields(data);
@@ -25,6 +27,8 @@ export default {
         },
 
         beforeUpdate() {},
+
+        success() {},
 
         fillFields(data) {
             Object.keys(this.fields).forEach(key => {

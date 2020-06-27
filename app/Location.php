@@ -7,11 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class Location extends Model
 {
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'type',
+        'name',
+        'street_line_1',
+        'street_line_2',
+        'municipality',
+        'administrative_area',
+        'sub_administrative_area',
+        'postal_code',
+        'country',
+        'country_code',
+    ];
 
     /**
      * Get the owning locatable model.

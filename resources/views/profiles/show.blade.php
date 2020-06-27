@@ -100,9 +100,9 @@
                         @unless($profile->experience->isEmpty())
                             <h2 class="h3 font-weight-bold mb-3">Expérience Professionelle</h2>
 
-                            @foreach($profile->experience as $occupation)
-                                @include('profiles._occupation')
-                            @endforeach
+                            <profile.experience
+                                :data="{{ json_encode(Arr::only($profile->toArray(), ['experience'])) }}"
+                            ></profile.experience>
                         @endunless
 
                         @unless($profile->education->isEmpty())
@@ -131,3 +131,10 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        window.App.aircrafts = {!! App\Aircraft::all()->toJson() !!};
+        window.App.occupationStatuses = @json(App\Occupation::statusStrings());
+    </script>
+@endpush

@@ -14,11 +14,20 @@ class Occupation extends Model
     const UNPAID = 4;
 
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'position',
+        'aircraft_id',
+        'company',
+        'status_code',
+        'description',
+        'start_date',
+        'end_date',
+        'is_primary',
+    ];
 
     /**
      * The accessors to append to the model's array form.
@@ -37,17 +46,10 @@ class Occupation extends Model
      * @var array
      */
     protected $casts = [
+        'user_id' => 'integer',
         'is_primary' => 'boolean',
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'start_date',
-        'end_date',
+        'start_date' => 'date:Y-m-d',
+        'end_date' => 'date:Y-m-d',
     ];
 
     /**
