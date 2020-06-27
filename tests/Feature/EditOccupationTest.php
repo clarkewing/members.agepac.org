@@ -179,12 +179,12 @@ class EditOccupationTest extends TestCase
         $this->updateOccupation(['end_date' => 12345678])
             ->assertJsonValidationErrors('end_date');
 
-        $this->updateOccupation(['start_date' => '01/01/2020'])
-            ->assertJsonValidationErrors('start_date');
+        $this->updateOccupation(['end_date' => '01/01/2020'])
+            ->assertJsonValidationErrors('end_date');
     }
 
     /** @test */
-    public function testEndDateCannotMustBeInPast()
+    public function testEndDateMustBeInPast()
     {
         $this->updateOccupation(['end_date' => '2099-12-31'])
             ->assertJsonValidationErrors('end_date');

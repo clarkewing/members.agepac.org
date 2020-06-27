@@ -6,11 +6,9 @@ use App\Aircraft;
 use App\Occupation;
 use App\Rules\ValidLocation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Throwable;
 
 class OccupationsController extends Controller
 {
