@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 use App\Http\Middleware\Authenticate;
+use App\Policies\PostPolicy;
+use App\Policies\ProfilePolicy;
+use App\Policies\ThreadPolicy;
+use App\Post;
+use App\Thread;
+use App\User;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -15,9 +21,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Thread' => 'App\Policies\ThreadPolicy',
-        'App\Post' => 'App\Policies\PostPolicy',
-        'App\User' => 'App\Policies\ProfilePolicy',
+        Thread::class => ThreadPolicy::class,
+        Post::class => PostPolicy::class,
+        User::class => ProfilePolicy::class,
     ];
 
     /**
