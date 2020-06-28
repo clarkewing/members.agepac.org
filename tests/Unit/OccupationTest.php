@@ -125,4 +125,14 @@ class OccupationTest extends TestCase
 
         create(Occupation::class, ['status' => 999]);
     }
+
+    /** @test */
+    public function testAssociatedLocationIsDeletedOnDelete()
+    {
+        $occupation = create(Occupation::class);
+
+        $occupation->delete();
+
+        $this->assertDatabaseMissing('locations', ['id' => $occupation->location->id]);
+    }
 }

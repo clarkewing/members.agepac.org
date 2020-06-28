@@ -60,6 +60,18 @@ class Occupation extends Model
     protected $with = ['aircraft', 'location'];
 
     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::deleting(function ($occupation) {
+            $occupation->location->delete();
+        });
+    }
+
+    /**
      * The array of strings corresponding to different statuses.
      *
      * @return array|string[]
