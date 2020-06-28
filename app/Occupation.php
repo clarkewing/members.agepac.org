@@ -103,6 +103,19 @@ class Occupation extends Model
     }
 
     /**
+     * Set the occupation's location.
+     *
+     * @param  mixed  $value
+     * @return \App\Location
+     */
+    public function setLocation($value)
+    {
+        return tap($this->location()->updateOrCreate([], $value), function ($location) {
+            $this->location = $location;
+        });
+    }
+
+    /**
      * Determine if this is a flying occupation.
      *
      * @return bool

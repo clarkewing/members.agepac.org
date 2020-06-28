@@ -36,13 +36,13 @@ class OccupationsController extends Controller
 
         $this->validateUpdate($request, $occupation);
 
-        if ($request->filled('location')) {
-            $occupation->location->update($request->input('location'));
-        }
-
         $occupation->update($request->all());
 
-        return Response::json($occupation->fresh('location'));
+        if ($request->filled('location')) {
+            $occupation->setLocation($request->input('location'));
+        }
+
+        return Response::json($occupation->fresh());
     }
 
     /**
