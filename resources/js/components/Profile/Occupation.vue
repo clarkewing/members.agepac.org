@@ -147,19 +147,12 @@
 
         computed: {
             statusColor() {
-                switch (this.fields.status_code) {
-                    case 1:
-                        return '#9AE6B4';
-
-                    case 2:
-                        return '#FBD38D';
-
-                    case 3:
-                        return '#D6BCFA';
-
-                    case 4:
-                        return '#A3BFFA';
-                }
+                return {
+                    1: '#9AE6B4',
+                    2: '#FBD38D',
+                    3: '#D6BCFA',
+                    4: '#A3BFFA',
+                }[this.fields.status_code];
             },
 
             startDate() {
