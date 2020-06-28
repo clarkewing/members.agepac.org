@@ -97,13 +97,11 @@
                             ></profile.bio>
                         @endif
 
-                        @unless($profile->experience->isEmpty())
-                            <h2 class="h3 font-weight-bold mb-3">Expérience Professionelle</h2>
-
+                        @if(Auth::user()->is($profile) || ! $profile->experience->isEmpty())
                             <profile.experience
                                 :data="{{ json_encode(Arr::only($profile->toArray(), ['experience'])) }}"
                             ></profile.experience>
-                        @endunless
+                        @endif
 
                         @unless($profile->education->isEmpty())
                             <h2 class="h3 font-weight-bold mb-3">Éducation</h2>

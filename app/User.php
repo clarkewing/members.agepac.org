@@ -136,6 +136,19 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Add an occupation to the user's experience.
+     *
+     * @param  array $occupation
+     * @return \App\Occupation
+     */
+    public function addExperience(array $occupation)
+    {
+        $occupation = $this->experience()->create($occupation);
+
+        return $occupation;
+    }
+
+    /**
      * Get the user's education.
      */
     public function education()

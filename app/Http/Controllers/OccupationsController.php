@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Aircraft;
+use App\Http\Requests\StoreOccupation;
 use App\Occupation;
 use App\Rules\ValidLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -20,6 +22,20 @@ class OccupationsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StoreOccupation  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(StoreOccupation $request)
+    {
+        $occupation = tap($request->user()->addExperience($request->all()))
+            ->setLocation($request->input('location'));
+
+        return Response::json($occupation, HttpResponse::HTTP_CREATED);
     }
 
     /**

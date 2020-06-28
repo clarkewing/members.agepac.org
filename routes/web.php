@@ -55,7 +55,7 @@ Route::delete('/attachments/{attachment}', 'AttachmentsController@destroy')->nam
 Route::get('/profiles/{profile}', 'ProfilesController@show')->name('profiles.show');
 Route::patch('/profiles/{profile}', 'ProfilesController@update')->name('profiles.update');
 
-Route::apiResource('occupations', 'OccupationsController')->only(['update', 'destroy']);
+Route::apiResource('occupations', 'OccupationsController')->only(['store', 'update', 'destroy']);
 
 /* Notifications */
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);

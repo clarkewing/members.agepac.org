@@ -15,6 +15,18 @@ export default {
     },
 
     methods: {
+        create() {
+            this.form.post(this.endpoint, {
+                validateStatus: function (status) {
+                    return status === 201; // HTTP_CREATED
+                }
+            }).then(({data}) => {
+                this.form.reset();
+
+                this.created(data);
+            });
+        },
+
         update() {
             this.form.patch(this.resourceEndpoint())
                 .then(({data}) => {
