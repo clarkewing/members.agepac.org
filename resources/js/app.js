@@ -19,13 +19,13 @@ require('./bootstrap');
 
 Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('user-notifications', require('./components/UserNotifications.vue').default);
-Vue.component('avatar-form', require('./components/AvatarForm.vue').default);
 Vue.component('wysiwyg', require('./components/Wysiwyg.vue').default);
 Vue.component('logout-button', require('./components/LogoutButton').default);
 Vue.component('thread-result', require('./components/ThreadResult').default);
 Vue.component('expanding-search-bar', require('./components/ExpandingSearchBar').default);
 Vue.component('payment-method', require('./components/PaymentMethod').default);
 Vue.component('new-payment-method', require('./components/NewPaymentMethod').default);
+Vue.component('profile.avatar', require('./components/Profile/Avatar').default);
 Vue.component('profile.bio', require('./components/Profile/Bio').default);
 Vue.component('profile.flight-hours', require('./components/Profile/FlightHours').default);
 Vue.component('profile.location', require('./components/Profile/Location').default);

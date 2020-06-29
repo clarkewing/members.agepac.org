@@ -5,6 +5,8 @@ export default {
 
     data() {
         return {
+            username: window.location.pathname.split('/')[2],
+
             endpoint: '',
             resourceId: null,
 
@@ -16,9 +18,7 @@ export default {
 
     computed: {
         canUpdate() {
-            const profileUsername = window.location.pathname.split('/')[2];
-
-            return this.authorize(user => user.username === profileUsername);
+            return this.authorize(user => user.username === this.username);
         }
     },
 

@@ -1,6 +1,6 @@
 <template>
     <div :class="['embed-responsive embed-responsive-1by1', classes]">
-        <img :src="avatar" class="d-block embed-responsive-item cover">
+        <img :src="avatarSrc" class="d-block embed-responsive-item cover">
 
         <label class="embedded-avatar-upload-btn d-flex align-items-center justify-content-center" v-if="canUpdate">
             <svg class="bi bi-upload" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
@@ -16,28 +16,27 @@
 </template>
 
 <script>
-    import ImageUpload from './ImageUpload.vue';
+    import ImageUpload from '../ImageUpload.vue';
+    import updateProfile from "../../mixins/update-profile";
 
     export default {
-        props: ['user', 'classes'],
+        props: {
+            classes: String,
+        },
 
+        mixins: [updateProfile],
         components: {ImageUpload},
 
         data() {
             return {
-                avatar: this.user.avatar_path
-            }
-        },
-
-        computed: {
-            canUpdate() {
-                return this.authorize(user => user.id === this.user.id);
-            }
+                avatarSrc: this.data.avatar_path,
+            };
         },
 
         methods: {
             onLoad(avatar) {
-                this.avatar = avatar.src;
+                this.avatarSrc = avatar.src;
+
                 this.persist(avatar.file);
             },
 
@@ -46,7 +45,7 @@
 
                 data.append('avatar', avatar);
 
-                axios.post(`/api/users/${this.user.username}/avatar`, data)
+                axios.post(`/api/users/${this.username}/avatar`, data)
                     .then(() => flash('Photo de profil chargée !'))
             }
         }
