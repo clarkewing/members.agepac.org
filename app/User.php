@@ -14,7 +14,7 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasLocation, HasReputation, Notifiable;
+    use Billable, HasLocation, HasReputation, Notifiable, Profile;
 
     /**
      * The attributes that are mass assignable.
@@ -33,8 +33,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'birthdate',
         'phone',
         'avatar_path',
-        'bio',
-        'flight_hours',
     ];
 
     /**
@@ -94,59 +92,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function lastPost()
     {
         return $this->hasOne(Post::class)->latest();
-    }
-
-    /**
-     * Get the user's work experience.
-     */
-    public function experience()
-    {
-        return $this->hasMany(Occupation::class)
-            ->orderBy('is_primary', 'desc')
-            ->orderBy('start_date', 'desc');
-    }
-
-    /**
-     * Get the user's current occupation.
-     *
-     * @return \App\Occupation|null
-     */
-    public function currentOccupation()
-    {
-        return $this->experience->where('is_primary', true)->first()
-               ?? $this->experience->whereNull('end_date')->first();
-    }
-
-    /**
-     * Get the user's current occupation.
-     *
-     * @return bool
-     */
-    public function hasOccupation(): bool
-    {
-        return ! is_null($this->currentOccupation());
-    }
-
-    /**
-     * Add an occupation to the user's experience.
-     *
-     * @param  array $occupation
-     * @return \App\Occupation
-     */
-    public function addExperience(array $occupation)
-    {
-        $occupation = $this->experience()->create($occupation);
-
-        return $occupation;
-    }
-
-    /**
-     * Get the user's education.
-     */
-    public function education()
-    {
-        return $this->hasMany(Course::class)
-            ->orderBy('start_date', 'desc');
     }
 
     /** Determine if user is administrator.
