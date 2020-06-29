@@ -51,6 +51,7 @@ class ProfilesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $profile
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, User $profile)
     {
@@ -66,17 +67,11 @@ class ProfilesController extends Controller
             'bio' => 'sometimes|nullable|string|max:65535',
         ]);
 
-        if ($request->has('location')) {
-            if (is_null($request->input('location'))) {
-                $profile->location()->delete();
-            } else {
-                $profile->location()->updateOrCreate([], $request->input('location'));
-
-                $profile->load('location');
-            }
-        }
-
         $profile->fill($request->input())->save();
+
+        if ($request->has('location')) {
+            $profile->setLocation($request->input('location'));
+        }
 
         return Response::json($profile);
     }
