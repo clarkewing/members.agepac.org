@@ -9,9 +9,11 @@
             <path d="M7 1h2v2H7V1z"/>
         </svg>
 
-        <span v-if="fields.flight_hours">{{ fields.flight_hours }} heures de vol</span>
+        <span v-if="fields.flight_hours !== null">{{ fields.flight_hours }} heures de vol</span>
 
-        <button v-if="fields.flight_hours" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editFlightHours">
+        <button v-if="fields.flight_hours !== null"
+                class="btn btn-sm py-0 ml-auto"
+                data-toggle="modal" data-target="#editFlightHours">
             <span class="sr-only">Modifier</span>
 
             <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
