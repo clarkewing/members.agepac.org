@@ -8,7 +8,11 @@ use Tests\TestCase;
 
 class SearchTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group algolia-api
+     */
     public function testAUserCanSearchTheForum()
     {
         if (! config('scout.algolia.id')) {

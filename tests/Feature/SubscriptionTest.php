@@ -17,7 +17,11 @@ class SubscriptionTest extends StripeTestCase
         $this->signIn($this->createCustomer([], true));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testAUserMustHaveADefaultPaymentMethodToSubscribe()
     {
         $this->signIn();
@@ -27,7 +31,11 @@ class SubscriptionTest extends StripeTestCase
         $this->assertFalse(Auth::user()->subscribed('default'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testPlanIsRequiredToSubscribe()
     {
         $this->createSubscription([
@@ -37,7 +45,11 @@ class SubscriptionTest extends StripeTestCase
         $this->assertFalse(Auth::user()->subscribed('default'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testPlanMustExistInConfig()
     {
         $this->createSubscription([
@@ -47,7 +59,11 @@ class SubscriptionTest extends StripeTestCase
         $this->assertFalse(Auth::user()->subscribed('default'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanSubscribeToAPlan()
     {
         $this->createSubscription([
@@ -59,7 +75,11 @@ class SubscriptionTest extends StripeTestCase
         $this->assertTrue(Auth::user()->subscribed('default'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanChangeToAnotherPlan()
     {
         ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
@@ -72,7 +92,11 @@ class SubscriptionTest extends StripeTestCase
         $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac+alumni'), 'default'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testChangingToSamePlanDoesntCauseError()
     {
         ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
@@ -82,7 +106,11 @@ class SubscriptionTest extends StripeTestCase
         $this->updateSubscription(['plan' => 'agepac'])->assertOk();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanCancelTheirSubscription()
     {
         ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
@@ -96,7 +124,11 @@ class SubscriptionTest extends StripeTestCase
         $this->assertTrue($user->subscription('default')->onGracePeriod());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanResumeTheirCancelledSubscription()
     {
         ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add()->cancel();
