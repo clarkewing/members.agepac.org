@@ -184,19 +184,37 @@ class EditOccupationTest extends TestCase
     }
 
     /** @test */
-    public function testEndDateMustBeInPast()
-    {
-        $this->updateOccupation(['end_date' => '2099-12-31'])
-            ->assertJsonValidationErrors('end_date');
-    }
-
-    /** @test */
     public function testStartAndEndDatesMustBeChronological()
     {
         $this->updateOccupation([
             'start_date' => '2000-01-01',
             'end_date' => '1999-12-31',
         ])->assertJsonValidationErrors(['start_date', 'end_date']);
+    }
+
+    /** @test */
+    public function testStartDateMustBeBeforeExistingEndDate()
+    {
+        $this->occupation->update(['end_date' => '1999-12-31']);
+
+        $this->updateOccupation(['start_date' => '2000-01-01'])
+            ->assertJsonValidationErrors('start_date');
+    }
+
+    /** @test */
+    public function testEndDateMustBeAfterExistingStartDate()
+    {
+        $this->occupation->update(['start_date' => '2000-01-01']);
+
+        $this->updateOccupation(['end_date' => '1999-12-31'])
+            ->assertJsonValidationErrors('end_date');
+    }
+
+    /** @test */
+    public function testEndDateMustBeInPast()
+    {
+        $this->updateOccupation(['end_date' => '2099-12-31'])
+            ->assertJsonValidationErrors('end_date');
     }
 
     /** @test */
