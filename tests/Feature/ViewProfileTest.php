@@ -105,14 +105,10 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysLocation()
     {
-        $location = create(Location::class, [
-            'locatable_id' => $this->user->id,
-            'locatable_type' => get_class($this->user),
-        ]);
+        $this->user->location()->save(make(Location::class));
 
         $this->getProfile()
-            ->assertSee('Lieu :')
-            ->assertSee("{$location->municipality}, {$location->country}");
+            ->assertSee(json_encode(['location' => $this->user->location]));
     }
 
     /** @test */
@@ -126,7 +122,7 @@ class ViewProfileTest extends TestCase
     public function testProfileDisplaysFlightHours()
     {
         $this->getProfile(create(User::class, ['flight_hours' => 150]))
-            ->assertSee('150 heures de vol');
+            ->assertSee(json_encode(['flight_hours' => 150]));
     }
 
     /** @test */
@@ -140,8 +136,7 @@ class ViewProfileTest extends TestCase
     public function testProfileDisplaysBio()
     {
         $this->getProfile()
-            ->assertSee('Biographie')
-            ->assertSee($this->user->bio);
+            ->assertSee(json_encode(['bio' => $this->user->bio]));
     }
 
     /** @test */
@@ -154,17 +149,11 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysExperience()
     {
-        $occupation = create(Occupation::class, ['user_id' => $this->user->id]);
+//        $occupation = create(Occupation::class, ['user_id' => $this->user->id]);
+        $this->user->experience()->save(make(Occupation::class));
 
         $this->getProfile()
-            ->assertSee('Expérience Professionelle')
-            ->assertSee($occupation->title)
-            ->assertSee($occupation->status)
-            ->assertSee($occupation->company)
-            ->assertSee("{$occupation->location->municipality}, {$occupation->location->country}")
-            ->assertSee($occupation->start_date->isoFormat('LL'))
-            ->assertSee(optional($occupation->end_date)->isoFormat('LL'))
-            ->assertSee($occupation->description);
+            ->assertSee(json_encode(['experience' => $this->user->experience]));
     }
 
     /** @test */
