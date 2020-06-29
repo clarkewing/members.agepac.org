@@ -27,10 +27,10 @@ trait HasLocation
     /**
      * Set the model's location.
      *
-     * @param  mixed  $value
+     * @param  array|null  $value
      * @return \App\Location|null
      */
-    public function setLocation($value)
+    public function setLocation(?array $value)
     {
         if (is_null($value)) {
             $this->location()->delete();
