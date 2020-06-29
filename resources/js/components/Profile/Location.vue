@@ -12,7 +12,7 @@
 
         <span v-if="fields.location" v-text="fields.location.name"></span>
 
-        <button v-if="fields.location" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editLocation">
+        <button v-if="canUpdate && fields.location" class="btn btn-sm py-0 ml-auto" data-toggle="modal" data-target="#editLocation">
             <span class="sr-only">Modifier</span>
 
             <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
@@ -24,7 +24,7 @@
             </svg>
         </button>
 
-        <button v-else class="btn btn-sm btn-link p-0" data-toggle="modal" data-target="#editLocation">
+        <button v-else-if="canUpdate" class="btn btn-sm btn-link p-0" data-toggle="modal" data-target="#editLocation">
             Ajouter ma localisation
         </button>
 

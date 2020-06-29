@@ -3,7 +3,7 @@
         <div class="d-flex">
             <h2 class="h3 font-weight-bold mb-3">Expérience Professionelle</h2>
 
-            <button v-if="items.length"
+            <button v-if="canUpdate && items.length"
                     class="btn btn-sm ml-auto align-self-start"
                     data-toggle="modal" data-target="#createOccupation">
                 <span class="sr-only">Ajouter</span>
@@ -47,7 +47,7 @@
             ></occupation>
         </div>
 
-        <button v-if="! items.length"
+        <button v-if="canUpdate && ! items.length"
                 class="btn btn-sm btn-link p-0 mb-5"
                 data-toggle="modal" data-target="#createOccupation">
             Ajouter un emploi

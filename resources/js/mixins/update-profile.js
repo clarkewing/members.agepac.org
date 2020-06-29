@@ -14,6 +14,14 @@ export default {
         };
     },
 
+    computed: {
+        canUpdate() {
+            const profileUsername = window.location.pathname.split('/')[2];
+
+            return this.authorize(user => user.username === profileUsername);
+        }
+    },
+
     methods: {
         create() {
             this.form.post(this.endpoint, {

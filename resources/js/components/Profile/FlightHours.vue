@@ -11,7 +11,7 @@
 
         <span v-if="fields.flight_hours !== null">{{ fields.flight_hours }} heures de vol</span>
 
-        <button v-if="fields.flight_hours !== null"
+        <button v-if="canUpdate && fields.flight_hours !== null"
                 class="btn btn-sm py-0 ml-auto"
                 data-toggle="modal" data-target="#editFlightHours">
             <span class="sr-only">Modifier</span>
@@ -25,7 +25,9 @@
             </svg>
         </button>
 
-        <button v-else class="btn btn-sm btn-link p-0" data-toggle="modal" data-target="#editFlightHours">
+        <button v-else-if="canUpdate"
+                class="btn btn-sm btn-link p-0"
+                data-toggle="modal" data-target="#editFlightHours">
             Ajouter mes heures de vol
         </button>
 

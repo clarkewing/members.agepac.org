@@ -3,7 +3,9 @@
         <div class="d-flex">
             <h2 class="h3 font-weight-bold mb-3">Biographie</h2>
 
-            <button v-if="fields.bio" class="btn btn-sm ml-auto align-self-start" data-toggle="modal" data-target="#editBio">
+            <button v-if="canUpdate && fields.bio"
+                    class="btn btn-sm ml-auto align-self-start"
+                    data-toggle="modal" data-target="#editBio">
                 <span class="sr-only">Modifier</span>
 
                 <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
@@ -19,7 +21,9 @@
         <p class="mb-5">
             <span v-if="fields.bio" v-text="fields.bio"></span>
 
-            <button v-else class="btn btn-sm btn-link p-0" data-toggle="modal" data-target="#editBio">
+            <button v-else-if="canUpdate"
+                    class="btn btn-sm btn-link p-0"
+                    data-toggle="modal" data-target="#editBio">
                 Ajouter ma biographie
             </button>
         </p>

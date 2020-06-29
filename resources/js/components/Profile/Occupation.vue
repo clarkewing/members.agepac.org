@@ -10,7 +10,9 @@
                 v-text="fields.status"
             ></h6>
 
-            <button class="btn btn-sm ml-2" data-toggle="modal" :data-target="'#' + 'editOccupation' + _uid">
+            <button v-if="canUpdate"
+                    class="btn btn-sm ml-2"
+                    data-toggle="modal" :data-target="'#' + 'editOccupation' + _uid">
                 <span class="sr-only">Modifier</span>
 
                 <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
