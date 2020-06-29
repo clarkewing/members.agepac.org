@@ -10,7 +10,10 @@ use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     * @slowThreshold 800
+     */
     public function testRecordsActivityWhenAThreadIsCreated()
     {
         $this->signIn();

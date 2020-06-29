@@ -18,14 +18,22 @@ class SubscriptionInvoiceTest extends StripeTestCase
         $this->signIn($this->createCustomer([], true));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserWithoutSubscriptionCannotSeeListOfInvoices()
     {
         $this->get(route('subscription.edit'))
             ->assertDontSee('Factures');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserWithSubscriptionCanSeeAtLeastOneInvoice()
     {
         $this->subscribeUser();
@@ -35,7 +43,11 @@ class SubscriptionInvoiceTest extends StripeTestCase
             ->assertSee(today()->format('j F Y'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanDownloadInvoice()
     {
         SnappyPdf::fake();

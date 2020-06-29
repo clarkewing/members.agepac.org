@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\StripeTestCase;
@@ -23,7 +22,11 @@ class PaymentMethodsTest extends StripeTestCase
             ->assertRedirect(route('login'));
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanGetPaymentIntent()
     {
         $this->signIn();
@@ -48,7 +51,11 @@ class PaymentMethodsTest extends StripeTestCase
             ->assertJsonValidationErrors('payment_method');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanAddPaymentMethod()
     {
         $this->signIn();
@@ -58,7 +65,11 @@ class PaymentMethodsTest extends StripeTestCase
         $this->assertCount(1, Auth::user()->paymentMethods());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testFirstPaymentMethodSetAsDefaultAndUnaffectedBySubsequent()
     {
         $this->signIn();
@@ -87,7 +98,11 @@ class PaymentMethodsTest extends StripeTestCase
             ->assertUnauthorized();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testOnlyPaymentMethodOwnerCanDeleteIt()
     {
         $customer = $this->createCustomer();
@@ -104,7 +119,11 @@ class PaymentMethodsTest extends StripeTestCase
         $this->assertCount(1, $customer->paymentMethods());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanDeleteDefaultPaymentMethod()
     {
         $customer = $this->createCustomer([], true);
@@ -121,7 +140,11 @@ class PaymentMethodsTest extends StripeTestCase
         $this->assertCount(1, $customer->paymentMethods());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanDeletePaymentMethod()
     {
         $customer = $this->createCustomer();
@@ -144,7 +167,11 @@ class PaymentMethodsTest extends StripeTestCase
             ->assertUnauthorized();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testOnlyPaymentMethodOwnerCanUpdateIt()
     {
         $customer = $this->createCustomer();
@@ -157,7 +184,11 @@ class PaymentMethodsTest extends StripeTestCase
             ))->assertForbidden();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testUserCanSetPaymentMethodAsDefault()
     {
         $customer = $this->createCustomer();
