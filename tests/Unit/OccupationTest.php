@@ -3,9 +3,7 @@
 namespace Tests\Unit;
 
 use App\Exceptions\UnknownOccupationStatusException;
-use App\Location;
 use App\Occupation;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -126,41 +124,5 @@ class OccupationTest extends TestCase
         $this->expectException(UnknownOccupationStatusException::class);
 
         create(Occupation::class, ['status' => 999]);
-    }
-
-    /** @test */
-    public function testCanSetLocation()
-    {
-        $occupation = Occupation::forceCreate(
-            make(Occupation::class)->setAppends([])->attributesToArray()
-        );
-
-        $this->assertNull($occupation->location);
-
-        $locationData = Arr::except(make(Location::class)->toArray(), ['locatable_id', 'locatable_type']);
-
-        $this->assertInstanceOf(Location::class,
-            $occupation->setLocation($locationData)
-        );
-
-        $this->assertEmpty(array_diff_assoc(
-            $locationData,
-            $occupation->location->toArray()
-        ));
-
-        $this->assertDatabaseHas('locations', [
-            'locatable_id' => $occupation->id,
-            'locatable_type' => get_class($occupation)
-        ] + $locationData);
-    }
-
-    /** @test */
-    public function testAssociatedLocationIsDeletedOnDelete()
-    {
-        $occupation = create(Occupation::class);
-
-        $occupation->delete();
-
-        $this->assertDatabaseMissing('locations', ['id' => $occupation->location->id]);
     }
 }

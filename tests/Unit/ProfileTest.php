@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Course;
-use App\Location;
 use App\Occupation;
 use App\User;
 use Tests\TestCase;
@@ -24,22 +23,6 @@ class ProfileTest extends TestCase
         $user = create(User::class, ['flight_hours' => 150]);
 
         $this->assertSame(150, $user->flight_hours);
-    }
-
-    /** @test */
-    public function testCanHaveLocation()
-    {
-        $user = create(User::class);
-
-        $this->assertNull($user->location);
-
-        $location = create(Location::class, [
-            'locatable_id' => $user->id,
-            'locatable_type' => get_class($user),
-        ]);
-
-        $this->assertNotNull($user->fresh()->location);
-        $this->assertEquals($location->id, $user->fresh()->location->id);
     }
 
     /** @test */

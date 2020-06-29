@@ -14,7 +14,7 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasReputation, Notifiable;
+    use Billable, HasLocation, HasReputation, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -94,14 +94,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function lastPost()
     {
         return $this->hasOne(Post::class)->latest();
-    }
-
-    /**
-     * Get the user's location.
-     */
-    public function location()
-    {
-        return $this->morphOne(Location::class, 'locatable');
     }
 
     /**

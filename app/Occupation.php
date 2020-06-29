@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 class Occupation extends Model
 {
+    use HasLocation;
+
     const EMPLOYED_FULL_TIME = 1;
     const EMPLOYED_PART_TIME = 2;
     const SELF_EMPLOYED = 3;
@@ -60,18 +62,6 @@ class Occupation extends Model
     protected $with = ['aircraft', 'location'];
 
     /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
-    {
-        static::deleting(function ($occupation) {
-            $occupation->location->delete();
-        });
-    }
-
-    /**
      * The array of strings corresponding to different statuses.
      *
      * @return array|string[]
@@ -92,27 +82,6 @@ class Occupation extends Model
     public function aircraft()
     {
         return $this->belongsTo(Aircraft::class);
-    }
-
-    /**
-     * Get the occupation's location.
-     */
-    public function location()
-    {
-        return $this->morphOne(Location::class, 'locatable');
-    }
-
-    /**
-     * Set the occupation's location.
-     *
-     * @param  mixed  $value
-     * @return \App\Location
-     */
-    public function setLocation($value)
-    {
-        return tap($this->location()->updateOrCreate([], $value), function ($location) {
-            $this->location = $location;
-        });
     }
 
     /**
