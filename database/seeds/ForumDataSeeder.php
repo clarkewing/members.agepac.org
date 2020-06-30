@@ -57,7 +57,6 @@ class ForumDataSeeder extends Seeder
         Attachment::truncate();
         (new Filesystem)->cleanDirectory('storage/app/public/attachments');
         ThreadSubscription::truncate();
-        Activity::truncate();
         Favorite::truncate();
 
         factory(Thread::class, 30)->states('from_existing_channel_and_user')->create()

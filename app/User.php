@@ -62,6 +62,23 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->activity()->create([
+                'type' => 'created_user',
+                'user_id' => $user->id,
+                'subject_id' => $user->id,
+                'subject_type' => get_class($user),
+            ]);
+        });
+    }
+
+    /**
      * Get the route key for the model.
      *
      * @return string

@@ -156,7 +156,8 @@ class CreateThreadsTest extends TestCase
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('posts', ['id' => $post->id]);
 
-        $this->assertEquals(0, Activity::count());
+        $this->assertDatabaseMissing('activities', ['type' => 'created_thread']);
+        $this->assertDatabaseMissing('activities', ['type' => 'created_post']);
     }
 
     /**

@@ -2,7 +2,9 @@
     <div class="card-header bg-white">
         {{ $heading }}
     </div>
-    <div class="card-body">
-        {{ $body }}
-    </div>
+    @if(isset($body))
+        <div class="card-body">
+            {{ $body }}
+        </div>
+    @endif
 </div>

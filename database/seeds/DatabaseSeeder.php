@@ -1,5 +1,6 @@
 <?php
 
+use App\Activity;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,6 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Activity::truncate();
+
         $this->call([
             UserSeeder::class,
             ForumDataSeeder::class,

@@ -4,7 +4,7 @@ namespace App;
 
 class Profile extends User
 {
-    use HasLocation;
+    use HasLocation, RecordsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +29,16 @@ class Profile extends User
      * @var array
      */
     protected $with = ['location'];
+
+    /**
+     * Returns which activities should be recorded.
+     *
+     * @return array
+     */
+    protected static function getActivitiesToRecord(): array
+    {
+        return ['updated'];
+    }
 
     /**
      * Create a new Profile model instance.
