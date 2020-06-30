@@ -284,6 +284,33 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /** @test */
+    public function testCoursesStore()
+    {
+        $this->assertRoutePathIs(
+            '/courses',
+            'courses.store'
+        );
+    }
+
+    /** @test */
+    public function testCoursesUpdate()
+    {
+        $this->assertRoutePathIs(
+            '/courses/1',
+            'courses.update', 1
+        );
+    }
+
+    /** @test */
+    public function testCoursesDestroy()
+    {
+        $this->assertRoutePathIs(
+            '/courses/1',
+            'courses.destroy', 1
+        );
+    }
+
     /* @test */
     public function testNotificationsIndex()
     {

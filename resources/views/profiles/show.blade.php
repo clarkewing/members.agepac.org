@@ -105,13 +105,11 @@
                             ></profile.experience>
                         @endif
 
-                        @unless($profile->education->isEmpty())
-                            <h2 class="h3 font-weight-bold mb-3">Éducation</h2>
-
-                            @foreach($profile->education as $course)
-                                @include('profiles._course')
-                            @endforeach
-                        @endunless
+                        @if(Auth::user()->is($profile) || ! $profile->education->isEmpty())
+                            <profile.education
+                                :data="{{ json_encode(Arr::only($profile->toArray(), ['education'])) }}"
+                            ></profile.education>
+                        @endif
                     </div>
 
                     <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="activity-tab">

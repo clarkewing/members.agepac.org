@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Course;
 use App\Http\Middleware\Authenticate;
 use App\Occupation;
+use App\Policies\CoursePolicy;
 use App\Policies\OccupationPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\ProfilePolicy;
@@ -23,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        Course::class => CoursePolicy::class,
         Occupation::class => OccupationPolicy::class,
         Thread::class => ThreadPolicy::class,
         Post::class => PostPolicy::class,

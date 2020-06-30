@@ -71,4 +71,17 @@ trait Profile
         return $this->hasMany(Course::class)
             ->orderBy('start_date', 'desc');
     }
+
+    /**
+     * Add an course to the model's education.
+     *
+     * @param  array $course
+     * @return \App\Course
+     */
+    public function addEducation(array $course)
+    {
+        $course = $this->education()->create($course);
+
+        return $course;
+    }
 }

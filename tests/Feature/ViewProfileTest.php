@@ -166,16 +166,10 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysEducation()
     {
-        $course = create(Course::class, ['user_id' => $this->user->id]);
+        $this->user->education()->save(make(Course::class));
 
         $this->getProfile()
-            ->assertSee('Éducation')
-            ->assertSee($course->title)
-            ->assertSee($course->school)
-            ->assertSee("{$course->location->municipality}, {$course->location->country}")
-            ->assertSee($course->start_date->isoFormat('LL'))
-            ->assertSee(optional($course->end_date)->isoFormat('LL'))
-            ->assertSee($course->description);
+            ->assertSee(json_encode(['education' => $this->user->education]));
     }
 
     /** @test */

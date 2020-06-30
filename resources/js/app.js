@@ -30,6 +30,7 @@ Vue.component('profile.bio', require('./components/Profile/Bio').default);
 Vue.component('profile.flight-hours', require('./components/Profile/FlightHours').default);
 Vue.component('profile.location', require('./components/Profile/Location').default);
 Vue.component('profile.experience', require('./components/Profile/Experience').default);
+Vue.component('profile.education', require('./components/Profile/Education').default);
 
 Vue.component('registration-form', require('./pages/RegistrationForm').default);
 Vue.component('thread-view', require('./pages/Thread').default);

@@ -6,21 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+    use HasLocation;
 
     /**
-     * The attributes that should be mutated to dates.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $dates = [
+    protected $fillable = [
+        'title',
+        'school',
+        'description',
         'start_date',
         'end_date',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'user_id' => 'integer',
+        'start_date' => 'date:Y-m-d',
+        'end_date' => 'date:Y-m-d',
     ];
 
     /**
@@ -29,12 +38,4 @@ class Course extends Model
      * @var array
      */
     protected $with = ['location'];
-
-    /**
-     * Get the course's location.
-     */
-    public function location()
-    {
-        return $this->morphOne(Location::class, 'locatable');
-    }
 }
