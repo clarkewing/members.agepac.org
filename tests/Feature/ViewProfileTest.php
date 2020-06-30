@@ -99,7 +99,7 @@ class ViewProfileTest extends TestCase
     public function testProfileHidesLocationIfUnknown()
     {
         $this->getProfile()
-            ->assertDontSee('Lieu :');
+            ->assertDontSee('profile.location');
     }
 
     /** @test */
@@ -108,6 +108,7 @@ class ViewProfileTest extends TestCase
         $this->user->location()->save(make(Location::class));
 
         $this->getProfile()
+            ->assertSee('profile.location')
             ->assertSee(json_encode(['location' => $this->user->location]));
     }
 
@@ -115,13 +116,14 @@ class ViewProfileTest extends TestCase
     public function testProfileHidesFlightHoursIfUnknown()
     {
         $this->getProfile(create(User::class, ['flight_hours' => null]))
-            ->assertDontSee('heures de vol');
+            ->assertDontSee('profile.flight-hours');
     }
 
     /** @test */
     public function testProfileDisplaysFlightHours()
     {
         $this->getProfile(create(User::class, ['flight_hours' => 150]))
+            ->assertSee('profile.flight-hours')
             ->assertSee(json_encode(['flight_hours' => 150]));
     }
 
@@ -129,13 +131,14 @@ class ViewProfileTest extends TestCase
     public function testProfileHidesBioIfEmpty()
     {
         $this->getProfile(create(User::class, ['bio' => null]))
-            ->assertDontSee('Biographie');
+            ->assertDontSee('profile.bio');
     }
 
     /** @test */
     public function testProfileDisplaysBio()
     {
         $this->getProfile()
+            ->assertSee('profile.bio')
             ->assertSee(json_encode(['bio' => $this->user->bio]));
     }
 
@@ -143,16 +146,16 @@ class ViewProfileTest extends TestCase
     public function testProfileHidesExperienceIfEmpty()
     {
         $this->getProfile()
-            ->assertDontSee('Expérience Professionelle');
+            ->assertDontSee('profile.experience');
     }
 
     /** @test */
     public function testProfileDisplaysExperience()
     {
-//        $occupation = create(Occupation::class, ['user_id' => $this->user->id]);
         $this->user->experience()->save(make(Occupation::class));
 
         $this->getProfile()
+            ->assertSee('profile.experience')
             ->assertSee(json_encode(['experience' => $this->user->experience]));
     }
 
@@ -160,7 +163,7 @@ class ViewProfileTest extends TestCase
     public function testProfileHidesEducationIfEmpty()
     {
         $this->getProfile()
-            ->assertDontSee('Éducation');
+            ->assertDontSee('profile.education');
     }
 
     /** @test */
@@ -169,6 +172,7 @@ class ViewProfileTest extends TestCase
         $this->user->education()->save(make(Course::class));
 
         $this->getProfile()
+            ->assertSee('profile.education')
             ->assertSee(json_encode(['education' => $this->user->education]));
     }
 
