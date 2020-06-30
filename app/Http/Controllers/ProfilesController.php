@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Rules\ValidLocation;
-use App\User;
+use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -24,10 +24,10 @@ class ProfilesController extends Controller
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $profile
+     * @param  \App\Profile  $profile
      * @return array|\Illuminate\View\View
      */
-    public function show(Request $request, User $profile)
+    public function show(Request $request, Profile $profile)
     {
         $data = [
             'profile' => $profile->load([
@@ -49,11 +49,11 @@ class ProfilesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $profile
+     * @param  \App\Profile  $profile
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, User $profile)
+    public function update(Request $request, Profile $profile)
     {
         $this->authorize('update', $profile);
 
@@ -73,6 +73,6 @@ class ProfilesController extends Controller
             $profile->setLocation($request->input('location'));
         }
 
-        return Response::json($profile);
+        return Response::json($profile->fresh());
     }
 }

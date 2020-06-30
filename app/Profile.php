@@ -2,21 +2,50 @@
 
 namespace App;
 
-trait Profile
+class Profile extends User
 {
+    use HasLocation;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillableProfile = [
+    protected $fillable = [
         'bio',
         'flight_hours',
     ];
 
-    public function initializeProfile()
-    {
-        $this->fillable = array_merge($this->fillable, $this->fillableProfile);
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['location'];
+
+    /**
+     * Create a new Profile model instance.
+     *
+     * @param  array  $attributes
+     * @return void
+     */
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+
+        // Hide Stripe fields.
+        $this->makeHidden([
+            'stripe_id',
+            'card_brand',
+            'card_last_four',
+            'trial_ends_at',
+        ]);
     }
 
     /**
@@ -24,7 +53,7 @@ trait Profile
      */
     public function experience()
     {
-        return $this->hasMany(Occupation::class)
+        return $this->hasMany(Occupation::class, 'user_id')
             ->orderBy('is_primary', 'desc')
             ->orderBy('start_date', 'desc');
     }
@@ -68,7 +97,7 @@ trait Profile
      */
     public function education()
     {
-        return $this->hasMany(Course::class)
+        return $this->hasMany(Course::class, 'user_id')
             ->orderBy('start_date', 'desc');
     }
 

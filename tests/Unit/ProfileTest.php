@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Course;
 use App\Occupation;
-use App\User;
+use App\Profile;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -12,169 +12,169 @@ class ProfileTest extends TestCase
     /** @test */
     public function testCanHaveBio()
     {
-        $user = create(User::class, ['bio' => 'This is a pretty awesome bio.']);
+        $profile = create(Profile::class, ['bio' => 'This is a pretty awesome bio.']);
 
-        $this->assertEquals('This is a pretty awesome bio.', $user->bio);
+        $this->assertEquals('This is a pretty awesome bio.', $profile->bio);
     }
 
     /** @test */
     public function testCanHaveFlightHours()
     {
-        $user = create(User::class, ['flight_hours' => 150]);
+        $profile = create(Profile::class, ['flight_hours' => 150]);
 
-        $this->assertSame(150, $user->flight_hours);
+        $this->assertSame(150, $profile->flight_hours);
     }
 
     /** @test */
     public function testCanHaveExperience()
     {
-        $user = create(User::class);
+        $profile = create(Profile::class);
 
-        $this->assertEmpty($user->experience);
+        $this->assertEmpty($profile->experience);
 
-        create(Occupation::class, ['user_id' => $user->id]);
+        create(Occupation::class, ['user_id' => $profile->id]);
 
-        $this->assertCount(1, $user->fresh()->experience);
+        $this->assertCount(1, $profile->fresh()->experience);
     }
 
     /** @test */
     public function testExperienceOrderedLatestFirst()
     {
-        $user = create(User::class);
+        $profile = create(Profile::class);
 
         $occupationOne = create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2010-01-01',
             'end_date' => '2012-01-01',
         ]);
 
         $occupationTwo = create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => '2012-12-31',
         ]);
 
         $occupationThree = create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2015-01-01',
             'end_date' => null,
         ]);
 
-        $this->assertEquals($occupationThree->id, $user->experience[0]->id);
-        $this->assertEquals($occupationTwo->id, $user->experience[1]->id);
-        $this->assertEquals($occupationOne->id, $user->experience[2]->id);
+        $this->assertEquals($occupationThree->id, $profile->experience[0]->id);
+        $this->assertEquals($occupationTwo->id, $profile->experience[1]->id);
+        $this->assertEquals($occupationOne->id, $profile->experience[2]->id);
     }
 
     /** @test */
     public function testPrimaryOccupationIsFirstExperience()
     {
-        $user = create(User::class);
+        $profile = create(Profile::class);
 
         $primaryOccupation = create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2010-01-01',
             'end_date' => null,
             'is_primary' => true,
         ]);
 
         $otherOccupation = create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => null,
         ]);
 
-        $this->assertEquals($primaryOccupation->id, $user->experience[0]->id);
-        $this->assertEquals($otherOccupation->id, $user->experience[1]->id);
+        $this->assertEquals($primaryOccupation->id, $profile->experience[0]->id);
+        $this->assertEquals($otherOccupation->id, $profile->experience[1]->id);
     }
 
     /** @test */
     public function testCanGetCurrentOccupation()
     {
-        $user = create(User::class);
+        $profile = create(Profile::class);
 
         // Has no experience
-        $this->assertNull($user->currentOccupation());
+        $this->assertNull($profile->currentOccupation());
 
         // Has experience but none ongoing
         create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => '2012-12-31',
         ]);
-        $this->assertNull($user->fresh()->currentOccupation());
+        $this->assertNull($profile->fresh()->currentOccupation());
 
         // Has ongoing experience but no primary set
         $occupationOne = create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2015-01-01',
             'end_date' => null,
         ]);
-        $this->assertEquals($occupationOne->id, $user->fresh()->currentOccupation()->id);
+        $this->assertEquals($occupationOne->id, $profile->fresh()->currentOccupation()->id);
 
         // Has two ongoing experiences with no primary set
         $occupationTwo = create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2017-01-01',
             'end_date' => null,
         ]);
-        $this->assertEquals($occupationTwo->id, $user->fresh()->currentOccupation()->id);
+        $this->assertEquals($occupationTwo->id, $profile->fresh()->currentOccupation()->id);
 
         // Has two ongoing experiences with primary set
         $occupationOne->update(['is_primary' => true]);
-        $this->assertEquals($occupationOne->id, $user->fresh()->currentOccupation()->id);
+        $this->assertEquals($occupationOne->id, $profile->fresh()->currentOccupation()->id);
     }
 
     /** @test */
     public function testKnowsIfItHasAnOccupation()
     {
-        $user = create(User::class);
+        $profile = create(Profile::class);
 
-        $this->assertFalse($user->hasOccupation());
+        $this->assertFalse($profile->hasOccupation());
 
         create(Occupation::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'end_date' => null,
         ]);
-        $this->assertTrue($user->fresh()->hasOccupation());
+        $this->assertTrue($profile->fresh()->hasOccupation());
     }
 
     /** @test */
     public function testCanHaveEducation()
     {
-        $user = create(User::class);
+        $profile = create(Profile::class);
 
-        $this->assertEmpty($user->education);
+        $this->assertEmpty($profile->education);
 
-        create(Course::class, ['user_id' => $user->id]);
+        create(Course::class, ['user_id' => $profile->id]);
 
-        $this->assertCount(1, $user->fresh()->education);
+        $this->assertCount(1, $profile->fresh()->education);
     }
 
     /** @test */
     public function testEducationOrderedLatestFirst()
     {
-        $user = create(User::class);
+        $profile = create(Profile::class);
 
         $courseOne = create(Course::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2010-01-01',
             'end_date' => '2012-01-01',
         ]);
 
         $courseTwo = create(Course::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => '2012-12-31',
         ]);
 
         $courseThree = create(Course::class, [
-            'user_id' => $user->id,
+            'user_id' => $profile->id,
             'start_date' => '2015-01-01',
             'end_date' => null,
         ]);
 
-        $this->assertEquals($courseThree->id, $user->education[0]->id);
-        $this->assertEquals($courseTwo->id, $user->education[1]->id);
-        $this->assertEquals($courseOne->id, $user->education[2]->id);
+        $this->assertEquals($courseThree->id, $profile->education[0]->id);
+        $this->assertEquals($courseTwo->id, $profile->education[1]->id);
+        $this->assertEquals($courseOne->id, $profile->education[2]->id);
     }
 }

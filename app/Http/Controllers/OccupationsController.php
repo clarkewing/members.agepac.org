@@ -28,7 +28,7 @@ class OccupationsController extends Controller
      */
     public function store(StoreOccupationRequest $request)
     {
-        $occupation = tap($request->user()->addExperience($request->all()))
+        $occupation = tap($request->user()->profile->addExperience($request->all()))
             ->setLocation($request->input('location'));
 
         return Response::json($occupation, HttpResponse::HTTP_CREATED);

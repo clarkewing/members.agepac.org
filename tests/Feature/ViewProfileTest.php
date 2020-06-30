@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Course;
-use App\Location;
 use App\Occupation;
+use App\Profile;
 use App\Thread;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 class ViewProfileTest extends TestCase
 {
-    protected $user;
+    protected $profile;
 
     public function setUp(): void
     {
@@ -20,7 +20,7 @@ class ViewProfileTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->user = create(User::class);
+        $this->profile = create(Profile::class);
     }
 
     /** @test */
@@ -36,28 +36,28 @@ class ViewProfileTest extends TestCase
     public function testUserHasAProfile()
     {
         $this->getProfile()
-            ->assertSee($this->user->name);
+            ->assertSee($this->profile->name);
     }
 
     /** @test */
     public function testProfileDisplaysReputation()
     {
         $this->getProfile()
-            ->assertSee($this->user->reputation . ' XP');
+            ->assertSee($this->profile->reputation . ' XP');
     }
 
     /** @test */
     public function testProfileDisplaysClass()
     {
         $this->getProfile()
-            ->assertSee($this->user->class);
+            ->assertSee($this->profile->class);
     }
 
     /** @test */
     public function testProfileDisplaysEmail()
     {
         $this->getProfile()
-            ->assertSee($this->user->email);
+            ->assertSee($this->profile->email);
     }
 
     /** @test */
@@ -72,7 +72,7 @@ class ViewProfileTest extends TestCase
     {
         $this->getProfile()
             ->assertSee('Téléphone :')
-            ->assertSee($this->user->phone->formatInternational());
+            ->assertSee($this->profile->phone->formatInternational());
     }
 
     /** @test */
@@ -86,7 +86,7 @@ class ViewProfileTest extends TestCase
     public function testProfileDisplaysCurrentOccupation()
     {
         $occupation = create(Occupation::class, [
-            'user_id' => $this->user->id,
+            'user_id' => $this->profile->id,
             'end_date' => null,
         ]);
 
@@ -98,6 +98,8 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileHidesLocationIfUnknown()
     {
+        $this->profile->location()->delete();
+
         $this->getProfile()
             ->assertDontSee('profile.location');
     }
@@ -105,11 +107,9 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysLocation()
     {
-        $this->user->location()->save(make(Location::class));
-
         $this->getProfile()
             ->assertSee('profile.location')
-            ->assertSee(json_encode(['location' => $this->user->location]));
+            ->assertSee(json_encode(['location' => $this->profile->location]));
     }
 
     /** @test */
@@ -139,7 +139,7 @@ class ViewProfileTest extends TestCase
     {
         $this->getProfile()
             ->assertSee('profile.bio')
-            ->assertSee(json_encode(['bio' => $this->user->bio]));
+            ->assertSee(json_encode(['bio' => $this->profile->bio]));
     }
 
     /** @test */
@@ -152,11 +152,11 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysExperience()
     {
-        $this->user->experience()->save(make(Occupation::class));
+        $this->profile->experience()->save(make(Occupation::class));
 
         $this->getProfile()
             ->assertSee('profile.experience')
-            ->assertSee(json_encode(['experience' => $this->user->experience]));
+            ->assertSee(json_encode(['experience' => $this->profile->experience]));
     }
 
     /** @test */
@@ -169,19 +169,19 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysEducation()
     {
-        $this->user->education()->save(make(Course::class));
+        $this->profile->education()->save(make(Course::class));
 
         $this->getProfile()
             ->assertSee('profile.education')
-            ->assertSee(json_encode(['education' => $this->user->education]));
+            ->assertSee(json_encode(['education' => $this->profile->education]));
     }
 
     /** @test */
     public function testProfileDisplaysAllThreadsCreatedByAssociatedUser()
     {
-        $this->signIn($this->user);
+        $this->signIn($this->profile);
 
-        $thread = create(Thread::class, ['user_id' => $this->user->id]);
+        $thread = create(Thread::class, ['user_id' => $this->profile->id]);
 
         $this->getProfile()
             ->assertSee($thread->title)
@@ -196,6 +196,6 @@ class ViewProfileTest extends TestCase
      */
     protected function getProfile(User $user = null): \Illuminate\Testing\TestResponse
     {
-        return $this->get(route('profiles.show', $user ?? $this->user));
+        return $this->get(route('profiles.show', $user ?? $this->profile));
     }
 }

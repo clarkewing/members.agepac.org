@@ -2,7 +2,6 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Location;
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Arr;
@@ -42,8 +41,6 @@ $factory->define(User::class, function (Faker $faker) {
             '+44 7375 123456',
             '+1-202-555-5555',
         ]),
-        'bio' => $faker->paragraph,
-        'flight_hours' => $faker->numberBetween(0, 15000),
         'remember_token' => Str::random(10),
     ];
 });

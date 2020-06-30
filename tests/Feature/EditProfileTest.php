@@ -2,18 +2,25 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Profile;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class EditProfileTest extends TestCase
 {
+    /**
+     * @var App\Profile
+     */
+    public $profile;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signIn();
+        $this->profile = create(Profile::class);
+
+        $this->withExceptionHandling()->signIn($this->profile);
     }
 
     /** @test */
@@ -21,14 +28,14 @@ class EditProfileTest extends TestCase
     {
         Auth::logout();
 
-        $this->updateProfile([], create(User::class))
+        $this->updateProfile([], create(Profile::class))
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     /** @test */
     public function testUsersCanOnlyUpdateTheirOwnProfile()
     {
-        $otherProfile = create(User::class);
+        $otherProfile = create(Profile::class);
 
         $this->updateProfile([], $otherProfile)
             ->assertStatus(Response::HTTP_FORBIDDEN);
@@ -62,7 +69,7 @@ class EditProfileTest extends TestCase
             ->assertOk()
             ->assertJson(['flight_hours' => null]);
 
-        $this->assertNull(Auth::user()->fresh()->flight_hours);
+        $this->assertNull($this->profile->fresh()->flight_hours);
     }
 
     /** @test */
@@ -72,13 +79,13 @@ class EditProfileTest extends TestCase
             ->assertOk()
             ->assertJson(['flight_hours' => 150]);
 
-        $this->assertEquals(150, Auth::user()->fresh()->flight_hours);
+        $this->assertEquals(150, $this->profile->fresh()->flight_hours);
 
         $this->updateProfile(['flight_hours' => 450])
             ->assertOk()
             ->assertJson(['flight_hours' => 450]);
 
-        $this->assertEquals(450, Auth::user()->fresh()->flight_hours);
+        $this->assertEquals(450, $this->profile->fresh()->flight_hours);
     }
 
     /** @test */
@@ -94,11 +101,13 @@ class EditProfileTest extends TestCase
     /** @test */
     public function testLocationCanBeNull()
     {
+        $this->assertNotNull($this->profile->location);
+
         $this->updateProfile(['location' => null])
             ->assertOk()
             ->assertJsonMissing(['location']);
 
-        $this->assertNull(Auth::user()->location);
+        $this->assertNull($this->profile->fresh()->location);
     }
 
     /** @test */
@@ -122,7 +131,7 @@ class EditProfileTest extends TestCase
             ->assertJson(['location' => $location]);
 
         foreach ($location as $field => $value) {
-            $this->assertEquals($value, Auth::user()->fresh()->location->$field);
+            $this->assertEquals($value, $this->profile->fresh()->location->$field);
         }
     }
 
@@ -149,7 +158,7 @@ class EditProfileTest extends TestCase
         $this->updateProfile(['bio' => null])
             ->assertOk()->assertJson(['bio' => null]);
 
-        $this->assertNull(Auth::user()->fresh()->bio);
+        $this->assertNull($this->profile->fresh()->bio);
     }
 
     /** @test */
@@ -159,7 +168,7 @@ class EditProfileTest extends TestCase
             ->assertOk()
             ->assertJson(['bio' => 'This is an awesome bio.']);
 
-        $this->assertEquals('This is an awesome bio.', Auth::user()->fresh()->bio);
+        $this->assertEquals('This is an awesome bio.', $this->profile->fresh()->bio);
     }
 
     /**
@@ -172,7 +181,7 @@ class EditProfileTest extends TestCase
     protected function updateProfile(array $data = [], $profile = null)
     {
         return $this->patchJson(
-            route('profiles.update', ['profile' => $profile ?? Auth::user()]),
+            route('profiles.update', ['profile' => $profile ?? $this->profile]),
             $data
         );
     }

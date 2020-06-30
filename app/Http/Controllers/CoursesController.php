@@ -28,7 +28,7 @@ class CoursesController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        $course = tap($request->user()->addEducation($request->all()))
+        $course = tap($request->user()->profile->addEducation($request->all()))
             ->setLocation($request->input('location'));
 
         return Response::json($course, HttpResponse::HTTP_CREATED);

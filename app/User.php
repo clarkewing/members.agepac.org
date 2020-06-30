@@ -14,7 +14,7 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasLocation, HasReputation, Notifiable, Profile;
+    use Billable, HasReputation, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -77,6 +77,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function activity()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    /**
+     * Get the associated profile.
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'id');
     }
 
     /**
