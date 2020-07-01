@@ -30,11 +30,7 @@ class ProfilesController extends Controller
     public function show(Request $request, Profile $profile)
     {
         $data = [
-            'profile' => $profile->load([
-                'location',
-                'experience',
-                'education',
-            ]),
+            'profile' => $profile,
             'activities' => Activity::feed($profile),
         ];
 

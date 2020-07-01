@@ -28,7 +28,7 @@ class Profile extends User
      *
      * @var array
      */
-    protected $with = ['location'];
+    protected $with = ['education', 'experience', 'location'];
 
     /**
      * Returns which activities should be recorded.
