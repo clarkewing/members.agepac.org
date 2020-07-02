@@ -13,6 +13,10 @@ class SubscriptionInvoiceTest extends StripeTestCase
     {
         parent::setUp();
 
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $this->withExceptionHandling();
 
         $this->signIn($this->createCustomer([], true));

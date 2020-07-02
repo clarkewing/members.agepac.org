@@ -29,6 +29,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testUserCanGetPaymentIntent()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $this->signIn();
 
         $this->get(route('subscription.payment-methods.create'))
@@ -58,6 +62,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testUserCanAddPaymentMethod()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $this->signIn();
 
         $this->addPaymentMethod()->assertCreated();
@@ -72,6 +80,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testFirstPaymentMethodSetAsDefaultAndUnaffectedBySubsequent()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $this->signIn();
 
         $firstPaymentMethod = $this->addPaymentMethod()->json('id');
@@ -105,6 +117,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testOnlyPaymentMethodOwnerCanDeleteIt()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $customer = $this->createCustomer();
 
         $this->assertCount(1, $customer->paymentMethods());
@@ -126,6 +142,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testUserCanDeleteDefaultPaymentMethod()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $customer = $this->createCustomer([], true);
 
         $this->assertNotNull($customer->defaultPaymentMethod());
@@ -147,6 +167,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testUserCanDeletePaymentMethod()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $customer = $this->createCustomer();
 
         $this->assertCount(1, $customer->paymentMethods());
@@ -174,6 +198,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testOnlyPaymentMethodOwnerCanUpdateIt()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $customer = $this->createCustomer();
 
         // Other user attempts to delete.
@@ -191,6 +219,10 @@ class PaymentMethodsTest extends StripeTestCase
      */
     public function testUserCanSetPaymentMethodAsDefault()
     {
+        if (! config('cashier.key')) {
+            $this->markTestSkipped('Cashier is not configured.');
+        }
+
         $customer = $this->createCustomer();
         $paymentMethod = $customer->paymentMethods()->first();
 
