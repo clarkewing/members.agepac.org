@@ -30,7 +30,7 @@ class CreateOccupationTest extends TestCase
             'postal_code' => 'BT3',
             'country' => 'Royaume-Uni',
             'country_code' => 'GB',
-        ]
+        ],
     ];
 
     public function setUp(): void

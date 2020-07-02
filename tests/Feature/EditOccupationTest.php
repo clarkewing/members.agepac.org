@@ -327,7 +327,7 @@ class EditOccupationTest extends TestCase
                 'postal_code' => 'BT1',
                 'country' => 'Royaume-Uni',
                 'country_code' => 'GB',
-            ]
+            ],
         ];
 
         $this->updateOccupation($data)

@@ -46,13 +46,13 @@ class ValidLocation implements BaseRule
         // Otherwise, continue with the validation.
         $this->validator = Validator::make([$attribute => $value], [
             "$attribute.name" => array_merge($baseRules, [
-                Rule::requiredIf(function() use ($value) {
+                Rule::requiredIf(function () use ($value) {
                     return in_array($value['type'], ['busStop', 'trainStation', 'townhall', 'airport']);
                 }),
             ]),
 
             "$attribute.street_line_1" => array_merge($baseRules, [
-                Rule::requiredIf(function() use ($value) {
+                Rule::requiredIf(function () use ($value) {
                     return in_array($value['type'], ['address']);
                 }),
             ]),
@@ -60,7 +60,7 @@ class ValidLocation implements BaseRule
             "$attribute.street_line_2" => $baseRules,
 
             "$attribute.municipality" => array_merge($baseRules, [
-                Rule::requiredIf(function() use ($value) {
+                Rule::requiredIf(function () use ($value) {
                     return in_array($value['type'], ['city', 'address']);
                 }),
             ]),
@@ -72,7 +72,7 @@ class ValidLocation implements BaseRule
             "$attribute.postal_code" => $baseRules,
 
             "$attribute.country" => array_merge($baseRules, [
-                Rule::requiredIf(function() use ($value) {
+                Rule::requiredIf(function () use ($value) {
                     return in_array($value['type'], ['country', 'city', 'address']);
                 }),
             ]),
@@ -81,7 +81,7 @@ class ValidLocation implements BaseRule
                 'nullable',
                 'string',
                 'size:2',
-                Rule::requiredIf(function() use ($value) {
+                Rule::requiredIf(function () use ($value) {
                     return in_array($value['type'], ['country', 'city', 'address']);
                 }),
             ],

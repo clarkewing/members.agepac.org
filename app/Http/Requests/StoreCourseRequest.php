@@ -18,12 +18,12 @@ class StoreCourseRequest extends FormRequest
             'title' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'school' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'location' => [
                 'required',
@@ -43,7 +43,7 @@ class StoreCourseRequest extends FormRequest
             'description' => [
                 'nullable',
                 'string',
-                'max:65535'
+                'max:65535',
             ],
         ];
     }

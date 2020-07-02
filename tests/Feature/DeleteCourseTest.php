@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Course;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 

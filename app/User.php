@@ -203,7 +203,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getPhoneAttribute($value)
     {
         if (is_null($value)) {
-            return null;
+            return;
         }
 
         return PhoneNumber::make($value);

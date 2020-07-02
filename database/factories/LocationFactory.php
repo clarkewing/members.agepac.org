@@ -24,6 +24,7 @@ $factory->define(Location::class, function (Faker $faker) {
         'country' => $country = $faker->country,
         'country_code' => function () use ($country) {
             \Locale::setDefault(config('app.locale'));
+
             return array_rand(\Symfony\Component\Intl\Countries::getNames());
         },
     ];

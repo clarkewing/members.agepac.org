@@ -29,7 +29,7 @@ class UnknownOccupationStatusException extends Exception
      * @param  \App\Occupation  $occupation
      * @param  mixed  $status
      */
-    public function __construct($message = 'Unknown Occupation status.', Occupation $occupation, $status = null)
+    public function __construct($message, Occupation $occupation, $status = null)
     {
         parent::__construct($message);
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Activity;
 use App\Channel;
 use App\Post;
 use App\Thread;

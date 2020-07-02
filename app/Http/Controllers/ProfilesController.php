@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
-use App\Rules\ValidLocation;
 use App\Profile;
+use App\Rules\ValidLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 

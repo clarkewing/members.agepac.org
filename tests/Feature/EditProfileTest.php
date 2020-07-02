@@ -172,7 +172,7 @@ class EditProfileTest extends TestCase
     }
 
     /**
-     * Send a request to update the profile
+     * Send a request to update the profile.
      *
      * @param  array  $data
      * @param  \App\User|string  $profile

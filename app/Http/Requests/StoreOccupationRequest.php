@@ -21,7 +21,7 @@ class StoreOccupationRequest extends FormRequest
             'position' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'aircraft_id' => [
                 'nullable',
@@ -31,7 +31,7 @@ class StoreOccupationRequest extends FormRequest
             'company' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'location' => [
                 'required',
@@ -55,7 +55,7 @@ class StoreOccupationRequest extends FormRequest
             'description' => [
                 'nullable',
                 'string',
-                'max:65535'
+                'max:65535',
             ],
         ];
     }

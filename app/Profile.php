@@ -46,7 +46,8 @@ class Profile extends User
      * @param  array  $attributes
      * @return void
      */
-    public function __construct(array $attributes = []) {
+    public function __construct(array $attributes = [])
+    {
         parent::__construct($attributes);
 
         // Hide Stripe fields.
