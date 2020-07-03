@@ -28,6 +28,7 @@
         "laravel/ui": "^2.0",
         "limedeck/nova-cashier-overview": "^2.0",
         "propaganistas/laravel-phone": "^4.2",
+        "spatie/laravel-tags": "^2.6",
         "stevebauman/purify": "^3.0",
         "torann/geoip": "^1.2"
     },

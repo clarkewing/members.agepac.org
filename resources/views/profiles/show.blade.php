@@ -20,6 +20,12 @@
                     Réputation : {{ $profile->reputation }} XP
                 </h6>
 
+                @if(Auth::user()->is($profile) || ! $profile->tags->isEmpty())
+                    <profile.tags
+                        :data="{{ json_encode(Arr::only($profile->toArray(), ['mentorship_tags'])) }}"
+                    ></profile.tags>
+                @endif
+
                 <ul class="list-unstyled small font-weight-bold mx-4 mx-md-0 mb-5">
                     @if($profile->hasOccupation())
                         <li class="d-flex align-items-center p-3 border-bottom">

@@ -54,6 +54,7 @@ class ProfilesController extends Controller
         $this->authorize('update', $profile);
 
         $request->validate([
+            'mentorship_tags' => 'sometimes|nullable|array',
             'flight_hours' => 'sometimes|nullable|integer|min:0|max:16777215',
             'location' => [
                 'sometimes',
@@ -67,6 +68,10 @@ class ProfilesController extends Controller
 
         if ($request->has('location')) {
             $profile->setLocation($request->input('location'));
+        }
+
+        if ($request->has('mentorship_tags')) {
+            $profile->syncTagsWithType($request->input('mentorship_tags'), 'mentorship');
         }
 
         return Response::json($profile->fresh());

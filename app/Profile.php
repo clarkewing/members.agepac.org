@@ -2,9 +2,11 @@
 
 namespace App;
 
+use Spatie\Tags\HasTags;
+
 class Profile extends User
 {
-    use HasLocation, RecordsActivity;
+    use HasLocation, HasTags, RecordsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +30,7 @@ class Profile extends User
      *
      * @var array
      */
-    protected $with = ['education', 'experience', 'location'];
+    protected $with = ['education', 'experience', 'location', 'mentorship_tags'];
 
     /**
      * Returns which activities should be recorded.
@@ -123,5 +125,13 @@ class Profile extends User
         $course = $this->education()->create($course);
 
         return $course;
+    }
+
+    /**
+     * Get the model's mentorship tags.
+     */
+    public function mentorship_tags()
+    {
+        return $this->tags()->withType('mentorship');
     }
 }

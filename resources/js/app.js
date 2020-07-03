@@ -26,6 +26,7 @@ Vue.component('expanding-search-bar', require('./components/ExpandingSearchBar')
 Vue.component('payment-method', require('./components/PaymentMethod').default);
 Vue.component('new-payment-method', require('./components/NewPaymentMethod').default);
 Vue.component('profile.avatar', require('./components/Profile/Avatar').default);
+Vue.component('profile.tags', require('./components/Profile/Tags').default);
 Vue.component('profile.bio', require('./components/Profile/Bio').default);
 Vue.component('profile.flight-hours', require('./components/Profile/FlightHours').default);
 Vue.component('profile.location', require('./components/Profile/Location').default);

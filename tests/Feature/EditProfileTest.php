@@ -136,6 +136,38 @@ class EditProfileTest extends TestCase
     }
 
     /** @test */
+    public function testTagsMustBeArray()
+    {
+        $this->updateProfile(['mentorship_tags' => 'a string tag'])
+            ->assertJsonValidationErrors('mentorship_tags');
+    }
+
+    /** @test */
+    public function testCanSetProfileTags()
+    {
+        $this->updateProfile(['mentorship_tags' => ['first tag', 'second tag']])
+            ->assertJsonMissingValidationErrors('mentorship_tags');
+
+        $this->assertEquals(
+            ['first tag', 'second tag'],
+            $this->profile->fresh()->mentorship_tags->pluck('name')->toArray()
+        );
+    }
+
+    /** @test */
+    public function testCanRemoveAllProfileTags()
+    {
+        $this->profile->attachTag('existing tag');
+
+        $this->assertCount(1, $this->profile->tags);
+
+        $this->updateProfile(['mentorship_tags' => ''])
+            ->assertJsonMissingValidationErrors('mentorship_tags');
+
+        $this->assertEmpty($this->profile->fresh()->mentorship_tags);
+    }
+
+    /** @test */
     public function testBioMustBeString()
     {
         $this->updateProfile(['bio' => 12345])

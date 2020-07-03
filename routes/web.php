@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\TagsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,8 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
     Route::get('/user-invitations', 'UserInvitationsController@index')->name('user-invitations.index');
 
     Route::post('/users/{user}/avatar', 'UserAvatarController@store')->name('users.avatar.store');
+
+    Route::get('/tags/{type?}', [TagsController::class, 'index'])->name('tags.index');
 });
 
 /* Account */

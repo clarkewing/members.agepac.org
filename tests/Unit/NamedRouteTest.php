@@ -345,6 +345,14 @@ class NamedRouteTest extends TestCase
         );
     }
 
+    /* @test */
+    public function testApiTagsIndex()
+    {
+        $this->assertRoutePathIs('/api/tags', 'api.tags.index');
+
+        $this->assertRoutePathIs('/api/tags/foobar', 'api.tags.index', ['type' => 'foobar']);
+    }
+
     /** @test */
     public function testAccountEdit()
     {
