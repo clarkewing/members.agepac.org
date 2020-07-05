@@ -49,6 +49,8 @@ class Occupation extends Model
      */
     protected $casts = [
         'user_id' => 'integer',
+        'status_code' => 'integer',
+        'aircraft_id' => 'integer',
         'company_id' => 'integer',
         'is_primary' => 'boolean',
         'start_date' => 'date:Y-m-d',
