@@ -109,7 +109,7 @@ fieldset[disabled] .multiselect {
     border         : none;
     border-radius  : $vue-multiselect-border-radius;
     background     : $vue-multiselect-bg;
-    padding        : 0 0 0 $vue-multiselect-padding-x;
+    padding        : 0;
     width          : calc(100%);
     transition     : border 0.1s ease;
     box-sizing     : border-box;
@@ -138,7 +138,6 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect__single {
-    padding-left  : $vue-multiselect-padding-x;
     margin-bottom : $vue-multiselect-padding-y;
 }
 
@@ -149,7 +148,7 @@ fieldset[disabled] .multiselect {
 .multiselect__tags {
     min-height    : $vue-multiselect-min-height;
     display       : block;
-    padding       : $vue-multiselect-padding-y $vue-multiselect-min-height 0 $vue-multiselect-padding-y;
+    padding       : $vue-multiselect-padding-y $vue-multiselect-min-height 0 $vue-multiselect-padding-x;
     border-radius : $vue-multiselect-border-radius;
     border        : $vue-multiselect-border-width solid $vue-multiselect-border-color;
     background    : $vue-multiselect-bg;
@@ -253,8 +252,7 @@ fieldset[disabled] .multiselect {
 .multiselect__placeholder {
     color         : $vue-multiselect-placeholder-color;
     display       : inline-block;
-    margin-bottom : 10px;
-    padding-top   : 2px;
+    margin-bottom : $vue-multiselect-padding-y;
 }
 
 .multiselect--active .multiselect__placeholder {
@@ -430,8 +428,9 @@ fieldset[disabled] .multiselect {
     position   : absolute;
     right      : 0;
     top        : 0;
-    width      : $vue-multiselect-min-height;
-    height     : $vue-multiselect-min-height;
+    margin     : $vue-multiselect-padding-y;
+    width      : add($input-line-height * 1em, $input-height-border);
+    height     : add($input-line-height * 1em, $input-height-border);
     background : $vue-multiselect-bg;
     display    : block;
 
