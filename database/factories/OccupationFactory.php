@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Aircraft;
+use App\Company;
 use App\Location;
 use App\Occupation;
 use App\User;
@@ -18,7 +19,9 @@ $factory->define(Occupation::class, function (Faker $faker) {
         },
         'position' => $is_pilot ? Arr::random(['CDB', 'OPL']) : $faker->jobTitle,
         'aircraft_id' => $is_pilot ? Aircraft::all()->random()->id : null,
-        'company' => $faker->company,
+        'company_id' => function () {
+            return factory(Company::class)->create()->id;
+        },
         'status' => Arr::random(array_keys(Occupation::statusStrings())),
         'description' => $faker->paragraph,
         'start_date' => $start_date = $faker->date,

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Company;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -13,7 +14,9 @@ class CreateOccupationTest extends TestCase
     protected $data = [
         'position' => 'FO',
         'aircraft_id' => 32, // DHC8 Q400
-        'company' => 'Flybe',
+        'company' => [
+            'name' => 'Flybe',
+        ],
         'status_code' => 1,
         'description' => 'Awesome description, even though the company went bust.',
         'start_date' => '2019-08-01',
@@ -102,17 +105,56 @@ class CreateOccupationTest extends TestCase
     }
 
     /** @test */
-    public function testCompanyMustBeString()
+    public function testCompanyMustBeArray()
     {
         $this->storeOccupation(['company' => 12345])
             ->assertJsonValidationErrors('company');
     }
 
     /** @test */
-    public function testCompanyCannotBeLongerThan255Characters()
+    public function testCompanyIdRequiredIfNameNotPassed()
     {
-        $this->storeOccupation(['company' => str_repeat('*', 256)])
-            ->assertJsonValidationErrors('company');
+        $this->storeOccupation(['company' => [
+            'id' => null,
+            'name' => null,
+        ]])->assertJsonValidationErrors('company.id');
+    }
+
+    /** @test */
+    public function testCompanyIdMustBeInt()
+    {
+        $this->storeOccupation(['company' => ['id' => 'foobar']])
+            ->assertJsonValidationErrors('company.id');
+    }
+
+    /** @test */
+    public function testCompanyIdMustExist()
+    {
+        $this->storeOccupation(['company' => ['id' => 999]])
+            ->assertJsonValidationErrors('company.id');
+    }
+
+    /** @test */
+    public function testCompanyNameRequiredIfIdNotPassed()
+    {
+        $this->storeOccupation(['company' => [
+            'id' => null,
+            'name' => null,
+        ]])->assertJsonValidationErrors('company.name');
+    }
+
+    /** @test */
+    public function testCompanyNameMustBeString()
+    {
+        $this->storeOccupation(['company' => ['name' => 12345]])
+            ->assertJsonValidationErrors('company.name');
+    }
+
+    /** @test */
+    public function testCompanyNameCannotBeLongerThan255Characters()
+    {
+        $this->storeOccupation(['company' => ['name' => str_repeat('*', 256)]])
+            ->assertJsonValidationErrors('company.name');
     }
 
     /** @test */
@@ -230,6 +272,30 @@ class CreateOccupationTest extends TestCase
     {
         $this->storeOccupation(['description' => str_repeat('*', 65536)])
             ->assertJsonValidationErrors('description');
+    }
+
+    /** @test */
+    public function testCompanyWithoutIdCreatesNewCompany()
+    {
+        $this->assertDatabaseCount('companies', 0);
+
+        $this->storeOccupation(['company' => ['name' => 'Acme Inc']])
+            ->assertJson(['company' => ['name' => 'Acme Inc']]);
+
+        $this->assertDatabaseCount('companies', 1);
+    }
+
+    /** @test */
+    public function testCompanyWithIdReusesCompany()
+    {
+        $company = create(Company::class);
+
+        $this->assertDatabaseCount('companies', 1);
+
+        $this->storeOccupation(['company' => ['id' => $company->id]])
+            ->assertJson(['company' => $company->toArray()]);
+
+        $this->assertDatabaseCount('companies', 1);
     }
 
     /** @test */

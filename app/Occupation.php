@@ -23,7 +23,7 @@ class Occupation extends Model
     protected $fillable = [
         'position',
         'aircraft_id',
-        'company',
+        'company_id',
         'status_code',
         'description',
         'start_date',
@@ -49,6 +49,7 @@ class Occupation extends Model
      */
     protected $casts = [
         'user_id' => 'integer',
+        'company_id' => 'integer',
         'is_primary' => 'boolean',
         'start_date' => 'date:Y-m-d',
         'end_date' => 'date:Y-m-d',
@@ -59,7 +60,7 @@ class Occupation extends Model
      *
      * @var array
      */
-    protected $with = ['aircraft', 'location'];
+    protected $with = ['aircraft', 'company', 'location'];
 
     /**
      * The array of strings corresponding to different statuses.
@@ -82,6 +83,14 @@ class Occupation extends Model
     public function aircraft()
     {
         return $this->belongsTo(Aircraft::class);
+    }
+
+    /**
+     * Get the company associated with the position.
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 
     /**

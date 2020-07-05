@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Attachment;
 use App\Channel;
+use App\Company;
 use App\Post;
 use App\Thread;
 use App\User;
@@ -254,6 +255,57 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             '/profiles/' . $user->username,
             'profiles.update', $user
+        );
+    }
+
+    /* @test */
+    public function testCompaniesIndex()
+    {
+        $this->assertRoutePathIs(
+            '/companies',
+            'companies.index'
+        );
+    }
+
+    /* @test */
+    public function testCompaniesStore()
+    {
+        $this->assertRoutePathIs(
+            '/companies',
+            'companies.store'
+        );
+    }
+
+    /* @test */
+    public function testCompaniesShow()
+    {
+        $company = create(Company::class);
+
+        $this->assertRoutePathIs(
+            '/companies/' . $company->slug,
+            'companies.show', $company
+        );
+    }
+
+    /* @test */
+    public function testCompaniesUpdate()
+    {
+        $company = create(Company::class);
+
+        $this->assertRoutePathIs(
+            '/companies/' . $company->slug,
+            'companies.update', $company
+        );
+    }
+
+    /* @test */
+    public function testCompaniesDestroy()
+    {
+        $company = create(Company::class);
+
+        $this->assertRoutePathIs(
+            '/companies/' . $company->slug,
+            'companies.destroy', $company
         );
     }
 

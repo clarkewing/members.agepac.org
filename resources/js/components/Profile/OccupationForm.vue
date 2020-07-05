@@ -51,10 +51,10 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label :for="uniqueId('company')">Employeur</label>
-                <input type="text"
-                       :id="uniqueId('company')"
-                       v-model="form.company"
-                       :class="['form-control', form.errors.has('company') ? 'is-invalid' : '' ]">
+                <company-select :id="uniqueId('company')"
+                                v-model="form.company"
+                                :class="{'is-invalid': form.errors.has('company')}"
+                ></company-select>
 
                 <div v-if="form.errors.has('company')"
                      class="invalid-feedback"
@@ -165,10 +165,11 @@
 <script>
     import {BFormDatepicker} from 'bootstrap-vue';
     import 'bootstrap-vue/dist/bootstrap-vue.css';
+    import CompanySelect from "../CompanySelect";
     import LocationInput from "../LocationInput";
 
     export default {
-        components: {BFormDatepicker, LocationInput},
+        components: {BFormDatepicker, CompanySelect, LocationInput},
 
         props: {
             form: {

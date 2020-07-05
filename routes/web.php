@@ -59,6 +59,9 @@ Route::patch('/profiles/{profile}', 'ProfilesController@update')->name('profiles
 Route::apiResource('occupations', 'OccupationsController')->only(['store', 'update', 'destroy']);
 Route::apiResource('courses', 'CoursesController')->only(['store', 'update', 'destroy']);
 
+/* Companies */
+Route::apiResource('companies', 'CompaniesController');
+
 /* Notifications */
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
 

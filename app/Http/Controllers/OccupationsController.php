@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Http\Requests\StoreOccupationRequest;
 use App\Http\Requests\UpdateOccupationRequest;
 use App\Occupation;
@@ -28,10 +29,19 @@ class OccupationsController extends Controller
      */
     public function store(StoreOccupationRequest $request)
     {
-        $occupation = tap($request->user()->profile->addExperience($request->all()))
-            ->setLocation($request->input('location'));
+        $company = Company::firstOrCreate($request->input('company'), [
+            'type_code' => $request->has('aircraft_id')
+                ? Company::AIRLINE
+                : Company::OTHER_BUSINESS,
+        ]);
 
-        return Response::json($occupation, HttpResponse::HTTP_CREATED);
+        $occupation = $request->user()->profile->addExperience(
+            $request->all() + ['company_id' => $company->id]
+        );
+
+        $occupation->setLocation($request->input('location'));
+
+        return Response::json($occupation->fresh(), HttpResponse::HTTP_CREATED);
     }
 
     /**
@@ -43,6 +53,14 @@ class OccupationsController extends Controller
      */
     public function update(UpdateOccupationRequest $request, Occupation $occupation)
     {
+        if ($request->filled('company')) {
+            $occupation->company()->associate(Company::firstOrCreate($request->input('company'), [
+                'type_code' => $request->has('aircraft_id')
+                    ? Company::AIRLINE
+                    : Company::OTHER_BUSINESS,
+            ]));
+        }
+
         $occupation->update($request->all());
 
         if ($request->filled('location')) {

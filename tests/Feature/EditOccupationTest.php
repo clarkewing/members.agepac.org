@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Company;
 use App\Occupation;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -89,24 +90,56 @@ class EditOccupationTest extends TestCase
     }
 
     /** @test */
-    public function testCompanyIsRequiredIfSet()
-    {
-        $this->updateOccupation(['company' => null])
-            ->assertJsonValidationErrors('company');
-    }
-
-    /** @test */
-    public function testCompanyMustBeString()
+    public function testCompanyMustBeArray()
     {
         $this->updateOccupation(['company' => 12345])
             ->assertJsonValidationErrors('company');
     }
 
     /** @test */
-    public function testCompanyCannotBeLongerThan255Characters()
+    public function testCompanyIdRequiredIfNameNotPassed()
     {
-        $this->updateOccupation(['company' => str_repeat('*', 256)])
-            ->assertJsonValidationErrors('company');
+        $this->updateOccupation(['company' => [
+            'id' => null,
+            'name' => null,
+        ]])->assertJsonValidationErrors('company.id');
+    }
+
+    /** @test */
+    public function testCompanyIdMustBeInt()
+    {
+        $this->updateOccupation(['company' => ['id' => 'foobar']])
+            ->assertJsonValidationErrors('company.id');
+    }
+
+    /** @test */
+    public function testCompanyIdMustExist()
+    {
+        $this->updateOccupation(['company' => ['id' => 999]])
+            ->assertJsonValidationErrors('company.id');
+    }
+
+    /** @test */
+    public function testCompanyNameRequiredIfIdNotPassed()
+    {
+        $this->updateOccupation(['company' => [
+            'id' => null,
+            'name' => null,
+        ]])->assertJsonValidationErrors('company.name');
+    }
+
+    /** @test */
+    public function testCompanyNameMustBeString()
+    {
+        $this->updateOccupation(['company' => ['name' => 12345]])
+            ->assertJsonValidationErrors('company.name');
+    }
+
+    /** @test */
+    public function testCompanyNameCannotBeLongerThan255Characters()
+    {
+        $this->updateOccupation(['company' => ['name' => str_repeat('*', 256)]])
+            ->assertJsonValidationErrors('company.name');
     }
 
     /** @test */
@@ -305,12 +338,38 @@ class EditOccupationTest extends TestCase
     }
 
     /** @test */
+    public function testCompanyWithoutIdCreatesNewCompany()
+    {
+        $this->assertDatabaseCount('companies', 1);
+
+        $this->updateOccupation(['company' => ['name' => 'Acme Inc']])
+            ->assertJson(['company' => ['name' => 'Acme Inc']]);
+
+        $this->assertDatabaseCount('companies', 2);
+    }
+
+    /** @test */
+    public function testCompanyWithIdReusesCompany()
+    {
+        $company = create(Company::class);
+
+        $this->assertDatabaseCount('companies', 2);
+
+        $this->updateOccupation(['company' => ['id' => $company->id]])
+            ->assertJson(['company' => $company->toArray()]);
+
+        $this->assertDatabaseCount('companies', 2);
+    }
+
+    /** @test */
     public function testCanUpdateOccupation()
     {
         $data = [
             'position' => 'FO',
             'aircraft_id' => 32, // DHC8 Q400
-            'company' => 'Flybe',
+            'company' => [
+                'name' => 'Flybe',
+            ],
             'status_code' => 1,
             'description' => 'Awesome description, even though the company went bust.',
             'start_date' => '2019-08-01',

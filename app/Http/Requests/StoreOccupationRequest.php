@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Aircraft;
+use App\Company;
 use App\Occupation;
 use App\Rules\ValidLocation;
 use Illuminate\Foundation\Http\FormRequest;
@@ -30,6 +31,17 @@ class StoreOccupationRequest extends FormRequest
             ],
             'company' => [
                 'required',
+                'array',
+            ],
+            'company.id' => [
+                'required_without:company.name',
+                'nullable',
+                'int',
+                Rule::exists(Company::class, 'id'),
+            ],
+            'company.name' => [
+                'required_without:company.id',
+                'nullable',
                 'string',
                 'max:255',
             ],
