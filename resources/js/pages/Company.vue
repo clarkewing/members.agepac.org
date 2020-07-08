@@ -2,11 +2,23 @@
     <div class="container text-primary bg-white mt-n4 py-4 border border-top-0 rounded-bottom">
         <div class="row mb-3">
             <div class="col-lg-10 offset-lg-1 text-right">
-                <button type="button"
-                        class="btn btn-info"
-                        data-toggle="modal" data-target="#editCompany">
-                    Modifier
-                </button>
+                <div class="d-flex align-items-center">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-transparent pl-0 mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="/companies">
+                                    < Annuaire des compagnies
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <button type="button"
+                            class="btn btn-info ml-auto"
+                            data-toggle="modal" data-target="#editCompany">
+                        Modifier
+                    </button>
+                </div>
             </div>
 
             <div ref="modal" class="modal fade" id="editCompany" tabindex="-1" role="dialog">
