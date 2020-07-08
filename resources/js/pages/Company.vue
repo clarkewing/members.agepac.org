@@ -83,7 +83,7 @@
                     </li>
                 </ul>
 
-                <div class="text-center small">
+                <div class="text-center small d-none d-md-block">
                     <a v-if="showLogo"
                        href="https://clearbit.com"
                        target="_blank">
