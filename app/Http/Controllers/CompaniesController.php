@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Illuminate\Validation\Rule;
 
 class CompaniesController extends Controller
@@ -28,12 +28,46 @@ class CompaniesController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->expectsJson()) {
             if ($request->has('query')) {
                 return Company::search($request->query('query'))
                     ->paginate(25);
             }
 
             return Company::paginate(25);
+        }
+
+        return view('companies.index');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'type_code' => [
+                'required',
+                Rule::in(array_keys(Company::typeStrings())),
+            ],
+            'website' => 'nullable|url|max:255',
+            'description' => 'required|string|max:65535',
+            'operations' => 'nullable|string|max:65535',
+            'conditions' => 'nullable|string|max:65535',
+            'remarks' => 'nullable|string|max:65535',
+        ]);
+
+        $company = Company::create($request->all());
+
+        if ($request->expectsJson()) {
+            return Response::json($company, HttpResponse::HTTP_CREATED);
+        }
+
+        return Response::redirectToRoute('companies.show', $company);
     }
 
     /**
