@@ -41,7 +41,7 @@
                          class="d-block embed-responsive-item cover"
                          :src="logoSrc"
                          :alt="fields.name"
-                         @@error="showLogo = false">
+                         @error="showLogo = false">
 
                     <svg v-else
                          class="bi bi-building d-block position-absolute"
