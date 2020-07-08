@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
@@ -42,27 +44,23 @@ class Company extends Model
     protected $appends = ['type'];
 
     /**
-     * The array of strings corresponding to different types.
+     * The "booted" method of the model.
      *
-     * @return array|string[]
+     * @return void
      */
-    public static function typeStrings(): array
+    protected static function booted()
     {
-        return [
-            self::AIRLINE => 'Compagnie aérienne',
-            self::AIRWORK => 'Travail aérien',
-            self::SCHOOL => 'École',
-            self::FLYING_CLUB => 'Aéroclub',
-            self::GOV_AGENCY => 'Agence gouvernementale',
-            self::ASSOCIATION => 'Association',
-            self::OTHER_BUSINESS => 'Autre entreprise',
-        ];
+        static::creating(function ($user) {
+            if (is_null($user->description)) {
+                $user->setDescriptionFromWikipedia();
+            }
+        });
     }
 
     /**
      * Get the options for generating the slug.
      */
-    public function getSlugOptions() : SlugOptions
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
@@ -92,6 +90,24 @@ class Company extends Model
     }
 
     /**
+     * The array of strings corresponding to different types.
+     *
+     * @return array|string[]
+     */
+    public static function typeStrings(): array
+    {
+        return [
+            self::AIRLINE => 'Compagnie aérienne',
+            self::AIRWORK => 'Travail aérien',
+            self::SCHOOL => 'École',
+            self::FLYING_CLUB => 'Aéroclub',
+            self::GOV_AGENCY => 'Agence gouvernementale',
+            self::ASSOCIATION => 'Association',
+            self::OTHER_BUSINESS => 'Autre entreprise',
+        ];
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
@@ -105,5 +121,26 @@ class Company extends Model
             'type' => $this->type,
             'website' => $this->website,
         ];
+    }
+
+    public function setDescriptionFromWikipedia()
+    {
+        $response = Http::get('https://fr.wikipedia.org/w/api.php', [
+            'format' => 'json',
+            'action' => 'query',
+            'prop' => 'extracts',
+            'exintro' => true,
+            'explaintext' => true,
+            'redirects' => true,
+            'titles' => $this->name,
+        ])['query']['pages'];
+
+        if (! Arr::has($response, -1)
+            && Arr::has(Arr::first($response), 'extract')) {
+            // Company intro found on Wikipedia. Fill description.
+            $this->description = Arr::first($response)['extract'];
+        }
+
+        return $this;
     }
 }

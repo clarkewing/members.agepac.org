@@ -71,4 +71,22 @@ class CompanyTest extends TestCase
 
         $this->assertEquals('air-france-hop', $company->slug);
     }
+
+    /**
+     * @test
+     * @group external-api
+     * @group wikipedia-api
+     */
+    public function testDescriptionFetchedFromWikipediaWhenEmptyOnCreation()
+    {
+        // Filled if found.
+        $company = create(Company::class, ['name' => 'Air France', 'description' => null]);
+
+        $this->assertNotEmpty($company->description);
+
+        // Left empty if not found.
+        $company = create(Company::class, ['name' => 'Para76', 'description' => null]);
+
+        $this->assertNull($company->description);
+    }
 }
