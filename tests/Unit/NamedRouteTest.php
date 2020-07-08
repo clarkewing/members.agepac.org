@@ -298,17 +298,6 @@ class NamedRouteTest extends TestCase
         );
     }
 
-    /* @test */
-    public function testCompaniesDestroy()
-    {
-        $company = create(Company::class);
-
-        $this->assertRoutePathIs(
-            '/companies/' . $company->slug,
-            'companies.destroy', $company
-        );
-    }
-
     /** @test */
     public function testOccupationsStore()
     {

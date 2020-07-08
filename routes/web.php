@@ -60,7 +60,7 @@ Route::apiResource('occupations', 'OccupationsController')->only(['store', 'upda
 Route::apiResource('courses', 'CoursesController')->only(['store', 'update', 'destroy']);
 
 /* Companies */
-Route::apiResource('companies', 'CompaniesController');
+Route::apiResource('companies', 'CompaniesController')->except('destroy');
 
 /* Notifications */
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
