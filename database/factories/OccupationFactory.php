@@ -42,6 +42,19 @@ $factory->state(Occupation::class, 'not_pilot', function ($faker) {
     ];
 });
 
+$factory->state(Occupation::class, 'past', function ($faker) {
+    return [
+        'start_date' => $start_date = $faker->date,
+        'end_date' => $faker->dateTimeBetween($start_date, 'now'),
+    ];
+});
+
+$factory->state(Occupation::class, 'current', function () {
+    return [
+        'end_date' => null,
+    ];
+});
+
 $factory->afterCreating(Occupation::class, function ($occupation) {
     factory(Location::class)->create([
         'locatable_id' => $occupation->id,

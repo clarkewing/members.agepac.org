@@ -78,6 +78,35 @@ class Company extends Model
     }
 
     /**
+     * Get the company's employees.
+     */
+    public function employees()
+    {
+        return $this->belongsToMany(
+            Profile::class,
+            'occupations',
+            'company_id',
+            'user_id'
+        );
+    }
+
+    /**
+     * Get the company's current employees.
+     */
+    public function current_employees()
+    {
+        return $this->employees()->wherePivotNull('end_date');
+    }
+
+    /**
+     * Get the company's former employees.
+     */
+    public function former_employees()
+    {
+        return $this->employees()->wherePivotNotNull('end_date');
+    }
+
+    /**
      * Get the company's type.
      *
      * @return string

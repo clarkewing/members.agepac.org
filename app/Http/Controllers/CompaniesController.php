@@ -79,6 +79,8 @@ class CompaniesController extends Controller
      */
     public function show(Request $request, Company $company)
     {
+        $company->load('current_employees', 'former_employees');
+
         if ($request->wantsJson()) {
             return Response::json($company);
         }
