@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class CompaniesController extends Controller
 {

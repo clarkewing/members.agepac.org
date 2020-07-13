@@ -70,7 +70,7 @@ class BrowseProfilesTest extends TestCase
     }
 
     /**
-     * Show the requested profile
+     * Show the requested profile.
      *
      * @param  \App\Profile  $profile
      * @return \Illuminate\Testing\TestResponse

@@ -79,7 +79,7 @@ class BrowseCompaniesTest extends TestCase
     }
 
     /**
-     * Show the requested company
+     * Show the requested company.
      *
      * @param  \App\Company  $company
      * @return \Illuminate\Testing\TestResponse
