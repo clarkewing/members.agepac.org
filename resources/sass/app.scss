@@ -142,7 +142,9 @@
     .dropdown-item {
         cursor: pointer;
         &.hover {
-            @extend .dropdown-item, :hover;
+            color: $dropdown-link-hover-color;
+            text-decoration: none;
+            @include gradient-bg($dropdown-link-hover-bg);
         }
     }
 }
@@ -168,12 +170,14 @@ trix-editor {
     outline: none;
 
     .form-control {
-        @extend .form-control, :focus;
+        @include form-control-focus($ignore-warning: true);
     }
 }
 
 .trix-active {
-    @extend .active;
+    color: color-yiq(darken(theme-color("secondary"), 10%));
+    background-color: darken(theme-color("secondary"), 10%);
+    border-color: darken(theme-color("secondary"), 12.5%);
 }
 
 trix-editor,
@@ -275,11 +279,28 @@ trix-editor,
     padding-top: calc(#{$input-btn-padding-y} + .2em);
 
     &.StripeElement--focus {
-        @extend .form-control, :focus;
+        color: $input-focus-color;
+        background-color: $input-focus-bg;
+        border-color: $input-focus-border-color;
+        outline: 0;
+        box-shadow: $input-focus-box-shadow;
     }
 
     &.StripeElement--invalid {
-        @extend .is-invalid;
+        border-color: map-get(map-get($form-validation-states, invalid), color);
+
+        @if $enable-validation-icons {
+            padding-right: $input-height-inner;
+            background-image: escape-svg(map-get(map-get($form-validation-states, invalid), icon));
+            background-repeat: no-repeat;
+            background-position: right $input-height-inner-quarter center;
+            background-size: $input-height-inner-half $input-height-inner-half;
+        }
+
+        &.StripeElement--focus {
+            border-color: map-get(map-get($form-validation-states, invalid), color);
+            box-shadow: 0 0 0 $input-focus-width rgba(map-get(map-get($form-validation-states, invalid), color), .25);
+        }
     }
 }
 
