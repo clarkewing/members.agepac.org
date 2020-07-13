@@ -2,11 +2,12 @@
 
 namespace App;
 
+use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
 
 class Profile extends User
 {
-    use HasLocation, HasTags, RecordsActivity;
+    use HasLocation, HasTags, RecordsActivity, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -133,5 +134,34 @@ class Profile extends User
     public function mentorship_tags()
     {
         return $this->tags()->withType('mentorship');
+    }
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'profiles';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'username' => $this->username,
+            'class_course' => $this->class_course,
+            'class_year' => $this->class_year,
+            'avatar_path' => $this->avatar_path,
+            'mentorship_tags' => $this->mentorship_tags->pluck('name')->all(),
+        ];
     }
 }

@@ -32,6 +32,7 @@ Vue.component('profile.flight-hours', require('./components/Profile/FlightHours'
 Vue.component('profile.location', require('./components/Profile/Location').default);
 Vue.component('profile.experience', require('./components/Profile/Experience').default);
 Vue.component('profile.education', require('./components/Profile/Education').default);
+Vue.component('profile-result', require('./components/ProfileResult').default);
 Vue.component('create-company', require('./components/CreateCompany').default);
 Vue.component('company-result', require('./components/CompanyResult').default);
 

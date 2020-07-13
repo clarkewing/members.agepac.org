@@ -21,6 +21,26 @@ class ProfilesController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\View\View
+     */
+    public function index(Request $request)
+    {
+        if ($request->expectsJson()) {
+            if ($request->has('query')) {
+                return Profile::search($request->query('query'))
+                    ->paginate(25);
+            }
+
+            return Profile::paginate(25);
+        }
+
+        return view('profiles.index');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -64,8 +84,6 @@ class ProfilesController extends Controller
             'bio' => 'sometimes|nullable|string|max:65535',
         ]);
 
-        $profile->fill($request->input())->save();
-
         if ($request->has('location')) {
             $profile->setLocation($request->input('location'));
         }
@@ -73,6 +91,8 @@ class ProfilesController extends Controller
         if ($request->has('mentorship_tags')) {
             $profile->syncTagsWithType($request->input('mentorship_tags'), 'mentorship');
         }
+
+        $profile->update($request->all());
 
         return Response::json($profile->fresh());
     }

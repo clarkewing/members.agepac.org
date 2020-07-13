@@ -53,8 +53,7 @@ Route::post('/attachments', 'AttachmentsController@store')->name('attachments.st
 Route::delete('/attachments/{attachment}', 'AttachmentsController@destroy')->name('attachments.destroy');
 
 /* Profiles */
-Route::get('/profiles/{profile}', 'ProfilesController@show')->name('profiles.show');
-Route::patch('/profiles/{profile}', 'ProfilesController@update')->name('profiles.update');
+Route::apiResource('profiles', 'ProfilesController')->only(['index', 'show', 'update']);
 
 Route::apiResource('occupations', 'OccupationsController')->only(['store', 'update', 'destroy']);
 Route::apiResource('courses', 'CoursesController')->only(['store', 'update', 'destroy']);
