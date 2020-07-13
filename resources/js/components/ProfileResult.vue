@@ -19,9 +19,13 @@
 
         <h6 v-if="mentorship_tags.length"
             class="small font-weight-bold flex-shrink-0 rounded-pill p-2 px-md-3"
-            style="background: rgb(111,170,243);">
-            {{ mentorship_tags[0] }}
-            <span v-if="mentorship_tags.length > 1">+ {{ mentorship_tags.length - 1 }}</span>
+            style="background: rgb(111,170,243);"
+            v-text="mentorship_tags[0]">
+        </h6>
+
+        <h6 v-if="mentorship_tags.length > 1"
+            class="small font-weight-bold flex-shrink-0 rounded-pill bg-gray-200 p-2 px-md-3 ml-1">
+            + {{ mentorship_tags.length - 1 }}
         </h6>
     </div>
 </template>
