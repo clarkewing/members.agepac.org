@@ -31,7 +31,7 @@ class CoursesController extends Controller
         $course = tap($request->user()->profile->addEducation($request->all()))
             ->setLocation($request->input('location'));
 
-        return Response::json($course, HttpResponse::HTTP_CREATED);
+        return Response::json($course->load('location'), HttpResponse::HTTP_CREATED);
     }
 
     /**

@@ -38,8 +38,6 @@ trait HasLocation
             return null;
         }
 
-        return tap($this->location()->updateOrCreate([], $value), function ($newLocation) {
-            $this->location = $newLocation;
-        });
+        return $this->location()->updateOrCreate([], $value);
     }
 }

@@ -94,6 +94,6 @@ class ProfilesController extends Controller
 
         $profile->update($request->all());
 
-        return Response::json($profile->fresh());
+        return Response::json($profile->fresh('location'));
     }
 }
