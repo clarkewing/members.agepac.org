@@ -64,7 +64,7 @@
                 </svg>
                 <span class="sr-only">Entreprise :</span>
 
-                <a :href="companyPath(fields.company)" v-text="fields.company.name"></a>
+                <a class="text-muted" :href="companyPath(fields.company)" v-text="fields.company.name"></a>
             </h6>
 
             <h6 class="flex-shrink-0 flex-grow-1 small text-muted mr-4">
