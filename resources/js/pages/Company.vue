@@ -129,12 +129,14 @@
                                     </div>
 
                                     <div class="tab-pane fade" ref="formerEmployeesTab" role="tabpanel">
-                                        <li class="list-group-item"
-                                            v-for="employee in formerEmployees">
-                                            <a :href="'/profiles/' + employee.username"
-                                               v-text="employee.name"
-                                            ></a>
-                                        </li>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item"
+                                                v-for="employee in formerEmployees">
+                                                <a :href="'/profiles/' + employee.username"
+                                                   v-text="employee.name"
+                                                ></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
