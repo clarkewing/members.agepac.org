@@ -1,0 +1,46 @@
+@import '~trix/dist/trix.css';
+
+trix-editor {
+    height: auto !important;
+
+    &:empty:not(:focus)::before {
+        color: $gray-600;
+        opacity: 1;
+    }
+
+    .attachment--content {
+        display: inline-block;
+
+        .attachment__caption,
+        .attachment__toolbar {
+            display: none;
+        }
+    }
+}
+
+.trix-wrapper:focus {
+    outline: none;
+
+    .form-control {
+        @include form-control-focus($ignore-warning: true);
+    }
+}
+
+.trix-active {
+    color: color-yiq(darken(theme-color("secondary"), 10%));
+    background-color: darken(theme-color("secondary"), 10%);
+    border-color: darken(theme-color("secondary"), 12.5%);
+}
+
+trix-editor,
+.trix-content {
+    h1 {
+        font-size: 1.5em;
+    }
+    h2 {
+        font-size: 1.2em;
+    }
+    h3 {
+        font-size: 1em;
+    }
+}

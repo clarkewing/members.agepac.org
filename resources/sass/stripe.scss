@@ -1,0 +1,28 @@
+.form-control.StripeElement {
+    padding-top: calc(#{$input-btn-padding-y} + .2em);
+
+    &.StripeElement--focus {
+        color: $input-focus-color;
+        background-color: $input-focus-bg;
+        border-color: $input-focus-border-color;
+        outline: 0;
+        box-shadow: $input-focus-box-shadow;
+    }
+
+    &.StripeElement--invalid {
+        border-color: map-get(map-get($form-validation-states, invalid), color);
+
+        @if $enable-validation-icons {
+            padding-right: $input-height-inner;
+            background-image: escape-svg(map-get(map-get($form-validation-states, invalid), icon));
+            background-repeat: no-repeat;
+            background-position: right $input-height-inner-quarter center;
+            background-size: $input-height-inner-half $input-height-inner-half;
+        }
+
+        &.StripeElement--focus {
+            border-color: map-get(map-get($form-validation-states, invalid), color);
+            box-shadow: 0 0 0 $input-focus-width rgba(map-get(map-get($form-validation-states, invalid), color), .25);
+        }
+    }
+}

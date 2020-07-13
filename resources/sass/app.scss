@@ -5,120 +5,18 @@
 @import '~bootstrap/scss/bootstrap';
 @import 'bootstrap-icons';
 
+@import "utilities";
+
 @import 'algolia-places';
+
+@import "stripe";
+
+@import "trix-editor";
 
 @import 'vue-multiselect';
 
-/* Stacked modals */
-.modal:nth-of-type(even) {
-    z-index: 1052 !important;
-}
-.modal-backdrop.show:nth-of-type(even) {
-    z-index: 1051 !important;
-}
-
-.flex-even {
-    flex: 1;
-}
-
-.font-size-normal {
-    font-size: 1em !important;
-}
-
-.lh-1 {
-    line-height: 1 !important;
-}
-
-.link-muted {
-    color: inherit;
-
-    &:hover,
-    &:focus,
-    &.active {
-        color: $link-color !important;
-        text-decoration: none;
-    }
-
-    &.active {
-        font-weight: bolder;
-    }
-}
-
 .cover {
     object-fit: cover;
-}
-
-// Create spacing utilities
-@each $breakpoint in map-keys($grid-breakpoints) {
-    @include media-breakpoint-up($breakpoint) {
-        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-
-        @each $modifier, $spacing in $spacers {
-            .#{'spacing' + $infix + '-' + $modifier} > :not(:last-child) {
-                margin-bottom: $spacing;
-            }
-        }
-    }
-}
-
-// Gray color utilities
-@each $shade, $hex in $grays {
-    .#{'bg-gray-' + $shade} {
-        background-color: $hex;
-    }
-    .#{'text-gray-' + $shade} {
-        color: $hex;
-    }
-    .#{'border-gray-' + $shade} {
-        border-color: $hex;
-    }
-}
-
-// Color utilities
-@each $color, $hex in $colors {
-    .#{'bg-' + $color} {
-        background-color: $hex;
-    }
-    .#{'text-' + $color} {
-        color: $hex;
-    }
-    .#{'border-' + $color} {
-        border-color: $hex;
-    }
-}
-
-// Responsive border utilities
-@each $breakpoint in map-keys($grid-breakpoints) {
-    @include media-breakpoint-up($breakpoint) {
-        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-
-        .border#{$infix}-top {      border-top: $border-width solid $border-color !important; }
-        .border#{$infix}-right {    border-right: $border-width solid $border-color !important; }
-        .border#{$infix}-bottom {   border-bottom: $border-width solid $border-color !important; }
-        .border#{$infix}-left {     border-left: $border-width solid $border-color !important; }
-
-        .border#{$infix}-top-0 {    border-top: 0 !important; }
-        .border#{$infix}-right-0 {  border-right: 0 !important; }
-        .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
-        .border#{$infix}-left-0 {   border-left: 0 !important; }
-
-        .border#{$infix}-x {
-            border-left: $border-width solid $border-color !important;
-            border-right: $border-width solid $border-color !important;
-        }
-
-        .border#{$infix}-y {
-            border-top: $border-width solid $border-color !important;
-            border-bottom: $border-width solid $border-color !important;
-        }
-
-        .rounded#{$infix} {
-            border-radius: .25rem;
-        }
-        .rounded#{$infix}-pill {
-            border-radius: 50rem;
-        }
-    }
 }
 
 .border-placeholder {
@@ -129,72 +27,6 @@
 
 .btn.border-placeholder:hover {
     border-color: color('blue');
-}
-
-// Trix
-@import '~trix/dist/trix.css';
-
-.tribute-container {
-    > ul {
-        margin: 0;
-        padding: 0;
-    }
-    .dropdown-item {
-        cursor: pointer;
-        &.hover {
-            color: $dropdown-link-hover-color;
-            text-decoration: none;
-            @include gradient-bg($dropdown-link-hover-bg);
-        }
-    }
-}
-trix-editor {
-    height: auto !important;
-
-    &:empty:not(:focus)::before {
-        color: $gray-600;
-        opacity: 1;
-    }
-
-    .attachment--content {
-        display: inline-block;
-
-        .attachment__caption,
-        .attachment__toolbar {
-            display: none;
-        }
-    }
-}
-
-.trix-wrapper:focus {
-    outline: none;
-
-    .form-control {
-        @include form-control-focus($ignore-warning: true);
-    }
-}
-
-.trix-active {
-    color: color-yiq(darken(theme-color("secondary"), 10%));
-    background-color: darken(theme-color("secondary"), 10%);
-    border-color: darken(theme-color("secondary"), 12.5%);
-}
-
-trix-editor,
-.trix-content {
-    h1 {
-        font-size: 1.5em;
-    }
-    h2 {
-        font-size: 1.2em;
-    }
-    h3 {
-        font-size: 1em;
-    }
-}
-
-[v-cloak] {
-    display: none;
 }
 
 .input-group-expanding {
@@ -271,35 +103,6 @@ trix-editor,
                     border-radius: 0 .25rem .25rem 0;
                 }
             }
-        }
-    }
-}
-
-.form-control.StripeElement {
-    padding-top: calc(#{$input-btn-padding-y} + .2em);
-
-    &.StripeElement--focus {
-        color: $input-focus-color;
-        background-color: $input-focus-bg;
-        border-color: $input-focus-border-color;
-        outline: 0;
-        box-shadow: $input-focus-box-shadow;
-    }
-
-    &.StripeElement--invalid {
-        border-color: map-get(map-get($form-validation-states, invalid), color);
-
-        @if $enable-validation-icons {
-            padding-right: $input-height-inner;
-            background-image: escape-svg(map-get(map-get($form-validation-states, invalid), icon));
-            background-repeat: no-repeat;
-            background-position: right $input-height-inner-quarter center;
-            background-size: $input-height-inner-half $input-height-inner-half;
-        }
-
-        &.StripeElement--focus {
-            border-color: map-get(map-get($form-validation-states, invalid), color);
-            box-shadow: 0 0 0 $input-focus-width rgba(map-get(map-get($form-validation-states, invalid), color), .25);
         }
     }
 }

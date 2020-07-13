@@ -1,0 +1,14 @@
+.tribute-container {
+    > ul {
+        margin: 0;
+        padding: 0;
+    }
+    .dropdown-item {
+        cursor: pointer;
+        &.hover {
+            color: $dropdown-link-hover-color;
+            text-decoration: none;
+            @include gradient-bg($dropdown-link-hover-bg);
+        }
+    }
+}

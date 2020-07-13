@@ -1,0 +1,112 @@
+[v-cloak] {
+    display: none;
+}
+
+/* Typography */
+.font-size-normal {
+    font-size: 1em !important;
+}
+
+.lh-1 {
+    line-height: 1 !important;
+}
+
+.link-muted {
+    color: inherit;
+
+    &:hover,
+    &:focus,
+    &.active {
+        color: $link-color !important;
+        text-decoration: none;
+    }
+
+    &.active {
+        font-weight: bolder;
+    }
+}
+
+/* Flex */
+.flex-even {
+    flex: 1;
+}
+
+/* Colors */
+@each $shade, $hex in $grays {
+    .#{'bg-gray-' + $shade} {
+        background-color: $hex;
+    }
+    .#{'text-gray-' + $shade} {
+        color: $hex;
+    }
+    .#{'border-gray-' + $shade} {
+        border-color: $hex;
+    }
+}
+
+@each $color, $hex in $colors {
+    .#{'bg-' + $color} {
+        background-color: $hex;
+    }
+    .#{'text-' + $color} {
+        color: $hex;
+    }
+    .#{'border-' + $color} {
+        border-color: $hex;
+    }
+}
+
+/* Borders */
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        .border#{$infix}-top {      border-top: $border-width solid $border-color !important; }
+        .border#{$infix}-right {    border-right: $border-width solid $border-color !important; }
+        .border#{$infix}-bottom {   border-bottom: $border-width solid $border-color !important; }
+        .border#{$infix}-left {     border-left: $border-width solid $border-color !important; }
+
+        .border#{$infix}-top-0 {    border-top: 0 !important; }
+        .border#{$infix}-right-0 {  border-right: 0 !important; }
+        .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
+        .border#{$infix}-left-0 {   border-left: 0 !important; }
+
+        .border#{$infix}-x {
+            border-left: $border-width solid $border-color !important;
+            border-right: $border-width solid $border-color !important;
+        }
+
+        .border#{$infix}-y {
+            border-top: $border-width solid $border-color !important;
+            border-bottom: $border-width solid $border-color !important;
+        }
+
+        .rounded#{$infix} {
+            border-radius: .25rem;
+        }
+        .rounded#{$infix}-pill {
+            border-radius: 50rem;
+        }
+    }
+}
+
+/* Spacing */
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+        @each $modifier, $spacing in $spacers {
+            .#{'spacing' + $infix + '-' + $modifier} > :not(:last-child) {
+                margin-bottom: $spacing;
+            }
+        }
+    }
+}
+
+/* Stacked modals */
+.modal:nth-of-type(even) {
+    z-index: 1052 !important;
+}
+.modal-backdrop.show:nth-of-type(even) {
+    z-index: 1051 !important;
+}
