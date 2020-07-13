@@ -12,7 +12,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
 
-class SampleDataSeeder extends Seeder
+class ForumDataSeeder extends Seeder
 {
     protected $faker;
 
@@ -57,7 +57,6 @@ class SampleDataSeeder extends Seeder
         Attachment::truncate();
         (new Filesystem)->cleanDirectory('storage/app/public/attachments');
         ThreadSubscription::truncate();
-        Activity::truncate();
         Favorite::truncate();
 
         factory(Thread::class, 30)->states('from_existing_channel_and_user')->create()

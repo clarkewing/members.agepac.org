@@ -5,15 +5,51 @@ namespace Tests\Unit;
 use App\Activity;
 use App\Post;
 use App\Thread;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {
-    /**
-     * @test
-     * @slowThreshold 800
-     */
+    /** @test */
+    public function testRecordsActivityWhenUserIsCreated()
+    {
+        $user = create(User::class);
+
+        $this->assertDatabaseHas('activities', [
+            'type' => 'created_user',
+            'user_id' => $user->id,
+            'subject_id' => $user->id,
+            'subject_type' => 'App\User',
+        ]);
+
+        $activity = Activity::first();
+
+        $this->assertEquals($activity->subject->id, $user->id);
+    }
+
+    /** @test */
+    public function testRecordsActivityWhenProfileIsUpdated()
+    {
+        $this->signIn();
+
+        $profile = Auth::user()->profile;
+
+        $profile->update(['bio' => 'This should trigger an update.']);
+
+        $this->assertDatabaseHas('activities', [
+            'type' => 'updated_profile',
+            'user_id' => Auth::id(),
+            'subject_id' => $profile->id,
+            'subject_type' => 'App\Profile',
+        ]);
+
+        $activity = Activity::first();
+
+        $this->assertEquals($activity->subject->id, $profile->id);
+    }
+
+    /** @test */
     public function testRecordsActivityWhenAThreadIsCreated()
     {
         $this->signIn();
@@ -38,9 +74,13 @@ class ActivityTest extends TestCase
         $this->signIn();
 
         // Will also create associated thread.
-        create(Post::class);
+        $post = create(Post::class);
 
-        $this->assertEquals(2, Activity::count());
+        $this->assertDatabaseHas('activities', [
+            'type' => 'created_post',
+            'subject_id' => $post->id,
+            'subject_type' => 'App\Post',
+        ]);
     }
 
     /** @test */

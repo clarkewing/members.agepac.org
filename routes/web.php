@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\TagsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +53,13 @@ Route::post('/attachments', 'AttachmentsController@store')->name('attachments.st
 Route::delete('/attachments/{attachment}', 'AttachmentsController@destroy')->name('attachments.destroy');
 
 /* Profiles */
-Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show');
+Route::apiResource('profiles', 'ProfilesController')->only(['index', 'show', 'update']);
+
+Route::apiResource('occupations', 'OccupationsController')->only(['store', 'update', 'destroy']);
+Route::apiResource('courses', 'CoursesController')->only(['store', 'update', 'destroy']);
+
+/* Companies */
+Route::apiResource('companies', 'CompaniesController')->except('destroy');
 
 /* Notifications */
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
@@ -64,6 +71,8 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
     Route::get('/user-invitations', 'UserInvitationsController@index')->name('user-invitations.index');
 
     Route::post('/users/{user}/avatar', 'UserAvatarController@store')->name('users.avatar.store');
+
+    Route::get('/tags/{type?}', [TagsController::class, 'index'])->name('tags.index');
 });
 
 /* Account */

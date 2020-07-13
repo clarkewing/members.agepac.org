@@ -1,0 +1,15 @@
+.algolia-places {
+    .form-control {
+        padding-right: calc(#{$input-padding-x} * 2 + 12px);
+    }
+    .ap-input-icon {
+        right: $input-padding-x;
+    }
+
+    .ap-icon-pin svg {
+        // .ap-icon-clear is 12px wide
+        // .ap-icon-pin is 20px wide
+        // So we move .ap-icon-pin half the difference to the right.
+        right: -4px;
+    }
+}

@@ -62,8 +62,38 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function testKnowsItsFullClass()
+    {
+        $user = create(User::class, ['class_course' => 'EPL/S', 'class_year' => 2015]);
+
+        $this->assertEquals('EPL/S 2015', $user->class);
+    }
+
+    /** @test */
     public function testCanMakeUsernameFromFirstAndLastName()
     {
         $this->assertEquals('john.doe', User::makeUsername('John', 'Doe'));
+    }
+
+    /** @test */
+    public function testBirthdateCanBeNull()
+    {
+        $user = create(User::class, ['birthdate' => null]);
+
+        $this->assertNull($user->birthdate);
+    }
+
+    /** @test */
+    public function testPhoneCanBeNull()
+    {
+        $user = create(User::class, ['phone' => null]);
+
+        $this->assertNull($user->phone);
+
+        $user = create(User::class);
+
+        $user->fill(['phone' => null])->save();
+
+        $this->assertNull($user->phone);
     }
 }

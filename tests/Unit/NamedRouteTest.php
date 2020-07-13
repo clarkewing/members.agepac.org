@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Attachment;
 use App\Channel;
+use App\Company;
 use App\Post;
 use App\Thread;
 use App\User;
@@ -236,6 +237,15 @@ class NamedRouteTest extends TestCase
     }
 
     /* @test */
+    public function testProfilesIndex()
+    {
+        $this->assertRoutePathIs(
+            '/profiles',
+            'profiles.index'
+        );
+    }
+
+    /* @test */
     public function testProfilesShow()
     {
         $user = make(User::class);
@@ -243,6 +253,111 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             '/profiles/' . $user->username,
             'profiles.show', $user
+        );
+    }
+
+    /* @test */
+    public function testProfilesUpdate()
+    {
+        $user = make(User::class);
+
+        $this->assertRoutePathIs(
+            '/profiles/' . $user->username,
+            'profiles.update', $user
+        );
+    }
+
+    /* @test */
+    public function testCompaniesIndex()
+    {
+        $this->assertRoutePathIs(
+            '/companies',
+            'companies.index'
+        );
+    }
+
+    /* @test */
+    public function testCompaniesStore()
+    {
+        $this->assertRoutePathIs(
+            '/companies',
+            'companies.store'
+        );
+    }
+
+    /* @test */
+    public function testCompaniesShow()
+    {
+        $company = create(Company::class);
+
+        $this->assertRoutePathIs(
+            '/companies/' . $company->slug,
+            'companies.show', $company
+        );
+    }
+
+    /* @test */
+    public function testCompaniesUpdate()
+    {
+        $company = create(Company::class);
+
+        $this->assertRoutePathIs(
+            '/companies/' . $company->slug,
+            'companies.update', $company
+        );
+    }
+
+    /** @test */
+    public function testOccupationsStore()
+    {
+        $this->assertRoutePathIs(
+            '/occupations',
+            'occupations.store'
+        );
+    }
+
+    /** @test */
+    public function testOccupationsUpdate()
+    {
+        $this->assertRoutePathIs(
+            '/occupations/1',
+            'occupations.update', 1
+        );
+    }
+
+    /** @test */
+    public function testOccupationsDestroy()
+    {
+        $this->assertRoutePathIs(
+            '/occupations/1',
+            'occupations.destroy', 1
+        );
+    }
+
+    /** @test */
+    public function testCoursesStore()
+    {
+        $this->assertRoutePathIs(
+            '/courses',
+            'courses.store'
+        );
+    }
+
+    /** @test */
+    public function testCoursesUpdate()
+    {
+        $this->assertRoutePathIs(
+            '/courses/1',
+            'courses.update', 1
+        );
+    }
+
+    /** @test */
+    public function testCoursesDestroy()
+    {
+        $this->assertRoutePathIs(
+            '/courses/1',
+            'courses.destroy', 1
         );
     }
 
@@ -278,6 +393,14 @@ class NamedRouteTest extends TestCase
             '/api/users/' . $user->username . '/avatar',
             'api.users.avatar.store', $user
         );
+    }
+
+    /* @test */
+    public function testApiTagsIndex()
+    {
+        $this->assertRoutePathIs('/api/tags', 'api.tags.index');
+
+        $this->assertRoutePathIs('/api/tags/foobar', 'api.tags.index', ['type' => 'foobar']);
     }
 
     /** @test */

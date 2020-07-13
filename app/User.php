@@ -58,7 +58,25 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'flight_hours' => 'integer',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->activity()->create([
+                'type' => 'created_user',
+                'user_id' => $user->id,
+                'subject_id' => $user->id,
+                'subject_type' => get_class($user),
+            ]);
+        });
+    }
 
     /**
      * Get the route key for the model.
@@ -76,6 +94,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function activity()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    /**
+     * Get the associated profile.
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'id');
     }
 
     /**
@@ -141,6 +167,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the user's class.
+     *
+     * @return string
+     */
+    public function getClassAttribute(): string
+    {
+        return $this->class_course . ' ' . $this->class_year;
+    }
+
+    /**
      * Set the user's phone number.
      *
      * @param  string  $value
@@ -148,20 +184,28 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function setPhoneAttribute($value): void
     {
-        $this->attributes['phone'] = PhoneNumber::make($value)
-            ->ofCountry('AUTO')
-            ->ofCountry('FR')
-            ->ofCountry(GeoIP::getLocation(request()->ip())->iso_code);
+        if (is_null($value)) {
+            $this->attributes['phone'] = null;
+        } else {
+            $this->attributes['phone'] = PhoneNumber::make($value)
+                ->ofCountry('AUTO')
+                ->ofCountry('FR')
+                ->ofCountry(GeoIP::getLocation(request()->ip())->iso_code);
+        }
     }
 
     /**
      * Get the user's phone number.
      *
      * @param  string  $value
-     * @return \Propaganistas\LaravelPhone\PhoneNumber
+     * @return \Propaganistas\LaravelPhone\PhoneNumber|null
      */
-    public function getPhoneAttribute($value): PhoneNumber
+    public function getPhoneAttribute($value)
     {
+        if (is_null($value)) {
+            return;
+        }
+
         return PhoneNumber::make($value);
     }
 

@@ -21,7 +21,7 @@
                         <a class="dropdown-item" href="#">Gouvernance</a>
                         <a class="dropdown-item" href="#">Status</a>
                     </div>
-      </li>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Les EPL</a>
                 </li>
@@ -29,8 +29,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Trajectoire EPL</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Réseau EPL</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                            Réseau EPL
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ route('profiles.index') }}">Annuaire des EPL</a>
+                            <a class="dropdown-item" href="{{ route('companies.index') }}">Annuaire des Compagnies</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Fly EPL</a>
