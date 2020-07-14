@@ -163,22 +163,6 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function testRecordsEachVisit()
-    {
-        $this->thread->visits()->reset();
-
-        $this->assertSame(0, $this->thread->visits()->count());
-
-        $this->thread->visits()->record();
-
-        $this->assertEquals(1, $this->thread->visits()->count());
-
-        $this->thread->visits()->record();
-
-        $this->assertEquals(2, $this->thread->visits()->count());
-    }
-
-    /** @test */
     public function testBodyIsSanitizedAutomatically()
     {
         $thread = make(Thread::class, ['body' => '<script>alert("bad");</script><p>This is okay.</p>']);

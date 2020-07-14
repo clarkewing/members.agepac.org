@@ -31,7 +31,7 @@ class Thread extends Model
      *
      * @var array
      */
-    protected $appends = ['path', 'visits_count'];
+    protected $appends = ['path'];
 
     /**
      * The relationships that should always be loaded.
@@ -49,6 +49,7 @@ class Thread extends Model
     protected $casts = [
         'locked' => 'boolean',
         'pinned' => 'boolean',
+        'visits' => 'integer',
     ];
 
     /**
@@ -257,26 +258,6 @@ class Thread extends Model
         $key = $user->visitedThreadCacheKey($this);
 
         return $this->updated_at > cache($key);
-    }
-
-    /**
-     * Get visits for the thread.
-     *
-     * @return \App\Visits
-     */
-    public function visits(): Visits
-    {
-        return new Visits($this);
-    }
-
-    /**
-     * Get the visits_count for the thread.
-     *
-     * @return int
-     */
-    public function getVisitsCountAttribute(): int
-    {
-        return $this->visits()->count();
     }
 
     /**

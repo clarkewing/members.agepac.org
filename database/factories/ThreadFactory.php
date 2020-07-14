@@ -17,6 +17,7 @@ $factory->define(Thread::class, function (Faker $faker) {
         'channel_id' => function () {
             return factory(Channel::class)->create()->id;
         },
+        'visits' => 0,
         'title' => $title,
         'locked' => false,
         'pinned' => false,
@@ -45,5 +46,6 @@ $factory->state(Thread::class, 'from_existing_channel_and_user', function (Faker
         'channel_id' => function () {
             return Channel::all()->random()->id;
         },
+        'visits' => $faker->numberBetween(0, 35),
     ];
 });

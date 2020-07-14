@@ -131,12 +131,11 @@ class ReadThreadsTest extends TestCase
     public function testRecordsNewVisitEachTimeThreadIsRead()
     {
         $thread = create(Thread::class);
-        $thread->visits()->reset();
 
-        $this->assertSame(0, $thread->visits()->count());
+        $this->assertSame(0, $thread->visits);
 
         $this->get($thread->path());
 
-        $this->assertEquals(1, $thread->visits()->count());
+        $this->assertEquals(1, $thread->fresh()->visits);
     }
 }
