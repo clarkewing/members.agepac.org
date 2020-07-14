@@ -7,7 +7,7 @@
                  style="width: 2.5rem; height: 2.5rem;">
         </div>
 
-        <div class="d-flex flex-column flex-grow-0 border-gray-700 border-bottom">
+        <div class="d-flex flex-column flex-grow-1 border-gray-700 border-bottom">
             <h3 class="h5 mb-1">
                 <svg v-if="thread.pinned" class="bi bi-flag-fill text-orange" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M3.5 1a.5.5 0 01.5.5v13a.5.5 0 01-1 0v-13a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
