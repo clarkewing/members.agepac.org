@@ -8,6 +8,11 @@ use Tests\TestCase;
 
 class TrendingThreadsTest extends TestCase
 {
+    /**
+     * @var \App\Trending
+     */
+    protected $trending;
+
     public function setUp(): void
     {
         parent::setUp();

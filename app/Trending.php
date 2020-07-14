@@ -2,32 +2,59 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class Trending
 {
     /**
      * Get top 5 trending threads.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function get(): array
+    public function get(): Collection
     {
-        return array_map('json_decode', Redis::zrevrange($this->cacheKey(), 0, 4)); // Top 5 items
+        return Cache::get($this->cacheKey(), collect())
+            ->sortByDesc('score')
+            ->slice(0, 5)
+            ->values();
     }
 
     /**
      * Push a thread to the trending threads list.
      *
-     * @param  \App\Thread $thread
+     * @param  \App\Thread  $thread
+     * @param  int  $increment
      * @return void
      */
-    public function push(Thread $thread): void
+    public function push(Thread $thread, int $increment = 1): void
     {
-        Redis::zincrby($this->cacheKey(), 1, json_encode([
+        $trending = Cache::get($this->cacheKey(), collect());
+
+        $trending[$thread->id] = (object) [
+            'score' => optional($trending->get($thread->id))->score + $increment,
             'title' => $thread->title,
-            'path'  => $thread->path(),
-        ]));
+            'path' => $thread->path(),
+        ];
+
+        Cache::forever($this->cacheKey(), $trending);
+    }
+
+    /**
+     * Get the trending score of the given thread.
+     *
+     * @param  \App\Thread  $thread
+     * @return int
+     */
+    public function score(Thread $thread): int
+    {
+        $trending = Cache::get($this->cacheKey(), collect());
+
+        if (! isset($trending[$thread->id])) {
+            return 0;
+        }
+
+        return $trending[$thread->id]->score;
     }
 
     /**
@@ -37,16 +64,16 @@ class Trending
      */
     public function reset(): void
     {
-        Redis::del($this->cacheKey());
+        Cache::forget($this->cacheKey());
     }
 
     /**
-     * Get the cache key for the redis database.
+     * Get the cache key name.
      *
      * @return string
      */
     protected function cacheKey(): string
     {
-        return app()->environment('testing') ? 'testing_trending_threads' : 'trending_threads';
+        return 'trending_threads';
     }
 }
