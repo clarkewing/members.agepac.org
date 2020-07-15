@@ -1988,17 +1988,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "v3.6.0",
+            "version": "v3.7.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "fd5584ece923cc03f3514c6e8cd53a292683c5b5"
+                "reference": "a143c626002c4c8c7241484b2fa7d84b7c9f9a85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-fd5584ece923cc03f3514c6e8cd53a292683c5b5-zip-303b8a.zip",
-                "reference": "fd5584ece923cc03f3514c6e8cd53a292683c5b5",
-                "shasum": "05c64fbebe214635756015793c2093e250053fe7"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-a143c626002c4c8c7241484b2fa7d84b7c9f9a85-zip-560da0.zip",
+                "reference": "a143c626002c4c8c7241484b2fa7d84b7c9f9a85",
+                "shasum": "86b06f9f4f115af3e85c8a3d8e1b2a7e2fd11734"
             },
             "require": {
                 "brick/money": "^0.4.2",
@@ -2058,7 +2058,7 @@
                 "admin",
                 "laravel"
             ],
-            "time": "2020-05-12T15:15:04+00:00"
+            "time": "2020-06-30T21:48:18+00:00"
         },
         {
             "name": "laravel/scout",
