@@ -53,5 +53,8 @@ return [
     */
 
     'linkable_models' => [
+        \App\Nova\MenuBuilder\MenuSeparator::class,
+        \App\Nova\MenuBuilder\MenuPages::class,
+        \App\Nova\MenuBuilder\MenuRoute::class,
     ],
 ];

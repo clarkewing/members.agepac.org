@@ -115,6 +115,18 @@ class Main extends Component
                     : Html::raw('<span class="navbar-text">' . $menuItem['name'] . '</span>');
                 break;
 
+            case 'separator':
+                $navItem = $isSubmenu ? '' : Html::raw('<div class="dropdown-divider"></div>');
+                break;
+
+            case 'route':
+                $navItem = Link::toRoute($menuItem['value']['route'], $menuItem['name'], $menuItem['value']['params']);
+                break;
+
+            case 'page':
+                $navItem = Link::toRoute('pages.show', $menuItem['name'], ['page' => $menuItem['value']]);
+                break;
+
             case 'static-url':
             default:
                 $navItem = Link::toUrl($menuItem['value'], $menuItem['name'], $menuItem['parameters'] ?? []);
