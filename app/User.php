@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Cashier\Billable;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use Spatie\Permission\Traits\HasRoles;
 use Torann\GeoIP\Facades\GeoIP;
 use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasReputation, Notifiable;
+    use Billable, HasReputation, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.

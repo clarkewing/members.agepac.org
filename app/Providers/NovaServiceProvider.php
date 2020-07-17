@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -18,6 +19,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::serving(function (ServingNova $event) {
+            app()->setLocale('en');
+        });
     }
 
     /**
@@ -76,7 +81,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            \Vyuldashev\NovaPermission\NovaPermissionTool::make(),
+        ];
     }
 
     /**
