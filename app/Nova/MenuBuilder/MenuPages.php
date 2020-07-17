@@ -8,7 +8,7 @@ use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
 class MenuPages extends MenuLinkable
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getIdentifier(): string
     {
@@ -16,7 +16,7 @@ class MenuPages extends MenuLinkable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getName(): string
     {
@@ -24,7 +24,7 @@ class MenuPages extends MenuLinkable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getOptions($locale): array
     {
@@ -32,7 +32,7 @@ class MenuPages extends MenuLinkable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getDisplayValue($value = null, array $parameters = null)
     {

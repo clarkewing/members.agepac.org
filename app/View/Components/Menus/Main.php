@@ -60,7 +60,7 @@ class Main extends Component
     }
 
     /**
-     * Determine if the passed menu item is a submenu header
+     * Determine if the passed menu item is a submenu header.
      *
      * @param  $menuItem
      * @return bool

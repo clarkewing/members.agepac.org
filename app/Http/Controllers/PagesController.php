@@ -25,7 +25,7 @@ class PagesController extends Controller
 
     /**
      * Extracted from \VanOns\Laraberg\Helpers\EmbedHelper to replace $regex
-     * Renders any embeds in the HTML
+     * Renders any embeds in the HTML.
      *
      * @param  string  $html
      * @return string - The HTML containing all embed code

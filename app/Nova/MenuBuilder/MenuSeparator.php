@@ -7,7 +7,7 @@ use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
 class MenuSeparator extends MenuLinkable
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getType(): string
     {
@@ -15,7 +15,7 @@ class MenuSeparator extends MenuLinkable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getIdentifier(): string
     {
@@ -23,7 +23,7 @@ class MenuSeparator extends MenuLinkable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getName(): string
     {
@@ -31,7 +31,7 @@ class MenuSeparator extends MenuLinkable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getDisplayValue($value = null, array $parameters = null)
     {
@@ -39,11 +39,10 @@ class MenuSeparator extends MenuLinkable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getValue($value = null, array $parameters = null)
     {
-        return null;
     }
 
     public static function getRules(): array
