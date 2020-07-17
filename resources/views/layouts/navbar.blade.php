@@ -9,43 +9,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                        L'Association
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">À propos</a>
-                        <a class="dropdown-item" href="#">Histoire</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Gouvernance</a>
-                        <a class="dropdown-item" href="#">Status</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Les EPL</a>
-                </li>
-                @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Trajectoire EPL</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                            Réseau EPL
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ route('profiles.index') }}">Annuaire des EPL</a>
-                            <a class="dropdown-item" href="{{ route('companies.index') }}">Annuaire des Compagnies</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Fly EPL</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('threads.index') }}">Forum</a>
-                    </li>
-                @endauth
-            </ul>
+            <x-menus.main />
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">

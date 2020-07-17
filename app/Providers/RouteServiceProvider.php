@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Channel;
+use App\Http\Controllers\PagesController;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -42,7 +43,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapDynamicPagesRoutes();
     }
 
     /**
@@ -72,5 +73,20 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "pages" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapDynamicPagesRoutes()
+    {
+        Route::get('pages/{page}', [PagesController::class, 'show'])
+            ->where('page', '[a-z0-9]+([a-z0-9-\/][a-z0-9]+)*')
+            ->middleware('web')
+            ->name('pages.show');
     }
 }

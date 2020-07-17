@@ -86,6 +86,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        // Boot the nova-menu-builder package so we can properly render the resource.
+        (new \OptimistDigital\MenuBuilder\MenuBuilder)->boot();
+
         //
     }
 }

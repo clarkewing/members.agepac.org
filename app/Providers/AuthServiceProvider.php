@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Course;
 use App\Http\Middleware\Authenticate;
 use App\Occupation;
+use App\Page;
 use App\Policies\CoursePolicy;
 use App\Policies\OccupationPolicy;
+use App\Policies\PagePolicy;
 use App\Policies\PostPolicy;
 use App\Policies\ProfilePolicy;
 use App\Policies\ThreadPolicy;
@@ -28,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         Course::class => CoursePolicy::class,
         Occupation::class => OccupationPolicy::class,
         Thread::class => ThreadPolicy::class,
+        Page::class => PagePolicy::class,
         Post::class => PostPolicy::class,
         User::class => ProfilePolicy::class,
     ];
