@@ -23,6 +23,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::serving(function (ServingNova $event) {
             app()->setLocale('en');
         });
+
+        // Boot the nova-menu-builder package so we can properly render the resource.
+        (new \OptimistDigital\MenuBuilder\MenuBuilder)->boot();
     }
 
     /**
@@ -93,9 +96,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        // Boot the nova-menu-builder package so we can properly render the resource.
-        (new \OptimistDigital\MenuBuilder\MenuBuilder)->boot();
-
         //
     }
 }
