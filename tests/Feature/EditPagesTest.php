@@ -3,19 +3,14 @@
 namespace Tests\Feature;
 
 use App\Page;
-use Tests\TestCase;
+use Tests\NovaTestCase;
 
-class EditPagesTest extends TestCase
+class EditPagesTest extends NovaTestCase
 {
     /**
      * @var \App\Page
      */
     protected $page;
-
-    /**
-     * @var string
-     */
-    protected $updateUrl;
 
     public function setUp(): void
     {
@@ -24,10 +19,6 @@ class EditPagesTest extends TestCase
         $this->signInGod();
 
         $this->page = create(Page::class);
-
-        $this->updateUrl = action('\Laravel\Nova\Http\Controllers\ResourceUpdateController@handle',
-            ['resource' => 'pages', 'resourceId' => $this->page->id]
-        );
     }
 
     /** @test */
@@ -147,6 +138,8 @@ class EditPagesTest extends TestCase
      */
     public function updatePage(array $data = [])
     {
-        return $this->putJson($this->updateUrl, array_merge($this->page->toArray(), $data));
+        return $this->updateResource('pages', $this->page->id,
+            array_merge($this->page->toArray(), $data)
+        );
     }
 }

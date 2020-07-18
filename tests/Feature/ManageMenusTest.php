@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
+use OptimistDigital\MenuBuilder\Http\Controllers\MenuController;
 use OptimistDigital\MenuBuilder\Models\Menu;
-use Tests\TestCase;
+use Tests\NovaTestCase;
 
-class ManageMenusTest extends TestCase
+class ManageMenusTest extends NovaTestCase
 {
     public function setUp(): void
     {
@@ -17,11 +18,7 @@ class ManageMenusTest extends TestCase
     /** @test */
     public function testCanCreateNewMenu()
     {
-        $storeUrl = action('\Laravel\Nova\Http\Controllers\ResourceStoreController@handle',
-            ['resource' => 'nova-menu']
-        );
-
-        $this->postJson($storeUrl, $data = [
+        $this->storeResource('nova-menu', $data = [
             'name' => 'Foo navigation',
             'slug' => 'foo',
             'locale' => 'fr_FR',
@@ -40,11 +37,7 @@ class ManageMenusTest extends TestCase
             'locale' => 'fr_FR',
         ]);
 
-        $updateUrl = action('\Laravel\Nova\Http\Controllers\ResourceUpdateController@handle',
-            ['resource' => 'nova-menu', 'resourceId' => $menu->id]
-        );
-
-        $this->putJson($updateUrl, $data = [
+        $this->updateResource('nova-menu', $menu->id, $data = [
             'name' => 'Bar navigation',
             'slug' => 'bar',
             'locale' => 'fr_FR',
@@ -68,14 +61,17 @@ class ManageMenusTest extends TestCase
 
         $this->assertEmpty(nova_get_menu('foo')['menuItems']);
 
-        $this->postJson('nova-vendor/nova-menu/items', $data = [
-            'menu_id' => $menu->id,
-            'class' => 'OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL',
-            'enabled' => true,
-            'name' => 'Foo Item',
-            'value' => '/foo',
-            'target' => '_self',
-        ])->assertSuccessful();
+        $this->postJson(
+            action([MenuController::class, 'createMenuItem']),
+            $data = [
+                'menu_id' => $menu->id,
+                'class' => 'OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL',
+                'enabled' => true,
+                'name' => 'Foo Item',
+                'value' => '/foo',
+                'target' => '_self',
+            ]
+        )->assertSuccessful();
 
         $this->assertDatabaseHas('menu_items', $data);
         $this->assertCount(1, nova_get_menu('foo')['menuItems']);

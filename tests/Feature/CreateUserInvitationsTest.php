@@ -3,24 +3,16 @@
 namespace Tests\Feature;
 
 use App\UserInvitation;
-use Tests\TestCase;
+use Tests\NovaTestCase;
 
-class CreateUserInvitationsTest extends TestCase
+class CreateUserInvitationsTest extends NovaTestCase
 {
-    /**
-     * @var string
-     */
-    protected $storeUrl;
-
     public function setUp(): void
     {
         parent::setUp();
 
         $this->withExceptionHandling()->signInGod();
 
-        $this->storeUrl = action('\Laravel\Nova\Http\Controllers\ResourceStoreController@handle',
-            ['resource' => 'user-invitations']
-        );
     }
 
     /** @test */
@@ -86,7 +78,7 @@ class CreateUserInvitationsTest extends TestCase
      */
     public function createUserInvitation(array $overrides = [])
     {
-        return $this->postJson($this->storeUrl, array_merge(
+        return $this->storeResource('user-invitations', array_merge(
             make(UserInvitation::class)->toArray(),
             $overrides
         ));

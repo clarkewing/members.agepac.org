@@ -3,24 +3,15 @@
 namespace Tests\Feature;
 
 use App\Page;
-use Tests\TestCase;
+use Tests\NovaTestCase;
 
-class CreatePagesTest extends TestCase
+class CreatePagesTest extends NovaTestCase
 {
-    /**
-     * @var string
-     */
-    protected $storeUrl;
-
     public function setUp(): void
     {
         parent::setUp();
 
         $this->signInGod();
-
-        $this->storeUrl = action('\Laravel\Nova\Http\Controllers\ResourceStoreController@handle',
-            ['resource' => 'pages']
-        );
     }
 
     /** @test */
@@ -140,7 +131,7 @@ class CreatePagesTest extends TestCase
      */
     public function createPage(array $overrides = [])
     {
-        return $this->postJson($this->storeUrl, array_merge(
+        return $this->storeResource('pages', array_merge(
             make(Page::class)->toArray(),
             $overrides
         ));
