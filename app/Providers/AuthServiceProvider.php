@@ -19,6 +19,7 @@ use App\Thread;
 use App\UserInvitation;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -55,5 +56,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        // Implicitly grant "God with Wings" role all permissions
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('God with Wings') ? true : null;
+        });
     }
 }
