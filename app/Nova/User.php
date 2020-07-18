@@ -27,12 +27,22 @@ class User extends Resource
     public static $title = 'name';
 
     /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "$this->class_course $this->class_year";
+    }
+
+    /**
      * The columns that should be searched.
      *
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'first_name', 'last_name', 'email',
     ];
 
     /**
