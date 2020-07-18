@@ -36,6 +36,20 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Sign in with a user and give it a permission.
+     *
+     * @param  string  $permission
+     * @return $this
+     */
+    protected function signInWithPermission(string $permission)
+    {
+        return $this->signIn(
+            create(User::class)
+                ->givePermissionTo($permission)
+        );
+    }
+
+    /**
      * Sign in with an admin user.
      *
      * @return $this

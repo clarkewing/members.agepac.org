@@ -12,9 +12,11 @@ use App\Policies\PagePolicy;
 use App\Policies\PostPolicy;
 use App\Policies\ProfilePolicy;
 use App\Policies\ThreadPolicy;
+use App\Policies\UserInvitationPolicy;
 use App\Post;
 use App\Thread;
 use App\User;
+use App\UserInvitation;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -32,6 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         Page::class => PagePolicy::class,
         Post::class => PostPolicy::class,
         User::class => ProfilePolicy::class,
+        UserInvitation::class => UserInvitationPolicy::class,
     ];
 
     /**
