@@ -17,7 +17,6 @@ use App\Thread;
 use App\User;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -53,12 +52,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        // Super-admin authorization
-        Gate::before(function ($user) {
-            if ($user->name === 'John Doe') {
-                return true;
-            }
-        });
     }
 }

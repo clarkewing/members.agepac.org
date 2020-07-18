@@ -40,10 +40,10 @@ abstract class TestCase extends BaseTestCase
      *
      * @return $this
      */
-    protected function signInAdmin()
+    protected function signInGod()
     {
         return $this->signIn(
-            factory(User::class)->states('administrator')->create()
+            factory(User::class)->states('god')->create()
         );
     }
 }

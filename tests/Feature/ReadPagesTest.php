@@ -62,7 +62,7 @@ class ReadPagesTest extends TestCase
     /** @test */
     public function testAdminsCanViewUnpublishedPages()
     {
-        $this->signInAdmin();
+        $this->signInGod();
 
         $this->get(route('pages.show', create(Page::class, ['published_at' => null])))
             ->assertOk();

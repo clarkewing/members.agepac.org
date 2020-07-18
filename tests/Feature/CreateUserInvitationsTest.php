@@ -16,7 +16,7 @@ class CreateUserInvitationsTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signInAdmin();
+        $this->withExceptionHandling()->signInGod();
 
         $this->storeUrl = action('\Laravel\Nova\Http\Controllers\ResourceStoreController@handle',
             ['resource' => 'user-invitations']

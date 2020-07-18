@@ -21,7 +21,7 @@ class EditPagesTest extends TestCase
     {
         parent::setUp();
 
-        $this->signInAdmin();
+        $this->signInGod();
 
         $this->page = create(Page::class);
 

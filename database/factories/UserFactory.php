@@ -51,8 +51,6 @@ $factory->state(User::class, 'unverified_email', function (Faker $faker) {
     ];
 });
 
-$factory->state(User::class, 'administrator', function (Faker $faker) {
-    return [
-        'email' => Arr::random(config('council.administrators')),
-    ];
+$factory->afterCreatingState(User::class, 'god', function (User $user, Faker $faker) {
+    $user->assignRole('God with Wings');
 });

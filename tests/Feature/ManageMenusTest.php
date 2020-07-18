@@ -11,7 +11,7 @@ class ManageMenusTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signInAdmin();
+        $this->withExceptionHandling()->signInGod();
     }
 
     /** @test */

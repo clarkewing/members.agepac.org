@@ -16,7 +16,7 @@ class CreatePagesTest extends TestCase
     {
         parent::setUp();
 
-        $this->signInAdmin();
+        $this->signInGod();
 
         $this->storeUrl = action('\Laravel\Nova\Http\Controllers\ResourceStoreController@handle',
             ['resource' => 'pages']

@@ -36,7 +36,7 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function testAdministratorsCanPinThreads()
     {
-        $this->signInAdmin();
+        $this->signInGod();
 
         $thread = create(Thread::class);
 
@@ -49,7 +49,7 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function testAdministratorsCanUnpinThreads()
     {
-        $this->signInAdmin();
+        $this->signInGod();
 
         $thread = create(Thread::class, ['pinned' => true]);
 
@@ -62,7 +62,7 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function testPinnedThreadsAreListedFirst()
     {
-        $this->signInAdmin();
+        $this->signInGod();
 
         [$threadOne, $threadTwo, $threadThree] = create(Thread::class, [], 3);
 
