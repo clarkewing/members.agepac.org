@@ -3,8 +3,9 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inspheric\Fields\Indicator;
-use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
@@ -56,7 +57,27 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Gravatar::make()->maxWidth(50),
+            Avatar::make('Avatar', 'avatar_path')
+                ->maxWidth(150)
+                ->disableDownload() // Tough to make it work.
+                ->deletable(! is_null($this->model()->getRawOriginal('avatar_path')))
+                ->preview(function ($value) {
+                    return $value;
+                })
+                ->thumbnail(function ($value) {
+                    return $value;
+                })
+                ->store(function (Request $request, $user) {
+                    Storage::disk('public')->delete($user->getRawOriginal('avatar_path'));
+
+                    return [
+                        'avatar_path' => $request->file('avatar_path')
+                            ->store('avatars', 'public'),
+                    ];
+                })
+                ->delete(function (Request $request, $user, $disk, $path) {
+                    Storage::disk('public')->delete($user->getRawOriginal('avatar_path'));
+                }),
 
             Text::make('First name')
                 ->sortable()
