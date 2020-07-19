@@ -116,11 +116,10 @@ class User extends Resource
 
             new Panel('Contact Information', [
                 Text::make('Username')
-                    ->rules('required', 'max:255'),
+                    ->rules('required', 'regex:/^[a-z-]+\.[a-z-]+$/', 'max:255'),
 
                 Text::make('Email')
                     ->rules('required', 'email', 'max:255')
-                    ->creationRules('unique:users,email')
                     ->updateRules('unique:users,email,{{resourceId}}'),
 
                 Text::make('Phone')
