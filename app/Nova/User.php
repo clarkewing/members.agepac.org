@@ -136,7 +136,10 @@ class User extends Resource
             $this->membershipIndicatorField()
                 ->onlyOnIndex(),
 
-            Subscription::make(),
+            Subscription::make()
+                ->canSee(function ($request) {
+                    return $request->user()->hasPermissionTo('subscriptions.manage');
+                }),
 
             new Panel('Roles & Permissions', [
                 RoleBooleanGroup::make('Roles')->hideFromIndex(),

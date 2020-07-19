@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\Nova\AuthorizeSubscriptionsRequests;
 use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
@@ -104,6 +105,7 @@ return [
         BootTools::class,
         Authorize::class,
         \Vyuldashev\NovaPermission\ForgetCachedPermissions::class,
+        AuthorizeSubscriptionsRequests::class,
     ],
 
     /*

@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use App\User;
+use Illuminate\Support\Arr;
+use LimeDeck\NovaCashierOverview\Http\Controllers\StripeSubscriptionsController;
 use Tests\NovaTestRequests;
-use Tests\StripeTestCase;
+use Tests\TestCase;
 
-class ManageUsersTest extends StripeTestCase
+class ManageUsersTest extends TestCase
 {
     use NovaTestRequests;
 
@@ -351,6 +353,40 @@ class ManageUsersTest extends StripeTestCase
 
         $this->updateUser(['phone' => 'n0t_4_ph0n3_numb3r'])
             ->assertJsonValidationErrors('phone');
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotManageSubscription()
+    {
+        $this->signInWithPermission('users.view');
+
+        $user = create(User::class);
+
+        $fields = $this->showResource('users', $user->id)->json('resource.fields');
+
+        $this->assertNull(Arr::first($fields, function ($field) {
+            return $field['component'] === 'subscription';
+        }));
+
+        $this->get(action([StripeSubscriptionsController::class, 'show'], ['id' => 'foobar']))
+            ->assertForbidden();
+    }
+
+    /** @test */
+    public function testAuthorizedUsersCanManageSubscription()
+    {
+        $this->signInWithPermission(['users.view', 'subscriptions.manage']);
+
+        $user = create(User::class);
+
+        $fields = $this->showResource('users', $user->id)->json('resource.fields');
+
+        $this->assertNotNull(Arr::first($fields, function ($field) {
+            return $field['component'] === 'subscription';
+        }));
+
+        $this->get(action([StripeSubscriptionsController::class, 'show'], ['id' => 'foobar']))
+            ->assertOk();
     }
 
     /**
