@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Policies\UserNovaPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
@@ -22,6 +23,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::serving(function (ServingNova $event) {
             app()->setLocale('en');
+
+            // Override User policy in Nova.
+            Gate::policy(User::class, UserNovaPolicy::class);
         });
 
         // Boot the nova-menu-builder package so we can properly render the resource.
