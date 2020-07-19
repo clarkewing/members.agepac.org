@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\Page;
-use Tests\NovaTestCase;
+use Tests\NovaTestRequests;
+use Tests\TestCase;
 
-class CreatePagesTest extends NovaTestCase
+class CreatePagesTest extends TestCase
 {
+    use NovaTestRequests;
+
     public function setUp(): void
     {
         parent::setUp();

@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\Page;
-use Tests\NovaTestCase;
+use Tests\NovaTestRequests;
+use Tests\TestCase;
 
-class EditPagesTest extends NovaTestCase
+class EditPagesTest extends TestCase
 {
+    use NovaTestRequests;
+
     /**
      * @var \App\Page
      */

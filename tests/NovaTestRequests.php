@@ -8,7 +8,7 @@ use Laravel\Nova\Http\Controllers\ResourceShowController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
 
-abstract class NovaTestCase extends TestCase
+trait NovaTestRequests
 {
     /**
      * Send a GET request to index a Nova resource.

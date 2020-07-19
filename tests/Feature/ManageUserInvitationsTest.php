@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\UserInvitation;
-use Tests\NovaTestCase;
+use Tests\NovaTestRequests;
+use Tests\TestCase;
 
-class ManageUserInvitationsTest extends NovaTestCase
+class ManageUserInvitationsTest extends TestCase
 {
+    use NovaTestRequests;
+
     public function permissionProvider()
     {
         return [

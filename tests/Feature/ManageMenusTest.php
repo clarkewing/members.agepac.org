@@ -4,10 +4,13 @@ namespace Tests\Feature;
 
 use OptimistDigital\MenuBuilder\Http\Controllers\MenuController;
 use OptimistDigital\MenuBuilder\Models\Menu;
-use Tests\NovaTestCase;
+use Tests\NovaTestRequests;
+use Tests\TestCase;
 
-class ManageMenusTest extends NovaTestCase
+class ManageMenusTest extends TestCase
 {
+    use NovaTestRequests;
+
     public function setUp(): void
     {
         parent::setUp();

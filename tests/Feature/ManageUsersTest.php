@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\User;
-use Tests\NovaTestCase;
+use Tests\NovaTestRequests;
+use Tests\StripeTestCase;
 
-class ManageUsersTest extends NovaTestCase
+class ManageUsersTest extends StripeTestCase
 {
+    use NovaTestRequests;
+
     public function permissionProvider()
     {
         return [
