@@ -98,7 +98,7 @@ class AccountTest extends TestCase
     {
         $this->updateAccount(['birthdate' => '1994-09-22'])->assertOk();
 
-        $this->assertEquals('1994-09-22', Auth::user()->birthdate);
+        $this->assertEquals('1994-09-22', Auth::user()->birthdate->toDateString());
     }
 
     /** @test */
