@@ -132,6 +132,224 @@ class ManageUsersTest extends NovaTestCase
         $this->assertDatabaseCount('users', 1); // The currently signed in user
     }
 
+    /** @test */
+    public function testFirstNameIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['first_name' => null])
+            ->assertJsonValidationErrors('first_name');
+    }
+
+    /** @test */
+    public function testFirstNameCannotExceed255Characters()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['first_name' => str_repeat('a', 256)])
+            ->assertJsonValidationErrors('first_name');
+    }
+
+    /** @test */
+    public function testLastNameIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['last_name' => null])
+            ->assertJsonValidationErrors('last_name');
+    }
+
+    /** @test */
+    public function testLastNameCannotExceed255Characters()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['last_name' => str_repeat('a', 256)])
+            ->assertJsonValidationErrors('last_name');
+    }
+
+    /** @test */
+    public function testGenderIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['gender' => null])
+            ->assertJsonValidationErrors('gender');
+    }
+
+    /** @test */
+    public function testGenderMustBeRegisteredInConfig()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['gender' => 'Z'])
+            ->assertJsonValidationErrors('gender');
+    }
+
+    /** @test */
+    public function testBirthdateIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['birthdate' => null])
+            ->assertJsonValidationErrors('birthdate');
+    }
+
+    /** @test */
+    public function testBirthdateMustBeAValidDate()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['birthdate' => 'not-a-date'])
+            ->assertJsonValidationErrors('birthdate');
+
+        $this->updateUser(['birthdate' => '1990-02-31'])
+            ->assertJsonValidationErrors('birthdate');
+    }
+
+    /** @test */
+    public function testBirthdateMustBeOfIso8601Format()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['birthdate' => '22/09/1994'])
+            ->assertJsonValidationErrors('birthdate');
+    }
+
+    /** @test */
+    public function testUserMustBeOlderThanThirteen() // Plenty of margin there...
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['birthdate' => now()->subYears(10)->toDateString()])
+            ->assertJsonValidationErrors('birthdate');
+    }
+
+    /** @test */
+    public function testClassCourseIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['class_course' => null])
+            ->assertJsonValidationErrors('class_course');
+    }
+
+    /** @test */
+    public function testClassCourseMustBeRegisteredInConfig()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['class_course' => 'Foobar'])
+            ->assertJsonValidationErrors('class_course');
+    }
+
+    /** @test */
+    public function testClassYearIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['class_year' => null])
+            ->assertJsonValidationErrors('class_year');
+    }
+
+    /** @test */
+    public function testClassYearMustBeAFourDigitYear()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['class_year' => 'Not a year'])
+            ->assertJsonValidationErrors('class_year');
+
+        $this->updateUser(['class_year' => '15'])
+            ->assertJsonValidationErrors('class_year');
+    }
+
+    /** @test */
+    public function testUsernameIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['username' => null])
+            ->assertJsonValidationErrors('username');
+    }
+
+    /** @test */
+    public function testUsernameMustHaveAppropriateFormat()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['username' => "Weird'UserN4me"])
+            ->assertJsonValidationErrors('username');
+
+        $this->updateUser(['username' => "some.thing.wrong"])
+            ->assertJsonValidationErrors('username');
+    }
+
+    /** @test */
+    public function testUsernameCannotExceed255Characters()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['username' => str_repeat('a', 256)])
+            ->assertJsonValidationErrors('username');
+    }
+
+    /** @test */
+    public function testEmailIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['email' => null])
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
+    public function testEmailMustBeValid()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['email' => 'not-an-email'])
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
+    public function testEmailCannotExceed255Characters()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['email' => str_repeat('a', 256) . '@example.com'])
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
+    public function testEmailMustBeUnique()
+    {
+        $this->signInWithPermission('users.edit');
+
+        create(User::class, ['email' => 'john@example.com']);
+
+        $this->updateUser(['email' => 'john@example.com'])
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
+    public function testPhoneIsRequired()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['phone' => null])
+            ->assertJsonValidationErrors('phone');
+    }
+
+    /** @test */
+    public function testPhoneMustValid()
+    {
+        $this->signInWithPermission('users.edit');
+
+        $this->updateUser(['phone' => 'n0t_4_ph0n3_numb3r'])
+            ->assertJsonValidationErrors('phone');
+    }
+
     /**
      * Submits a request to update an existing user invitation.
      *
