@@ -73,50 +73,48 @@ class User extends Resource
     public function fields(Request $request)
     {
         return [
-            new Panel('Personal details', [
-                $this->avatarField()
-                    ->maxWidth(150),
+            $this->avatarField()
+                ->maxWidth(150),
 
-                Stack::make('Name', [
-                    Line::make('Name')->asHeading(),
-                    Line::make('Class')->asSmall(),
-                ])->onlyOnIndex(),
+            Stack::make('Name', [
+                Line::make('Name')->asHeading(),
+                Line::make('Class')->asSmall(),
+            ])->onlyOnIndex(),
 
-                Text::make('First name')
-                    ->sortable()
-                    ->rules('required', 'max:255')
-                    ->hideFromIndex(),
+            Text::make('First name')
+                ->sortable()
+                ->rules('required', 'max:255')
+                ->hideFromIndex(),
 
-                Text::make('Last name')
-                    ->sortable()
-                    ->rules('required', 'max:255')
-                    ->hideFromIndex(),
+            Text::make('Last name')
+                ->sortable()
+                ->rules('required', 'max:255')
+                ->hideFromIndex(),
 
-                Select::make('Gender')
-                    ->options(config('council.genders'))->displayUsingLabels()
-                    ->rules('required', Rule::in(array_keys(config('council.genders'))))
-                    ->hideFromIndex(),
+            Select::make('Gender')
+                ->options(config('council.genders'))->displayUsingLabels()
+                ->rules('required', Rule::in(array_keys(config('council.genders'))))
+                ->hideFromIndex(),
 
-                Date::make('Birthdate')
-                    ->firstDayOfWeek(1)->format('DD/MM/YYYY')->pickerFormat('Y-m-d')
-                    ->rules('required', 'date_format:Y-m-d', 'before:13 years ago')
-                    ->hideFromIndex(),
+            Date::make('Birthdate')
+                ->firstDayOfWeek(1)->format('DD/MM/YYYY')->pickerFormat('Y-m-d')
+                ->rules('required', 'date_format:Y-m-d', 'before:13 years ago')
+                ->hideFromIndex(),
 
-                Text::make('Class')
-                    ->onlyOnDetail(),
+            Text::make('Class')
+                ->onlyOnDetail(),
 
-                Select::make('Class Course')
-                    ->options(array_combine(config('council.courses'), config('council.courses')))
-                    ->rules('required', Rule::in(config('council.courses')))
-                    ->onlyOnForms(),
+            Select::make('Class Course')
+                ->options(array_combine(config('council.courses'), config('council.courses')))
+                ->rules('required', Rule::in(config('council.courses')))
+                ->onlyOnForms(),
 
-                Number::make('Class Year')
-                    ->step(1)
-                    ->rules('required', 'digits:4')
-                    ->onlyOnForms(),
-            ]),
+            Number::make('Class Year')
+                ->step(1)
+                ->rules('required', 'digits:4')
+                ->onlyOnForms(),
 
-            new Panel('User information', [
+            new Panel('Contact Information', [
                 Text::make('Username')
                     ->rules('required', 'max:255'),
 
