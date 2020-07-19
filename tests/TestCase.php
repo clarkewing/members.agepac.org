@@ -57,7 +57,7 @@ abstract class TestCase extends BaseTestCase
     protected function signInGod()
     {
         return $this->signIn(
-            factory(User::class)->states('god')->create()
+            factory(User::class)->states('god')->create(['email' => 'john@example.com'])
         );
     }
 }
