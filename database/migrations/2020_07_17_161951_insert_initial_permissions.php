@@ -24,9 +24,8 @@ class InsertInitialPermissions extends Migration
                 'delete',
             ])
             ->createSubjectPermissions('users', [
+                'view',
                 'edit',
-                'block',
-                'unblock',
                 'delete',
                 'attachRoles',
                 'detachRoles',
