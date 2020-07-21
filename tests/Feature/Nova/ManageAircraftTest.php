@@ -10,6 +10,14 @@ class ManageAircraftTest extends TestCase
 {
     use NovaTestRequests;
 
+    public function permissionProvider()
+    {
+        return [
+            'edit' => ['edit'],
+            'delete' => ['delete'],
+        ];
+    }
+
     public function modeProvider()
     {
         return [
@@ -19,29 +27,95 @@ class ManageAircraftTest extends TestCase
     }
 
     /** @test */
-    public function testAuthorizedUsersCanIndexAircraft()
+    public function testUnauthorizedUsersCannotIndexAircraft()
     {
-        $this->signInGod();
+        $this->signIn();
+
+        $this->indexResource('aircraft')
+            ->assertForbidden();
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotViewAnAircraft()
+    {
+        $aircraft = Aircraft::create(['name' => 'FooJet']);
+
+        $this->signIn();
+
+        $this->showResource('aircraft', $aircraft->id)
+            ->assertForbidden();
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotCreateAnAircraft()
+    {
+        $this->signIn();
+
+        $this->storeAircraft(['name' => 'FakeBus'])
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('aircraft', ['name' => 'FakeBus']);
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotEditAnAircraft()
+    {
+        $aircraft = Aircraft::create(['name' => 'FooJet']);
+
+        $this->signIn();
+
+        $this->updateAircraft(['name' => 'FakeBus'], $aircraft)
+            ->assertForbidden();
+
+        $this->assertEquals('FooJet', $aircraft->fresh()->name);
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotDeleteAnAircraft()
+    {
+        $aircraft = Aircraft::create(['name' => 'FooJet']);
+
+        $this->signIn();
+
+        $this->deleteResource('aircraft', $aircraft->id)
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('aircraft', ['id' => $aircraft->id]);
+    }
+
+    /**
+     * @test
+     * @dataProvider permissionProvider
+     */
+    public function testAuthorizedUsersCanIndexAircraft($permission)
+    {
+        $this->signInWithPermission('aircraft.' . $permission);
 
         $this->indexResource('aircraft')
             ->assertOk();
     }
 
-    /** @test */
-    public function testAuthorizedUsersCanViewAnAircraft()
+    /**
+     * @test
+     * @dataProvider permissionProvider
+     */
+    public function testAuthorizedUsersCanViewAnAircraft($permission)
     {
         $aircraft = Aircraft::create(['name' => 'FooJet']);
 
-        $this->signInGod();
+        $this->signInWithPermission('aircraft.' . $permission);
 
         $this->showResource('aircraft', $aircraft->id)
             ->assertOk();
     }
 
-    /** @test */
-    public function testAuthorizedUsersCanCreateAnAircraft()
+    /**
+     * @test
+     * @dataProvider permissionProvider
+     */
+    public function testAuthorizedUsersCanCreateAnAircraft($permission)
     {
-        $this->signInGod();
+        $this->signInWithPermission('aircraft.' . $permission);
 
         $this->storeAircraft(['name' => 'TurboFoo'])
             ->assertCreated();
@@ -54,7 +128,7 @@ class ManageAircraftTest extends TestCase
     {
         $aircraft = Aircraft::create(['name' => 'FooJet']);
 
-        $this->signInGod();
+        $this->signInWithPermission('aircraft.edit');
 
         $this->updateAircraft(['name' => 'TurboFoo'], $aircraft)
             ->assertOk();
@@ -67,7 +141,7 @@ class ManageAircraftTest extends TestCase
     {
         $aircraft = Aircraft::create(['name' => 'FooJet']);
 
-        $this->signInGod();
+        $this->signInWithPermission('aircraft.delete');
 
         $this->deleteResource('aircraft', $aircraft->id)
             ->assertOk();
