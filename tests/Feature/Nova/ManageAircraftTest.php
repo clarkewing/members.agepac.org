@@ -62,6 +62,19 @@ class ManageAircraftTest extends TestCase
         $this->assertDatabaseHas('aircraft', ['id' => $aircraft->id, 'name' => 'TurboFoo']);
     }
 
+    /** @test */
+    public function testAuthorizedUsersCanDeleteAnAircraft()
+    {
+        $aircraft = Aircraft::create(['name' => 'FooJet']);
+
+        $this->signInGod();
+
+        $this->deleteResource('aircraft', $aircraft->id)
+            ->assertOk();
+
+        $this->assertDatabaseMissing('aircraft', ['id' => $aircraft->id]);
+    }
+
     /**
      * @test
      * @dataProvider modeProvider
