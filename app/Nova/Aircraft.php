@@ -40,6 +40,13 @@ class Aircraft extends Resource
     ];
 
     /**
+     * The default ordering the resource should use.
+     *
+     * @var array
+     */
+    public static $orderBy = ['id' => 'asc'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
