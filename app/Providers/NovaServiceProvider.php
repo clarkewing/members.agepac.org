@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Policies\MentorshipTagsPolicy;
 use App\Policies\UserNovaPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
@@ -26,6 +27,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             // Override User policy in Nova.
             Gate::policy(User::class, UserNovaPolicy::class);
+
+            if ($event->request->segment(2) === 'mentorship-tags') {
+                Gate::policy(\Spatie\Tags\Tag::class, MentorshipTagsPolicy::class);
+            }
         });
 
         // Boot the nova-menu-builder package so we can properly render the resource.
