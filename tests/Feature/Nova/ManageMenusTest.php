@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Nova;
 
 use OptimistDigital\MenuBuilder\Http\Controllers\MenuController;
 use OptimistDigital\MenuBuilder\Models\Menu;
