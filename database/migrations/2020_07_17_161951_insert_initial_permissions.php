@@ -81,10 +81,8 @@ class InsertInitialPermissions extends Migration
             ])
 
             // Content
-            ->createSubjectPermissions('menu_items', [
-                'create',
-                'edit',
-                'delete',
+            ->createSubjectPermissions('menus', [
+                'manage',
             ])
             ->createSubjectPermissions('pages', [
                 'viewUnpublished',

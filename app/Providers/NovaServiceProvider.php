@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Policies\MentorshipTagsPolicy;
+use App\Policies\MenuPolicy;
 use App\Policies\UserNovaPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
@@ -30,6 +31,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             if ($event->request->segment(2) === 'mentorship-tags') {
                 Gate::policy(\Spatie\Tags\Tag::class, MentorshipTagsPolicy::class);
+            }
+
+            if ($event->request->segment(2) === 'nova-menu') {
+                Gate::policy(\OptimistDigital\MenuBuilder\Models\Menu::class, MenuPolicy::class);
             }
         });
 
