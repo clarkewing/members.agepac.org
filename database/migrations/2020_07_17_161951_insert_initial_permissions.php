@@ -52,7 +52,7 @@ class InsertInitialPermissions extends Migration
             ->createSubjectPermissions('companies', [
                 'delete',
             ])
-            ->createSubjectPermissions('tags', [
+            ->createSubjectPermissions('mentorship_tags', [
                 'edit',
                 'delete',
             ])
