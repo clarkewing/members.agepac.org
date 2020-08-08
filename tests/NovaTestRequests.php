@@ -3,7 +3,9 @@
 namespace Tests;
 
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
+use Laravel\Nova\Http\Controllers\ResourceForceDeleteController;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
+use Laravel\Nova\Http\Controllers\ResourceRestoreController;
 use Laravel\Nova\Http\Controllers\ResourceShowController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
@@ -79,6 +81,40 @@ trait NovaTestRequests
     {
         return $this->deleteJson(
             action([ResourceDestroyController::class, 'handle'], [
+                'resource' => $resource,
+                'resources[]' => $resourceId,
+            ])
+        );
+    }
+
+    /**
+     * Send a PUT request to restore a soft deleted Nova resource.
+     *
+     * @param  string  $resource
+     * @param  int|string  $resourceId
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function restoreResource(string $resource, $resourceId)
+    {
+        return $this->putJson(
+            action([ResourceRestoreController::class, 'handle'], [
+                'resource' => $resource,
+                'resources[]' => $resourceId,
+            ])
+        );
+    }
+
+    /**
+     * Send a DELETE request to force delete a Nova resource.
+     *
+     * @param  string  $resource
+     * @param  int|string  $resourceId
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function forceDeleteResource(string $resource, $resourceId)
+    {
+        return $this->deleteJson(
+            action([ResourceForceDeleteController::class, 'handle'], [
                 'resource' => $resource,
                 'resources[]' => $resourceId,
             ])
