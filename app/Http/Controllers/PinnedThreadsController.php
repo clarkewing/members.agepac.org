@@ -14,7 +14,7 @@ class PinnedThreadsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('auth');
     }
 
     /**
@@ -22,9 +22,12 @@ class PinnedThreadsController extends Controller
      *
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Thread $thread)
     {
+        $this->authorize('pin', $thread);
+
         $thread->update(['pinned' => true]);
 
         return Response::make('', 204);
@@ -35,9 +38,12 @@ class PinnedThreadsController extends Controller
      *
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Thread $thread)
     {
+        $this->authorize('unpin', $thread);
+
         $thread->update(['pinned' => false]);
 
         return Response::make('', 204);

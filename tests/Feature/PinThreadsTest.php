@@ -8,7 +8,7 @@ use Tests\TestCase;
 class PinThreadsTest extends TestCase
 {
     /** @test */
-    public function testNonAdministratorsCannotPinThreads()
+    public function testUnauthorizedUsersCannotPinThreads()
     {
         $this->withExceptionHandling()->signIn();
 
@@ -21,7 +21,7 @@ class PinThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testNonAdministratorsCannotUnpinThreads()
+    public function testUnauthorizedUsersCannotUnpinThreads()
     {
         $this->withExceptionHandling()->signIn();
 
@@ -34,9 +34,9 @@ class PinThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testAdministratorsCanPinThreads()
+    public function testAuthorizedUsersCanPinThreads()
     {
-        $this->signInGod();
+        $this->signInWithPermission('threads.pin');
 
         $thread = create(Thread::class);
 
@@ -47,9 +47,9 @@ class PinThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testAdministratorsCanUnpinThreads()
+    public function testAuthorizedUsersCanUnpinThreads()
     {
-        $this->signInGod();
+        $this->signInWithPermission('threads.unpin');
 
         $thread = create(Thread::class, ['pinned' => true]);
 
@@ -62,7 +62,7 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function testPinnedThreadsAreListedFirst()
     {
-        $this->signInGod();
+        $this->signInWithPermission('threads.pin');
 
         [$threadOne, $threadTwo, $threadThree] = create(Thread::class, [], 3);
 

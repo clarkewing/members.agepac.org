@@ -22,7 +22,7 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testGuestCannotViewAllThreads()
+    public function testGuestCannotIndexThreads()
     {
         Auth::logout();
 
@@ -31,7 +31,7 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testUserCanViewAllThreads()
+    public function testUserCanIndexThreads()
     {
         $this->get(route('threads.index'))
             ->assertSee($this->thread->title);
@@ -51,6 +51,15 @@ class ReadThreadsTest extends TestCase
 
         $this->get($this->thread->path())
             ->assertSee($this->thread->title);
+    }
+
+    /** @test */
+    public function testUserCannotViewADeletedThread()
+    {
+        $this->thread->delete();
+
+        $this->get($this->thread->path())
+            ->assertNotFound();
     }
 
     /** @test */

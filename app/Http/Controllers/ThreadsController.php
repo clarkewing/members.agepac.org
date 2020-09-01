@@ -32,14 +32,14 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Channel|null  $channel
      * @param  \App\Filters\ThreadFilters  $filters
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
     public function index(Request $request, Channel $channel, ThreadFilters $filters)
     {
         $threads = $this->getThreads($channel, $filters);
 
         if ($request->expectsJson()) {
-            return $threads;
+            return Response::json($threads);
         }
 
         return view('threads.index', compact('threads'));
@@ -48,7 +48,7 @@ class ThreadsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -59,7 +59,7 @@ class ThreadsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -98,7 +98,7 @@ class ThreadsController extends Controller
      * @param  string  $channelSlug
      * @param  \App\Thread  $thread
      * @param  \App\Trending  $trending
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(string $channelSlug, Thread $thread, Trending $trending)
     {
@@ -120,6 +120,7 @@ class ThreadsController extends Controller
      * @param  string  $channelSlug
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, string $channelSlug, Thread $thread)
     {
@@ -136,11 +137,12 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channelSlug
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Request $request, string $channelSlug, Thread $thread)
     {
-        $this->authorize('update', $thread);
+        $this->authorize('delete', $thread);
 
         $thread->delete();
 

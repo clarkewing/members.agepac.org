@@ -41,7 +41,21 @@ class UpdateThreadsTest extends TestCase
 
         $this->patch($thread->path(), [
             'title' => 'Changed',
-        ]);
+        ])->assertOk();
+
+        $this->assertEquals('Changed', $thread->fresh()->title);
+    }
+
+    /** @test */
+    public function testAThreadCanBeUpdatedByAnAuthorizedUser()
+    {
+        $thread = create(Thread::class);
+
+        $this->signInWithPermission('threads.edit');
+
+        $this->patch($thread->path(), [
+            'title' => 'Changed',
+        ])->assertOk();
 
         $this->assertEquals('Changed', $thread->fresh()->title);
     }

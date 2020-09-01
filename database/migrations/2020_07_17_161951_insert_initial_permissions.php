@@ -64,12 +64,15 @@ class InsertInitialPermissions extends Migration
                 'delete',
             ])
             ->createSubjectPermissions('threads', [
-                'create',
                 'edit',
                 'delete',
                 'viewDeleted',
                 'restore',
                 'forceDelete',
+                'lock',
+                'unlock',
+                'pin',
+                'unpin',
             ])
             ->createSubjectPermissions('posts', [
                 'create',

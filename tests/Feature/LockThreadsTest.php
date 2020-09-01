@@ -9,7 +9,7 @@ use Tests\TestCase;
 class LockThreadsTest extends TestCase
 {
     /** @test */
-    public function testNonAdministratorsCannotLockThreads()
+    public function testUnauthorizedUsersCannotLockThreads()
     {
         $this->withExceptionHandling()->signIn();
 
@@ -22,7 +22,7 @@ class LockThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testNonAdministratorsCannotUnlockThreads()
+    public function testUnauthorizedUsersCannotUnlockThreads()
     {
         $this->withExceptionHandling()->signIn();
 
@@ -35,9 +35,9 @@ class LockThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testAdministratorsCanLockThreads()
+    public function testAuthorizedUsersCanLockThreads()
     {
-        $this->signInGod();
+        $this->signInWithPermission('threads.lock');
 
         $thread = create(Thread::class);
 
@@ -48,9 +48,9 @@ class LockThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testAdministratorsCanUnlockThreads()
+    public function testAuthorizedUsersCanUnlockThreads()
     {
-        $this->signInGod();
+        $this->signInWithPermission('threads.unlock');
 
         $thread = create(Thread::class, ['locked' => true]);
 
