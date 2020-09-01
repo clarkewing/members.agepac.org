@@ -18,14 +18,6 @@ class ManageAircraftTest extends TestCase
         ];
     }
 
-    public function modeProvider()
-    {
-        return [
-            'create' => ['store'],
-            'edit' => ['update'],
-        ];
-    }
-
     /** @test */
     public function testUnauthorizedUsersCannotIndexAircraft()
     {
@@ -149,15 +141,12 @@ class ManageAircraftTest extends TestCase
         $this->assertDatabaseMissing('aircraft', ['id' => $aircraft->id]);
     }
 
-    /**
-     * @test
-     * @dataProvider modeProvider
-     */
-    public function testNameIsRequired($verb)
+    /** @test */
+    public function testNameIsRequired()
     {
-        $this->signInGod();
+        $this->signInWithPermission('aircraft.edit');
 
-        $this->{$verb . 'Aircraft'}(['name' => null])
+        $this->updateAircraft(['name' => null])
             ->assertJsonValidationErrors('name');
     }
 
