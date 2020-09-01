@@ -19,7 +19,7 @@ class CreatePollsTable extends Migration
             $table->unsignedBigInteger('thread_id');
             $table->string('title', 255);
             $table->boolean('votes_editable');
-            $table->unsignedTinyInteger('max_votes');
+            $table->unsignedBigInteger('max_votes');
             $table->unsignedTinyInteger('votes_privacy');
             $table->boolean('results_before_voting');
             $table->dateTime('locked_at')->nullable(true);
@@ -28,6 +28,9 @@ class CreatePollsTable extends Migration
             ->references('id')
             ->on('threads')
             ->onDelete('cascade');
+
+            // Only one poll is allowed per thread
+            $table->unique('thread_id');
         });
     }
 

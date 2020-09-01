@@ -126,6 +126,14 @@ class Thread extends Model
     }
 
     /**
+     * Get the thread's poll.
+     */
+    public function poll()
+    {
+        return $this->hasOne(Poll::class);
+    }
+
+    /**
      * Get the initiator post for the thread.
      */
     public function initiatorPost()
@@ -178,6 +186,19 @@ class Thread extends Model
         $post = $this->posts()->create($post);
 
         return $post;
+    }
+
+    /**
+     * Add a poll to the thread.
+     *
+     * @param  array $poll
+     * @return \App\Poll
+     */
+    public function addPoll(array $poll)
+    {
+        $poll = $this->poll()->create($poll);
+
+        return $poll;
     }
 
     /**
@@ -335,5 +356,15 @@ class Thread extends Model
     public function hasBestPost(): bool
     {
         return ! is_null($this->best_post_id);
+    }
+
+    /**
+     * Determine if the thread has a poll.
+     *
+     * @return bool
+     */
+    public function hasPoll(): bool
+    {
+        return ! is_null($this->poll);
     }
 }

@@ -28,6 +28,8 @@ Vue.component('registration-form', require('./pages/RegistrationForm').default);
 Vue.component('thread-view', require('./pages/Thread').default);
 Vue.component('instant-search', require('./pages/InstantSearch').default);
 
+Vue.component('poll-form', require('./components/PollForm.vue').default);
+
 import lineClamp from 'vue-line-clamp';
 Vue.use(lineClamp, {textOverflow: ' ...'});
 
