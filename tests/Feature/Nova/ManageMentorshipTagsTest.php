@@ -156,7 +156,7 @@ class ManageMentorshipTagsTest extends TestCase
      */
     public function testNameIsRequired($verb)
     {
-        $this->signInGod();
+        $this->signInWithPermission('mentorship_tags.edit');
 
         $this->{$verb . 'mentorshipTag'}(['name' => null])
             ->assertJsonValidationErrors('name');
