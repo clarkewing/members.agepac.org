@@ -28,9 +28,9 @@ class PollVotePolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function create(User $user, PollVote $pollVote)
+    public function create(User $user, Poll $poll)
     {
-        return is_null($pollVote->poll->locked_at) || $pollVote->poll->locked_at < Carbon::now();
+        return is_null($poll->locked_at) || $poll->locked_at < Carbon::now();
     }
 
     /**
@@ -68,7 +68,22 @@ class PollVotePolicy
      */
     public function update(User $user, PollVote $pollVote)
     {
-        return $pollVote->user_id == $user->id && $pollVote->poll->votes_editable && 
-            (is_null($pollVote->poll->locked_at) || $pollVote->poll->locked_at < Carbon::now());
+        $poll = $pollVote->option->poll;
+        return $pollVote->user_id == $user->id && $poll->votes_editable && 
+            (is_null($poll->locked_at) || $poll->locked_at < Carbon::now());
+    }
+
+    /**
+     * Determine whether the user can delete the vote.
+     *
+     * @param  \App\User  $user
+     * @param  \App\PollVote  $pollVote
+     * @return mixed
+     */
+    public function delete(User $user, PollVote $pollVote)
+    {
+        $poll = $pollVote->option->poll;
+        return $pollVote->user_id == $user->id && $poll->votes_editable && 
+            (is_null($poll->locked_at) || $poll->locked_at < Carbon::now());
     }
 }

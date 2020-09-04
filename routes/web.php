@@ -65,6 +65,14 @@ Route::post('/threads/{channel}/{thread}/poll/{poll}/poll-option', 'PollOptionsC
 Route::put('/poll-option/{pollOption}/update', 'PollOptionsController@update')->name('poll_options.update');
 Route::delete('/poll-option/{pollOption}/delete', 'PollOptionsController@destroy')->name('poll_options.destroy');
 
+Route::get('/threads/{channel}/{thread}/poll/{poll}/vote', 'PollVotesController@show')->name('poll_votes.show');
+Route::get('/threads/{channel}/{thread}/poll/{poll}/vote/create', 'PollVotesController@create')->name('poll_votes.create');
+Route::post('/poll/{poll}/vote/{pollOption}', 'PollVotesController@store')->name('poll_votes.store');
+Route::delete('/poll-vote/{pollVote}', 'PollVotesController@destroy')->name('poll_votes.destroy');
+
+Route::get('/threads/{channel}/{thread}/poll/{poll}/votes', 'PollVotesController@index')->name('poll_votes.index');
+Route::get('/threads/{channel}/{thread}/poll/{poll}/results', 'PollsController@results')->name('poll.results');
+
 /* Api */
 Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
     Route::get('/users', 'UsersController@index')->name('users.index');

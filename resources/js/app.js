@@ -29,6 +29,8 @@ Vue.component('thread-view', require('./pages/Thread').default);
 Vue.component('instant-search', require('./pages/InstantSearch').default);
 
 Vue.component('poll-form', require('./components/PollForm.vue').default);
+Vue.component('poll-vote', require('./components/Vote.vue').default);
+Vue.component('poll-results', require('./components/PollResults.vue').default);
 
 import lineClamp from 'vue-line-clamp';
 Vue.use(lineClamp, {textOverflow: ' ...'});
