@@ -2,20 +2,22 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Poll;
+use App\Thread;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Carbon;
 
 class PollPolicy
 {
     use HandlesAuthorization;
 
 /**
-     * Determine whether the user can view any polls.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
+ * Determine whether the user can view any polls.
+ *
+ * @param  \App\User  $user
+ * @return mixed
+ */
     public function viewAny(User $user)
     {
         //
@@ -34,6 +36,31 @@ class PollPolicy
     }
 
     /**
+     * Determine whether the user can view the poll result.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Poll  $poll
+     * @return mixed
+     */
+    public function viewResults(User $user, Poll $poll)
+    {
+        switch ($poll->votes_privacy) {
+            case 0:
+                //No one can see who voted for what
+                return false;
+                break;
+            case 1:
+                //Only the vote creator can see who voted for what
+                return $user->id == $poll->thread->user_id;
+                break;
+            default:
+                //Everyone can see who voted for what
+                return true;
+                break;
+        }
+    }
+
+    /**
      * Determine whether the user can create polls.
      *
      * @param  \App\User  $user
@@ -41,6 +68,7 @@ class PollPolicy
      */
     public function create(User $user)
     {
+        return true;
     }
 
     /**
@@ -52,7 +80,19 @@ class PollPolicy
      */
     public function update(User $user, Poll $poll)
     {
-        return $poll->user_id == $user->id && empty($poll->votes());
+        return $poll->thread->user_id == $user->id && $poll->votes()->count() == 0 && (is_null($poll->locked_at) || $poll->locked_at > Carbon::now());
+    }
+
+    /**
+     * Determine whether the user can lock the poll.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Poll  $poll
+     * @return mixed
+     */
+    public function lock(User $user, Poll $poll)
+    {
+        return $poll->thread->user_id == $user->id && (is_null($poll->locked_at) || $poll->locked_at > Carbon::now());
     }
 
     /**
@@ -64,8 +104,8 @@ class PollPolicy
      */
     public function delete(User $user, Poll $poll)
     {
-        return ! $poll->user_id
-            && $this->update($user, $poll);
+        return !$poll->user_id
+        && $this->update($user, $poll);
     }
 
     /**

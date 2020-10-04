@@ -31,9 +31,7 @@ export default {
       this.channelslug +
       "/" +
       this.thread.slug +
-      "/poll/" +
-      this.poll.id +
-      "/options";
+      "/poll/options";
     axios
       .get(uri)
       .then((options_data) => {
@@ -49,9 +47,7 @@ export default {
           this.channelslug +
           "/" +
           this.thread.slug +
-          "/poll/" +
-          this.poll.id +
-          "/votes";
+          "/poll/votes";
         axios
           .get(uri)
           .then((results_data) => {

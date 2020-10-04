@@ -55,23 +55,25 @@ Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles.show')
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
 
 /* Polls */
+Route::get('/poll/{poll}', 'PollsController@show')->name('polls.show');
 Route::get('/threads/{channel}/{thread}/poll', 'PollsController@index')->name('polls.index');
 Route::get('/threads/{channel}/{thread}/poll/create', 'PollsController@create')->name('polls.create');
 Route::post('/threads/{channel}/{thread}/poll', 'PollsController@store')->name('polls.store');
+Route::post('/poll/{poll}/lock', 'PollsController@lock')->name('polls.lock');
 Route::put('/poll/{poll}/update', 'PollsController@update')->name('polls.update');
 
-Route::get('/threads/{channel}/{thread}/poll/{poll}/options', 'PollOptionsController@index')->name('poll_options.index');
-Route::post('/threads/{channel}/{thread}/poll/{poll}/poll-option', 'PollOptionsController@store')->name('poll_options.store');
+Route::get('/threads/{channel}/{thread}/poll/options', 'PollOptionsController@index')->name('poll_options.index');
+Route::post('/threads/{channel}/{thread}/poll/poll-option', 'PollOptionsController@store')->name('poll_options.store');
 Route::put('/poll-option/{pollOption}/update', 'PollOptionsController@update')->name('poll_options.update');
 Route::delete('/poll-option/{pollOption}/delete', 'PollOptionsController@destroy')->name('poll_options.destroy');
 
-Route::get('/threads/{channel}/{thread}/poll/{poll}/vote', 'PollVotesController@show')->name('poll_votes.show');
-Route::get('/threads/{channel}/{thread}/poll/{poll}/vote/create', 'PollVotesController@create')->name('poll_votes.create');
+Route::get('/threads/{channel}/{thread}/poll/vote', 'PollVotesController@show')->name('poll_votes.show');
+Route::get('/threads/{channel}/{thread}/poll/vote/create', 'PollVotesController@create')->name('poll_votes.create');
 Route::post('/poll/{poll}/vote/{pollOption}', 'PollVotesController@store')->name('poll_votes.store');
 Route::delete('/poll-vote/{pollVote}', 'PollVotesController@destroy')->name('poll_votes.destroy');
 
-Route::get('/threads/{channel}/{thread}/poll/{poll}/votes', 'PollVotesController@index')->name('poll_votes.index');
-Route::get('/threads/{channel}/{thread}/poll/{poll}/results', 'PollsController@results')->name('poll.results');
+Route::get('/threads/{channel}/{thread}/poll/votes', 'PollVotesController@index')->name('poll_votes.index');
+Route::get('/threads/{channel}/{thread}/poll/results', 'PollsController@results')->name('poll.results');
 
 /* Api */
 Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {

@@ -27,9 +27,13 @@ class PollOptionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(string $channelSlug, Thread $thread, Poll $poll)
+    public function index(string $channelSlug, Thread $thread)
     {
-        return $poll->options()->get();
+        $poll = $thread->poll;
+        if($poll)
+            return $poll->options()->get();
+        else
+            return [];
     }
 
     /**
@@ -55,8 +59,10 @@ class PollOptionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, string $channelSlug, Thread $thread, Poll $poll)
+    public function store(Request $request, string $channelSlug, Thread $thread)
     {
+        $poll = $thread->poll;
+
         if ($thread->locked) {
             return Response::make('Thread is locked.', 422);
         }
@@ -70,7 +76,7 @@ class PollOptionsController extends Controller
             'color' => $request->input('color'),
         ]);
 
-        return $poll;
+        return $pollOption;
     }
 
     /**

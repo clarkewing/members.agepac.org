@@ -30,7 +30,32 @@ class PollVotePolicy
      */
     public function create(User $user, Poll $poll)
     {
-        return is_null($poll->locked_at) || $poll->locked_at < Carbon::now();
+        return (is_null($poll->locked_at) || $poll->locked_at > Carbon::now()) && ($poll->votes()->where('user_id', $user->id)->count() < $poll->max_votes);
+    }
+
+    /**
+     * Determine whether the user can view any vote.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Poll  $poll
+     * @return mixed
+     */
+    public function viewAny(User $user, Poll $poll)
+    {
+        switch ($poll->votes_privacy) {
+            case 0:
+                //No one can see who voted for what
+                return false;
+                break;
+            case 1:
+                //Only the vote creator can see who voted for what
+                return $user->id == $poll->thread->user_id;
+                break;
+            default:
+                //Everyone can see who voted for what
+                return true;
+                break;
+        }
     }
 
     /**
@@ -42,7 +67,7 @@ class PollVotePolicy
      */
     public function view(User $user, PollVote $pollVote)
     {
-        $poll = $pollVote->poll();
+        $poll = $pollVote->poll;
         switch ($poll->votes_privacy) {
             case 0:
                 //No one can see who voted for what
@@ -50,7 +75,7 @@ class PollVotePolicy
                 break;
             case 1:
                 //Only the vote creator can see who voted for what
-                return $user->id == $poll->user_id;
+                return $user->id == $poll->thread->user_id;
                 break;
             default:
                 //Everyone can see who voted for what
@@ -69,8 +94,8 @@ class PollVotePolicy
     public function update(User $user, PollVote $pollVote)
     {
         $poll = $pollVote->option->poll;
-        return $pollVote->user_id == $user->id && $poll->votes_editable && 
-            (is_null($poll->locked_at) || $poll->locked_at < Carbon::now());
+        return $pollVote->user_id == $user->id && $poll->votes_editable &&
+            (is_null($poll->locked_at) || $poll->locked_at > Carbon::now());
     }
 
     /**
@@ -83,7 +108,7 @@ class PollVotePolicy
     public function delete(User $user, PollVote $pollVote)
     {
         $poll = $pollVote->option->poll;
-        return $pollVote->user_id == $user->id && $poll->votes_editable && 
-            (is_null($poll->locked_at) || $poll->locked_at < Carbon::now());
+        return $pollVote->user_id == $user->id && $poll->votes_editable &&
+            (is_null($poll->locked_at) || $poll->locked_at > Carbon::now());
     }
 }
