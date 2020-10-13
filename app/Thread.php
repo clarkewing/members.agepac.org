@@ -51,6 +51,7 @@ class Thread extends Model
         'locked' => 'boolean',
         'pinned' => 'boolean',
         'visits' => 'integer',
+        'user_id' => 'integer',
     ];
 
     /**

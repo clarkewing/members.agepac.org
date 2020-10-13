@@ -19,7 +19,7 @@ class ThreadPolicy
      */
     public function update(User $user, Thread $thread)
     {
-        return $thread->user_id == $user->id
+        return $thread->user_id === $user->id
             || $user->hasPermissionTo('threads.edit');
     }
 
@@ -84,7 +84,7 @@ class ThreadPolicy
      */
     public function lock(User $user, Thread $thread)
     {
-        return $thread->user_id == $user->id
+        return $thread->user_id === $user->id
                || $user->hasPermissionTo('threads.lock');
     }
 
@@ -97,7 +97,7 @@ class ThreadPolicy
      */
     public function unlock(User $user, Thread $thread)
     {
-        return $thread->user_id == $user->id
+        return $thread->user_id === $user->id
                || $user->hasPermissionTo('threads.unlock');
     }
 
