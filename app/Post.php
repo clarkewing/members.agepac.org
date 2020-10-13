@@ -28,6 +28,15 @@ class Post extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'user_id' => 'integer',
+    ];
+
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array

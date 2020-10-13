@@ -137,6 +137,32 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
+    public function testUnauthorizedUsersCannotSeeDeletedPosts()
+    {
+        create(Post::class, ['thread_id' => $this->thread->id])->delete();
+
+        $response = $this->getJson($this->thread->path() . '/posts')->json();
+
+        // Just thread initiator post.
+        $this->assertCount(1, $response['data']);
+        $this->assertEquals(1, $response['total']);
+    }
+
+    /** @test */
+    public function testAuthorizedUsersCanSeeDeletedPosts()
+    {
+        $this->signInWithPermission('posts.viewDeleted');
+
+        create(Post::class, ['thread_id' => $this->thread->id])->delete();
+
+        $response = $this->getJson($this->thread->path() . '/posts')->json();
+
+        // Thread initiator post + 1 deleted post.
+        $this->assertCount(1 + 1, $response['data']);
+        $this->assertEquals(1 + 1, $response['total']);
+    }
+
+    /** @test */
     public function testRecordsNewVisitEachTimeThreadIsRead()
     {
         $thread = create(Thread::class);

@@ -26,13 +26,20 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  string  $channelSlug
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index(string $channelSlug, Thread $thread)
+    public function index(Request $request, string $channelSlug, Thread $thread)
     {
-        return $thread->posts()->paginate(20);
+        $posts = $thread->posts();
+
+        if ($request->user()->can('viewDeleted', Post::class)) {
+            $posts = $posts->withTrashed();
+        }
+
+        return $posts->paginate(20);
     }
 
     /**
