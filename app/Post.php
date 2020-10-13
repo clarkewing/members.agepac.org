@@ -70,13 +70,15 @@ class Post extends Model
             }
         });
 
+        static::deleting(function ($post) {
+            if ($post->isBest()) {
+                $post->thread->unmarkBestPost();
+            }
+        });
+
         static::deleted(function ($post) {
             if (! $post->is_thread_initiator) {
                 $post->owner->loseReputation('reply_posted');
-            }
-
-            if ($post->isBest()) {
-                $post->owner->loseReputation('best_post_awarded');
             }
 
             $post->attachments->each->delete();

@@ -25,11 +25,6 @@ class CreateThreadsTable extends Migration
             $table->boolean('pinned')->default(false);
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('best_post_id')
-                ->references('id')
-                ->on('posts')
-                ->onDelete('set null');
         });
     }
 
