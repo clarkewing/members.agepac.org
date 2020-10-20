@@ -9,7 +9,6 @@ use App\User;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Nova;
 
 class AuthServiceProvider extends ServiceProvider
 {

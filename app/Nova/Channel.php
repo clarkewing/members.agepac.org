@@ -84,7 +84,9 @@ class Channel extends Resource
             Boolean::make('Archived')
                 ->updateRules('boolean')
                 ->onlyOnForms()->hideWhenCreating(),
-            Boolean::make('Visible', function () { return ! $this->archived; })
+            Boolean::make('Visible', function () {
+                return ! $this->archived;
+            })
                 ->exceptOnForms(),
         ];
     }

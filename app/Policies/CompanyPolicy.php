@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Company;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

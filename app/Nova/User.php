@@ -15,9 +15,9 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
 use LimeDeck\NovaCashierOverview\Subscription;
+use Torann\GeoIP\Facades\GeoIP;
 use Vyuldashev\NovaPermission\PermissionBooleanGroup;
 use Vyuldashev\NovaPermission\RoleBooleanGroup;
-use Torann\GeoIP\Facades\GeoIP;
 
 class User extends Resource
 {
@@ -130,7 +130,7 @@ class User extends Resource
                     ->rules(
                         'required',
                         Rule::phone()->detect()->country(['FR', GeoIP::getLocation(request()->ip())->iso_code])
-                    )
+                    ),
             ]),
 
             $this->membershipIndicatorField()

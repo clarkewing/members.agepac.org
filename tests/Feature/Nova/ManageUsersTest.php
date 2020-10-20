@@ -286,7 +286,7 @@ class ManageUsersTest extends TestCase
         $this->updateUser(['username' => "Weird'UserN4me"])
             ->assertJsonValidationErrors('username');
 
-        $this->updateUser(['username' => "some.thing.wrong"])
+        $this->updateUser(['username' => 'some.thing.wrong'])
             ->assertJsonValidationErrors('username');
     }
 
