@@ -154,7 +154,7 @@
             destroy() {
                 axios.delete('/posts/' + this.id)
                     .then(({data}) => {
-                        flash('Ta réponse a étée supprimée.');
+                        flash('La réponse a étée supprimée.');
 
                         this.$emit('deleted', this.id);
                     });
