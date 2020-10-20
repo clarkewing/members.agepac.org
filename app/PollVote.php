@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class PollVote extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'option_id',
+    ];
+
+    /**
      * Get the user that voted.
      */
     public function user()

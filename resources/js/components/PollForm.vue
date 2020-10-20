@@ -77,7 +77,14 @@ import datetime from "vuejs-datetimepicker";
 import moment from "moment";
 
 export default {
+    props: ["channelslug", "thread"],
+    props: {
+        channelslug: String,
+        thread: Object,
+    },
+
     data() {
+        console.log(this.channelslug);
         var res = {
             id: undefined,
             title: "",
@@ -101,8 +108,9 @@ export default {
     },
 
     created() {
+        let uri = "/threads/" + this.channelslug + "/" + this.thread.slug + "/poll";
         axios
-            .get(location.pathname.split("/create")[0])
+            .get(uri)
             .then(({ data }) => {
                 if (data.length > 0) {
                     this.id = data[0].id;
@@ -158,7 +166,8 @@ export default {
         },
         removeOption(index, event) {
             event.preventDefault();
-            this.options = this.options.filter(option => option.status !== "deleted")
+            this.options = this.options
+                .filter((option) => option.status !== "deleted")
                 .filter((item, ind) => ind !== index || ind !== undefined)
                 .map((item, ind) =>
                     ind === index ? { ...item, status: "deleted" } : item
@@ -173,18 +182,16 @@ export default {
         },
         updatePoll() {
             moment.locale("fr");
+            let uri = "/poll/" + this.id + "/update";
             axios
-                .put(
-                    location.origin + "/poll/" + this.id + "/update",
-                    {
-                        title: this.title,
-                        votes_editable: this.votes_editable,
-                        max_votes: this.max_votes,
-                        results_before_voting: this.results_before_voting,
-                        votes_privacy: this.votes_privacy,
-                        locked_at: moment(this.locked_at, "DD/MM/YYYY hh:mm:ss").format(),
-                    }
-                )
+                .put(uri, {
+                    title: this.title,
+                    votes_editable: this.votes_editable,
+                    max_votes: this.max_votes,
+                    results_before_voting: this.results_before_voting,
+                    votes_privacy: this.votes_privacy,
+                    locked_at: moment(this.locked_at, "DD/MM/YYYY hh:mm:ss").format(),
+                })
                 .then(({ data }) => {
                     flash("Ton sondage a été modifié !");
 
@@ -194,20 +201,15 @@ export default {
                     flash(error.response.data, "danger");
                 });
 
+            uri = "/poll-option/" + option.id + "/update";
             this.options
                 .filter((option) => option.status == "updated")
                 .forEach((option) => {
                     axios
-                        .put(
-                            location.origin +
-                            "/poll-option/" +
-                            option.id +
-                            "/update",
-                            {
-                                label: option.label,
-                                color: option.color,
-                            }
-                        )
+                        .put(uri, {
+                            label: option.label,
+                            color: option.color,
+                        })
                         .catch((error) => {
                             flash(error.response.data, "danger");
                         });
@@ -215,30 +217,23 @@ export default {
             this.options
                 .filter((option) => option.status == "created")
                 .forEach((option) => {
+                    uri = "/" + this.id + "/poll-option";
                     axios
-                        .post(
-                            location.pathname.split("/create")[0] +
-                            "/" + this.id +
-                            "/poll-option",
-                            {
-                                label: option.label,
-                                color: option.color,
-                            }
-                        )
+                        .post(uri, {
+                            label: option.label,
+                            color: option.color,
+                        })
                         .catch((error) => {
                             flash(error.response.data, "danger");
                         });
                 });
             this.options
-                .filter((option) => option.status == "deleted" && option.id !== undefined)
+                .filter(
+                    (option) => option.status == "deleted" && option.id !== undefined
+                )
                 .forEach((option) => {
                     axios
-                        .delete(
-                            location.origin +
-                            "/poll-option/" +
-                            option.id +
-                            "/delete"
-                        )
+                        .delete(location.origin + "/poll-option/" + option.id + "/delete")
                         .catch((error) => {
                             flash(error.response.data, "danger");
                         });
@@ -246,8 +241,10 @@ export default {
         },
         addPoll() {
             moment.locale("fr");
+            let uri =
+                "/threads/" + this.channelslug + "/" + this.thread.slug + "/poll";
             axios
-                .post(location.pathname.split("/create")[0], {
+                .post(uri, {
                     title: this.title,
                     votes_editable: this.votes_editable,
                     max_votes: this.max_votes,

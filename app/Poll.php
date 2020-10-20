@@ -50,7 +50,7 @@ class Poll extends Model
      */
     public function votes()
     {
-        return $this->hasMany(PollVote::class);
+        return $this->hasManyThrough(PollVote::class, PollOption::class, 'poll_id', 'option_id');
     }
 
     /**
@@ -64,18 +64,5 @@ class Poll extends Model
         $option = $this->options()->create($option);
 
         return $option;
-    }
-
-    /**
-     * Add an option to the poll.
-     *
-     * @param  array $vote
-     * @return \App\PollVote
-     */
-    public function addVote(array $vote)
-    {
-        $vote = $this->votes()->create($vote);
-
-        return $vote;
     }
 }

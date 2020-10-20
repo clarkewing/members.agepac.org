@@ -6,6 +6,7 @@ use App\Http\Requests\CreatePollRequest;
 use App\Poll;
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class PollsController extends Controller
@@ -39,7 +40,7 @@ class PollsController extends Controller
      */
     public function create(string $channelSlug, Thread $thread)
     {
-        return view('polls.create', ['channelSlug' => $channelSlug, 'thread' => $thread]);
+        return view('polls.create', ['channelSlug' => json_decode($channelSlug)->name, 'thread' => $thread]);
     }
 
     /**
@@ -79,14 +80,13 @@ class PollsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the poll results.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function results(string $channelSlug, Thread $thread, Poll $poll)
     {
-        //
+        return view('polls.results', ['channelSlug' => json_decode($channelSlug)->name, 'thread' => $thread, 'poll' => $poll]);
     }
 
     /**

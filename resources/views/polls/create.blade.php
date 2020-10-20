@@ -1,5 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.form-with-bg')
 
-@section('content')
-    <poll-form></poll-form>
+@section('card-body')
+    <poll-form channelslug="{{ $channelSlug }}" :thread="{{ $thread }}"></poll-form>
 @endsection

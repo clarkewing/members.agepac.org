@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Poll;
 use App\PollOption;
-use Illuminate\Http\Response;
+use App\PollVote;
+use App\Thread;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class PollVotesController extends Controller
 {
@@ -24,26 +28,64 @@ class PollVotesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Poll $poll)
+    public function index(string $channelSlug, Thread $thread, Poll $poll)
     {
-        return $poll->votes();
+        return $poll->votes()->groupBy(['option_id'])->get(['option_id', DB::raw('COUNT(*) AS votes_number')]);
+    }
+
+    /**
+     * Display the search results.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(string $channelSlug, Thread $thread, Poll $poll)
+    {
+        return $poll->votes()->where('user_id', '=', Auth::id())->get();
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(string $channelSlug, Thread $thread, Poll $poll)
+    {
+        $this->authorize('create', $poll);
+        return view('polls.vote', ['channelSlug' => json_decode($channelSlug)->name, 'thread' => $thread, 'poll' => $poll]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Poll $poll, PollOption $pollOption)
+    public function store(Request $request, Poll $poll, PollOption $pollOption)
     {
-        if ($poll->locked_at != null) {
-            return Response::make('Poll is locked.', 422);
+        $this->authorize('create', $poll);
+
+        return $pollOption->addVote([
+            'user_id' => Auth::id(),
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PollVote  $pollVote
+     * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Request $request, PollVote $pollVote)
+    {
+        $this->authorize('delete', $pollVote);
+        $pollVote->delete();
+
+        if ($request->expectsJson()) {
+            return Response::make(['status' => 'Poll vote deleted.']);
         }
 
-        return $poll->addVote([
-            'option_id' => $pollOption->id,
-            'user_id' => Auth::id(),
-        ]);;
+        return back()
+            ->with('flash', 'The poll vote was deleted.');
     }
 }
