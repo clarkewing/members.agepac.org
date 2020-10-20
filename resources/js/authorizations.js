@@ -5,8 +5,8 @@ module.exports = {
         return parseInt(model[prop]) === user.id;
     },
 
-    isAdmin () {
-        return user.isAdmin;
+    hasPermission (permission) {
+        return user.permissions.includes(permission);
     },
 
     isVerified () {

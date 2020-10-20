@@ -106,7 +106,7 @@ class ManageUsersTest extends TestCase
         $this->updateUser(
             $user = make(User::class)
                 ->makeVisible('email')
-                ->makeHidden(['name', 'isAdmin'])
+                ->makeHidden(['name'])
                 ->toArray()
         )->assertOk();
 

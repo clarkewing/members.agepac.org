@@ -18,7 +18,7 @@
                 <p class="mb-0" v-text="ago"></p>
 
                 <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted"
-                        v-if="authorize('owns', post) && ! threadLocked"
+                        v-if="(authorize('owns', post) && ! threadLocked) || authorize('hasPermission', 'posts.edit')"
                         @click="editing = true">
                     Modifier
                 </button>
