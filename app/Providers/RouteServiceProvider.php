@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Channel;
 use App\Http\Controllers\PagesController;
 use App\Post;
-use App\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +36,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('post', function ($value) {
             if (Auth::user()->can('restore', Post::class)
                 || Auth::user()->can('forceDelete', Post::class)) {
-
                 return Post::withTrashed()->findOrFail($value);
             }
 
