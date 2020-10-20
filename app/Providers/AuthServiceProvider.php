@@ -39,10 +39,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        // Implicitly grant "God with Wings" role all permissions
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('God with Wings') ? true : null;
-        });
     }
 }

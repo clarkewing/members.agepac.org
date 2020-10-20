@@ -27,21 +27,12 @@ class InsertInitialPermissions extends Migration
                 'view',
                 'edit',
                 'delete',
-                'attachRoles',
-                'detachRoles',
             ])
             ->createSubjectPermissions('subscriptions', [
                 'manage',
             ])
-            ->createSubjectPermissions('roles', [
-                'create',
-                'edit',
-                'delete',
-                'attachPermissions',
-                'detachPermissions',
-            ])
-            ->createSubjectPermissions('permissions', [
-                'view',
+            ->createSubjectPermissions('roles&permissions', [
+                'manage',
             ])
 
             // Profiles
@@ -59,9 +50,7 @@ class InsertInitialPermissions extends Migration
 
             // Forum
             ->createSubjectPermissions('channels', [
-                'create',
-                'edit',
-                'delete',
+                'manage',
             ])
             ->createSubjectPermissions('threads', [
                 'edit',
@@ -75,7 +64,6 @@ class InsertInitialPermissions extends Migration
                 'unpin',
             ])
             ->createSubjectPermissions('posts', [
-                'create',
                 'edit',
                 'delete',
                 'viewDeleted',
@@ -96,9 +84,6 @@ class InsertInitialPermissions extends Migration
                 'restore',
                 'forceDelete',
             ]);
-
-        Role::create(['name' => 'God with Wings'])
-            ->syncPermissions(Permission::all());
     }
 
     /**

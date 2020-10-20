@@ -48,16 +48,4 @@ abstract class TestCase extends BaseTestCase
                 ->givePermissionTo($permission)
         );
     }
-
-    /**
-     * Sign in with an admin user.
-     *
-     * @return $this
-     */
-    protected function signInGod()
-    {
-        return $this->signIn(
-            factory(User::class)->states('god')->create(['email' => 'john@example.com'])
-        );
-    }
 }

@@ -50,7 +50,3 @@ $factory->state(User::class, 'unverified_email', function (Faker $faker) {
         'email_verified_at' => null,
     ];
 });
-
-$factory->afterCreatingState(User::class, 'god', function (User $user, Faker $faker) {
-    $user->assignRole('God with Wings');
-});
