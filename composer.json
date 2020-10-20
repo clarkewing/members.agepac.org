@@ -33,10 +33,12 @@
         "optimistdigital/nova-menu-builder": "^2.3",
         "propaganistas/laravel-phone": "^4.2",
         "spatie/laravel-menu": "^3.5",
+        "spatie/laravel-permission": "^3.13",
         "spatie/laravel-sluggable": "^2.2",
         "spatie/laravel-tags": "^2.6",
         "stevebauman/purify": "^3.0",
-        "torann/geoip": "^1.2"
+        "torann/geoip": "^1.2",
+        "vyuldashev/nova-permission": "^2.9"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

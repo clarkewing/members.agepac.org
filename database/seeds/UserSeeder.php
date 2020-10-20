@@ -20,7 +20,8 @@ class UserSeeder extends Seeder
                 'last_name' => 'Doe',
                 'username' => 'john.doe',
                 'email' => 'john@example.com',
-            ]);
+            ])
+            ->assignRole('Administrator');
 
         factory(User::class, 50)
             ->create();

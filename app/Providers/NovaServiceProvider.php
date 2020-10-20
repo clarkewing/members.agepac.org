@@ -2,11 +2,18 @@
 
 namespace App\Providers;
 
+use App\Policies\MentorshipTagsPolicy;
+use App\Policies\MenuPolicy;
+use App\Policies\PermissionPolicy;
+use App\Policies\RolePolicy;
+use App\Policies\UserNovaPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Vyuldashev\NovaPermission\NovaPermissionTool;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -18,6 +25,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::serving(function (ServingNova $event) {
+            app()->setLocale('en');
+
+            // Override User policy in Nova.
+            Gate::policy(User::class, UserNovaPolicy::class);
+
+            // Set mentorship tags policy in Nova.
+            Gate::policy(\Spatie\Tags\Tag::class, MentorshipTagsPolicy::class);
+
+            // Set menus policy in Nova.
+            Gate::policy(\OptimistDigital\MenuBuilder\Models\Menu::class, MenuPolicy::class);
+        });
 
         // Boot the nova-menu-builder package so we can properly render the resource.
         (new \OptimistDigital\MenuBuilder\MenuBuilder)->boot();
@@ -31,9 +51,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**
@@ -45,9 +65,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function gate()
     {
-        Gate::define('viewNova', function (User $user) {
-            return $user->isAdmin();
-        });
+        // viewNova gate defined in AuthServiceProvider
     }
 
     /**
@@ -79,7 +97,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            NovaPermissionTool::make()
+                ->permissionPolicy(PermissionPolicy::class)
+                ->rolePolicy(RolePolicy::class),
+        ];
     }
 
     /**

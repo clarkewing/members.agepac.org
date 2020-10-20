@@ -36,14 +36,16 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Sign in with an admin user.
+     * Sign in with a user and give it a permission.
      *
+     * @param  string|string[]  $permission
      * @return $this
      */
-    protected function signInAdmin()
+    protected function signInWithPermission($permission)
     {
         return $this->signIn(
-            factory(User::class)->states('administrator')->create()
+            create(User::class)
+                ->givePermissionTo($permission)
         );
     }
 }

@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Channel;
 use App\Http\Controllers\PagesController;
+use App\Post;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
@@ -29,6 +31,15 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('channel', function ($value) {
             return Channel::withoutGlobalScopes()->where('slug', $value)->firstOrFail();
+        });
+
+        Route::bind('post', function ($value) {
+            if (Auth::user()->can('restore', Post::class)
+                || Auth::user()->can('forceDelete', Post::class)) {
+                return Post::withTrashed()->findOrFail($value);
+            }
+
+            return Post::findOrFail($value);
         });
     }
 

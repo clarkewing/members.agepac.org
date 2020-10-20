@@ -6,7 +6,6 @@ use App\Channel;
 use App\Post;
 use App\Thread;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
@@ -124,39 +123,6 @@ class CreateThreadsTest extends TestCase
         $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
         $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
-    }
-
-    /** @test */
-    public function testUnauthorizedUsersMayNotDeleteThreads()
-    {
-        $this->withExceptionHandling();
-
-        $thread = create(Thread::class);
-
-        $this->delete($thread->path())
-            ->assertRedirect('/login');
-
-        $this->signIn();
-        $this->delete($thread->path())
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function testAuthorizedUsersCanDeleteThreads()
-    {
-        $this->signIn();
-
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
-        $post = create(Post::class, ['thread_id' => $thread->id]);
-
-        $this->json('DELETE', $thread->path())
-            ->assertStatus(204);
-
-        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
-        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
-
-        $this->assertDatabaseMissing('activities', ['type' => 'created_thread']);
-        $this->assertDatabaseMissing('activities', ['type' => 'created_post']);
     }
 
     /**

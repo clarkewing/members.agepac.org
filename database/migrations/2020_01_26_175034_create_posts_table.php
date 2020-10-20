@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->text('body');
             $table->boolean('is_thread_initiator')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

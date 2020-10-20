@@ -22,7 +22,7 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testGuestCannotViewAllThreads()
+    public function testGuestCannotIndexThreads()
     {
         Auth::logout();
 
@@ -31,7 +31,7 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testUserCanViewAllThreads()
+    public function testUserCanIndexThreads()
     {
         $this->get(route('threads.index'))
             ->assertSee($this->thread->title);
@@ -51,6 +51,15 @@ class ReadThreadsTest extends TestCase
 
         $this->get($this->thread->path())
             ->assertSee($this->thread->title);
+    }
+
+    /** @test */
+    public function testUserCannotViewADeletedThread()
+    {
+        $this->thread->delete();
+
+        $this->get($this->thread->path())
+            ->assertNotFound();
     }
 
     /** @test */
@@ -125,6 +134,32 @@ class ReadThreadsTest extends TestCase
         // Thread initiator post + 2 posts.
         $this->assertCount(1 + 2, $response['data']);
         $this->assertEquals(1 + 2, $response['total']);
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotSeeDeletedPosts()
+    {
+        create(Post::class, ['thread_id' => $this->thread->id])->delete();
+
+        $response = $this->getJson($this->thread->path() . '/posts')->json();
+
+        // Just thread initiator post.
+        $this->assertCount(1, $response['data']);
+        $this->assertEquals(1, $response['total']);
+    }
+
+    /** @test */
+    public function testAuthorizedUsersCanSeeDeletedPosts()
+    {
+        $this->signInWithPermission('posts.viewDeleted');
+
+        create(Post::class, ['thread_id' => $this->thread->id])->delete();
+
+        $response = $this->getJson($this->thread->path() . '/posts')->json();
+
+        // Thread initiator post + 1 deleted post.
+        $this->assertCount(1 + 1, $response['data']);
+        $this->assertEquals(1 + 1, $response['total']);
     }
 
     /** @test */

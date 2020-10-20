@@ -73,20 +73,33 @@ class ParticipateInThreadsTest extends TestCase
 
         $this->signIn()
             ->delete(route('posts.destroy', $post))
-            ->assertStatus(403);
+            ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
-    public function testAuthorizedUsersCanDeletePosts()
+    public function testUsersCanDeleteTheirOwnPosts()
     {
         $this->signIn();
 
         $post = create(Post::class, ['user_id' => Auth::id()]);
 
-        $this->delete(route('posts.destroy', $post))
-            ->assertStatus(302);
+        $this->deleteJson(route('posts.destroy', $post))
+            ->assertSuccessful();
 
-        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+        $this->assertSoftDeleted('posts', ['id' => $post->id]);
+    }
+
+    /** @test */
+    public function testAuthorizedUsersCanDeletePosts()
+    {
+        $this->signInWithPermission('posts.delete');
+
+        $post = create(Post::class);
+
+        $this->deleteJson(route('posts.destroy', $post))
+            ->assertSuccessful();
+
+        $this->assertSoftDeleted('posts', ['id' => $post->id]);
     }
 
     /** @test */
@@ -103,7 +116,35 @@ class ParticipateInThreadsTest extends TestCase
         $this->delete(route('posts.destroy', $post))
             ->assertStatus(Response::HTTP_FORBIDDEN);
 
-        $this->assertDatabaseHas('posts', ['id' => $post->id]);
+        $this->assertDatabaseHas('posts', ['id' => $post->id, 'deleted_at' => null]);
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotRestorePosts()
+    {
+        $this->withExceptionHandling();
+
+        ($post = create(Post::class))->delete();
+
+        $this->patch(route('posts.update', $post), ['deleted_at' => null])
+            ->assertRedirect('/login');
+
+        $this->signIn()
+            ->patch(route('posts.update', $post), ['deleted_at' => null])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    /** @test */
+    public function testAuthorizedUsersCanRestorePosts()
+    {
+        $this->signInWithPermission('posts.restore');
+
+        ($post = create(Post::class))->delete();
+
+        $this->patchJson(route('posts.update', $post), ['deleted_at' => null])
+            ->assertSuccessful();
+
+        $this->assertDatabaseHas('posts', ['id' => $post->id, 'deleted_at' => null]);
     }
 
     /** @test */
@@ -118,15 +159,31 @@ class ParticipateInThreadsTest extends TestCase
 
         $this->signIn()
             ->patch(route('posts.update', $post))
-            ->assertStatus(403);
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /** @test */
+    public function testUsersCanUpdateTheirOwnPosts()
+    {
+        $this->signIn();
+
+        $post = create(Post::class, ['user_id' => Auth::id()]);
+
+        $updatedPost = 'You been changed, fool.';
+        $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
+
+        $this->assertDatabaseHas('posts', [
+            'id' => $post->id,
+            'body' => $updatedPost,
+        ]);
     }
 
     /** @test */
     public function testAuthorizedUsersCanUpdatePosts()
     {
-        $this->signIn();
+        $this->signInWithPermission('posts.edit');
 
-        $post = create(Post::class, ['user_id' => Auth::id()]);
+        $post = create(Post::class);
 
         $updatedPost = 'You been changed, fool.';
         $this->patch(route('posts.update', $post), ['body' => $updatedPost]);

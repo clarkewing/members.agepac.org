@@ -17,6 +17,7 @@
             'user' => Auth::check()
                 ? Auth::user()->toArray()
                  + ['isVerified' => Auth::user()->hasVerifiedEmail()]
+                 + ['permissions' => Auth::user()->getAllPermissions()->pluck('name')]
                  + ['defaultPaymentMethod' => optional(Auth::user()->defaultPaymentMethod())->id]
                 : null,
             'config' => [

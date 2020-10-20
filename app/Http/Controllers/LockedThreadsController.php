@@ -14,7 +14,7 @@ class LockedThreadsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('auth');
     }
 
     /**
@@ -22,9 +22,12 @@ class LockedThreadsController extends Controller
      *
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Thread $thread)
     {
+        $this->authorize('lock', $thread);
+
         $thread->update(['locked' => true]);
 
         return Response::make('', 204);
@@ -35,9 +38,12 @@ class LockedThreadsController extends Controller
      *
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Thread $thread)
     {
+        $this->authorize('unlock', $thread);
+
         $thread->update(['locked' => false]);
 
         return Response::make('', 204);

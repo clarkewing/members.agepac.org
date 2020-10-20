@@ -14,6 +14,7 @@
         pointer-events: none;
     }
 </style>
+@endpush
 
 @section('content')
 <div class="container bg-white shadow-sm" style="margin-top: -1.5rem;">

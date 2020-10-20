@@ -5,11 +5,12 @@ namespace App;
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
-    use Favoritable, MentionsUsers, Searchable;
+    use Favoritable, MentionsUsers, Searchable, SoftDeletes;
     use RecordsActivity {
         recordActivity as protected traitRecordActivity;
     }
@@ -24,6 +25,15 @@ class Post extends Model
         'user_id',
         'body',
         'is_thread_initiator',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'user_id' => 'integer',
     ];
 
     /**
@@ -60,13 +70,15 @@ class Post extends Model
             }
         });
 
+        static::deleting(function ($post) {
+            if ($post->isBest()) {
+                $post->thread->unmarkBestPost();
+            }
+        });
+
         static::deleted(function ($post) {
             if (! $post->is_thread_initiator) {
                 $post->owner->loseReputation('reply_posted');
-            }
-
-            if ($post->isBest()) {
-                $post->owner->loseReputation('best_post_awarded');
             }
 
             $post->attachments->each->delete();

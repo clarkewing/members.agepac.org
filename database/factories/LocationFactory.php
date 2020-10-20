@@ -22,7 +22,7 @@ $factory->define(Location::class, function (Faker $faker) {
         'sub_administrative_area' => null,
         'postal_code' => $faker->postcode,
         'country' => $country = $faker->country,
-        'country_code' => function () use ($country) {
+        'country_code' => function () {
             \Locale::setDefault(config('app.locale'));
 
             return array_rand(\Symfony\Component\Intl\Countries::getNames());

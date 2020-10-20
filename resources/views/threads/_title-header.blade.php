@@ -14,7 +14,7 @@
             <span v-text="title"></span>
 
             <button class="btn btn-sm lh-1 ml-1 p-1"
-                    v-if="authorize('owns', thread) && ! locked"
+                    v-if="(authorize('owns', thread) && ! locked) || authorize('hasPermission', 'threads.edit')"
                     @click="editing = true">
                 <span class="sr-only">Modifier</span>
                 <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -49,12 +49,12 @@
 
             <button :class="[classes('locked'), 'btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal']"
                     @click="toggleLock"
-                    v-if="authorize('isAdmin')"
+                    v-if="authorize('hasPermission', locked ? 'threads.unlock' : 'threads.lock')"
                     v-text="locked ? 'Dévérouiller' : 'Vérouiller'"></button>
 
             <button :class="[classes('pinned'), 'btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal']"
                     @click="togglePin"
-                    v-if="authorize('isAdmin')"
+                    v-if="authorize('hasPermission', pinned ? 'threads.unpin' : 'threads.pin')"
                     v-text="pinned ? 'Désépingler' : 'Épingler'"></button>
 
             <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"

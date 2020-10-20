@@ -4,20 +4,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Administrators
-    |--------------------------------------------------------------------------
-    |
-    | Users with these emails will have administrator privileges. This gives
-    | them unrestricted access to control the app.
-    |
-    */
-
-    'administrators' => [
-        'john@example.com',
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Reputation
     |--------------------------------------------------------------------------
     |

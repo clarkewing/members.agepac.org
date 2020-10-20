@@ -4,12 +4,13 @@ namespace App;
 
 use App\Events\ThreadPublished;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class Thread extends Model
 {
-    use MentionsUsers, RecordsActivity;
+    use MentionsUsers, RecordsActivity, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -50,6 +51,7 @@ class Thread extends Model
         'locked' => 'boolean',
         'pinned' => 'boolean',
         'visits' => 'integer',
+        'user_id' => 'integer',
     ];
 
     /**

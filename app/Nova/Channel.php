@@ -68,24 +68,26 @@ class Channel extends Resource
             TextAutoComplete::make('Parent')
                 ->items(\App\Channel::pluck('parent')),
             SluggableText::make('Name')
-                ->rules('required')
+                ->rules('required', 'string', 'max:50')
                 ->creationRules('unique:channels,name')
                 ->updateRules('unique:channels,name,{{resourceId}}')
                 ->sortable(),
             Slug::make('Slug')
                 ->hideFromIndex()
-                ->rules('required')
+                ->rules('required', 'string', 'max:50')
                 ->creationRules('unique:channels,slug')
                 ->updateRules('unique:channels,slug,{{resourceId}}')
                 ->help('Used for the channel URL')
                 ->slugModel(static::$model),
             Text::make('Description')
-                ->rules('required'),
+                ->rules('nullable', 'string', 'max:255'),
             Boolean::make('Archived')
+                ->updateRules('boolean')
                 ->onlyOnForms()->hideWhenCreating(),
             Boolean::make('Visible', function () {
                 return ! $this->archived;
-            })->exceptOnForms(),
+            })
+                ->exceptOnForms(),
         ];
     }
 

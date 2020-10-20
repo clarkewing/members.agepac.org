@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Middleware\Nova\AuthorizeMenusRequests;
+use App\Http\Middleware\Nova\AuthorizeSubscriptionsRequests;
 use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
+use Vyuldashev\NovaPermission\ForgetCachedPermissions;
 
 return [
 
@@ -103,6 +106,9 @@ return [
         DispatchServingNovaEvent::class,
         BootTools::class,
         Authorize::class,
+        ForgetCachedPermissions::class,
+        AuthorizeSubscriptionsRequests::class,
+        AuthorizeMenusRequests::class,
     ],
 
     /*

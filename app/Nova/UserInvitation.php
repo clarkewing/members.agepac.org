@@ -14,6 +14,16 @@ use Laravel\Nova\Fields\Text;
 class UserInvitation extends Resource
 {
     /**
+     * Get the logical group associated with the resource.
+     *
+     * @return string
+     */
+    public static function group()
+    {
+        return __('nova-permission-tool::navigation.sidebar-label');
+    }
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string
