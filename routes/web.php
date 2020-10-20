@@ -64,6 +64,17 @@ Route::apiResource('companies', 'CompaniesController')->except('destroy');
 /* Notifications */
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
 
+/* Polls */
+Route::get('/threads/{channel}/{thread}/poll', 'PollsController@index')->name('polls.index');
+Route::get('/threads/{channel}/{thread}/poll/create', 'PollsController@create')->name('polls.create');
+Route::post('/threads/{channel}/{thread}/poll', 'PollsController@store')->name('polls.store');
+Route::put('/poll/{poll}/update', 'PollsController@update')->name('polls.update');
+
+Route::get('/threads/{channel}/{thread}/poll/{poll}/options', 'PollOptionsController@index')->name('poll_options.index');
+Route::post('/threads/{channel}/{thread}/poll/{poll}/poll-option', 'PollOptionsController@store')->name('poll_options.store');
+Route::put('/poll-option/{pollOption}/update', 'PollOptionsController@update')->name('poll_options.update');
+Route::delete('/poll-option/{pollOption}/delete', 'PollOptionsController@destroy')->name('poll_options.destroy');
+
 /* Api */
 Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
     Route::get('/users', 'UsersController@index')->name('users.index');

@@ -15,10 +15,10 @@ class CreatePollsTable extends Migration
     {
         Schema::create('polls', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('thread_id');
+            $table->unsignedBigInteger('thread_id')->unique();
             $table->string('title', 255);
             $table->boolean('votes_editable');
-            $table->unsignedTinyInteger('max_votes');
+            $table->unsignedBigInteger('max_votes')->nullable();
             $table->unsignedTinyInteger('votes_privacy');
             $table->boolean('results_before_voting');
             $table->dateTime('locked_at')->nullable();
