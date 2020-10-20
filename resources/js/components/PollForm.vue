@@ -68,6 +68,7 @@
             <datetime format="DD/MM/YYYY H:i:s" width="300px" v-model="locked_at"></datetime>
         </div>
         <button type="submit" class="btn btn-success">Publier</button>
+        <button type="button" class="btn btn-success" @click="lock" v-bind:disabled="locked">Vérouiller</button>
     </form>
 </template>
 
@@ -89,7 +90,7 @@ export default {
             id: undefined,
             title: "",
             votes_editable: true,
-            max_votes: 1000000,
+            max_votes: 1,
             results_before_voting: true,
             votes_privacy: 0,
             votes_privacy_options: [
@@ -103,6 +104,7 @@ export default {
                 { id: undefined, status: "created", label: "", color: "#ffffff" },
             ],
             edition: false,
+            locked: true,
         };
         return res;
     },
@@ -123,14 +125,17 @@ export default {
                         this.locked_at = moment(data[0].locked_at).format(
                             "DD/MM/YYYY hh:mm:ss"
                         );
+                        this.locked = moment(data[0].locked_at) <= moment.now();
+                    } else {
+                        this.locked = false;
                     }
                     this.edition = true;
                     this.options = [];
 
+                    uri = "/threads/" + this.channelslug + "/" + this.thread.slug + "/poll/options";
+
                     axios
-                        .get(
-                            location.pathname.split("/create")[0] + "/" + this.id + "/options"
-                        )
+                        .get(uri)
                         .then((options_data) => {
                             options_data.data.forEach((option) => {
                                 console.log(option);
@@ -180,6 +185,11 @@ export default {
                 this.addPoll();
             }
         },
+        lock() {
+            console.log("Locking thread");
+            let uri = "/poll/" + this.id + "/lock";
+            axios.post(uri);
+        },
         updatePoll() {
             moment.locale("fr");
             let uri = "/poll/" + this.id + "/update";
@@ -201,10 +211,10 @@ export default {
                     flash(error.response.data, "danger");
                 });
 
-            uri = "/poll-option/" + option.id + "/update";
             this.options
                 .filter((option) => option.status == "updated")
                 .forEach((option) => {
+                    uri = "/poll-option/" + option.id + "/update";
                     axios
                         .put(uri, {
                             label: option.label,
@@ -217,7 +227,8 @@ export default {
             this.options
                 .filter((option) => option.status == "created")
                 .forEach((option) => {
-                    uri = "/" + this.id + "/poll-option";
+                    // uri = "/" + this.id + "/poll-option";
+                    uri = "/threads/" + this.channelslug + "/" + this.thread.slug + "/poll/poll-option"
                     axios
                         .post(uri, {
                             label: option.label,

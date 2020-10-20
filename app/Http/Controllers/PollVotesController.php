@@ -28,8 +28,10 @@ class PollVotesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(string $channelSlug, Thread $thread, Poll $poll)
+    public function index(string $channelSlug, Thread $thread)
     {
+        $poll = $thread->poll;
+        $this->authorize('viewAny', [PollVote::class, $poll]);
         return $poll->votes()->groupBy(['option_id'])->get(['option_id', DB::raw('COUNT(*) AS votes_number')]);
     }
 
@@ -38,8 +40,9 @@ class PollVotesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(string $channelSlug, Thread $thread, Poll $poll)
+    public function show(string $channelSlug, Thread $thread)
     {
+        $poll = $thread->poll;
         return $poll->votes()->where('user_id', '=', Auth::id())->get();
     }
 
@@ -48,8 +51,9 @@ class PollVotesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(string $channelSlug, Thread $thread, Poll $poll)
+    public function create(string $channelSlug, Thread $thread)
     {
+        $poll = $thread->poll;
         $this->authorize('create', $poll);
         return view('polls.vote', ['channelSlug' => json_decode($channelSlug)->name, 'thread' => $thread, 'poll' => $poll]);
     }
@@ -61,11 +65,16 @@ class PollVotesController extends Controller
      */
     public function store(Request $request, Poll $poll, PollOption $pollOption)
     {
-        $this->authorize('create', $poll);
+        $this->authorize('create', [PollVote::class, $poll]);
 
-        return $pollOption->addVote([
-            'user_id' => Auth::id(),
-        ]);
+        $identicalVote = $poll->votes()->where('user_id', Auth::id())->where('option_id', $pollOption->id);
+        if($identicalVote->doesntExist()) {
+            return $pollOption->addVote([
+                'user_id' => Auth::id(),
+            ]);
+        } else {
+            return $identicalVote->get();
+        }
     }
 
     /**
