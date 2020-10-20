@@ -120,6 +120,34 @@ class ParticipateInThreadsTest extends TestCase
     }
 
     /** @test */
+    public function testUnauthorizedUsersCannotRestorePosts()
+    {
+        $this->withExceptionHandling();
+
+        ($post = create(Post::class))->delete();
+
+        $this->patch(route('posts.update', $post), ['deleted_at' => null])
+            ->assertRedirect('/login');
+
+        $this->signIn()
+            ->patch(route('posts.update', $post), ['deleted_at' => null])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    /** @test */
+    public function testAuthorizedUsersCanRestorePosts()
+    {
+        $this->signInWithPermission('posts.restore');
+
+        ($post = create(Post::class))->delete();
+
+        $this->patchJson(route('posts.update', $post), ['deleted_at' => null])
+            ->assertSuccessful();
+
+        $this->assertDatabaseHas('posts', ['id' => $post->id, 'deleted_at' => null]);
+    }
+
+    /** @test */
     public function testUnauthorizedUsersCannotUpdatePosts()
     {
         $this->withExceptionHandling();

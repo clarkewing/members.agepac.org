@@ -72,6 +72,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        if ($request->has('deleted_at') && $request->input('deleted_at') === null) {
+            return $this->restore($request, $post);
+        }
+
         $this->authorize('update', $post);
 
         $request->validate(['body' => 'required']);
@@ -101,5 +105,27 @@ class PostsController extends Controller
 
         return back()
             ->with('flash', 'The post was deleted.');
+    }
+
+    /**
+     * Restore the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function restore(Request $request, Post $post)
+    {
+        $this->authorize('restore', $post);
+
+        $post->restore();
+
+        if ($request->expectsJson()) {
+            return Response::json($post);
+        }
+
+        return back()
+            ->with('flash', 'The post was restored.');
     }
 }
