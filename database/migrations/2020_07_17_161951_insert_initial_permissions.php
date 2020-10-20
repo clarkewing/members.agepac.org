@@ -84,6 +84,9 @@ class InsertInitialPermissions extends Migration
                 'restore',
                 'forceDelete',
             ]);
+
+        Role::create(['name' => 'Administrator'])
+            ->syncPermissions(Permission::all());
     }
 
     /**
