@@ -5,9 +5,6 @@ namespace Tests\Feature;
 use App\Poll;
 use App\Thread;
 use App\User;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class PollTest extends TestCase
@@ -38,7 +35,8 @@ class PollTest extends TestCase
     }
 
     /** @test */
-    public function testShouldHaveMinimumTwoOptions() {
+    public function testShouldHaveMinimumTwoOptions()
+    {
         $user = create(User::class);
         $this->withExceptionHandling()->signIn($user);
         $thread = create(Thread::class, ['user_id' => $user->id]);
@@ -61,7 +59,8 @@ class PollTest extends TestCase
         $this->delete(route('poll_options.destroy', ['pollOption' => $pollOption[0]->id]))->assertStatus(403);
     }
 
-    public function testOnlyPollCreatorCanEditPoll() {
+    public function testOnlyPollCreatorCanEditPoll()
+    {
         $john = create(User::class, ['username' => 'john.doe']);
         $jane = create(User::class, ['username' => 'jane.doe']);
         $thread = create(Thread::class, ['user_id' => $john->id]);
@@ -78,7 +77,8 @@ class PollTest extends TestCase
         $this->withExceptionHandling()->actingAs($jane)->put(route('polls.update', ['poll' => $poll]), $pollArr)->assertStatus(403);
     }
 
-    public function testPollCreatorCanChooseIfUsersCanChangeTheirVote() {
+    public function testPollCreatorCanChooseIfUsersCanChangeTheirVote()
+    {
         $creator = create(User::class);
         $user = create(User::class);
         $thread = create(Thread::class, ['user_id' => $creator->id]);
@@ -102,7 +102,8 @@ class PollTest extends TestCase
         $this->withExceptionHandling()->actingAs($user)->deleteJson(route('poll_votes.destroy', ['pollVote' => $pollVote]))->assertStatus(403);
     }
 
-    public function testPollCreatorCanSelectNumberOfVotesPerUser() {
+    public function testPollCreatorCanSelectNumberOfVotesPerUser()
+    {
         $creator = create(User::class);
         $user = create(User::class);
         $thread = create(Thread::class, ['user_id' => $creator->id]);
@@ -128,7 +129,8 @@ class PollTest extends TestCase
         $this->withExceptionHandling()->actingAs($user)->postJson(route('poll_votes.store', ['poll' => $poll, 'pollOption' => $pollOptions[1]]))->assertStatus(201);
     }
 
-    public function testVotePrivacy() {
+    public function testVotePrivacy()
+    {
         $creator = create(User::class);
         $user = create(User::class);
         $thread_none = create(Thread::class, ['user_id' => $creator->id]);
@@ -179,7 +181,8 @@ class PollTest extends TestCase
         $this->withExceptionHandling()->actingAs($creator)->get(route('poll.results', ['channel' => $channel_all, 'thread' => $thread_all, 'poll' => $poll_all]))->assertStatus(200);
     }
 
-    public function testLock() {
+    public function testLock()
+    {
         $creator = create(User::class);
         $user = create(User::class);
         $thread_locked = create(Thread::class, ['user_id' => $creator->id]);

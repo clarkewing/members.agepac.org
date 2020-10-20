@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Poll;
-use App\Thread;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Carbon;
@@ -104,7 +103,7 @@ class PollPolicy
      */
     public function delete(User $user, Poll $poll)
     {
-        return !$poll->user_id
+        return ! $poll->user_id
                && $this->update($user, $poll);
     }
 

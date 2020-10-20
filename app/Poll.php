@@ -38,7 +38,7 @@ class Poll extends Model
     }
 
     /**
-     * Get the options of the poll
+     * Get the options of the poll.
      */
     public function options()
     {
@@ -46,7 +46,7 @@ class Poll extends Model
     }
 
     /**
-     * Get the votes of the poll
+     * Get the votes of the poll.
      */
     public function votes()
     {

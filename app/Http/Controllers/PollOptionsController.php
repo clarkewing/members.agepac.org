@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreatePollOptionRequest;
-use App\Http\Requests\CreatePollRequest;
-use App\Poll;
 use App\PollOption;
 use App\Thread;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class PollOptionsController extends Controller
 {
@@ -30,10 +27,11 @@ class PollOptionsController extends Controller
     public function index(string $channelSlug, Thread $thread)
     {
         $poll = $thread->poll;
-        if($poll)
+        if ($poll) {
             return $poll->options()->get();
-        else
+        } else {
             return [];
+        }
     }
 
     /**
@@ -48,7 +46,7 @@ class PollOptionsController extends Controller
         $this->authorize('update', $pollOption);
 
         $request->validate(['label' => 'required',
-            'color' => ['nullable', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i']]);
+            'color' => ['nullable', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i'], ]);
 
         $pollOption->update($request->only(['label', 'color']));
     }
@@ -68,8 +66,7 @@ class PollOptionsController extends Controller
         }
 
         $request->validate(['label' => 'required',
-            'color' => ['nullable', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i']]);
-
+            'color' => ['nullable', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i'], ]);
 
         $pollOption = $poll->addOption([
             'label' => $request->input('label'),

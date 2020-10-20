@@ -11,11 +11,11 @@ $factory->define(Poll::class, function (Faker $faker) {
         'thread_id' => function () {
             return factory(Thread::class)->create()->id;
         },
-        'title' => "Sondage",
+        'title' => 'Sondage',
         'votes_editable' => false,
         'max_votes' => 1,
         'votes_privacy' => 0,
         'results_before_voting' => false,
-        'locked_at' => "2030-09-17T23:27:00+02:00",
+        'locked_at' => '2030-09-17T23:27:00+02:00',
     ];
 });

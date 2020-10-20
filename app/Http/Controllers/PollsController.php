@@ -25,7 +25,6 @@ class PollsController extends Controller
     }
 
     /**
-     *
      * @return \Illuminate\Http\Response
      */
     public function show(Poll $poll)
@@ -63,7 +62,7 @@ class PollsController extends Controller
     {
         $this->authorize('create', Poll::class);
 
-        if($thread->user_id != Auth::id()) {
+        if ($thread->user_id != Auth::id()) {
             return Response::make('Unauthorized', 403);
         }
 
@@ -71,7 +70,7 @@ class PollsController extends Controller
             return Response::make('Thread is locked.', 422);
         }
 
-        if($thread->hasPoll()) {
+        if ($thread->hasPoll()) {
             return Response::make('A poll is already attached to this thread.', 400);
         }
 
@@ -85,10 +84,10 @@ class PollsController extends Controller
         ]);
 
         $optionColors = $request->get('option_colors');
-        foreach($request->get('option_labels') as $key => $val) {
+        foreach ($request->get('option_labels') as $key => $val) {
             $poll->addOption([
                 'label' => $val,
-                'color' => $optionColors[$key]
+                'color' => $optionColors[$key],
             ]);
         }
 
@@ -104,6 +103,7 @@ class PollsController extends Controller
     {
         $poll = $thread->poll;
         $this->authorize('viewResults', $poll);
+
         return view('polls.results', ['channelSlug' => json_decode($channelSlug)->name, 'thread' => $thread, 'poll' => $poll]);
     }
 
@@ -133,7 +133,7 @@ class PollsController extends Controller
             'votes_editable' => 'boolean',
             'max_votes' => 'nullable|digits_between:1,1000000',
             'votes_privacy' => 'digits_between:0,2',
-            'results_before_voting' => 'boolean']);
+            'results_before_voting' => 'boolean', ]);
 
         $poll->update($request->only(['title', 'votes_editable', 'max_votes', 'votes_privacy', 'results_before_voting', 'locked_at']));
     }

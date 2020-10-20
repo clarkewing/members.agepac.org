@@ -26,7 +26,7 @@ class PollOption extends Model
     }
 
     /**
-     * Get the votes of the poll
+     * Get the votes of the poll.
      */
     public function votes()
     {

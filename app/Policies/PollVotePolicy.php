@@ -94,6 +94,7 @@ class PollVotePolicy
     public function update(User $user, PollVote $pollVote)
     {
         $poll = $pollVote->option->poll;
+
         return $pollVote->user_id == $user->id && $poll->votes_editable &&
                (is_null($poll->locked_at) || $poll->locked_at > Carbon::now());
     }
@@ -108,6 +109,7 @@ class PollVotePolicy
     public function delete(User $user, PollVote $pollVote)
     {
         $poll = $pollVote->option->poll;
+
         return $pollVote->user_id == $user->id && $poll->votes_editable &&
                (is_null($poll->locked_at) || $poll->locked_at > Carbon::now());
     }
