@@ -38,6 +38,26 @@ class NovaTest extends TestCase
             ->assertSuccessful();
     }
 
+    /** @test */
+    public function testUserWithoutNovaAccessCannotSeeAdministrationLinkInNavbar()
+    {
+        $this->signIn();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertDontSee('href="/nova"', false);
+    }
+
+    /** @test */
+    public function testUserWithNovaAccessCanSeeAdministrationLinkInNavbar()
+    {
+        $this->signInWithPermission('roles&permissions.manage');
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('href="/nova"', false);
+    }
+
     /**
      * @return \Illuminate\Testing\TestResponse
      */

@@ -65,9 +65,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function gate()
     {
-        Gate::define('viewNova', function (User $user) {
-            return ! empty(Nova::resourcesForNavigation(request()));
-        });
+        // viewNova gate defined in AuthServiceProvider
     }
 
     /**

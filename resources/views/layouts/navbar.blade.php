@@ -51,6 +51,14 @@
 
                             <div class="dropdown-divider"></div>
 
+                            @can('viewNova')
+                                <a class="dropdown-item" href="{{ config('nova.path') }}">
+                                    Administration
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+                            @endcan
+
                             <logout-button class="dropdown-item" route="{{ route('logout') }}">
                                 {{ __('Logout') }}
                             </logout-button>

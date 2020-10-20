@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Http\Middleware\Authenticate;
 use App\Policies\UserPolicy;
 use App\Profile;
+use App\User;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Nova;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -39,5 +41,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::define('viewNova', function (User $user) {
+            return $user->permissions->count();
+        });
     }
 }
