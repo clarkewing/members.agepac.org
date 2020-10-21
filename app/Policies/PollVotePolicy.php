@@ -23,17 +23,6 @@ class PollVotePolicy
     }
 
     /**
-     * Determine whether the user can cast a vote.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function create(User $user, Poll $poll)
-    {
-        return (is_null($poll->locked_at) || $poll->locked_at > Carbon::now()) && ($poll->votes()->where('user_id', $user->id)->count() < $poll->max_votes);
-    }
-
-    /**
      * Determine whether the user can view any vote.
      *
      * @param  \App\User  $user

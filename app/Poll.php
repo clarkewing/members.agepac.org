@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class Poll extends Model
 {
@@ -95,5 +97,36 @@ class Poll extends Model
         foreach ($options as $option) {
             $this->addOption($option);
         }
+    }
+
+    /**
+     * Cast a vote.
+     *
+     * @param  array  $vote
+     * @return void
+     */
+    public function castVote(array $vote)
+    {
+        // Reset option votes.
+        $this->votes()->where('user_id', $user_id = Auth::id())->delete();
+
+        // Cast new option votes.
+        PollVote::insert(array_map(function ($option_id) use ($user_id) {
+            return compact('option_id', 'user_id');
+        }, $vote));
+    }
+
+    /**
+     * Get the user's vote.
+     *
+     * @param  \App\User|null  $user
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getVote(User $user = null)
+    {
+        return $this->votes()
+            ->where('user_id', optional($user)->id ?? Auth::id())
+            ->with('option')
+            ->get();
     }
 }

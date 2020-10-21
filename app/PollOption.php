@@ -46,17 +46,4 @@ class PollOption extends Model
     {
         return $this->hasMany(PollVote::class, 'option_id');
     }
-
-    /**
-     * Add a vote for the option.
-     *
-     * @param  array $vote
-     * @return \App\PollVote
-     */
-    public function addVote(array $vote)
-    {
-        $vote = $this->votes()->create($vote);
-
-        return $vote;
-    }
 }

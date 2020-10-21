@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Poll;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Carbon;
 
 class PollPolicy
 {
@@ -118,5 +117,20 @@ class PollPolicy
     public function forceDelete(User $user, Poll $poll)
     {
         //
+    }
+
+    /**
+     * Determine whether the user can vote in the poll.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Poll  $poll
+     * @return mixed
+     */
+    public function vote(User $user, Poll $poll)
+    {
+        $userVotesCount = $poll->votes()->where('user_id', $user->id)->count();
+
+        return (is_null($poll->locked_at) || $poll->locked_at > now())
+               && ($userVotesCount === 0 || $poll->votes_editable);
     }
 }

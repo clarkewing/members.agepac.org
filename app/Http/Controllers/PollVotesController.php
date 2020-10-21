@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Poll;
-use App\PollOption;
 use App\PollVote;
 use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class PollVotesController extends Controller
 {
@@ -64,20 +64,22 @@ class PollVotesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Poll  $poll
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request, Poll $poll, PollOption $pollOption)
+    public function store(Request $request, Poll $poll)
     {
-        $this->authorize('create', [PollVote::class, $poll]);
+        $this->authorize('vote', $poll);
 
-        $identicalVote = $poll->votes()->where('user_id', Auth::id())->where('option_id', $pollOption->id);
-        if ($identicalVote->doesntExist()) {
-            return $pollOption->addVote([
-                'user_id' => Auth::id(),
-            ]);
-        } else {
-            return $identicalVote->get();
-        }
+        $request->validate([
+            'vote' => ['array', "max:{$poll->max_votes}"],
+        ]);
+
+        $poll->castVote($request->input('vote'));
+
+        return Response::make($poll->votes, HttpResponse::HTTP_CREATED);
     }
 
     /**
