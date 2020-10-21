@@ -22,6 +22,26 @@ class Poll extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'votes_editable' => 'boolean',
+        'results_before_voting' => 'boolean',
+        'max_votes' => 'integer',
+        'votes_privacy' => 'integer',
+        'locked_at' => 'date',
+    ];
+
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['options'];
+
+    /**
      * Get the user that owns the poll.
      */
     public function owner()
@@ -57,12 +77,23 @@ class Poll extends Model
      * Add an option to the poll.
      *
      * @param  array $option
-     * @return \App\PollOption
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function addOption(array $option)
     {
-        $option = $this->options()->create($option);
+        return $this->options()->create($option);
+    }
 
-        return $option;
+    /**
+     * Add options to the poll.
+     *
+     * @param  array  $options
+     * @return void
+     */
+    public function addOptions(array $options)
+    {
+        foreach ($options as $option) {
+            $this->addOption($option);
+        }
     }
 }

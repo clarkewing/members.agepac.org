@@ -12,7 +12,6 @@ class PollOption extends Model
      * @var array
      */
     protected $fillable = [
-        'poll_id',
         'label',
         'color',
     ];

@@ -5,33 +5,35 @@ namespace Tests\Feature;
 use App\Poll;
 use App\Thread;
 use App\User;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class PollTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /** @test */
     public function testOnlyThreadCreatorCanAttachPollToThread()
     {
-        $john = create(User::class, ['username' => 'john.doe']);
-        $jane = create(User::class, ['username' => 'jane.doe']);
-        $thread = create(Thread::class, ['user_id' => $john->id]);
-        $poll = make(Poll::class, ['thread_id' => $thread->id]);
-        $poll->option_labels = ['Option 1', 'Option 2', 'Option 3'];
-        $poll->option_colors = ['#ffffff', '#ffffff', '#ffffff'];
-        $pollArr = json_decode(json_encode($poll), true);
+        $this->withExceptionHandling();
 
-        $channel = $thread->channel;
+        $thread = create(Thread::class);
+        $data = Arr::except(make(Poll::class)->toArray(), 'thread_id');
 
-        // Checking that non-creators cannot create a poll
-        $this->actingAs($jane)->post(route('polls.store', ['channel' => $channel, 'thread' => $thread]), $pollArr)->assertStatus(403);
+        $this->actingAs(create(User::class)) // Random user
+            ->post(
+                route('polls.store', ['channel' => $thread->channel, 'thread' => $thread]),
+                $data
+            )
+            ->assertForbidden();
 
-        // Checking that the thread creator can create a poll
-        $this->actingAs($john)->post(route('polls.store', ['channel' => $channel, 'thread' => $thread]), $pollArr)->assertStatus(201);
+        $response = $this->actingAs($thread->creator)
+            ->post(
+                route('polls.store', ['channel' => $thread->channel, 'thread' => $thread]),
+                $data
+            )
+            ->assertCreated();
+
+        $response->assertJson(Arr::except($data, 'options'));
+        $this->assertCount(count($data['options']), $response->json('options'));
     }
 
     /** @test */

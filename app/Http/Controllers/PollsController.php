@@ -7,8 +7,8 @@ use App\Poll;
 use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class PollsController extends Controller
 {
@@ -55,25 +55,13 @@ class PollsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CreatePollRequest  $request
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
     public function store(CreatePollRequest $request, string $channelSlug, Thread $thread)
     {
-        $this->authorize('create', Poll::class);
-
-        if ($thread->user_id != Auth::id()) {
-            return Response::make('Unauthorized', 403);
-        }
-
-        if ($thread->locked) {
-            return Response::make('Thread is locked.', 422);
-        }
-
-        if ($thread->hasPoll()) {
-            return Response::make('A poll is already attached to this thread.', 400);
-        }
-
         $poll = $thread->addPoll([
             'title' => $request->input('title'),
             'votes_editable' => $request->input('votes_editable'),
@@ -83,15 +71,9 @@ class PollsController extends Controller
             'locked_at' => $request->input('locked_at'),
         ]);
 
-        $optionColors = $request->get('option_colors');
-        foreach ($request->get('option_labels') as $key => $val) {
-            $poll->addOption([
-                'label' => $val,
-                'color' => $optionColors[$key],
-            ]);
-        }
+        $poll->addOptions($request->input('options'));
 
-        return $poll;
+        return Response::make($poll->fresh(), HttpResponse::HTTP_CREATED);
     }
 
     /**

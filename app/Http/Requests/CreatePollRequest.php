@@ -15,7 +15,7 @@ class CreatePollRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('create', Poll::class);
+        return Gate::allows('attachPoll', $this->thread);
     }
 
     /**
@@ -25,21 +25,16 @@ class CreatePollRequest extends FormRequest
      */
     public function rules()
     {
-        $option_labels = $this->request->get('option_labels');
-        $rules = [
+        return [
             'title' => 'required',
+            'options' => 'required|array|between:2,100',
+            'options.*.label' => 'required',
+            'options.*.color' => ['nullable', 'regex:/^#([A-F0-9]{6}|[A-F0-9]{3})$/i'],
             'votes_editable' => 'required|boolean',
-            'max_votes' => 'nullable|digits_between:1,' . count($option_labels),
+            'max_votes' => 'nullable|digits_between:1,' . count($this->input('options')),
             'votes_privacy' => 'required|digits_between:0,2',
             'results_before_voting' => 'required|boolean',
             'locked_at' => 'date',
-            'option_labels' => 'required|array|between:2,100',
         ];
-        foreach ($option_labels as $key => $val) {
-            $rules['option_labels.' . $key] = 'required';
-            $rules['option_colors.' . $key] = ['nullable', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i'];
-        }
-
-        return $rules;
     }
 }

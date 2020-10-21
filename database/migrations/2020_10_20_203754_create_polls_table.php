@@ -21,7 +21,7 @@ class CreatePollsTable extends Migration
             $table->unsignedBigInteger('max_votes')->nullable();
             $table->unsignedTinyInteger('votes_privacy');
             $table->boolean('results_before_voting');
-            $table->dateTime('locked_at')->nullable();
+            $table->timestamp('locked_at')->nullable();
             $table->timestamps();
 
             $table->foreign('thread_id')
