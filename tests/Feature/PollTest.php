@@ -230,7 +230,7 @@ class PollTest extends TestCase
             route('polls.store', ['channel' => $thread->channel, 'thread' => $thread]),
             array_merge(
                 Arr::except(make(Poll::class)->toArray(), 'thread_id'),
-                ['options' => make(PollOption::class, ['poll_id' => null], random_int(2, 10))->toArray()],
+                ['options' => make(PollOption::class, ['poll_id' => null], rand(2, 10))->toArray()],
                 $data,
             )
         );
