@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Faker\Factory as Faker;
 use Illuminate\Database\Eloquent\Model;
 
 class PollOption extends Model
@@ -15,6 +16,20 @@ class PollOption extends Model
         'label',
         'color',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::creating(function ($pollOption) {
+            if (is_null($pollOption->color)) {
+                $pollOption->color = Faker::create()->hexColor;
+            }
+        });
+    }
 
     /**
      * Get the poll.

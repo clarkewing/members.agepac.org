@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Poll;
+use App\PollOption;
 use App\Thread;
 use App\User;
 use Illuminate\Support\Arr;
@@ -16,24 +17,14 @@ class PollTest extends TestCase
         $this->withExceptionHandling();
 
         $thread = create(Thread::class);
-        $data = Arr::except(make(Poll::class)->toArray(), 'thread_id');
 
         $this->actingAs(create(User::class)) // Random user
-            ->post(
-                route('polls.store', ['channel' => $thread->channel, 'thread' => $thread]),
-                $data
-            )
+            ->attachPollToThread($thread)
             ->assertForbidden();
 
-        $response = $this->actingAs($thread->creator)
-            ->post(
-                route('polls.store', ['channel' => $thread->channel, 'thread' => $thread]),
-                $data
-            )
+        $this->actingAs($thread->creator)
+            ->attachPollToThread($thread)
             ->assertCreated();
-
-        $response->assertJson(Arr::except($data, 'options'));
-        $this->assertCount(count($data['options']), $response->json('options'));
     }
 
     /** @test */
@@ -204,5 +195,24 @@ class PollTest extends TestCase
         $pollOption_locked = $this->actingAs($user)->get(route('poll_options.index', ['channel' => $channel_locked, 'thread' => $thread_locked, 'poll' => $poll_locked]))->original[0];
 
         $this->withExceptionHandling()->actingAs($user)->postJson(route('poll_votes.store', ['poll' => $poll_locked, 'pollOption' => $pollOption_locked]))->assertStatus(403);
+    }
+
+    /**
+     * Send post request to attach poll to thread.
+     *
+     * @param  \App\Thread  $thread
+     * @param  array  $data
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function attachPollToThread(Thread $thread, array $data = [])
+    {
+        return $this->postJson(
+            route('polls.store', ['channel' => $thread->channel, 'thread' => $thread]),
+            array_merge(
+                Arr::except(make(Poll::class)->toArray(), 'thread_id'),
+                ['options' => make(PollOption::class, ['poll_id' => null], random_int(2, 10))->toArray()],
+                $data,
+            )
+        );
     }
 }
