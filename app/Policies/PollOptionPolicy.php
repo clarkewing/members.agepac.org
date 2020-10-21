@@ -19,7 +19,7 @@ class PollOptionPolicy
      */
     public function create(User $user, PollOption $pollOption)
     {
-        return $pollOption->poll->user_id == $user->id;
+        return $this->update($user, $pollOption);
     }
 
     /**
@@ -31,7 +31,7 @@ class PollOptionPolicy
      */
     public function update(User $user, PollOption $pollOption)
     {
-        return $pollOption->poll->user_id == $user->id;
+        return $pollOption->poll->thread->user_id === $user->id;
     }
 
     /**
@@ -43,6 +43,7 @@ class PollOptionPolicy
      */
     public function delete(User $user, PollOption $pollOption)
     {
-        return $pollOption->poll->user_id == $user->id;
+        return $this->update($user, $pollOption)
+            && $pollOption->poll->options->count() > 2;
     }
 }

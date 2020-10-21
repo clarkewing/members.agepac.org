@@ -88,11 +88,6 @@ class PollOptionsController extends Controller
     {
         $this->authorize('delete', $pollOption);
 
-        if ($pollOption->poll->options()->count() <= 2) {
-            return back()
-                ->with('flash', 'Error : The poll must contain at least 2 options');
-        }
-
         $pollOption->delete();
 
         if ($request->expectsJson()) {

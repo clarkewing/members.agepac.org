@@ -11,11 +11,16 @@ use Tests\TestCase;
 
 class PollTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withExceptionHandling();
+    }
+
     /** @test */
     public function testOnlyThreadCreatorCanAttachPollToThread()
     {
-        $this->withExceptionHandling();
-
         $thread = create(Thread::class);
 
         $this->actingAs(create(User::class)) // Random user
@@ -28,24 +33,26 @@ class PollTest extends TestCase
     }
 
     /** @test */
-    public function testShouldHaveMinimumTwoOptions()
+    public function testPollMustHaveAtLeastTwoOptions()
     {
-        $user = create(User::class);
-        $this->withExceptionHandling()->signIn($user);
-        $thread = create(Thread::class, ['user_id' => $user->id]);
-        $poll = make(Poll::class, ['thread_id' => $thread->id]);
+        $thread = create(Thread::class);
 
-        $poll->option_labels = ['Option 1'];
-        $poll->option_colors = ['#ffffff'];
-        $pollArr = json_decode(json_encode($poll), true);
+        $this->signIn($thread->creator);
 
-        $channel = $thread->channel;
+        $this->attachPollToThread($thread, ['options' => null])
+            ->assertJsonValidationErrors('options');
 
-        $this->postJson(route('polls.store', ['channel' => $channel, 'thread' => $thread]), $pollArr)->assertStatus(422);
+        $this->attachPollToThread($thread, ['options' => [
+            ['label' => 'Option 1'],
+        ]])
+            ->assertJsonValidationErrors('options');
 
-        $poll->option_labels = ['Option 1', 'Option 2'];
-        $poll->option_colors = ['#ffffff', '#ffffff'];
-        $pollArr = json_decode(json_encode($poll), true);
+        $this->attachPollToThread($thread, ['options' => [
+            ['label' => 'Option 1'],
+            ['label' => 'Option 2'],
+        ]])
+            ->assertJsonMissingValidationErrors('options');
+    }
 
         $poll = $this->post(route('polls.store', ['channel' => $channel, 'thread' => $thread]), $pollArr)->original;
         $pollOption = $this->get(route('poll_options.index', ['channel' => $channel, 'thread' => $thread, 'poll' => $poll]))->original;
