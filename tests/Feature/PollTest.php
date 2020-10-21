@@ -54,9 +54,22 @@ class PollTest extends TestCase
             ->assertJsonMissingValidationErrors('options');
     }
 
-        $poll = $this->post(route('polls.store', ['channel' => $channel, 'thread' => $thread]), $pollArr)->original;
-        $pollOption = $this->get(route('poll_options.index', ['channel' => $channel, 'thread' => $thread, 'poll' => $poll]))->original;
-        $this->delete(route('poll_options.destroy', ['pollOption' => $pollOption[0]->id]))->assertStatus(403);
+    /** @test */
+    public function testPollOptionCannotBeDeletedIfItWillResultInLessThanTwoOptions()
+    {
+        $poll = create(Poll::class);
+
+        // Ensure we have exactly two options.
+        $poll->options()->delete();
+        $poll->addOptions([
+            ['label' => 'Option 1'],
+            ['label' => 'Option 2'],
+        ]);
+
+        $this->signIn($poll->thread->creator);
+
+        $this->delete(route('poll_options.destroy', ['pollOption' => $poll->options[0]]))
+            ->assertForbidden();
     }
 
     public function testOnlyPollCreatorCanEditPoll()
