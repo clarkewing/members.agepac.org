@@ -105,7 +105,7 @@ class PollsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Poll  $poll
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Poll $poll)
     {
@@ -115,9 +115,12 @@ class PollsController extends Controller
             'votes_editable' => 'boolean',
             'max_votes' => 'nullable|digits_between:1,1000000',
             'votes_privacy' => 'digits_between:0,2',
-            'results_before_voting' => 'boolean', ]);
+            'results_before_voting' => 'boolean',
+        ]);
 
-        $poll->update($request->only(['title', 'votes_editable', 'max_votes', 'votes_privacy', 'results_before_voting', 'locked_at']));
+        $poll->fill($request->all())->save();
+
+        return Response::json($poll);
     }
 
     /**

@@ -74,20 +74,20 @@ class PollTest extends TestCase
 
     public function testOnlyPollCreatorCanEditPoll()
     {
-        $john = create(User::class, ['username' => 'john.doe']);
-        $jane = create(User::class, ['username' => 'jane.doe']);
-        $thread = create(Thread::class, ['user_id' => $john->id]);
-        $poll = make(Poll::class, ['thread_id' => $thread->id]);
-        $poll->option_labels = ['Option 1', 'Option 2', 'Option 3'];
-        $poll->option_colors = ['#ffffff', '#ffffff', '#ffffff'];
-        $pollArr = json_decode(json_encode($poll), true);
+        $poll = create(Poll::class, ['title' => 'Old title']);
 
-        $channel = $thread->channel;
+        $this->actingAs(create(User::class))
+            ->putJson(route('polls.update', $poll), ['title' => 'New title'])
+            ->assertForbidden();
 
-        $poll = $this->actingAs($john)->post(route('polls.store', ['channel' => $channel, 'thread' => $thread]), $pollArr)->original;
+        $this->assertEquals('Old title', $poll->fresh()->title);
 
-        $this->actingAs($john)->put(route('polls.update', ['poll' => $poll]), $pollArr)->assertStatus(200);
-        $this->withExceptionHandling()->actingAs($jane)->put(route('polls.update', ['poll' => $poll]), $pollArr)->assertStatus(403);
+        $this->actingAs($poll->thread->creator)
+            ->putJson(route('polls.update', $poll), ['title' => 'New title'])
+            ->assertSuccessful()
+            ->assertJson(['title' => 'New title']);
+
+        $this->assertEquals('New title', $poll->fresh()->title);
     }
 
     public function testPollCreatorCanChooseIfUsersCanChangeTheirVote()
