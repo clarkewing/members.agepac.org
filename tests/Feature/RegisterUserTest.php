@@ -269,7 +269,11 @@ class RegisterUserTest extends TestCase
         $this->assertEquals('US', Auth::user()->phone->getCountry());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group geoip-api
+     */
     public function testPhoneWithoutCountryCodeFallsbackToFranceThenGeoIpBased()
     {
         // US IP address (using Google data)

@@ -16,6 +16,7 @@ class CreateOccupationTest extends TestCase
         'aircraft_id' => 32, // DHC8 Q400
         'company' => [
             'name' => 'Flybe',
+            'description' => 'Cool description here',
         ],
         'status_code' => 1,
         'description' => 'Awesome description, even though the company went bust.',
@@ -274,7 +275,11 @@ class CreateOccupationTest extends TestCase
             ->assertJsonValidationErrors('description');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group external-api
+     * @group wikimedia-api
+     */
     public function testCompanyWithoutIdCreatesNewCompany()
     {
         $this->assertDatabaseCount('companies', 0);
