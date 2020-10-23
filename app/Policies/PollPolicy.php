@@ -42,18 +42,34 @@ class PollPolicy
      */
     public function viewResults(User $user, Poll $poll)
     {
-        switch ($poll->votes_privacy) {
-            case 0:
-                //No one can see who voted for what
-                return false;
-                break;
-            case 1:
-                //Only the vote creator can see who voted for what
-                return $user->id == $poll->thread->user_id;
-                break;
-            default:
-                //Everyone can see who voted for what
+        return $user->can('update', $poll->thread)
+            || $poll->results_before_voting || $poll->hasVoted();
+    }
+
+    /**
+     * Determine whether the user can view the poll result.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Poll  $poll
+     * @return mixed
+     */
+    public function viewVotes(User $user, Poll $poll)
+    {
+        switch (Poll::$votesPrivacyValues[$poll->votes_privacy]) {
+            case 'public':
+                // Everyone can see who voted for what.
                 return true;
+                break;
+
+            case 'private':
+                // Only those with poll update abilities can see who voted for what.
+                return $user->can('update', $poll->thread);
+                break;
+
+            case 'anonymous':
+            default:
+                // No one can see who voted for what.
+                return false;
                 break;
         }
     }
@@ -67,7 +83,10 @@ class PollPolicy
      */
     public function update(User $user, Poll $poll)
     {
-        return $poll->thread->user_id == $user->id && $poll->votes()->count() == 0 && (is_null($poll->locked_at) || $poll->locked_at > Carbon::now());
+        return ! $poll->isLocked()
+               && $poll->votes()->count() === 0
+               && ! $poll->thread->locked
+               && $user->can('update', $poll->thread);
     }
 
     /**

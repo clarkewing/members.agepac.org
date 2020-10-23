@@ -65,11 +65,9 @@ Route::apiResource('companies', 'CompaniesController')->except('destroy');
 Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
 
 /* Polls */
-Route::get('/polls/{poll}', 'PollsController@show')->name('polls.show');
-Route::get('/threads/{channel}/{thread}/poll', 'PollsController@index')->name('polls.index');
+Route::get('/threads/{channel}/{thread}/poll', 'PollsController@show')->name('polls.show');
 Route::get('/threads/{channel}/{thread}/poll/create', 'PollsController@create')->name('polls.create');
 Route::post('/threads/{channel}/{thread}/poll', 'PollsController@store')->name('polls.store');
-Route::post('/polls/{poll}/lock', 'PollsController@lock')->name('polls.lock');
 Route::put('/polls/{poll}', 'PollsController@update')->name('polls.update');
 
 Route::get('/threads/{channel}/{thread}/poll/options', 'PollOptionsController@index')->name('poll_options.index');
@@ -80,10 +78,9 @@ Route::delete('/poll-option/{pollOption}/delete', 'PollOptionsController@destroy
 Route::get('/polls/{poll}/vote', 'PollVotesController@show')->name('poll_votes.show');
 Route::get('/polls/{poll}/vote/create', 'PollVotesController@create')->name('poll_votes.create');
 Route::post('/polls/{poll}/vote', 'PollVotesController@store')->name('poll_votes.store');
-Route::delete('/polls/{poll}/vote', 'PollVotesController@destroy')->name('poll_votes.destroy');
 
 Route::get('/threads/{channel}/{thread}/poll/votes', 'PollVotesController@index')->name('poll_votes.index');
-Route::get('/threads/{channel}/{thread}/poll/results', 'PollsController@results')->name('poll.results');
+Route::get('/threads/{channel}/{thread}/poll/results', 'PollResultsController@show')->name('poll_results.show');
 
 /* Api */
 Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {

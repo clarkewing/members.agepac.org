@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreatePollRequest;
+use App\Http\Requests\StorePollRequest;
+use App\Http\Requests\UpdatePollRequest;
 use App\Poll;
 use App\Thread;
 use Illuminate\Http\Request;
@@ -25,21 +26,15 @@ class PollsController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Poll $poll)
-    {
-        return $poll;
-    }
-
-    /**
-     * Display a listing of the resource.
+     * Show the poll.
      *
-     * @return \Illuminate\Http\Response
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(string $channelSlug, Thread $thread)
+    public function show(string $channelSlug, Thread $thread)
     {
-        return $thread->poll()->get();
+        return Response::json($thread->poll);
     }
 
     /**
@@ -55,23 +50,16 @@ class PollsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CreatePollRequest  $request
+     * @param  \App\Http\Requests\StorePollRequest  $request
      * @param  string  $channelSlug
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function store(CreatePollRequest $request, string $channelSlug, Thread $thread)
+    public function store(StorePollRequest $request, string $channelSlug, Thread $thread)
     {
-        $poll = $thread->addPoll([
-            'title' => $request->input('title'),
-            'votes_editable' => $request->input('votes_editable'),
-            'max_votes' => $request->input('max_votes'),
-            'votes_privacy' => $request->input('votes_privacy'),
-            'results_before_voting' => $request->input('results_before_voting'),
-            'locked_at' => $request->input('locked_at'),
-        ]);
+        $poll = $thread->addPoll($request->all());
 
-        $poll->addOptions($request->input('options'));
+        $poll->syncOptions($request->input('options'));
 
         return Response::make($poll->fresh(), HttpResponse::HTTP_CREATED);
     }
@@ -90,35 +78,18 @@ class PollsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpdatePollRequest  $request
      * @param  \App\Poll  $poll
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Poll $poll)
+    public function update(UpdatePollRequest $request, Poll $poll)
     {
-        $this->authorize('update', $poll);
-
-        $request->validate([
-            'votes_editable' => 'boolean',
-            'max_votes' => 'nullable|digits_between:1,1000000',
-            'votes_privacy' => 'digits_between:0,2',
-            'results_before_voting' => 'boolean',
-        ]);
-
         $poll->fill($request->all())->save();
+
+        $poll->syncOptions($request->input('options'));
 
         return Response::json($poll);
     }

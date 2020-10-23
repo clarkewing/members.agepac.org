@@ -46,4 +46,12 @@ class PollOption extends Model
     {
         return $this->hasMany(PollVote::class, 'option_id');
     }
+
+    /**
+     * Get the users that voted for this option.
+     */
+    public function voters()
+    {
+        return $this->belongsToMany(User::class, 'poll_votes', 'option_id');
+    }
 }

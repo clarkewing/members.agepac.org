@@ -15,7 +15,7 @@ $factory->define(Poll::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'votes_editable' => $faker->boolean,
         'max_votes' => 1,
-        'votes_privacy' => $faker->numberBetween(0, 2),
+        'votes_privacy' => $faker->randomElement(Poll::$votesPrivacyValues),
         'results_before_voting' => $faker->boolean,
         'locked_at' => $faker->dateTimeBetween('now', '+1 year'),
     ];

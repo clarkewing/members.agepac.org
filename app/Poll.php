@@ -3,10 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class Poll extends Model
 {
+    static public $votesPrivacyValues = [
+        0 => 'public',
+        1 => 'private',
+        2 => 'anonymous',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -31,8 +38,7 @@ class Poll extends Model
         'votes_editable' => 'boolean',
         'results_before_voting' => 'boolean',
         'max_votes' => 'integer',
-        'votes_privacy' => 'integer',
-        'locked_at' => 'date',
+        'locked_at' => 'date:Y-m-d H:i:s',
     ];
 
     /**
@@ -41,6 +47,20 @@ class Poll extends Model
      * @var array
      */
     protected $with = ['options'];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::saving(function ($poll) {
+            if (in_array($poll->votes_privacy, static::$votesPrivacyValues, true)) {
+                $poll->votes_privacy = array_flip(static::$votesPrivacyValues)[$poll->votes_privacy];
+            }
+        });
+    }
 
     /**
      * Get the user that owns the poll.
@@ -82,17 +102,40 @@ class Poll extends Model
      */
     public function addOption(array $option)
     {
-        return $this->options()->create($option);
+        return $this->options()->updateOrCreate(
+            ['label' => $option['label']], $option
+        );
     }
 
     /**
      * Add options to the poll.
      *
-     * @param  array  $options
+     * @param  array|null  $options
      * @return void
      */
-    public function addOptions(array $options)
+    public function addOptions(?array $options)
     {
+        if (! is_null($options)) {
+            foreach ($options as $option) {
+                $this->addOption($option);
+            }
+        }
+    }
+
+    /**
+     * Sync options for the poll.
+     *
+     * @param  array|null  $options
+     * @return void
+     */
+    public function syncOptions(?array $options)
+    {
+        $options = $options ?? [];
+
+        $this->options()
+            ->whereNotIn('label', Arr::pluck($options, 'label'))
+            ->delete();
+
         foreach ($options as $option) {
             $this->addOption($option);
         }
@@ -102,12 +145,13 @@ class Poll extends Model
      * Cast a vote.
      *
      * @param  array  $vote
+     * @param  \App\User|null  $user
      * @return void
      */
-    public function castVote(array $vote)
+    public function castVote(array $vote, ?User $user = null)
     {
         // Reset option votes.
-        $this->votes()->where('user_id', $user_id = Auth::id())->delete();
+        $this->votes()->where('user_id', $user_id = optional($user)->id ?? Auth::id())->delete();
 
         // Cast new option votes.
         PollVote::insert(array_map(function ($option_id) use ($user_id) {
@@ -127,5 +171,54 @@ class Poll extends Model
             ->where('user_id', optional($user)->id ?? Auth::id())
             ->with('option')
             ->get();
+    }
+
+    /**
+     * Determine if the user has voted.
+     *
+     * @param  \App\User|null  $user
+     * @return bool
+     */
+    public function hasVoted(User $user = null): bool
+    {
+        return $this->votes()
+            ->where('user_id', optional($user)->id ?? Auth::id())
+            ->exists();
+    }
+
+    /**
+     * Determine if the thread is locked.
+     *
+     * @return bool
+     */
+    public function isLocked(): bool
+    {
+        if (is_null($this->locked_at)) {
+            return false;
+        }
+
+        return $this->locked_at->isPast();
+    }
+
+    /**
+     * Return the results of the poll.
+     *
+     * @param  bool  $withVotes
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getResults(bool $withVotes = false)
+    {
+        $totalVotes = $this->votes()->count() ?: 1; // If falsy value (ie. 0), use 1 to avoid division by zero
+
+        if ($withVotes) {
+            $this->load('options.voters');
+        }
+
+        return $this->options->map(function ($option) use ($totalVotes) {
+            $option->votes_count = $option->votes()->count();
+            $option->votes_percent = round($option->votes_count / $totalVotes * 100, 3);
+
+            return $option;
+        });
     }
 }

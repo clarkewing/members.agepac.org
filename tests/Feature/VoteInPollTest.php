@@ -22,6 +22,23 @@ class VoteInPollTest extends TestCase
     }
 
     /** @test */
+    public function testGuestsCannotViewPoll()
+    {
+        Auth::logout();
+
+        $this->getPoll()
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUsersCanViewPoll()
+    {
+        $this->getPoll()
+            ->assertOk()
+            ->assertJson($this->poll->makeHidden(['thread'])->toArray());
+    }
+
+    /** @test */
     public function testGuestsCannotVote()
     {
         Auth::logout();
@@ -138,6 +155,19 @@ class VoteInPollTest extends TestCase
 
         $this->voteInPoll(['vote' => [$pollOptions[0]]])
             ->assertJsonMissingValidationErrors('vote');
+    }
+
+    /**
+     * Retrieve poll info.
+     *
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function getPoll()
+    {
+        return $this->getJson(route(
+            'polls.show',
+            [$this->poll->thread->channel, $this->poll->thread]
+        ));
     }
 
     /**
