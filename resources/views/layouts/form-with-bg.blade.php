@@ -6,6 +6,7 @@
         height: 100%;
     }
 </style>
+@endpush
 
 @section('body')
 <div class="d-flex flex-column" style="min-height: 100%;">
