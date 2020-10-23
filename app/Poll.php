@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Poll extends Model
 {
-    static public $votesPrivacyValues = [
+    public static $votesPrivacyValues = [
         0 => 'public',
         1 => 'private',
         2 => 'anonymous',
