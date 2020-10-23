@@ -2,11 +2,35 @@
 
 namespace App\Http\Requests;
 
+use App\Poll;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 
 class UpdatePollRequest extends StorePollRequest
 {
+    /**
+     * @var \App\Poll
+     */
+    protected $poll;
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Throwable
+     */
+    public function prepareForValidation(): void
+    {
+        parent::prepareForValidation();
+
+        throw_if(
+            is_null($this->poll = $this->route('thread')->poll),
+            (new ModelNotFoundException)->setModel(Poll::class)
+        );
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *

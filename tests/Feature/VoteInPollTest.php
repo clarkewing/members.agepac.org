@@ -200,7 +200,7 @@ class VoteInPollTest extends TestCase
         ];
 
         return $this->postJson(
-            route('poll_votes.store', $this->poll),
+            route('poll_votes.store', [$this->poll->thread->channel, $this->poll->thread]),
             array_merge($initialData, $data),
         );
     }

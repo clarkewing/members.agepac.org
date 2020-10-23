@@ -85,12 +85,14 @@ class PollsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatePollRequest  $request
-     * @param  \App\Poll  $poll
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(UpdatePollRequest $request, Poll $poll)
+    public function update(UpdatePollRequest $request, string $channelSlug, Thread $thread)
     {
+        $poll = $thread->poll;
+
         $poll->fill($request->all())->save();
 
         $poll->syncOptions($request->input('options'));

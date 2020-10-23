@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Poll;
 use App\PollVote;
 use App\Thread;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,12 +66,20 @@ class PollVotesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Poll  $poll
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Throwable
      */
-    public function store(Request $request, Poll $poll)
+    public function store(Request $request, string $channelSlug, Thread $thread)
     {
+        throw_if(
+            is_null($poll = $thread->poll),
+            (new ModelNotFoundException)->setModel(Poll::class)
+        );
+
         $this->authorize('vote', $poll);
 
         $request->validate([

@@ -255,7 +255,7 @@ class EditPollTest extends TestCase
     protected function updatePoll(array $data = [])
     {
         return $this->putJson(
-            route('polls.update', $this->poll),
+            route('polls.update', [$this->poll->thread->channel, $this->poll->thread]),
             $data
         );
     }
