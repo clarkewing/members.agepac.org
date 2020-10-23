@@ -246,24 +246,6 @@ class EditPollTest extends TestCase
             ->assertJsonMissingValidationErrors('locked_at');
     }
 
-    /** @test */
-    public function testPollOptionCannotBeDeletedIfItWillResultInLessThanTwoOptions()
-    {
-        $poll = create(Poll::class);
-
-        // Ensure we have exactly two options.
-        $poll->options()->delete();
-        $poll->addOptions([
-            ['label' => 'Option 1'],
-            ['label' => 'Option 2'],
-        ]);
-
-        $this->signIn($poll->thread->creator);
-
-        $this->delete(route('poll_options.destroy', ['pollOption' => $poll->options[0]]))
-            ->assertForbidden();
-    }
-
     /**
      * Send put request to update the poll.
      *

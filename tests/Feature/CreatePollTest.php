@@ -24,6 +24,31 @@ class CreatePollTest extends TestCase
     }
 
     /** @test */
+    public function testGuestsCannotSeeViewToAttachPollToThread()
+    {
+        Auth::logout();
+
+        $this->getCreatePollPage()
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function testOnlyUsersWithPermissionCanSeeViewToAttachPollToThread()
+    {
+        // Thread creator.
+        $this->getCreatePollPage()
+            ->assertOk()
+            ->assertViewIs('polls.create');
+
+        Auth::logout();
+        $this->signInWithPermission('threads.edit');
+
+        $this->getCreatePollPage()
+            ->assertOk()
+            ->assertViewIs('polls.create');
+    }
+
+    /** @test */
     public function testGuestsCannotAttachPollToThread()
     {
         Auth::logout();
@@ -238,5 +263,18 @@ class CreatePollTest extends TestCase
                 $data,
             )
         );
+    }
+
+    /**
+     * Send get request to get poll create page.
+     *
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function getCreatePollPage()
+    {
+        return $this->get(route(
+            'polls.create',
+            [$this->thread->channel, $this->thread]
+        ));
     }
 }
