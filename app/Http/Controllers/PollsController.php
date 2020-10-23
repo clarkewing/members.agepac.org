@@ -34,7 +34,11 @@ class PollsController extends Controller
      */
     public function show(string $channelSlug, Thread $thread)
     {
-        return Response::json($thread->poll);
+        $poll = $thread->poll;
+
+        $poll->vote = $poll->getVote();
+
+        return Response::json($poll);
     }
 
     /**

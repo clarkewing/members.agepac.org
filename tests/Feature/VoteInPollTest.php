@@ -39,6 +39,20 @@ class VoteInPollTest extends TestCase
     }
 
     /** @test */
+    public function testPollResponseIncludesUsersVote()
+    {
+        $this->getPoll()
+            ->assertJson(['vote' => []]);
+
+        $this->poll->castVote([$this->poll->options[0]->id]);
+
+        $responseVote = $this->getPoll()->json('vote');
+
+        $this->assertCount(1, $responseVote);
+        $this->assertEquals($this->poll->options[0]->id, $responseVote[0]['id']);
+    }
+
+    /** @test */
     public function testGuestsCannotVote()
     {
         Auth::logout();
