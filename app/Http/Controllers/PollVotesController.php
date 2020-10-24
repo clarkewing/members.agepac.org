@@ -6,7 +6,9 @@ use App\Poll;
 use App\Thread;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Response;
+use Sabberworm\CSS\Rule\Rule;
 
 class PollVotesController extends Controller
 {
@@ -40,9 +42,11 @@ class PollVotesController extends Controller
 
         $this->authorize('vote', $poll);
 
-        $request->validate([
-            'vote' => ['array', "max:{$poll->max_votes}"],
-        ]);
+        $request->validate(['vote' => 'array']);
+
+        if (! is_null($poll->max_votes)) {
+            $request->validate(['vote' => "max:{$poll->max_votes}"]);
+        }
 
         $poll->castVote($request->input('vote'));
 

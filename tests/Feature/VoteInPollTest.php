@@ -65,7 +65,7 @@ class VoteInPollTest extends TestCase
     public function testUsersWithAccessToTheThreadCanVote()
     {
         $this->voteInPoll()
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertDatabaseCount('poll_votes', 1);
     }
@@ -78,12 +78,12 @@ class VoteInPollTest extends TestCase
         $selectedOption = $this->poll->options[0]->id;
 
         $this->voteInPoll(['vote' => [$selectedOption]])
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertDatabaseCount('poll_votes', 1);
 
         $this->voteInPoll(['vote' => [$selectedOption]])
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertDatabaseCount('poll_votes', 1);
     }
@@ -106,7 +106,7 @@ class VoteInPollTest extends TestCase
 
         // Initial vote.
         $this->voteInPoll(['vote' => [$pollOptions[0]]])
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertVoteIs([$pollOptions[0]]);
 
@@ -126,13 +126,13 @@ class VoteInPollTest extends TestCase
 
         // Initial vote.
         $this->voteInPoll(['vote' => [$pollOptions[0]]])
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertVoteIs([$pollOptions[0]]);
 
         // Vote change attempt.
         $this->voteInPoll(['vote' => [$pollOptions[1]]])
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertVoteIs([$pollOptions[1]]);
     }
@@ -146,13 +146,13 @@ class VoteInPollTest extends TestCase
 
         // Initial vote.
         $this->voteInPoll(['vote' => [$pollOptions[0]]])
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertVoteIs([$pollOptions[0]]);
 
         // Vote removal attempt.
         $this->voteInPoll(['vote' => []])
-            ->assertCreated();
+            ->assertOk();
 
         $this->assertVoteIs([]);
     }
@@ -168,6 +168,17 @@ class VoteInPollTest extends TestCase
             ->assertJsonValidationErrors('vote');
 
         $this->voteInPoll(['vote' => [$pollOptions[0]]])
+            ->assertJsonMissingValidationErrors('vote');
+    }
+
+    /** @test */
+    public function testUsersCanVoteForUnlimitedOptionsIfMaxVotesNull()
+    {
+        $this->poll->update(['max_votes' => null]);
+
+        $pollOptions = $this->poll->options->pluck('id');
+
+        $this->voteInPoll(['vote' => [$pollOptions[0], $pollOptions[1]]])
             ->assertJsonMissingValidationErrors('vote');
     }
 

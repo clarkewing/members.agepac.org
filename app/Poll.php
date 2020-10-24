@@ -63,14 +63,6 @@ class Poll extends Model
     }
 
     /**
-     * Get the user that owns the poll.
-     */
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
      * Get the thread that the poll belongs to.
      */
     public function thread()
@@ -91,7 +83,26 @@ class Poll extends Model
      */
     public function votes()
     {
-        return $this->hasManyThrough(PollVote::class, PollOption::class, 'poll_id', 'option_id');
+        return $this->hasManyThrough(
+            PollVote::class,
+            PollOption::class,
+            'poll_id',
+            'option_id'
+        );
+    }
+
+    /**
+     * Determine if the thread is locked.
+     *
+     * @return bool
+     */
+    public function isLocked(): bool
+    {
+        if (is_null($this->locked_at)) {
+            return false;
+        }
+
+        return $this->locked_at->isPast();
     }
 
     /**
@@ -148,10 +159,14 @@ class Poll extends Model
      * @param  \App\User|null  $user
      * @return void
      */
-    public function castVote(array $vote, ?User $user = null)
+    public function castVote(array $vote, User $user = null)
     {
+        $user_id = optional($user)->id ?? Auth::id();
+
         // Reset option votes.
-        $this->votes()->where('user_id', $user_id = optional($user)->id ?? Auth::id())->delete();
+        $this->votes()
+            ->where('user_id', $user_id)
+            ->delete();
 
         // Cast new option votes.
         PollVote::insert(array_map(function ($option_id) use ($user_id) {
@@ -160,7 +175,7 @@ class Poll extends Model
     }
 
     /**
-     * Get the user's vote.
+     * Get a user's vote.
      *
      * @param  \App\User|null  $user
      * @return \Illuminate\Database\Eloquent\Collection
@@ -184,20 +199,6 @@ class Poll extends Model
         return $this->votes()
             ->where('user_id', optional($user)->id ?? Auth::id())
             ->exists();
-    }
-
-    /**
-     * Determine if the thread is locked.
-     *
-     * @return bool
-     */
-    public function isLocked(): bool
-    {
-        if (is_null($this->locked_at)) {
-            return false;
-        }
-
-        return $this->locked_at->isPast();
     }
 
     /**

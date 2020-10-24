@@ -16,7 +16,7 @@ class CreatePollsTable extends Migration
         Schema::create('polls', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('thread_id')->unique();
-            $table->string('title', 255);
+            $table->string('title');
             $table->boolean('votes_editable');
             $table->unsignedBigInteger('max_votes')->nullable();
             $table->unsignedTinyInteger('votes_privacy');

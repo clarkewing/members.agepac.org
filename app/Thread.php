@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Events\ThreadPublished;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -182,7 +183,7 @@ class Thread extends Model
      * Add a post to the thread.
      *
      * @param  array $post
-     * @return \App\Post
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function addPost(array $post)
     {
@@ -195,7 +196,7 @@ class Thread extends Model
      * Add a poll to the thread.
      *
      * @param  array $poll
-     * @return \App\Poll
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function addPoll(array $poll)
     {
@@ -207,11 +208,11 @@ class Thread extends Model
     /**
      * Scope a query to filter.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param   $filters
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFilter($query, $filters)
+    public function scopeFilter(Builder $query, $filters)
     {
         return $filters->apply($query);
     }
@@ -273,8 +274,9 @@ class Thread extends Model
     /**
      * Determine whether the thread has updates for the user.
      *
-     * @param  \App\User $user
+     * @param  \App\User  $user
      * @return bool
+     * @throws \Exception
      */
     public function hasUpdatesFor(User $user): bool
     {
@@ -286,10 +288,10 @@ class Thread extends Model
     /**
      * Sets a unique slug for the thread.
      *
-     * @param  string $title
+     * @param  string  $title
      * @return void
      */
-    public function setSlugAttribute($title): void
+    public function setSlugAttribute(string $title): void
     {
         $slug = Str::slug($title);
 

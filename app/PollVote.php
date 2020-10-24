@@ -17,19 +17,11 @@ class PollVote extends Model
     ];
 
     /**
-     * Get the user that voted.
+     * Get the user that cast the vote.
      */
-    public function user()
+    public function voter()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * Get the poll.
-     */
-    public function poll()
-    {
-        return $this->belongsTo(Poll::class, 'poll_id');
     }
 
     /**
@@ -37,6 +29,6 @@ class PollVote extends Model
      */
     public function option()
     {
-        return $this->belongsTo(PollOption::class, 'option_id');
+        return $this->belongsTo(PollOption::class);
     }
 }

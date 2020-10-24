@@ -6,6 +6,7 @@ use App\Poll;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Validator;
 
 class UpdatePollRequest extends StorePollRequest
 {
@@ -57,7 +58,7 @@ class UpdatePollRequest extends StorePollRequest
      * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      */
-    public function withValidator($validator): void
+    public function withValidator(Validator $validator): void
     {
         if ($validator->passes()) {
             if ($this->has('options')) {

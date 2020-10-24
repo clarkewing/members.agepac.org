@@ -108,6 +108,15 @@ class CreatePollTest extends TestCase
     }
 
     /** @test */
+    public function testPollOptionLabelCannotBeLongerThan255Characters()
+    {
+        $this->attachPollToThread(['options' => [
+            ['label' => str_repeat('*', 256)],
+        ]])
+            ->assertJsonValidationErrors('options.0.label');
+    }
+
+    /** @test */
     public function testPollOptionColorIsOptional()
     {
         $this->attachPollToThread(['options' => [
