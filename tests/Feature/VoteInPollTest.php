@@ -211,7 +211,7 @@ class VoteInPollTest extends TestCase
         ];
 
         return $this->putJson(
-            route('poll_votes.store', [$this->poll->thread->channel, $this->poll->thread]),
+            route('poll_votes.update', [$this->poll->thread->channel, $this->poll->thread]),
             array_merge($initialData, $data),
         );
     }

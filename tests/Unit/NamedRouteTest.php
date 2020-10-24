@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Attachment;
 use App\Channel;
 use App\Company;
+use App\Poll;
 use App\Post;
 use App\Thread;
 use App\User;
@@ -233,6 +234,83 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             "/attachments/{$attachment->id}",
             'attachments.destroy', $attachment
+        );
+    }
+
+    /* @test */
+    public function testPollsShow()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}",
+            'threads.show', [$poll->thread->channel, $poll->thread]
+        );
+    }
+
+    /* @test */
+    public function testPollsCreate()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/create",
+            'polls.create', [$poll->thread->channel, $poll->thread]
+        );
+    }
+
+    /* @test */
+    public function testPollsStore()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
+            'polls.store', [$poll->thread->channel, $poll->thread]
+        );
+    }
+
+    /* @test */
+    public function testPollsUpdate()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
+            'polls.update', [$poll->thread->channel, $poll->thread]
+        );
+    }
+
+    /* @test */
+    public function testPollsDestroy()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
+            'polls.destroy', [$poll->thread->channel, $poll->thread]
+        );
+    }
+
+    /* @test */
+    public function testPollVotesUpdate()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/vote",
+            'poll_votes.update', [$poll->thread->channel, $poll->thread]
+        );
+    }
+
+    /* @test */
+    public function testPollResultsShow()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertRoutePathIs(
+            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/results",
+            'poll_results.show', [$poll->thread->channel, $poll->thread]
         );
     }
 
