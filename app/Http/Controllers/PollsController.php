@@ -118,18 +118,21 @@ class PollsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Poll  $poll
-     * @return \Illuminate\Http\Response
+     * @param  string  $channelSlug
+     * @param  \App\Thread  $thread
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Request $request, Poll $poll)
+    public function destroy(Request $request, string $channelSlug, Thread $thread)
     {
+        $poll = $thread->poll;
+
         $this->authorize('delete', $poll);
 
         $poll->delete();
 
         if ($request->expectsJson()) {
-            return Response::make(['status' => 'Poll deleted.']);
+            return Response::noContent();
         }
 
         return back()

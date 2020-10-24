@@ -246,6 +246,49 @@ class EditPollTest extends TestCase
             ->assertJsonMissingValidationErrors('locked_at');
     }
 
+    /** @test */
+    public function testGuestsCannotDeletePoll()
+    {
+        Auth::logout();
+
+        $this->deletePoll()
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testOnlyPollThreadCreatorCanDeletePoll()
+    {
+        Auth::logout();
+        $this->signIn();
+
+        $this->deletePoll()
+            ->assertForbidden();
+
+        $this->signIn($this->poll->thread->creator);
+
+        $this->deletePoll()
+            ->assertNoContent();
+    }
+
+    /** @test */
+    public function testUserWithPermissionCanDeletePoll()
+    {
+        Auth::logout();
+        $this->signInWithPermission('threads.edit');
+
+        $this->deletePoll()
+            ->assertNoContent();
+    }
+
+    /** @test */
+    public function testPollCannotBeDeletedIfItsThreadIsLocked()
+    {
+        $this->poll->thread->update(['locked' => true]);
+
+        $this->deletePoll()
+            ->assertForbidden();
+    }
+
     /**
      * Send put request to update the poll.
      *
@@ -257,6 +300,18 @@ class EditPollTest extends TestCase
         return $this->putJson(
             route('polls.update', [$this->poll->thread->channel, $this->poll->thread]),
             $data
+        );
+    }
+
+    /**
+     * Send delete request to destroy the poll.
+     *
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function deletePoll()
+    {
+        return $this->deleteJson(
+            route('polls.destroy', [$this->poll->thread->channel, $this->poll->thread])
         );
     }
 }

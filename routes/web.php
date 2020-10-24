@@ -69,6 +69,7 @@ Route::get('/threads/{channel}/{thread}/poll', 'PollsController@show')->name('po
 Route::get('/threads/{channel}/{thread}/poll/create', 'PollsController@create')->name('polls.create');
 Route::post('/threads/{channel}/{thread}/poll', 'PollsController@store')->name('polls.store');
 Route::put('/threads/{channel}/{thread}/poll', 'PollsController@update')->name('polls.update');
+Route::delete('/threads/{channel}/{thread}/poll', 'PollsController@destroy')->name('polls.destroy');
 
 Route::get('/threads/{channel}/{thread}/poll/options', 'PollOptionsController@index')->name('poll_options.index');
 Route::post('/threads/{channel}/{thread}/poll/poll-option', 'PollOptionsController@store')->name('poll_options.store');

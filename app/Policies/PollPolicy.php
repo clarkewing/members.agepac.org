@@ -110,8 +110,8 @@ class PollPolicy
      */
     public function delete(User $user, Poll $poll)
     {
-        return ! $poll->user_id
-               && $this->update($user, $poll);
+        return ! $poll->thread->locked
+               && $user->can('update', $poll->thread);
     }
 
     /**
