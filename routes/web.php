@@ -75,12 +75,8 @@ Route::get('/threads/{channel}/{thread}/poll/options', 'PollOptionsController@in
 Route::post('/threads/{channel}/{thread}/poll/poll-option', 'PollOptionsController@store')->name('poll_options.store');
 Route::put('/poll-option/{pollOption}/update', 'PollOptionsController@update')->name('poll_options.update');
 Route::delete('/poll-option/{pollOption}/delete', 'PollOptionsController@destroy')->name('poll_options.destroy');
-Route::post('/threads/{channel}/{thread}/poll/vote', 'PollVotesController@store')->name('poll_votes.store');
+Route::put('/threads/{channel}/{thread}/poll/vote', 'PollVotesController@update')->name('poll_votes.store');
 
-Route::get('/polls/{poll}/vote', 'PollVotesController@show')->name('poll_votes.show');
-Route::get('/polls/{poll}/vote/create', 'PollVotesController@create')->name('poll_votes.create');
-
-Route::get('/threads/{channel}/{thread}/poll/votes', 'PollVotesController@index')->name('poll_votes.index');
 Route::get('/threads/{channel}/{thread}/poll/results', 'PollResultsController@show')->name('poll_results.show');
 
 /* Api */
