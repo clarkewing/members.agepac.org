@@ -6,9 +6,7 @@ use App\Poll;
 use App\Thread;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Response;
-use Sabberworm\CSS\Rule\Rule;
 
 class PollVotesController extends Controller
 {
