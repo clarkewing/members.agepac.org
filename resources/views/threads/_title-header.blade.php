@@ -47,6 +47,13 @@
                 </a>
             </p>
 
+            <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted"
+                    @click="$refs.poll.openForm()"
+                    v-if="(authorize('owns', thread) || authorize('hasPermission', 'threads.edit')) && ! thread.locked && ! thread.poll"
+            >
+                Ajouter un Sondage
+            </button>
+
             <button :class="[classes('locked'), 'btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal']"
                     @click="toggleLock"
                     v-if="authorize('hasPermission', locked ? 'threads.unlock' : 'threads.lock')"

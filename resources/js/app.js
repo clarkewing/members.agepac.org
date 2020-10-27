@@ -42,6 +42,7 @@ Vue.component('instant-search', require('./pages/InstantSearch').default);
 Vue.component('subscription-plans', require('./pages/SubscriptionPlans').default);
 Vue.component('company-view', require('./pages/Company').default);
 
+Vue.component('thread-poll', require('./components/ThreadPoll').default);
 Vue.component('poll-form', require('./components/PollForm.vue').default);
 Vue.component('poll-vote', require('./components/Vote.vue').default);
 Vue.component('poll-results', require('./components/PollResults.vue').default);

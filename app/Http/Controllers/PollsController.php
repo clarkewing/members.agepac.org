@@ -83,7 +83,7 @@ class PollsController extends Controller
 
         $poll->syncOptions($request->input('options'));
 
-        return Response::json($poll);
+        return Response::json($poll->fresh());
     }
 
     /**
