@@ -49,6 +49,13 @@ class Poll extends Model
     protected $with = ['options'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['has_votes'];
+
+    /**
      * The "booted" method of the model.
      *
      * @return void
@@ -175,6 +182,16 @@ class Poll extends Model
     }
 
     /**
+     * Gets whether the poll has received votes.
+     *
+     * @return bool
+     */
+    public function getHasVotesAttribute(): bool
+    {
+        return $this->votes()->exists();
+    }
+
+    /**
      * Get a user's vote.
      *
      * @param  \App\User|null  $user
@@ -186,6 +203,16 @@ class Poll extends Model
             ->where('user_id', optional($user)->id ?? Auth::id())
             ->with('option')
             ->get();
+    }
+
+    /**
+     * Get the current user's vote.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getVoteAttribute()
+    {
+        return $this->getVote();
     }
 
     /**

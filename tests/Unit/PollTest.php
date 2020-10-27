@@ -133,4 +133,16 @@ class PollTest extends TestCase
 
         $this->assertTrue($voter->is($poll->getResults()[0]->voters[0]));
     }
+
+    /** @test */
+    public function testKnowsIfVotesWereCast()
+    {
+        $poll = create(Poll::class);
+
+        $this->assertFalse($poll->has_votes);
+
+        $poll->castVote([$poll->options[0]->id], $voter = create(User::class));
+
+        $this->assertTrue($poll->has_votes);
+    }
 }

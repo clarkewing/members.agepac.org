@@ -20,7 +20,7 @@ class PollPolicy
     public function update(User $user, Poll $poll)
     {
         return ! $poll->isLocked()
-               && $poll->votes()->count() === 0
+               && ! $poll->has_votes
                && ! $poll->thread->locked
                && $user->can('update', $poll->thread);
     }
@@ -47,10 +47,8 @@ class PollPolicy
      */
     public function vote(User $user, Poll $poll)
     {
-        $userVotesCount = $poll->votes()->where('user_id', $user->id)->count();
-
         return (is_null($poll->locked_at) || $poll->locked_at > now())
-               && ($userVotesCount === 0 || $poll->votes_editable);
+               && (! $poll->hasVoted($user) || $poll->votes_editable);
     }
 
     /**
