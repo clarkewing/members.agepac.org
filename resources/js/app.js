@@ -42,6 +42,8 @@ Vue.component('instant-search', require('./pages/InstantSearch').default);
 Vue.component('subscription-plans', require('./pages/SubscriptionPlans').default);
 Vue.component('company-view', require('./pages/Company').default);
 
+Vue.component('thread-poll', require('./components/ThreadPoll').default);
+
 import lineClamp from 'vue-line-clamp';
 Vue.use(lineClamp, {textOverflow: ' ...'});
 

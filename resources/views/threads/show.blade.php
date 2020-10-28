@@ -5,6 +5,8 @@
         <div>
             @include('threads._title-header')
 
+            <thread-poll ref="poll" :initial-poll="thread.poll"></thread-poll>
+
             <posts @added="repliesCount++" @removed="repliesCount--"></posts>
         </div>
     </thread-view>

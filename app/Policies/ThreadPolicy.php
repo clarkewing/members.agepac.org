@@ -124,4 +124,18 @@ class ThreadPolicy
     {
         return $user->hasPermissionTo('threads.unpin');
     }
+
+    /**
+     * Determine whether the user can attach a poll to the thread.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Thread  $thread
+     * @return mixed
+     */
+    public function attachPoll(User $user, Thread $thread)
+    {
+        return ! $thread->locked
+               && ! $thread->hasPoll()
+               && $this->update($user, $thread);
+    }
 }

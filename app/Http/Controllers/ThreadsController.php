@@ -110,6 +110,12 @@ class ThreadsController extends Controller
 
         $thread->increment('visits');
 
+        $thread->load('poll');
+
+        if (! is_null($thread->poll)) {
+            $thread->poll->append('vote');
+        }
+
         return view('threads.show', compact('thread'));
     }
 

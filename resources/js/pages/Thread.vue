@@ -71,6 +71,12 @@
                     this[target] ? 'text-primary' : 'text-muted'
                 ];
             }
-        }
+        },
+
+        provide() {
+            return {
+                thread: this.thread,
+            };
+        },
     }
 </script>
