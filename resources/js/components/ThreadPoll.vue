@@ -84,7 +84,9 @@ export default {
             vote: this.initialPoll
                 ? this.initialPoll.vote.map(o => o['option_id'])
                 : [],
-            hasVoted: this.initialPoll.vote.length > 0,
+            hasVoted: this.initialPoll
+                ? this.initialPoll.vote.length > 0
+                : false,
 
             panel: 'ballot',
         }
@@ -96,7 +98,7 @@ export default {
         },
 
         canSelectMoreOptions() {
-            return this.poll.max_votes === null || this.vote.length >= this.poll.max_votes;
+            return this.poll.max_votes === null || this.vote.length < this.poll.max_votes;
         },
 
         canViewResults() {

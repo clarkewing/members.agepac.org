@@ -259,7 +259,7 @@ export default {
 
     computed: {
         isCreating() {
-            return this.poll === null;
+            return this.poll === null || this.poll === undefined;
         },
     },
 
