@@ -94,7 +94,7 @@ export default {
 
     computed: {
         canCastVote() {
-            return ! this.isLocked && (! this.vote.length || this.poll.votes_editable);
+            return ! this.isLocked && (! this.hasVoted || this.poll.votes_editable);
         },
 
         canSelectMoreOptions() {
