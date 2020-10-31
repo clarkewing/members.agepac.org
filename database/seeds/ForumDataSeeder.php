@@ -4,6 +4,7 @@ use App\Activity;
 use App\Attachment;
 use App\Channel;
 use App\Favorite;
+use App\Poll;
 use App\Post;
 use App\Thread;
 use App\ThreadSubscription;
@@ -55,6 +56,7 @@ class ForumDataSeeder extends Seeder
         Thread::truncate();
         Post::truncate();
         Attachment::truncate();
+        Poll::truncate();
         (new Filesystem)->cleanDirectory('storage/app/public/attachments');
         ThreadSubscription::truncate();
         Favorite::truncate();
@@ -62,6 +64,11 @@ class ForumDataSeeder extends Seeder
         factory(Thread::class, 30)->states('from_existing_channel_and_user')->create()
             ->each(function ($thread) {
                 $this->recordActivity($thread, 'created', $thread->creator->id);
+
+                // Attach poll to thread in 15% of cases.
+                if ($this->faker->boolean(15)) {
+                    factory(Poll::class)->create(['thread_id' => $thread->id]);
+                }
 
                 factory(Post::class, $this->faker->numberBetween(1, 10))
                     ->states($this->faker->boolean(10)
