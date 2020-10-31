@@ -31,9 +31,18 @@ class NovaTest extends TestCase
     }
 
     /** @test */
-    public function testUsersWithPermissionsCanAccessNovaInterface()
+    public function testUsersWithAPermissionCanAccessNovaInterface()
     {
-        $this->signInWithPermission('users.view');
+        $this->signInWithPermission('roles&permissions.manage');
+
+        $this->getNovaDashboard()
+            ->assertSuccessful();
+    }
+
+    /** @test */
+    public function testUsersWithARoleCanAccessNovaInterface()
+    {
+        $this->signIn(create(User::class)->assignRole('Administrator'));
 
         $this->getNovaDashboard()
             ->assertSuccessful();

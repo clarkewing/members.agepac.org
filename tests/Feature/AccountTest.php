@@ -43,7 +43,7 @@ class AccountTest extends TestCase
             $this->get(route('account.edit'))
                 ->assertSee($user->first_name)
                 ->assertSee($user->last_name)
-                ->assertSee($user->birthdate)
+                ->assertSee($user->birthdate->toDateString())
                 ->assertSee($user->phone)
                 ->assertSee($user->email);
         });
