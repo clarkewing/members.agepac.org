@@ -42,7 +42,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('viewNova', function (User $user) {
-            return $user->permissions->count();
+            return $user->getAllPermissions()->count();
         });
     }
 }

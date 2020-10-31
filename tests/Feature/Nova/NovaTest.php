@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
+use App\User;
 use Tests\TestCase;
 
 class NovaTest extends TestCase
@@ -49,9 +50,19 @@ class NovaTest extends TestCase
     }
 
     /** @test */
-    public function testUserWithNovaAccessCanSeeAdministrationLinkInNavbar()
+    public function testUserWithAPermissionCanSeeAdministrationLinkInNavbar()
     {
         $this->signInWithPermission('roles&permissions.manage');
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('href="/nova"', false);
+    }
+
+    /** @test */
+    public function testUserWithARoleCanSeeAdministrationLinkInNavbar()
+    {
+        $this->signIn(create(User::class)->assignRole('Administrator'));
 
         $this->get(route('home'))
             ->assertOk()
