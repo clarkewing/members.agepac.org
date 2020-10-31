@@ -49,7 +49,7 @@
                         <label for="birthdate" class="small mb-1">Date de naissance</label>
                         <input type="date" class="form-control @error('birthdate') is-invalid @enderror"
                                id="birthdate" name="birthdate"
-                               value="{{ old('birthdate', $user->birthdate) }}">
+                               value="{{ old('birthdate', $user->birthdate->toDateString()) }}">
                     </div>
                 </div>
                 @error('birthdate')
