@@ -8,8 +8,10 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left Side Of Navbar -->
-            <x-menus.main />
+            @auth
+                <!-- Authenticated Member links -->
+                <x-menus.main />
+            @endauth
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
