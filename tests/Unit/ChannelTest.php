@@ -70,10 +70,24 @@ class ChannelTest extends TestCase
     /** @test */
     public function testCanGroupByParent()
     {
-        $fooChannels = create(Channel::class, ['parent' => 'Foo'], 1);
-        $barChannels = create(Channel::class, ['parent' => 'Bar'], 2);
-        $bazChannels = create(Channel::class, ['parent' => 'Baz'], 3);
+        $fooChannels = create(Channel::class, ['parent_id' => create(Channel::class, ['name' => 'Foo'])->id], 1);
+        $barChannels = create(Channel::class, ['parent_id' => create(Channel::class, ['name' => 'Bar'])->id], 2);
+        $bazChannels = create(Channel::class, ['parent_id' => create(Channel::class, ['name' => 'Baz'])->id], 3);
 
-        $this->assertCount(3, Channel::all()->groupBy('parent'));
+        // We expect 4 groups because the parent channels' parent is null.
+        $this->assertCount(4, Channel::all()->groupBy('parent.name'));
+    }
+
+    /** @test */
+    public function testWhenParentIsDeletedChildParentIdIsSetToNull()
+    {
+        $parentChannel = create(Channel::class);
+        $childChannel = create(Channel::class, ['parent_id' => $parentChannel->id]);
+
+        $this->assertEquals($parentChannel->id, $childChannel->parent_id);
+
+        $parentChannel->delete();
+
+        $this->assertNull($childChannel->fresh()->parent_id);
     }
 }

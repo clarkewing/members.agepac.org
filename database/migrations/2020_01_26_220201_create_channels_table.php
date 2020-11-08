@@ -15,12 +15,17 @@ class CreateChannelsTable extends Migration
     {
         Schema::create('channels', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('parent', 50)->nullable();
+            $table->unsignedInteger('parent_id')->nullable();
             $table->string('name', 50)->unique();
             $table->string('slug', 50)->unique();
             $table->string('description')->nullable();
             $table->boolean('archived')->default(false);
             $table->timestamps();
+
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('channels')
+                ->onDelete('set null');
         });
     }
 
