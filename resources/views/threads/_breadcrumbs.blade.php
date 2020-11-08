@@ -11,6 +11,12 @@
         </li>
 
         @if (Route::is('threads.index') && Route::input('channel'))
+            @if($channel->parent_id !== null)
+                <li class="breadcrumb-item">
+                    {{ $channel->parent->name }}
+                </li>
+            @endif
+
             <li class="breadcrumb-item">
                 {{ $channel->name }}
             </li>
