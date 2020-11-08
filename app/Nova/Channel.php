@@ -4,7 +4,6 @@ namespace App\Nova;
 
 use Drobee\NovaSluggable\Slug;
 use Drobee\NovaSluggable\SluggableText;
-use Gkermer\TextAutoComplete\TextAutoComplete;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;

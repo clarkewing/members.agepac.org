@@ -71,7 +71,7 @@ class ReadThreadsTest extends TestCase
         $this->get(route('threads.index'))
             ->assertSuccessful()
             ->assertSeeInOrder([$parentChannel->name, $childChannel->name]);
-        
+
         // TODO: Improve seeInOrder assertion which passes in other order too...
     }
 
