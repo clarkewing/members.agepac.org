@@ -52,7 +52,7 @@
 
         <div class="dropdown-divider"></div>
 
-        @foreach($channels->sortBy('parent')->groupBy('parent') as $parent => $channels)
+        @foreach($channels->sortBy('parent.name')->groupBy('parent.name') as $parent => $channels)
             <h6 class="dropdown-header font-weight-bold">{{ $parent ? strtoupper($parent) : 'GÉNÉRAL' }}</h6>
 
             @foreach($channels as $channel)
