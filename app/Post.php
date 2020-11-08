@@ -182,7 +182,7 @@ class Post extends Model
      */
     public function toSearchableArray()
     {
-        return [
+        $searchableData = [
             'id' => $this->id,
             'body' => $this->body,
             'is_thread_initiator' => $this->is_thread_initiator,
@@ -214,12 +214,19 @@ class Post extends Model
                 ],
 
                 'channel' => [
-                    'parent' => $this->thread->channel->parent,
                     'name' => $this->thread->channel->name,
                     'slug' => $this->thread->channel->slug,
-                    'archived' => $this->thread->channel->archived,
                 ],
             ],
         ];
+
+        if (is_null($this->thread->channel->parent)) {
+            $searchableData['thread']['channel']['lvl0'] = $this->thread->channel->name;
+        } else {
+            $searchableData['thread']['channel']['lvl0'] = $this->thread->channel->parent->name;
+            $searchableData['thread']['channel']['lvl1'] = $this->thread->channel->parent->name . ' > ' . $this->thread->channel->name;
+        }
+
+        return $searchableData;
     }
 }
