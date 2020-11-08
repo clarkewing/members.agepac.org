@@ -58,6 +58,14 @@ class Channel extends Model
     }
 
     /**
+     * Get the parent channel that the channel belongs to.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Channel::class, 'parent_id')->withoutGlobalScopes();
+    }
+
+    /**
      * Get the threads for the channel.
      */
     public function threads()

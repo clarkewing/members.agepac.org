@@ -1,8 +1,8 @@
 @if(Route::is('threads.search'))
     <ais-hierarchical-menu
         :attributes="[
-            'thread.channel.parent',
-            'thread.channel.name',
+            'thread.channel.lvl0',
+            'thread.channel.lvl1',
         ]"
         class="d-none d-sm-block"
     >
@@ -39,7 +39,7 @@
 
 @else
     <x-linklist title="Sections" spacing="0" class="d-none d-sm-block">
-        @foreach($channels->sortBy('parent')->groupBy('parent') as $parent => $channels)
+        @foreach($channels->sortBy('parent.name')->groupBy('parent.name') as $parent => $channels)
             <li>
                 <button class="btn btn-link p-0 font-weight-bold text-muted link-muted"
                         type="button"

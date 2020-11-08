@@ -63,6 +63,19 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
+    public function testUserCanViewListOfChannelsGroupedByParentOnThreadsIndex()
+    {
+        $parentChannel = create(Channel::class);
+        $childChannel = create(Channel::class, ['parent_id' => $parentChannel->id]);
+
+        $this->get(route('threads.index'))
+            ->assertSuccessful()
+            ->assertSeeInOrder([$parentChannel->name, $childChannel->name]);
+
+        // TODO: Improve seeInOrder assertion which passes in other order too...
+    }
+
+    /** @test */
     public function testUserCanFilterThreadsByChannel()
     {
         $channel = create(Channel::class);

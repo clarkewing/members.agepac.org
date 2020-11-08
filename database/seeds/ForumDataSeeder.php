@@ -43,7 +43,10 @@ class ForumDataSeeder extends Seeder
     {
         Channel::truncate();
 
-        factory(Channel::class, 10)->create();
+        factory(Channel::class, 2)->create();
+        factory(Channel::class, 2)->create(['parent_id' => factory(Channel::class)->create()->id]);
+        factory(Channel::class, 3)->create(['parent_id' => factory(Channel::class)->create()->id]);
+        factory(Channel::class, 4)->create(['parent_id' => factory(Channel::class)->create()->id]);
 
         return $this;
     }
