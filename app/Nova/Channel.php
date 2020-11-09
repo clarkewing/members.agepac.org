@@ -91,7 +91,7 @@ class Channel extends Resource
             })
                 ->exceptOnForms(),
 
-            Panel::make('Restrictions', $this->restrictionsPanelFields($request))
+            Panel::make('Restrictions', $this->restrictionsPanelFields($request)),
         ];
     }
 

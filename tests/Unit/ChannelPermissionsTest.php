@@ -41,7 +41,7 @@ class ChannelPermissionsTest extends TestCase
         $channelWithPermissionsArray = new class extends Model {
             use ChannelPermissions;
 
-            static protected $permissions = ['view'];
+            protected static $permissions = ['view'];
         };
     }
 
