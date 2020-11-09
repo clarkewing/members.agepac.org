@@ -9,6 +9,14 @@ use Illuminate\Support\Str;
 
 class Channel extends Model
 {
+    use ChannelPermissions;
+
+    /**
+     * The permissions configured for the channel.
+     *
+     * @var array
+     */
+    public static $permissions = ['view', 'post', 'vote'];
     /**
      * The attributes that are mass assignable.
      *
