@@ -26,11 +26,11 @@ trait ChannelPermissions
      * Create the associated permission model.
      *
      * @param  string  $permission
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function createPermission(string $permission)
     {
-        Permission::create(['name' => $this->permissionName($permission)]);
+        return Permission::create(['name' => $this->permissionName($permission)]);
     }
 
     /**
