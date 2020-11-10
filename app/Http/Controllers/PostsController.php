@@ -30,9 +30,12 @@ class PostsController extends Controller
      * @param  string  $channelSlug
      * @param  \App\Thread  $thread
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request, string $channelSlug, Thread $thread)
     {
+        $this->authorize('view', $thread->channel);
+
         $posts = $thread->posts();
 
         if ($request->user()->can('viewDeleted', Post::class)) {
@@ -49,9 +52,12 @@ class PostsController extends Controller
      * @param  string  $channelSlug
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(CreatePostRequest $request, string $channelSlug, Thread $thread)
     {
+        $this->authorize('post', $thread->channel);
+
         if ($thread->locked) {
             return Response::make('Thread is locked.', 422);
         }

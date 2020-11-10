@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class Channel extends Model
 {
-    use ChannelPermissions;
+    use RestrictedChannels;
 
     /**
      * The permissions configured for the channel.

@@ -10,7 +10,7 @@
             <label for="channel_id">Catégorie</label>
             <select class="form-control{{ $errors->has('channel_id') ? ' is-invalid' : '' }}" id="channel_id" name="channel_id" required>
                 <option value="" disabled{{ is_null(old('channel_id')) ? ' selected' : '' }}></option>
-                @foreach($channels as $channel)
+                @foreach($channels->withPermission('post') as $channel)
                     <option value="{{ $channel->id }}"{{ old('channel_id', Request::query('channel_id')) == $channel->id ? ' selected' : '' }}>
                         {{ $channel->name }}
                     </option>
