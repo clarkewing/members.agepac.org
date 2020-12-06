@@ -32,8 +32,9 @@ trait Details
             'birthdate' => ['required', 'date_format:Y-m-d', 'before:13 years ago'],
             'phone' => [
                 'required',
-                Rule::phone()->detect() // Auto-detect country if country code supplied
-                ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]), // Fallback to France then GeoIP if unable to auto-detect
+                Rule::phone()
+                    ->detect() // Auto-detect country if country code supplied
+                    ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]), // Fallback to France then GeoIP if unable to auto-detect
             ],
         ]);
 
@@ -49,10 +50,18 @@ trait Details
      */
     protected function setBirthdate(): void
     {
+        if (empty($this->birthdate_day)
+            || empty($this->birthdate_month)
+            || empty($this->birthdate_year)
+        ) {
+            return;
+        }
+
         $birthdate = Carbon::createFromDate(
             $this->birthdate_year,
             $this->birthdate_month,
-            $this->birthdate_day
+            $this->birthdate_day,
+            'UTC'
         );
 
         $this->birthdate_year = $birthdate->year;

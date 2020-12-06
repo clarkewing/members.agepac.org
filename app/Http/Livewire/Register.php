@@ -63,11 +63,27 @@ class Register extends Component
         }
     }
 
+    public function render()
+    {
+        $this->shareVars();
+
+        return view('livewire.register');
+    }
+
     /**
      * @return array|mixed
      */
     protected function currentStep()
     {
         return $this->steps[$this->active];
+    }
+
+    protected function shareVars()
+    {
+        $methodName = "shareVars{$this->currentStep()['name']}";
+
+        if (method_exists($this, $methodName)) {
+            $this->$methodName();
+        }
     }
 }

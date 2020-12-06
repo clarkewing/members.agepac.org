@@ -45,7 +45,7 @@
             <small class="form-text text-muted"
                    id="passwordHelp"
             >
-                Choisis quelque chose de sûr et d'au moins 8 caractères.
+                Choisis quelque chose de sûr et d’au moins 8 caractères.
             </small>
 
             @error('password')

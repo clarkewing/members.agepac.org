@@ -4,13 +4,14 @@ namespace App\Http\Livewire\Steps;
 
 use App\UserInvitation;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 trait Identity
 {
     public $invitation;
-    public $hasSearchedByName = false;
     public $invitationNotFound = false;
 
     public $name;
@@ -30,7 +31,7 @@ trait Identity
      */
     public function runIdentity(): bool
     {
-        return true;
+        return ! is_null($this->invitation);
     }
 
     /**
@@ -38,9 +39,9 @@ trait Identity
      *
      * @return void
      */
-    public function searchInvitation(): void
+    public function findInvitation(): void
     {
-        if (! $this->hasSearchedByName) {
+        if ($this->shouldSearchByName()) {
             if (! $this->findUserInvitationByName()) {
                 $this->setFirstAndLastFromName();
 
@@ -78,8 +79,6 @@ trait Identity
             'name' => ['required', 'string'],
         ]);
 
-        $this->hasSearchedByName = true;
-
         return $this->invitation = UserInvitation::where(
             Builder::concat('`first_name`', '" "', '`last_name`'), 'LIKE', $this->name
         )->first();
@@ -114,8 +113,10 @@ trait Identity
      */
     protected function setFirstAndLastFromName(): void
     {
-        $this->first_name = Str::title(Str::before($this->name, ' '));
-        $this->last_name = Str::title(Str::after($this->name, ' '));
+        $names = explode(' ', $this->name);
+
+        $this->first_name = Str::title(Arr::pull($names, 0));
+        $this->last_name = Str::title(implode(' ', $names));
     }
 
     /**
@@ -130,5 +131,25 @@ trait Identity
         $this->last_name = $this->invitation->last_name;
         $this->class_course = $this->invitation->class_course;
         $this->class_year = $this->invitation->class_year;
+    }
+
+    /**
+     * Determine if we should search by name.
+     *
+     * @return bool
+     */
+    protected function shouldSearchByName(): bool
+    {
+        return is_null($this->first_name);
+    }
+
+    /**
+     * Share variables with the view.
+     *
+     * @return void
+     */
+    protected function shareVarsIdentity(): void
+    {
+        View::share('shouldSearchByName', $this->shouldSearchByName());
     }
 }

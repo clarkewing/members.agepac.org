@@ -16,9 +16,9 @@
         </svg>
     </div>
 
-    <h4 class="text-primary mb-3">Bienvenue à l'AGEPAC !</h4>
+    <h4 class="text-primary mb-3">Bienvenue à l’AGEPAC !</h4>
     <p class="mb-5">
-        En tant que membre de l'AGEPAC, tu fais partie du plus grand réseau d'EPL.
+        En tant que membre de l’AGEPAC, tu fais partie du plus grand réseau d’EPL.
     </p>
 
     <h5>Étapes Suivantes</h5>
@@ -27,7 +27,7 @@
         ton adhésion !
     </p>
 
-    <a href="/home" class="btn btn-outline-success rounded-pill">C'est parti !</a>
+    <a href="/home" class="btn btn-outline-success rounded-pill">C’est parti !</a>
 </div>
 
 @push('styles')

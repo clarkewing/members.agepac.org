@@ -3,7 +3,7 @@
 
     <div class="tab-content p-3">
         @foreach($steps as $index => $step)
-            @include('livewire.register.steps.' . Str::kebab($step['name']), [
+            @include('livewire.register.' . Str::kebab($step['name']), [
                     'active' => $index === $active,
             ])
         @endforeach
