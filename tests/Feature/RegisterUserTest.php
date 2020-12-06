@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
-use Propaganistas\LaravelPhone\PhoneNumber;
 use Tests\TestCase;
 
 class RegisterUserTest extends TestCase

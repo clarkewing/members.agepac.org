@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Steps;
 
 use App\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 

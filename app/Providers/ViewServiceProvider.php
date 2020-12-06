@@ -48,7 +48,7 @@ class ViewServiceProvider extends ServiceProvider
                         $monthNum => Str::title(
                             Carbon::createFromFormat('m', $monthNum)
                                 ->isoFormat('MMMM')
-                        )
+                        ),
                     ];
                 })->all();
             }));

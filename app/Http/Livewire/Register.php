@@ -13,14 +13,14 @@ class Register extends Component
     use Steps\Summary;
 
     /**
-     * Index of the currently active step
+     * Index of the currently active step.
      *
      * @var int
      */
     public $active = 0;
 
     /**
-     * List of the steps
+     * List of the steps.
      *
      * @var array
      */
