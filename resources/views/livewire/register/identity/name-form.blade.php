@@ -1,16 +1,23 @@
-<form ref="formName"
-      role="tabpanel"
-      class="tab-pane fade"
-      @submit.prevent="postFormName">
+<form wire:submit.prevent="findInvitation">
 
-    <laravel-input label="Comment t'appelles-tu ?"
-                   class="mb-4"
-                   name="name"
-                   v-model="name"
-                   autocomplete="name"
-                   placeholder="Marc Houalla"
-                   required
-                   autofocus></laravel-input>
+    <div class="form-group">
+        <label for="name">
+            Comment t’appelles-tu ?
+        </label>
+
+        <input type="text"
+               class="form-control @error('name') is-invalid @enderror"
+               id="name"
+               wire:model.defer="name"
+               autocomplete="name"
+               placeholder="Marc Houalla"
+               required
+               autofocus>
+
+        @error('name')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
 
     <button type="submit" class="btn btn-primary rounded-pill d-flex align-items-center mx-auto">
         <span>Continuer</span>

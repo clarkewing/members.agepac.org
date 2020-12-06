@@ -1,8 +1,7 @@
-<div ref="formSuccess"
-     role="tabpanel"
-     class="tab-pane fade text-center">
+<div role="tabpanel"
+     class="text-center tab-pane fade {{ $active ? 'active show' : null }}">
 
-    <div ref="hello" id="helloContainer" class="w-75 mx-auto mb-5">
+    <div id="helloContainer" class="w-75 mx-auto mb-5">
         <svg id="helloSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 582 197">
             <title>Hello</title>
             <path class="path path-1"
@@ -17,9 +16,9 @@
         </svg>
     </div>
 
-    <h4 class="text-primary mb-3">Bienvenue à l'AGEPAC !</h4>
+    <h4 class="text-primary mb-3">Bienvenue à l’AGEPAC !</h4>
     <p class="mb-5">
-        En tant que membre de l'AGEPAC, tu fais partie du plus grand réseau d'EPL.
+        En tant que membre de l’AGEPAC, tu fais partie du plus grand réseau d’EPL.
     </p>
 
     <h5>Étapes Suivantes</h5>
@@ -28,9 +27,8 @@
         ton adhésion !
     </p>
 
-    <a href="/home" class="btn btn-outline-success rounded-pill">C'est parti !</a>
+    <a href="/home" class="btn btn-outline-success rounded-pill">C’est parti !</a>
 </div>
-
 
 @push('styles')
     <style>
@@ -75,4 +73,12 @@
             transition: 0.1s linear 4.8s;
         }
     </style>
+@endpush
+
+@push('scripts')
+    <script>
+        Livewire.on('success', () => {
+            setTimeout(() => document.getElementById('helloContainer').classList.add('play'), 250);
+        })
+    </script>
 @endpush

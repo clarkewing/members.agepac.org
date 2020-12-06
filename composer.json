@@ -29,6 +29,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "limedeck/nova-cashier-overview": "^2.0",
+        "livewire/livewire": "^2.3",
         "optimistdigital/nova-menu-builder": "^2.3",
         "propaganistas/laravel-phone": "^4.2",
         "spatie/laravel-menu": "^3.5",

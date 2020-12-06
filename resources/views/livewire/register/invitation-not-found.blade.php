@@ -1,7 +1,4 @@
-<div ref="formNoInvitation"
-     role="tabpanel"
-     class="tab-pane fade text-center">
-
+<div class="text-center">
     <svg class="bi bi-exclamation-octagon-fill text-danger mb-2" width="3em" height="3em"
          viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd"
@@ -11,16 +8,17 @@
 
     <h6 class="text-danger mb-4">New phone who dis?</h6>
 
-    <p>L'inscription à l'AGEPAC est exclusivement ouverte aux Élèves Pilotes de Ligne (EPL) de
-        l'ENAC.</p>
+    <p>
+        L’inscription à l’AGEPAC est exclusivement ouverte aux Élèves Pilotes de Ligne (EPL) de l’ENAC.
+    </p>
 
     <p class="small mb-4">
         Les facteurs humains sont responsables de 4 accidents aériens sur 5.<br>
-        Si tu penses qu'il s'agit d'une erreur, on est là pour t'aider !
+        Si tu penses qu’il s’agit d’une erreur, on est là pour t’aider !
     </p>
 
     <div class="d-flex justify-content-between">
-        <button class="btn btn-outline-secondary rounded-pill" @click="showTab('formIdentity')">
+        <button class="btn btn-outline-secondary rounded-pill" wire:click="$set('invitationNotFound', false)">
             <svg class="bi bi-arrow-left-short mr-1" width="1em" height="1em" viewBox="0 0 16 16"
                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
