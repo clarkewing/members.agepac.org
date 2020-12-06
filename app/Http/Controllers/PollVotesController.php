@@ -38,6 +38,8 @@ class PollVotesController extends Controller
             (new ModelNotFoundException)->setModel(Poll::class)
         );
 
+        $this->authorize('vote', $thread->channel);
+
         $this->authorize('vote', $poll);
 
         $request->validate(['vote' => 'array']);

@@ -33,9 +33,12 @@ class ThreadsController extends Controller
      * @param  \App\Channel|null  $channel
      * @param  \App\Filters\ThreadFilters  $filters
      * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request, Channel $channel, ThreadFilters $filters)
     {
+        $this->authorize('view', $channel);
+
         $threads = $this->getThreads($channel, $filters);
 
         if ($request->expectsJson()) {
@@ -48,10 +51,16 @@ class ThreadsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->has('channel_id')) {
+            $this->authorize('post', Channel::find($request->query('channel_id')));
+        }
+
         return view('threads.create');
     }
 
@@ -60,6 +69,7 @@ class ThreadsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
@@ -71,6 +81,8 @@ class ThreadsController extends Controller
                 Rule::in(Channel::pluck('id')),
             ],
         ]);
+
+        $this->authorize('post', Channel::find($request->input('channel_id')));
 
         $thread = Thread::create([
             'user_id' => Auth::id(),
@@ -99,9 +111,12 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @param  \App\Trending  $trending
      * @return \Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(string $channelSlug, Thread $thread, Trending $trending)
     {
+        $this->authorize('view', $thread->channel);
+
         if (Auth::check()) {
             Auth::user()->read($thread);
         }
@@ -177,11 +192,13 @@ class ThreadsController extends Controller
             $threads->where('channel_id', $channel->id);
 
             View::share(['channel' => $channel]);
+        } else {
+            $threads->whereIn('channel_id', Channel::withPermission('view')->pluck('id'));
         }
 
         $threads = $threads->paginate(25);
 
-        $threads->getCollection()->transform(function ($thread) {
+        $threads->transform(function ($thread) {
             $thread->snippet = $thread->initiatorPost->body;
 
             return $thread;

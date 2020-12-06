@@ -3,6 +3,7 @@
 namespace Tests\Feature\Nova;
 
 use App\Channel;
+use Illuminate\Support\Arr;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
 
@@ -264,6 +265,49 @@ class ManageChannelsTest extends TestCase
 
         $this->updateChannel(['archived' => 123])
             ->assertJsonValidationErrors('archived');
+    }
+
+    /** @test */
+    public function testAuthorizedUsersCanChangeChannelRestrictions()
+    {
+        $this->signInWithPermission('channels.manage');
+
+        $channel = create(Channel::class);
+
+        $this->assertFalse($channel->isRestricted('post'));
+
+        $this->updateChannel(['posting_restricted' => true], $channel)
+            ->assertSuccessful();
+
+        $this->assertTrue($channel->isRestricted('post'));
+
+        $this->updateChannel(['posting_restricted' => false], $channel)
+            ->assertSuccessful();
+
+        $this->assertFalse($channel->isRestricted('post'));
+    }
+
+    /** @test */
+    public function testAChannelWithARestrictionShowsALinkToTheAssociatedPermission()
+    {
+        $this->signInWithPermission('channels.manage');
+
+        $channel = create(Channel::class);
+
+        $permission = $channel->createPermission('view');
+
+        $fields = $this->showResource('channels', $channel->id)
+            ->assertSuccessful()
+            ->json('resource.fields');
+
+        $permissionField = Arr::first($fields, function ($field) {
+            return $field['name'] === 'View Permission';
+        });
+
+        $this->assertEquals(
+            "<a class=\"no-underline font-bold dim text-primary\" href=\"/nova/resources/permissions/$permission->id\">$permission->name</a>",
+            $permissionField['value']
+        );
     }
 
     /**

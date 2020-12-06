@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Channel;
 use App\User;
+use Exception;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ChannelPolicy
@@ -11,58 +12,36 @@ class ChannelPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
+     * Handle dynamic method calls into the policy.
      *
-     * @param  \App\User  $user
+     * @param  string  $method
+     * @param  array  $parameters
      * @return mixed
+     * @throws \Exception
      */
-    public function viewAny(User $user)
+    public function __call(string $method, array $parameters)
     {
-        return $user->hasPermissionTo('channels.manage');
+        if (! in_array($method, Channel::$permissions)) {
+            throw new Exception("Unhandled channel permission [$method]");
+        }
+
+        return $this->hasChannelPermission($method, ...$parameters);
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user has the appropriate permission for the channel.
      *
+     * @param  string  $permission
      * @param  \App\User  $user
      * @param  \App\Channel  $channel
      * @return mixed
      */
-    public function view(User $user, Channel $channel)
+    protected function hasChannelPermission(string $permission, User $user, Channel $channel)
     {
-        return $user->hasPermissionTo('channels.manage');
-    }
+        if (! $channel->isRestricted($permission)) {
+            return true;
+        }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        return $user->hasPermissionTo('channels.manage');
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function update(User $user)
-    {
-        return $user->hasPermissionTo('channels.manage');
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\User  $user
-     * @return mixed
-     */
-    public function delete(User $user)
-    {
-        return $user->hasPermissionTo('channels.manage');
+        return $user->hasPermissionTo($channel->{"{$permission}Permission"});
     }
 }

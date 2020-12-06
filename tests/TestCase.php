@@ -48,4 +48,18 @@ abstract class TestCase extends BaseTestCase
                 ->givePermissionTo($permission)
         );
     }
+
+    /**
+     * Sign in with a user and give it a role.
+     *
+     * @param  string|string[]  $role
+     * @return $this
+     */
+    protected function signInWithRole($role)
+    {
+        return $this->signIn(
+            create(User::class)
+                ->assignRole($role)
+        );
+    }
 }

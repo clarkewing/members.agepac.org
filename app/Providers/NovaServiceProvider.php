@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Channel;
+use App\Policies\ChannelNovaPolicy;
 use App\Policies\MentorshipTagsPolicy;
 use App\Policies\MenuPolicy;
 use App\Policies\PermissionPolicy;
@@ -28,6 +30,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::serving(function (ServingNova $event) {
             app()->setLocale('en');
+
+            // Override Channel policy in Nova.
+            Gate::policy(Channel::class, ChannelNovaPolicy::class);
 
             // Override User policy in Nova.
             Gate::policy(User::class, UserNovaPolicy::class);

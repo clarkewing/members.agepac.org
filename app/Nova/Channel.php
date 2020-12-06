@@ -5,11 +5,14 @@ namespace App\Nova;
 use Drobee\NovaSluggable\Slug;
 use Drobee\NovaSluggable\SluggableText;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use Spatie\Permission\Models\Permission;
 
 class Channel extends Resource
 {
@@ -87,7 +90,38 @@ class Channel extends Resource
                 return ! $this->archived;
             })
                 ->exceptOnForms(),
+
+            Panel::make('Restrictions', $this->restrictionsPanelFields($request)),
         ];
+    }
+
+    /**
+     * Get the fields displayed by the Restrictions Panel.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function restrictionsPanelFields(Request $request)
+    {
+        $fields = [
+            Boolean::make('Restricted')
+                ->resolveUsing(function () {
+                    return $this->isRestricted();
+                })
+                ->onlyOnIndex(),
+        ];
+
+        foreach ($this->model()::$permissions as $permission) {
+            $fields[] = $this->restrictionField($permission)
+                ->hideFromIndex()->hideWhenCreating();
+
+            if ($this->isRestricted($permission)) {
+                $fields[] = $this->permissionModelField($permission)
+                    ->onlyOnDetail();
+            }
+        }
+
+        return $fields;
     }
 
     /**
@@ -132,5 +166,47 @@ class Channel extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the field to control the existence of a permission.
+     *
+     * @param $permission
+     * @return \Laravel\Nova\Fields\Field
+     */
+    protected function restrictionField($permission): \Laravel\Nova\Fields\Field
+    {
+        return Boolean::make(Str::title($permission) . 'ing Restricted')
+            ->resolveUsing(function () use ($permission) {
+                return $this->isRestricted($permission);
+            })
+            ->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($permission) {
+                if ($request->boolean($requestAttribute) === $this->isRestricted($permission)) {
+                    return;
+                }
+
+                if ($request->boolean($requestAttribute)) {
+                    $model->createPermission($permission);
+                } else {
+                    $model->deletePermission($permission);
+                }
+            });
+    }
+
+    /**
+     * Get the field with a link to a permission.
+     *
+     * @param $permission
+     * @return \Laravel\Nova\Fields\Field
+     */
+    protected function permissionModelField($permission): \Laravel\Nova\Fields\Field
+    {
+        return Text::make(Str::title($permission) . ' Permission', function () use ($permission) {
+            $permissionModel = $this->{"{$permission}Permission"};
+
+            $href = config('nova.path') . '/resources/permissions/' . $permissionModel->id;
+
+            return "<a class=\"no-underline font-bold dim text-primary\" href=\"$href\">$permissionModel->name</a>";
+        })->asHtml();
     }
 }
