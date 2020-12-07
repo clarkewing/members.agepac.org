@@ -113,7 +113,7 @@ class Occupation extends Model
     public function getTitleAttribute()
     {
         if ($this->is_pilot) {
-            return $this->position . ' sur ' . $this->aircraft->name;
+            return $this->position.' sur '.$this->aircraft->name;
         }
 
         return $this->position;

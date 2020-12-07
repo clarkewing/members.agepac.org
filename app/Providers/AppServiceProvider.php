@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
 
             switch ($dbDriver) {
                 case 'mysql':
-                    return DB::raw('CONCAT(' . implode(', ', $elements) . ')');
+                    return DB::raw('CONCAT('.implode(', ', $elements).')');
 
                 case 'sqlite':
                     return DB::raw(implode(' || ', $elements));

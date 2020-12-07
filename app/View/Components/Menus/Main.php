@@ -111,8 +111,8 @@ class Main extends Component
         switch ($menuItem['type']) {
             case 'text':
                 $navItem = $isSubmenu
-                    ? Html::raw('<h6 class="dropdown-header">' . $menuItem['name'] . '</h6>')
-                    : Html::raw('<span class="navbar-text">' . $menuItem['name'] . '</span>');
+                    ? Html::raw('<h6 class="dropdown-header">'.$menuItem['name'].'</h6>')
+                    : Html::raw('<span class="navbar-text">'.$menuItem['name'].'</span>');
                 break;
 
             case 'separator':

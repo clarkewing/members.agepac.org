@@ -70,7 +70,7 @@ class Channel extends Model
      */
     public function parent()
     {
-        return $this->belongsTo(Channel::class, 'parent_id')->withoutGlobalScopes();
+        return $this->belongsTo(self::class, 'parent_id')->withoutGlobalScopes();
     }
 
     /**

@@ -90,7 +90,7 @@ class ManageMentorshipTagsTest extends TestCase
      */
     public function testAuthorizedUsersCanIndexMentorshipTags($permission)
     {
-        $this->signInWithPermission('mentorship_tags.' . $permission);
+        $this->signInWithPermission('mentorship_tags.'.$permission);
 
         $this->indexResource('mentorship-tags')
             ->assertOk();
@@ -104,7 +104,7 @@ class ManageMentorshipTagsTest extends TestCase
     {
         $mentorshipTag = $this->createMentorshipTag();
 
-        $this->signInWithPermission('mentorship_tags.' . $permission);
+        $this->signInWithPermission('mentorship_tags.'.$permission);
 
         $this->showResource('mentorship-tags', $mentorshipTag->id)
             ->assertOk();
@@ -116,7 +116,7 @@ class ManageMentorshipTagsTest extends TestCase
      */
     public function testAuthorizedUsersCanCreateAMentorshipTag($permission)
     {
-        $this->signInWithPermission('mentorship_tags.' . $permission);
+        $this->signInWithPermission('mentorship_tags.'.$permission);
 
         $this->storeMentorshipTag(['name' => 'Sexy tag'])
             ->assertCreated();
@@ -158,7 +158,7 @@ class ManageMentorshipTagsTest extends TestCase
     {
         $this->signInWithPermission('mentorship_tags.edit');
 
-        $this->{$verb . 'mentorshipTag'}(['name' => null])
+        $this->{$verb.'mentorshipTag'}(['name' => null])
             ->assertJsonValidationErrors('name');
     }
 
@@ -210,7 +210,7 @@ class ManageMentorshipTagsTest extends TestCase
      * @param  array  $values
      * @return \Tests\Feature\Nova\ManageMentorshipTagsTest
      */
-    protected function assertDatabaseHasTag(array $values): \Tests\Feature\Nova\ManageMentorshipTagsTest
+    protected function assertDatabaseHasTag(array $values): self
     {
         return $this->assertDatabaseHas('tags', $this->dbValues($values));
     }
@@ -219,7 +219,7 @@ class ManageMentorshipTagsTest extends TestCase
      * @param  array  $values
      * @return \Tests\Feature\Nova\ManageMentorshipTagsTest
      */
-    protected function assertDatabaseMissingTag(array $values): \Tests\Feature\Nova\ManageMentorshipTagsTest
+    protected function assertDatabaseMissingTag(array $values): self
     {
         return $this->assertDatabaseMissing('tags', $this->dbValues($values));
     }

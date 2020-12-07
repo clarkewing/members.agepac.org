@@ -26,7 +26,7 @@ class ParticipateInThreadsTest extends TestCase
         $thread = create(Thread::class);
         $post = make(Post::class);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path().'/posts', $post->toArray())
             ->assertStatus(201);
 
         $this->assertDatabaseHas('posts', ['body' => $post->body]);
@@ -57,7 +57,7 @@ class ParticipateInThreadsTest extends TestCase
         $thread = create(Thread::class);
         $post = make(Post::class, ['body' => null]);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path().'/posts', $post->toArray())
             ->assertSessionHasErrors('body');
     }
 
@@ -206,10 +206,10 @@ class ParticipateInThreadsTest extends TestCase
             'body' => 'My simple post.',
         ]);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path().'/posts', $post->toArray())
             ->assertStatus(201);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path().'/posts', $post->toArray())
             ->assertStatus(429); // Too many requests
     }
 }

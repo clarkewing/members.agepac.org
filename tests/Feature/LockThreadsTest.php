@@ -67,7 +67,7 @@ class LockThreadsTest extends TestCase
 
         $thread = create(Thread::class, ['locked' => true]);
 
-        $this->post($thread->path() . '/posts', [
+        $this->post($thread->path().'/posts', [
             'body' => 'Foobar',
             'user_id' => Auth::id(),
         ])->assertStatus(422);

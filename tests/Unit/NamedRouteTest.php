@@ -329,7 +329,7 @@ class NamedRouteTest extends TestCase
         $user = make(User::class);
 
         $this->assertRoutePathIs(
-            '/profiles/' . $user->username,
+            '/profiles/'.$user->username,
             'profiles.show', $user
         );
     }
@@ -340,7 +340,7 @@ class NamedRouteTest extends TestCase
         $user = make(User::class);
 
         $this->assertRoutePathIs(
-            '/profiles/' . $user->username,
+            '/profiles/'.$user->username,
             'profiles.update', $user
         );
     }
@@ -369,7 +369,7 @@ class NamedRouteTest extends TestCase
         $company = create(Company::class);
 
         $this->assertRoutePathIs(
-            '/companies/' . $company->slug,
+            '/companies/'.$company->slug,
             'companies.show', $company
         );
     }
@@ -380,7 +380,7 @@ class NamedRouteTest extends TestCase
         $company = create(Company::class);
 
         $this->assertRoutePathIs(
-            '/companies/' . $company->slug,
+            '/companies/'.$company->slug,
             'companies.update', $company
         );
     }
@@ -468,7 +468,7 @@ class NamedRouteTest extends TestCase
         $user = make(User::class);
 
         $this->assertRoutePathIs(
-            '/api/users/' . $user->username . '/avatar',
+            '/api/users/'.$user->username.'/avatar',
             'api.users.avatar.store', $user
         );
     }
@@ -578,7 +578,7 @@ class NamedRouteTest extends TestCase
     public function assertRoutePathIs(string $expectedPath, string $routeName, $routeParameters = null)
     {
         $this->assertEquals(
-            config('app.url') . $expectedPath,
+            config('app.url').$expectedPath,
             route($routeName, $routeParameters)
         );
     }

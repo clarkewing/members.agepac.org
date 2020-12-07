@@ -83,7 +83,7 @@ class EditCompanyTest extends TestCase
     /** @test */
     public function testWebsiteCannotBeLongerThan255Characters()
     {
-        $this->updateCompany(['website' => 'foo.com/' . str_repeat('-', 256 - 8)])
+        $this->updateCompany(['website' => 'foo.com/'.str_repeat('-', 256 - 8)])
             ->assertJsonValidationErrors('website');
     }
 

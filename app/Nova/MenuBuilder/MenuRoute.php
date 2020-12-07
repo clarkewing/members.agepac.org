@@ -35,7 +35,7 @@ class MenuRoute extends MenuLinkable
      */
     public static function getDisplayValue($value = null, array $parameters = null)
     {
-        return 'Route: ' . $value;
+        return 'Route: '.$value;
     }
 
     /**

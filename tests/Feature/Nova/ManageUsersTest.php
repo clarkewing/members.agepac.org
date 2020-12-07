@@ -322,7 +322,7 @@ class ManageUsersTest extends TestCase
     {
         $this->signInWithPermission('users.edit');
 
-        $this->updateUser(['email' => str_repeat('a', 256) . '@example.com'])
+        $this->updateUser(['email' => str_repeat('a', 256).'@example.com'])
             ->assertJsonValidationErrors('email');
     }
 
