@@ -1,11 +1,9 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Channel;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ChannelFactory extends Factory
 {

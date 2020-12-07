@@ -1,14 +1,12 @@
 <?php
 
-
-
 namespace Database\Factories\UserInvitation;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\UserInvitation;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
-class UserInvitationsFactory extends Factory
+class UserInvitationFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

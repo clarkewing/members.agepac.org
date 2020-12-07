@@ -1,13 +1,11 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Channel;
 use App\Thread;
 use App\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ThreadFactory extends Factory
 {

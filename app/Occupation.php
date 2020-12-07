@@ -2,15 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Exceptions\UnknownOccupationStatusException;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
 class Occupation extends Model
 {
     use HasFactory;
-
     use HasLocation;
 
     const EMPLOYED_FULL_TIME = 1;

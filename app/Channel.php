@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 class Channel extends Model
 {
     use HasFactory;
-
     use RestrictedChannels;
 
     /**

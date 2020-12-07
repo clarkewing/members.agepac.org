@@ -1,12 +1,10 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Poll;
 use App\PollOption;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PollOptionFactory extends Factory
 {

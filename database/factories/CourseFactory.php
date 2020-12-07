@@ -1,13 +1,11 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Course;
 use App\Location;
 use App\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CourseFactory extends Factory
 {

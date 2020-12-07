@@ -1,12 +1,11 @@
 <?php
 
-
-
 namespace Database\Factories\Illuminate\Notifications;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 
 class DatabaseNotificationFactory extends Factory

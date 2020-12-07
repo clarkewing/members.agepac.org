@@ -1,13 +1,11 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\PollOption;
 use App\PollVote;
 use App\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PollVoteFactory extends Factory
 {

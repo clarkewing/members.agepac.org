@@ -1,15 +1,13 @@
 <?php
 
-
-
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Aircraft;
 use App\Company;
 use App\Location;
 use App\Occupation;
 use App\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
 class OccupationFactory extends Factory

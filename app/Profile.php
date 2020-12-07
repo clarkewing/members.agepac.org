@@ -9,7 +9,6 @@ use Spatie\Tags\HasTags;
 class Profile extends User
 {
     use HasFactory;
-
     use HasLocation, HasTags, RecordsActivity, Searchable;
 
     /**
