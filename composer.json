@@ -61,18 +61,18 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         },
-        "files": ["tests/utilities/helpers.php"]
+        "files": [
+            "tests/utilities/helpers.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
