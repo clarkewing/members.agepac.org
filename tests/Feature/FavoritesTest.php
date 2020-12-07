@@ -20,7 +20,7 @@ class FavoritesTest extends TestCase
     {
         $this->signIn();
 
-        $post = create('App\Post');
+        $post = create(\App\Post::class);
 
         $this->post(route('posts.favorite', $post));
 
@@ -32,7 +32,7 @@ class FavoritesTest extends TestCase
     {
         $this->signIn();
 
-        $post = create('App\Post');
+        $post = create(\App\Post::class);
         $post->favorite();
 
         $this->delete(route('posts.unfavorite', $post));
@@ -44,7 +44,7 @@ class FavoritesTest extends TestCase
     {
         $this->signIn();
 
-        $post = create('App\Post');
+        $post = create(\App\Post::class);
 
         try {
             $this->post(route('posts.favorite', $post));

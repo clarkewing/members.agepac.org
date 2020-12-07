@@ -20,7 +20,7 @@ class ActivityTest extends TestCase
             'type' => 'created_user',
             'user_id' => $user->id,
             'subject_id' => $user->id,
-            'subject_type' => 'App\User',
+            'subject_type' => \App\User::class,
         ]);
 
         $activity = Activity::first();
@@ -41,7 +41,7 @@ class ActivityTest extends TestCase
             'type' => 'updated_profile',
             'user_id' => Auth::id(),
             'subject_id' => $profile->id,
-            'subject_type' => 'App\Profile',
+            'subject_type' => \App\Profile::class,
         ]);
 
         $activity = Activity::first();
@@ -60,7 +60,7 @@ class ActivityTest extends TestCase
             'type' => 'created_thread',
             'user_id' => Auth::id(),
             'subject_id' => $thread->id,
-            'subject_type' => 'App\Thread',
+            'subject_type' => \App\Thread::class,
         ]);
 
         $activity = Activity::first();
@@ -79,7 +79,7 @@ class ActivityTest extends TestCase
         $this->assertDatabaseHas('activities', [
             'type' => 'created_post',
             'subject_id' => $post->id,
-            'subject_type' => 'App\Post',
+            'subject_type' => \App\Post::class,
         ]);
     }
 

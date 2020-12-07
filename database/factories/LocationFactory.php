@@ -12,7 +12,7 @@ $factory->define(Location::class, function (Faker $faker) {
         'locatable_id' => function () {
             return factory(User::class)->create()->id;
         },
-        'locatable_type' => 'App\User',
+        'locatable_type' => \App\User::class,
         'type' => Arr::random(['country', 'city', 'address', 'busStop', 'trainStation', 'townhall', 'airport']),
         'name' => $faker->sentence,
         'street_line_1' => $faker->streetAddress,

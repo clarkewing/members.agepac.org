@@ -37,7 +37,7 @@ class ProfileDataSeeder extends Seeder
      */
     protected function locations()
     {
-        Location::where('locatable_id', 'App\User')->delete();
+        Location::where('locatable_id', \App\User::class)->delete();
 
         User::inRandomOrder()->take(25)->each(function ($user) {
             factory(Location::class)
@@ -57,7 +57,7 @@ class ProfileDataSeeder extends Seeder
     {
         Occupation::truncate();
         Course::truncate();
-        Location::whereIn('locatable_id', ['App\Occupation', 'App\Course'])->delete();
+        Location::whereIn('locatable_id', [\App\Occupation::class, \App\Course::class])->delete();
 
         User::inRandomOrder()->take(25)->each(function ($user) {
             factory(Occupation::class, $this->faker->numberBetween(1, 10))
