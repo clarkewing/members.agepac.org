@@ -13,7 +13,7 @@ class TrendingTest extends TestCase
      */
     protected $trending;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

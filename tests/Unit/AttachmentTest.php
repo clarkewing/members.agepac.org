@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class AttachmentTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

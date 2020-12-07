@@ -12,7 +12,7 @@ class VoteInPollTest extends TestCase
     /** @var \App\Poll */
     protected $poll;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

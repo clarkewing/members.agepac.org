@@ -16,7 +16,7 @@ class RestrictedChannelsTest extends TestCase
     /** @var \App\Channel */
     public $channel;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

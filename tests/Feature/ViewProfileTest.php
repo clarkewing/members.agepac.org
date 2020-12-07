@@ -14,7 +14,7 @@ class ViewProfileTest extends TestCase
 {
     protected $profile;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

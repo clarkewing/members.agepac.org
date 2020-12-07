@@ -6,7 +6,7 @@ use App\User;
 
 abstract class StripeTestCase extends TestCase
 {
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         // Ensure created Stripe customers aren't persisted.
         User::whereNotNull('stripe_id')->get()->map(function ($user) {

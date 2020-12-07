@@ -13,7 +13,7 @@ class EditCourseTest extends TestCase
      */
     protected $course;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

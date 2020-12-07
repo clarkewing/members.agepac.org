@@ -14,7 +14,7 @@ class EditProfileTest extends TestCase
      */
     public $profile;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

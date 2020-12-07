@@ -14,7 +14,7 @@ class CreatePollTest extends TestCase
     /** @var \App\Thread */
     protected $thread;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

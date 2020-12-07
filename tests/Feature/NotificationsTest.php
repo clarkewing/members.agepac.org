@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
