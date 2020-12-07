@@ -1,9 +1,11 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\User;
-use Faker\Generator as Faker;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -19,34 +21,53 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
-    $firstName = $faker->firstName;
-    $lastName = $faker->lastName;
+class UserFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
 
-    return [
-        'first_name' => $firstName,
-        'last_name' => $lastName,
-        'username' => User::makeUsername($firstName, $lastName),
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => Hash::make('password'),
-        'class_course' => Arr::random(config('council.courses')),
-        'class_year' => $faker->year,
-        'gender' => Arr::random(array_keys(config('council.genders'))),
-        'birthdate' => $faker->date('Y-m-d', today()->subYears(18)), // At least 18 years old
-        'phone' => Arr::random([ // Use predefined numbers for testing as Faker can generate some weirdos
-            '0669696969',
-            '07 68 12 34 56',
-            '06.12.34.56.78',
-            '+44 7375 123456',
-            '+1-202-555-5555',
-        ]),
-        'remember_token' => Str::random(10),
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $firstName = $this->faker->firstName;
+        $lastName = $this->faker->lastName;
 
-$factory->state(User::class, 'unverified_email', function (Faker $faker) {
-    return [
-        'email_verified_at' => null,
-    ];
-});
+        return [
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'username' => User::makeUsername($firstName, $lastName),
+            'email' => $this->faker->unique()->safeEmail,
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'class_course' => Arr::random(config('council.courses')),
+            'class_year' => $this->faker->year,
+            'gender' => Arr::random(array_keys(config('council.genders'))),
+            'birthdate' => $this->faker->date('Y-m-d', today()->subYears(18)), // At least 18 years old
+            'phone' => Arr::random([ // Use predefined numbers for testing as Faker can generate some weirdos
+                '0669696969',
+                '07 68 12 34 56',
+                '06.12.34.56.78',
+                '+44 7375 123456',
+                '+1-202-555-5555',
+            ]),
+            'remember_token' => Str::random(10),
+        ];
+    }
+
+    public function unverifiedEmail()
+    {
+        return $this->state(function () {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
+    }
+}

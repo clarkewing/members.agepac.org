@@ -2,11 +2,14 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
 
 class Profile extends User
 {
+    use HasFactory;
+
     use HasLocation, HasTags, RecordsActivity, Searchable;
 
     /**

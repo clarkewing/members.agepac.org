@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
 
         Schema::enableForeignKeyConstraints();
 
-        factory(User::class)
+        User::factory()
             ->create([
                 'first_name' => 'John',
                 'last_name' => 'Doe',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             ])
             ->assignRole('Administrator');
 
-        factory(User::class, 50)
+        User::factory()->count(50)
             ->create();
     }
 }

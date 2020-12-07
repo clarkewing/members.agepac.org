@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,6 +16,8 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasFactory;
+
     use Billable, HasReputation, HasRoles, Notifiable;
 
     /**

@@ -40,7 +40,7 @@ class ProfileDataSeeder extends Seeder
         Location::where('locatable_id', \App\User::class)->delete();
 
         User::inRandomOrder()->take(25)->each(function ($user) {
-            factory(Location::class)
+            Location::factory()
                 ->create([
                     'locatable_id' => $user->id,
                     'locatable_type' => get_class($user),
@@ -60,10 +60,10 @@ class ProfileDataSeeder extends Seeder
         Location::whereIn('locatable_id', [\App\Occupation::class, \App\Course::class])->delete();
 
         User::inRandomOrder()->take(25)->each(function ($user) {
-            factory(Occupation::class, $this->faker->numberBetween(1, 10))
+            Occupation::factory()->count($this->faker->numberBetween(1, 10))
                 ->create(['user_id' => $user->id]);
 
-            factory(Course::class, $this->faker->numberBetween(1, 10))
+            Course::factory()->count($this->faker->numberBetween(1, 10))
                 ->create(['user_id' => $user->id]);
         });
 

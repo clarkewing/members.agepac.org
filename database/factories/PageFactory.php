@@ -1,18 +1,36 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Page;
-use Faker\Generator as Faker;
 
-$factory->define(Page::class, function (Faker $faker) {
-    $faker->addProvider(new \App\FakerProviders\Gutenberg($faker));
+class PageFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Page::class;
 
-    return [
-        'title' => $faker->sentence,
-        'path' => $faker->unique()->parse($faker->randomElement(['{{slug}}/{{slug}}', '{{slug}}'])),
-        'body' => $faker->gutenberg,
-        'restricted' => false,
-        'published_at' => now()->toDateTimeString(),
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $this->faker->addProvider(new \App\FakerProviders\Gutenberg($faker));
+
+        return [
+            'title' => $this->faker->sentence,
+            'path' => $this->faker->unique()->parse($this->faker->randomElement(['{{slug}}/{{slug}}', '{{slug}}'])),
+            'body' => $this->faker->gutenberg,
+            'restricted' => false,
+            'published_at' => now()->toDateTimeString(),
+        ];
+    }
+}

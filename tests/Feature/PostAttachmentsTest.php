@@ -44,7 +44,7 @@ class PostAttachmentsTest extends TestCase
     /** @test */
     public function testUnverifiedUsersCannotUploadAnAttachment()
     {
-        $this->signIn(factory(User::class)->states('unverified_email')->create());
+        $this->signIn(User::factory()->unverifiedEmail()->create());
 
         $this->uploadAttachment()->assertStatus(Response::HTTP_FORBIDDEN);
 
@@ -127,7 +127,7 @@ class PostAttachmentsTest extends TestCase
     public function testPostCreatorCanDeleteAnAttachmentFromTheirPost()
     {
         $this->signIn();
-        $post = factory(Post::class)->state('with_attachment')->create(['user_id' => Auth::id()]);
+        $post = Post::factory()->withAttachment()->create(['user_id' => Auth::id()]);
         $this->assertCount(1, $attachments = $post->attachments);
 
         $this->patchJson(route('posts.update', $post), [
@@ -142,7 +142,7 @@ class PostAttachmentsTest extends TestCase
     /** @test */
     public function testWhenPostIsDeletedAllAssociatedAttachmentsAreDeleted()
     {
-        $post = factory(Post::class)->state('with_attachment')->create();
+        $post = Post::factory()->withAttachment()->create();
         $attachment = $post->attachments->first();
 
         $post->delete();

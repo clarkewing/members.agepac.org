@@ -106,10 +106,8 @@ class CompanyTest extends TestCase
     {
         $company = create(Company::class);
 
-        $pastOccupations = factory(Occupation::class, 3)
-            ->states('past')->create(['company_id' => $company->id]);
-        $currentOccupations = factory(Occupation::class, 2)
-            ->states('current')->create(['company_id' => $company->id]);
+        $pastOccupations = Occupation::factory()->count(3)->past()->create(['company_id' => $company->id]);
+        $currentOccupations = Occupation::factory()->count(2)->current()->create(['company_id' => $company->id]);
 
         $this->assertCount(2, $company->current_employees);
     }
@@ -119,10 +117,8 @@ class CompanyTest extends TestCase
     {
         $company = create(Company::class);
 
-        $formerOccupations = factory(Occupation::class, 3)
-            ->states('past')->create(['company_id' => $company->id]);
-        $currentOccupations = factory(Occupation::class, 2)
-            ->states('current')->create(['company_id' => $company->id]);
+        $formerOccupations = Occupation::factory()->count(3)->past()->create(['company_id' => $company->id]);
+        $currentOccupations = Occupation::factory()->count(2)->current()->create(['company_id' => $company->id]);
 
         $this->assertCount(3, $company->former_employees);
     }

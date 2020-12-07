@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,8 @@ use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
+    use HasFactory;
+
     use Favoritable, MentionsUsers, Searchable, SoftDeletes;
     use RecordsActivity {
         recordActivity as protected traitRecordActivity;

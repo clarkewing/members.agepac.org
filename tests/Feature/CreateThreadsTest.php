@@ -26,7 +26,7 @@ class CreateThreadsTest extends TestCase
     public function testNewUserMustFirstVerifyEmailBeforeCreatingThreads()
     {
         $this->signIn(
-            factory(User::class)->states('unverified_email')->create()
+            User::factory()->unverifiedEmail()->create()
         );
 
         $this->get(route('threads.create'))
@@ -79,7 +79,7 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function testThreadRequiresAValidChannel()
     {
-        factory(Channel::class, 2)->create();
+        Channel::factory()->count(2)->create();
 
         $this->publishThread(['channel_id' => null])
             ->assertSessionHasErrors('channel_id');
@@ -136,7 +136,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = factory(Thread::class)->states('with_body')->make($overrides);
+        $thread = Thread::factory()->withBody()->make($overrides);
 
         if ($wantsJson) {
             return $this->postJson(route('threads.store'), $thread->toArray());

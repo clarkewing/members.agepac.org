@@ -1,11 +1,13 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Location;
 use App\Profile;
 use App\User;
-use Faker\Generator as Faker;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +20,37 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(Profile::class, function (Faker $faker) {
-    return factory(User::class)->raw([
-        'bio' => $faker->paragraph,
-        'flight_hours' => $faker->numberBetween(0, 15000),
-    ]);
-});
+class ProfileFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Profile::class;
 
-$factory->afterCreating(Profile::class, function ($profile) {
-    $profile->location()->save(factory(Location::class)->make());
-});
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function ($profile) {
+            $profile->location()->save(Location::factory()->make());
+        });
+    }
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return User::factory()->raw([
+            'bio' => $this->faker->paragraph,
+            'flight_hours' => $this->faker->numberBetween(0, 15000),
+        ]);
+    }
+}

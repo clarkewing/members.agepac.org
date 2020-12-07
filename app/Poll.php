@@ -2,12 +2,15 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class Poll extends Model
 {
+    use HasFactory;
+
     public static $votesPrivacyValues = [
         0 => 'public',
         1 => 'private',

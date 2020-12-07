@@ -18,11 +18,11 @@ class OccupationTest extends TestCase
     /** @test */
     public function testKnowsIfItIsPilotOccupation()
     {
-        $pilotOccupation = factory(Occupation::class)->states('pilot')->create();
+        $pilotOccupation = Occupation::factory()->pilot()->create();
 
         $this->assertTrue($pilotOccupation->is_pilot);
 
-        $otherOccupation = factory(Occupation::class)->states('not_pilot')->create();
+        $otherOccupation = Occupation::factory()->notPilot()->create();
 
         $this->assertFalse($otherOccupation->is_pilot);
     }
@@ -30,14 +30,14 @@ class OccupationTest extends TestCase
     /** @test */
     public function testHasTitle()
     {
-        $pilotOccupation = factory(Occupation::class)->states('pilot')->create();
+        $pilotOccupation = Occupation::factory()->pilot()->create();
 
         $this->assertEquals(
             "{$pilotOccupation->position} sur {$pilotOccupation->aircraft->name}",
             $pilotOccupation->title
         );
 
-        $otherOccupation = factory(Occupation::class)->states('not_pilot')->create();
+        $otherOccupation = Occupation::factory()->notPilot()->create();
 
         $this->assertEquals($otherOccupation->position, $otherOccupation->title);
     }

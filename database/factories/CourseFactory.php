@@ -1,28 +1,54 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Course;
 use App\Location;
 use App\User;
-use Faker\Generator as Faker;
 
-$factory->define(Course::class, function (Faker $faker) {
-    return [
-        'user_id' => function () {
-            return factory(User::class)->create()->id;
-        },
-        'title' => $faker->jobTitle,
-        'school' => $faker->company,
-        'description' => $faker->paragraph,
-        'start_date' => $start_date = $faker->date,
-        'end_date' => $faker->boolean ? $faker->dateTimeBetween($start_date, 'now') : null,
-    ];
-});
+class CourseFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Course::class;
 
-$factory->afterCreating(Course::class, function ($course) {
-    factory(Location::class)->create([
-        'locatable_id' => $course->id,
-        'locatable_type' => get_class($course),
-    ]);
-});
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function ($course) {
+            Location::factory()->create([
+                'locatable_id' => $course->id,
+                'locatable_type' => get_class($course),
+            ]);
+        });
+    }
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+            'title' => $this->faker->jobTitle,
+            'school' => $this->faker->company,
+            'description' => $this->faker->paragraph,
+            'start_date' => $start_date = $this->faker->date,
+            'end_date' => $this->faker->boolean ? $this->faker->dateTimeBetween($start_date, 'now') : null,
+        ];
+    }
+}
