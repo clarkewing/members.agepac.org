@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Course;
 use App\Location;
 use App\Occupation;

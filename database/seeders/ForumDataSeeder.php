@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Activity;
 use App\Attachment;
 use App\Channel;
