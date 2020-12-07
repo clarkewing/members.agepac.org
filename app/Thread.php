@@ -298,7 +298,7 @@ class Thread extends Model
         $slug = Str::slug($title);
 
         if (static::where('slug', $slug)->exists()) {
-            $slug = $slug.'-'.($this->created_at ?? now())->timestamp;
+            $slug = $slug . '-' . ($this->created_at ?? now())->timestamp;
         }
 
         $this->attributes['slug'] = $slug;

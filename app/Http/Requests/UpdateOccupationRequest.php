@@ -62,13 +62,13 @@ class UpdateOccupationRequest extends StoreOccupationRequest
     public function withValidator($validator): void
     {
         if ($this->missing('end_date') && ! is_null($this->occupation->end_date)) {
-            $validator->addRules(['start_date' => 'before_or_equal:'.$this->occupation->end_date->toDateString()]);
+            $validator->addRules(['start_date' => 'before_or_equal:' . $this->occupation->end_date->toDateString()]);
         }
 
         if ($this->has('start_date')) {
             $validator->addRules(['end_date' => 'after_or_equal:start_date']);
         } else {
-            $validator->addRules(['end_date' => 'after_or_equal:'.$this->occupation->start_date->toDateString()]);
+            $validator->addRules(['end_date' => 'after_or_equal:' . $this->occupation->start_date->toDateString()]);
         }
 
         // Occupation cannot be set as primary if end_date is in past (hence not null).

@@ -62,9 +62,9 @@ class UpdatePollRequest extends StorePollRequest
     {
         if ($validator->passes()) {
             if ($this->has('options')) {
-                $validator->addRules(['max_votes' => 'max:'.count($this->input('options'))]);
+                $validator->addRules(['max_votes' => 'max:' . count($this->input('options'))]);
             } else {
-                $validator->addRules(['max_votes' => 'max:'.$this->poll->options()->count()]);
+                $validator->addRules(['max_votes' => 'max:' . $this->poll->options()->count()]);
             }
         }
     }

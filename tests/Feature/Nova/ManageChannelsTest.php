@@ -141,7 +141,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $this->{$verb.'Channel'}(['name' => null])
+        $this->{$verb . 'Channel'}(['name' => null])
             ->assertJsonValidationErrors('name');
     }
 
@@ -153,7 +153,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $this->{$verb.'Channel'}(['name' => str_repeat('*', 51)])
+        $this->{$verb . 'Channel'}(['name' => str_repeat('*', 51)])
             ->assertJsonValidationErrors('name');
     }
 
@@ -167,7 +167,7 @@ class ManageChannelsTest extends TestCase
 
         create(Channel::class, ['name' => 'Foo Channel']);
 
-        $this->{$verb.'Channel'}(['name' => 'Foo Channel'])
+        $this->{$verb . 'Channel'}(['name' => 'Foo Channel'])
             ->assertJsonValidationErrors('name');
     }
 
@@ -190,7 +190,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $this->{$verb.'Channel'}(['slug' => null])
+        $this->{$verb . 'Channel'}(['slug' => null])
             ->assertJsonValidationErrors('slug');
     }
 
@@ -202,7 +202,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $this->{$verb.'Channel'}(['slug' => str_repeat('*', 51)])
+        $this->{$verb . 'Channel'}(['slug' => str_repeat('*', 51)])
             ->assertJsonValidationErrors('slug');
     }
 
@@ -216,7 +216,7 @@ class ManageChannelsTest extends TestCase
 
         create(Channel::class, ['slug' => 'foo']);
 
-        $this->{$verb.'Channel'}(['slug' => 'foo'])
+        $this->{$verb . 'Channel'}(['slug' => 'foo'])
             ->assertJsonValidationErrors('slug');
     }
 
@@ -239,7 +239,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $this->{$verb.'Channel'}(['description' => null])
+        $this->{$verb . 'Channel'}(['description' => null])
             ->assertJsonMissingValidationErrors('description');
     }
 
@@ -251,7 +251,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $this->{$verb.'Channel'}(['description' => str_repeat('*', 256)])
+        $this->{$verb . 'Channel'}(['description' => str_repeat('*', 256)])
             ->assertJsonValidationErrors('description');
     }
 

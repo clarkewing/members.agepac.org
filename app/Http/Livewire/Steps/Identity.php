@@ -126,7 +126,7 @@ trait Identity
      */
     protected function setIdentityFromInvitation(): void
     {
-        $this->name = $this->invitation->first_name.' '.$this->invitation->last_name;
+        $this->name = $this->invitation->first_name . ' ' . $this->invitation->last_name;
         $this->first_name = $this->invitation->first_name;
         $this->last_name = $this->invitation->last_name;
         $this->class_course = $this->invitation->class_course;

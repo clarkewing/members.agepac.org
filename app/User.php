@@ -145,7 +145,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getNameAttribute(): string
     {
-        return $this->first_name.' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     /**
@@ -155,7 +155,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getClassAttribute(): string
     {
-        return $this->class_course.' '.$this->class_year;
+        return $this->class_course . ' ' . $this->class_year;
     }
 
     /**
@@ -224,6 +224,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public static function makeUsername(string $firstName, string $lastName): string
     {
-        return strtolower(URLify::filter($firstName).'.'.URLify::filter($lastName));
+        return strtolower(URLify::filter($firstName) . '.' . URLify::filter($lastName));
     }
 }

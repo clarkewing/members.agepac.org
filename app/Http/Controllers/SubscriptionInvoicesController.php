@@ -21,6 +21,6 @@ class SubscriptionInvoicesController extends Controller
         $pdf = SnappyPdf::loadHTML($invoice->view([]));
 
         return $pdf->setPaper(config('cashier.paper'))
-            ->inline('Facture AGEPAC '.$invoice->date()->format('Y-m-d').'.pdf');
+            ->inline('Facture AGEPAC ' . $invoice->date()->format('Y-m-d') . '.pdf');
     }
 }

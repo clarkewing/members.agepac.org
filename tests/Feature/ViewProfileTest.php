@@ -43,7 +43,7 @@ class ViewProfileTest extends TestCase
     public function testProfileDisplaysReputation()
     {
         $this->getProfile()
-            ->assertSee($this->profile->reputation.' XP');
+            ->assertSee($this->profile->reputation . ' XP');
     }
 
     /** @test */

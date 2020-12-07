@@ -59,13 +59,13 @@ class UpdateCourseRequest extends StoreCourseRequest
     public function withValidator($validator): void
     {
         if ($this->missing('end_date') && ! is_null($this->course->end_date)) {
-            $validator->addRules(['start_date' => 'before_or_equal:'.$this->course->end_date->toDateString()]);
+            $validator->addRules(['start_date' => 'before_or_equal:' . $this->course->end_date->toDateString()]);
         }
 
         if ($this->has('start_date')) {
             $validator->addRules(['end_date' => 'after_or_equal:start_date']);
         } else {
-            $validator->addRules(['end_date' => 'after_or_equal:'.$this->course->start_date->toDateString()]);
+            $validator->addRules(['end_date' => 'after_or_equal:' . $this->course->start_date->toDateString()]);
         }
     }
 

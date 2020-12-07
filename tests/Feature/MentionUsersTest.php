@@ -24,7 +24,7 @@ class MentionUsersTest extends TestCase
             'body' => 'Hey @jane.doe look at this!',
         ]);
 
-        $this->postJson($thread->path().'/posts', $post->toArray());
+        $this->postJson($thread->path() . '/posts', $post->toArray());
 
         $this->assertCount(1, $jane->notifications);
     }

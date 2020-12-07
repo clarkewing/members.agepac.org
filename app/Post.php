@@ -154,7 +154,7 @@ class Post extends Model
      */
     public function path()
     {
-        return $this->thread->path()."#post-{$this->id}";
+        return $this->thread->path() . "#post-{$this->id}";
     }
 
     /**
@@ -226,7 +226,7 @@ class Post extends Model
             $searchableData['thread']['channel']['lvl0'] = $this->thread->channel->name;
         } else {
             $searchableData['thread']['channel']['lvl0'] = $this->thread->channel->parent->name;
-            $searchableData['thread']['channel']['lvl1'] = $this->thread->channel->parent->name.' > '.$this->thread->channel->name;
+            $searchableData['thread']['channel']['lvl1'] = $this->thread->channel->parent->name . ' > ' . $this->thread->channel->name;
         }
 
         return $searchableData;

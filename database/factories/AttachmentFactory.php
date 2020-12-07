@@ -36,7 +36,7 @@ class AttachmentFactory extends Factory
         return [
             'post_id' => null,
             'path' => Storage::disk('public')->putFileAs(
-                'attachments/'.Str::random(40),
+                'attachments/' . Str::random(40),
                 $file,
                 $fileName
             ),

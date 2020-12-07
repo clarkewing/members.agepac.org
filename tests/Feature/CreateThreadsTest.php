@@ -110,7 +110,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
-        $this->assertEquals('foo-title-'.strtotime($thread['created_at']), $thread['slug']);
+        $this->assertEquals('foo-title-' . strtotime($thread['created_at']), $thread['slug']);
     }
 
     /** @test */
@@ -122,7 +122,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
-        $this->assertEquals('financials-2020-'.strtotime($thread['created_at']), $thread['slug']);
+        $this->assertEquals('financials-2020-' . strtotime($thread['created_at']), $thread['slug']);
     }
 
     /**
