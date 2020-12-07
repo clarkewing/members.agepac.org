@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class Occupation extends Model
 {
-    use HasFactory;
-    use HasLocation;
+    use HasFactory, HasLocation;
 
     const EMPLOYED_FULL_TIME = 1;
     const EMPLOYED_PART_TIME = 2;

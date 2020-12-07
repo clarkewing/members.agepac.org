@@ -10,8 +10,7 @@ use Illuminate\Support\Str;
 
 class Channel extends Model
 {
-    use HasFactory;
-    use RestrictedChannels;
+    use HasFactory, RestrictedChannels;
 
     /**
      * The permissions configured for the channel.

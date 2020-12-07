@@ -8,8 +8,7 @@ use Spatie\Tags\HasTags;
 
 class Profile extends User
 {
-    use HasFactory;
-    use HasLocation, HasTags, RecordsActivity, Searchable;
+    use HasFactory, HasLocation, HasTags, RecordsActivity, Searchable;
 
     /**
      * The attributes that are mass assignable.

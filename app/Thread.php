@@ -12,8 +12,7 @@ use Illuminate\Support\Str;
 
 class Thread extends Model
 {
-    use HasFactory;
-    use MentionsUsers, RecordsActivity, SoftDeletes;
+    use HasFactory, MentionsUsers, RecordsActivity, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

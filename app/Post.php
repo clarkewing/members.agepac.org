@@ -11,8 +11,7 @@ use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
-    use HasFactory;
-    use Favoritable, MentionsUsers, Searchable, SoftDeletes;
+    use HasFactory, Favoritable, MentionsUsers, Searchable, SoftDeletes;
     use RecordsActivity {
         recordActivity as protected traitRecordActivity;
     }

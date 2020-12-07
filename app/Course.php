@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    use HasFactory;
-    use HasLocation;
+    use HasFactory, HasLocation;
 
     /**
      * The attributes that are mass assignable.

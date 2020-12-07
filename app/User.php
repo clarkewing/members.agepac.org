@@ -16,8 +16,7 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory;
-    use Billable, HasReputation, HasRoles, Notifiable;
+    use HasFactory, Billable, HasReputation, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.

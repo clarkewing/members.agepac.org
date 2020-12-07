@@ -12,8 +12,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Company extends Model
 {
-    use HasFactory;
-    use HasSlug, Searchable;
+    use HasFactory, HasSlug, Searchable;
 
     const AIRLINE = 1;
     const AIRWORK = 2;
