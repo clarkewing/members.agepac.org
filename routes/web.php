@@ -6,19 +6,25 @@ use App\Http\Controllers\Api\UserAvatarController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\AttachmentsController;
 use App\Http\Controllers\BestPostsController;
+use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LockedThreadsController;
+use App\Http\Controllers\OccupationsController;
+use App\Http\Controllers\PaymentMethodsController;
 use App\Http\Controllers\PinnedThreadsController;
 use App\Http\Controllers\PollResultsController;
 use App\Http\Controllers\PollsController;
 use App\Http\Controllers\PollVotesController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubscriptionInvoicesController;
 use App\Http\Controllers\ThreadsController;
 use App\Http\Controllers\ThreadSubscriptionsController;
+use App\Http\Controllers\UserNotificationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +46,7 @@ Auth::routes(['verify' => true]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /* Threads */
-Route::resource('threads', 'ThreadsController')->only(['create', 'store']);
+Route::resource('threads', ThreadsController::class)->only(['create', 'store']);
 Route::get('/threads/search', [SearchController::class, 'show'])->name('threads.search');
 Route::get('/threads/{channel?}', [ThreadsController::class, 'index'])->name('threads.index');
 Route::get('/threads/{channel}/{thread}', [ThreadsController::class, 'show'])->name('threads.show');
@@ -59,7 +65,7 @@ Route::delete('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionsC
 /* Posts */
 Route::get('/threads/{channel}/{thread}/posts', [PostsController::class, 'index'])->name('posts.index');
 Route::post('/threads/{channel}/{thread}/posts', [PostsController::class, 'store'])->name('posts.store');
-Route::apiResource('posts', 'PostsController')->only(['update', 'destroy']);
+Route::apiResource('posts', PostsController::class)->only(['update', 'destroy']);
 
 Route::post('/posts/{post}/best', [BestPostsController::class, 'store'])->name('posts.mark_best');
 Route::delete('/posts/{post}/best', [BestPostsController::class, 'destroy'])->name('posts.unmark_best');
@@ -84,16 +90,16 @@ Route::prefix('/threads/{channel}/{thread}/poll')->group(function () {
 });
 
 /* Profiles */
-Route::apiResource('profiles', 'ProfilesController')->only(['index', 'show', 'update']);
+Route::apiResource('profiles', ProfilesController::class)->only(['index', 'show', 'update']);
 
-Route::apiResource('occupations', 'OccupationsController')->only(['store', 'update', 'destroy']);
-Route::apiResource('courses', 'CoursesController')->only(['store', 'update', 'destroy']);
+Route::apiResource('occupations', OccupationsController::class)->only(['store', 'update', 'destroy']);
+Route::apiResource('courses', CoursesController::class)->only(['store', 'update', 'destroy']);
 
 /* Companies */
-Route::apiResource('companies', 'CompaniesController')->except('destroy');
+Route::apiResource('companies', CompaniesController::class)->except('destroy');
 
 /* Notifications */
-Route::apiResource('notifications', 'UserNotificationsController')->only(['index', 'destroy']);
+Route::apiResource('notifications', UserNotificationsController::class)->only(['index', 'destroy']);
 
 /* Api */
 Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
@@ -119,7 +125,7 @@ Route::prefix('/account')->group(function () {
         Route::get('/invoice/{invoiceId}', [SubscriptionInvoicesController::class, 'show'])
             ->name('invoices.show');
 
-        Route::resource('payment-methods', 'PaymentMethodsController')
+        Route::resource('payment-methods', PaymentMethodsController::class)
             ->only(['create', 'store', 'update', 'destroy']);
     });
 });
