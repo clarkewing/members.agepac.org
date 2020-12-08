@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
-use App\Profile;
+use App\Models\Profile;
 use App\Rules\ValidLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -44,7 +44,7 @@ class ProfilesController extends Controller
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Profile  $profile
+     * @param  \App\Models\Profile  $profile
      * @return array|\Illuminate\View\View
      */
     public function show(Request $request, Profile $profile)
@@ -65,7 +65,7 @@ class ProfilesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Profile  $profile
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */

@@ -1,6 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Traits;
+
+use App\Models\Location;
 
 trait HasLocation
 {
@@ -28,7 +30,7 @@ trait HasLocation
      * Set the model's location.
      *
      * @param  array|null  $value
-     * @return \App\Location|null
+     * @return \App\Models\Location|null
      */
     public function setLocation(?array $value)
     {

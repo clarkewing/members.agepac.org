@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Course;
 use App\Models\Occupation;
+use App\Models\Profile;
 use App\Models\Thread;
 use App\Models\User;
-use App\Profile;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 

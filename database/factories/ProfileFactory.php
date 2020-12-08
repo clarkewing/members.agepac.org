@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Location;
+use App\Models\Profile;
 use App\Models\User;
-use App\Profile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*

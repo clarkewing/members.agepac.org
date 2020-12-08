@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Thread;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,7 +24,7 @@ class Trending
     /**
      * Push a thread to the trending threads list.
      *
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @param  int  $increment
      * @return void
      */
@@ -43,7 +44,7 @@ class Trending
     /**
      * Get the trending score of the given thread.
      *
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return int
      */
     public function score(Thread $thread): int

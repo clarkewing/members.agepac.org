@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
+use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
 
 trait Favoritable
@@ -33,7 +34,7 @@ trait Favoritable
      * If no userId is passed, authenticated user is used.
      *
      * @param  int|null $userId
-     * @return \App\Favorite|void
+     * @return \App\Models\Favorite|void
      */
     public function favorite(int $userId = null)
     {

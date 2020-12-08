@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Traits\HasLocation;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
@@ -98,7 +100,7 @@ class Profile extends User
      * Add an occupation to the model's experience.
      *
      * @param  array $occupation
-     * @return \App\Occupation
+     * @return \App\Models\Occupation
      */
     public function addExperience(array $occupation)
     {
@@ -120,7 +122,7 @@ class Profile extends User
      * Add an course to the model's education.
      *
      * @param  array $course
-     * @return \App\Course
+     * @return \App\Models\Course
      */
     public function addEducation(array $course)
     {

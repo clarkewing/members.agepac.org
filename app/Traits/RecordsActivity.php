@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
+use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
 use ReflectionClass;
 

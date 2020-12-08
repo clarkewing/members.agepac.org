@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Profile;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -72,7 +72,7 @@ class BrowseProfilesTest extends TestCase
     /**
      * Show the requested profile.
      *
-     * @param  \App\Profile  $profile
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Testing\TestResponse
      */
     protected function showProfile(Profile $profile = null)

@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Channel;
 use App\Models\User;
-use App\RestrictedChannels;
+use App\Traits\RestrictedChannels;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasReputation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -126,7 +127,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the cache key for visited threads.
      *
-     * @param  \App\Thread $thread
+     * @param  \App\Models\Thread  $thread
      * @return string
      */
     public function read(Thread $thread)
@@ -206,7 +207,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the cache key for visited threads.
      *
-     * @param  \App\Thread $thread
+     * @param  \App\Models\Thread  $thread
      * @return string
      */
     public function visitedThreadCacheKey(Thread $thread)

@@ -17,7 +17,7 @@ class Activity extends Model
     /**
      * Return a user's activity feed.
      *
-     * @param  \App\User $user
+     * @param  \App\Models\User $user
      * @param  int $take
      * @return \Illuminate\Support\Collection
      */
