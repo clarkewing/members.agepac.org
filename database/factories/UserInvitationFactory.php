@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\UserInvitation;
+namespace Database\Factories;
 
 use App\UserInvitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
