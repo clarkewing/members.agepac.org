@@ -21,7 +21,7 @@ class PageFactory extends Factory
      */
     public function definition()
     {
-        $this->faker->addProvider(new \App\FakerProviders\Gutenberg($faker));
+        $this->faker->addProvider(new \App\FakerProviders\Gutenberg($this->faker));
 
         return [
             'title' => $this->faker->sentence,

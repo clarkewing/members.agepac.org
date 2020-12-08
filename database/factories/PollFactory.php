@@ -23,7 +23,7 @@ class PollFactory extends Factory
      */
     public function configure()
     {
-        return $this->afterCreating(function ($poll, Faker $faker) {
+        return $this->afterCreating(function ($poll) {
             PollOption::factory()->count($this->faker->numberBetween(2, 10))->create([
                 'poll_id' => $poll->id,
             ]);
