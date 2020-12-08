@@ -103,7 +103,7 @@ class ReadThreadsTest extends TestCase
         $threadByUser = Thread::factory()->create(['user_id' => Auth::id()]);
         $threadNotByUser = Thread::factory()->create();
 
-        $this->get(route('threads.index') . '?by=' . Auth::user()->username)
+        $this->get(route('threads.index').'?by='.Auth::user()->username)
             ->assertSee($threadByUser->title)
             ->assertDontSee($threadNotByUser->title);
     }
@@ -119,7 +119,7 @@ class ReadThreadsTest extends TestCase
 
         $threadWithNoPosts = $this->thread;
 
-        $response = $this->getJson(route('threads.index') . '?popular=1')->json();
+        $response = $this->getJson(route('threads.index').'?popular=1')->json();
 
         $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
@@ -132,7 +132,7 @@ class ReadThreadsTest extends TestCase
         $threadWithReply = Thread::factory()->create();
         Post::factory()->create(['thread_id' => $threadWithReply->id]);
 
-        $response = $this->getJson(route('threads.index') . '?unanswered=1')->json();
+        $response = $this->getJson(route('threads.index').'?unanswered=1')->json();
 
         $this->assertEquals([$threadWithNoReplies->id], array_column($response['data'], 'id'));
     }
@@ -142,7 +142,7 @@ class ReadThreadsTest extends TestCase
     {
         Post::factory()->count(2)->create(['thread_id' => $this->thread->id]);
 
-        $response = $this->getJson($this->thread->path() . '/posts')->json();
+        $response = $this->getJson($this->thread->path().'/posts')->json();
 
         // Thread initiator post + 2 posts.
         $this->assertCount(1 + 2, $response['data']);
@@ -154,7 +154,7 @@ class ReadThreadsTest extends TestCase
     {
         Post::factory()->create(['thread_id' => $this->thread->id])->delete();
 
-        $response = $this->getJson($this->thread->path() . '/posts')->json();
+        $response = $this->getJson($this->thread->path().'/posts')->json();
 
         // Just thread initiator post.
         $this->assertCount(1, $response['data']);
@@ -168,7 +168,7 @@ class ReadThreadsTest extends TestCase
 
         Post::factory()->create(['thread_id' => $this->thread->id])->delete();
 
-        $response = $this->getJson($this->thread->path() . '/posts')->json();
+        $response = $this->getJson($this->thread->path().'/posts')->json();
 
         // Thread initiator post + 1 deleted post.
         $this->assertCount(1 + 1, $response['data']);

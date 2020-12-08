@@ -229,7 +229,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['title' => null])
+        $this->{$verb.'Page'}(['title' => null])
             ->assertJsonValidationErrors('title');
     }
 
@@ -241,7 +241,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['title' => str_repeat('*', 256)])
+        $this->{$verb.'Page'}(['title' => str_repeat('*', 256)])
             ->assertJsonValidationErrors('title');
     }
 
@@ -253,7 +253,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['path' => null])
+        $this->{$verb.'Page'}(['path' => null])
             ->assertJsonValidationErrors('path');
     }
 
@@ -267,7 +267,7 @@ class ManagePagesTest extends TestCase
 
         Page::factory()->create(['path' => 'foo/bar']);
 
-        $this->{$verb . 'Page'}(['path' => 'foo/bar'])
+        $this->{$verb.'Page'}(['path' => 'foo/bar'])
             ->assertJsonValidationErrors('path');
     }
 
@@ -279,7 +279,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['path' => str_repeat('a', 256)])
+        $this->{$verb.'Page'}(['path' => str_repeat('a', 256)])
             ->assertJsonValidationErrors('path');
     }
 
@@ -291,7 +291,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['path' => '/foo'])
+        $this->{$verb.'Page'}(['path' => '/foo'])
             ->assertJsonValidationErrors('path');
     }
 
@@ -303,7 +303,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['path' => 'foo/'])
+        $this->{$verb.'Page'}(['path' => 'foo/'])
             ->assertJsonValidationErrors('path');
     }
 
@@ -315,7 +315,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['path' => 'foo//bar'])
+        $this->{$verb.'Page'}(['path' => 'foo//bar'])
             ->assertJsonValidationErrors('path');
     }
 
@@ -327,7 +327,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['restricted' => 'foo'])
+        $this->{$verb.'Page'}(['restricted' => 'foo'])
             ->assertJsonValidationErrors('restricted');
     }
 
@@ -339,7 +339,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['published_at' => null])
+        $this->{$verb.'Page'}(['published_at' => null])
             ->assertJsonMissingValidationErrors('published_at');
     }
 
@@ -351,13 +351,13 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['published_at' => 'foo'])
+        $this->{$verb.'Page'}(['published_at' => 'foo'])
             ->assertJsonValidationErrors('published_at');
 
-        $this->{$verb . 'Page'}(['published_at' => '22:00 14/06/2020'])
+        $this->{$verb.'Page'}(['published_at' => '22:00 14/06/2020'])
             ->assertJsonValidationErrors('published_at');
 
-        $this->{$verb . 'Page'}(['published_at' => '2020-07-14 22:00:00'])
+        $this->{$verb.'Page'}(['published_at' => '2020-07-14 22:00:00'])
             ->assertJsonMissingValidationErrors('published_at');
     }
 
@@ -369,7 +369,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['body' => null])
+        $this->{$verb.'Page'}(['body' => null])
             ->assertJsonValidationErrors('body');
     }
 
@@ -381,7 +381,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        $this->{$verb . 'Page'}(['body' => str_repeat('*', 65536)])
+        $this->{$verb.'Page'}(['body' => str_repeat('*', 65536)])
             ->assertJsonValidationErrors('body');
     }
 

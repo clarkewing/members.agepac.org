@@ -20,7 +20,7 @@ class MentionUsersTest extends TestCase
 
         $thread = Thread::factory()->create();
 
-        $this->postJson($thread->path() . '/posts', Post::factory()->raw([
+        $this->postJson($thread->path().'/posts', Post::factory()->raw([
             'body' => 'Hey @jane.doe look at this!',
         ]));
 

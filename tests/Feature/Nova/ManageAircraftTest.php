@@ -81,7 +81,7 @@ class ManageAircraftTest extends TestCase
      */
     public function testAuthorizedUsersCanIndexAircraft($permission)
     {
-        $this->signInWithPermission('aircraft.' . $permission);
+        $this->signInWithPermission('aircraft.'.$permission);
 
         $this->indexResource('aircraft')
             ->assertOk();
@@ -95,7 +95,7 @@ class ManageAircraftTest extends TestCase
     {
         $aircraft = Aircraft::create(['name' => 'FooJet']);
 
-        $this->signInWithPermission('aircraft.' . $permission);
+        $this->signInWithPermission('aircraft.'.$permission);
 
         $this->showResource('aircraft', $aircraft->id)
             ->assertOk();
@@ -107,7 +107,7 @@ class ManageAircraftTest extends TestCase
      */
     public function testAuthorizedUsersCanCreateAnAircraft($permission)
     {
-        $this->signInWithPermission('aircraft.' . $permission);
+        $this->signInWithPermission('aircraft.'.$permission);
 
         $this->storeAircraft(['name' => 'TurboFoo'])
             ->assertCreated();

@@ -158,7 +158,7 @@ class ManageUserInvitationsTest extends TestCase
     {
         $this->signInWithPermission("user_invitations.$permission");
 
-        $this->{$verb . 'UserInvitation'}(['first_name' => null])
+        $this->{$verb.'UserInvitation'}(['first_name' => null])
             ->assertJsonValidationErrors('first_name');
     }
 
@@ -170,7 +170,7 @@ class ManageUserInvitationsTest extends TestCase
     {
         $this->signInWithPermission("user_invitations.$permission");
 
-        $this->{$verb . 'UserInvitation'}(['last_name' => null])
+        $this->{$verb.'UserInvitation'}(['last_name' => null])
             ->assertJsonValidationErrors('last_name');
     }
 
@@ -182,7 +182,7 @@ class ManageUserInvitationsTest extends TestCase
     {
         $this->signInWithPermission("user_invitations.$permission");
 
-        $this->{$verb . 'UserInvitation'}(['class_course' => null])
+        $this->{$verb.'UserInvitation'}(['class_course' => null])
             ->assertJsonValidationErrors('class_course');
     }
 
@@ -194,7 +194,7 @@ class ManageUserInvitationsTest extends TestCase
     {
         $this->signInWithPermission("user_invitations.$permission");
 
-        $this->{$verb . 'UserInvitation'}(['class_course' => 'Foobar'])
+        $this->{$verb.'UserInvitation'}(['class_course' => 'Foobar'])
             ->assertJsonValidationErrors('class_course');
     }
 
@@ -206,7 +206,7 @@ class ManageUserInvitationsTest extends TestCase
     {
         $this->signInWithPermission("user_invitations.$permission");
 
-        $this->{$verb . 'UserInvitation'}(['class_year' => null])
+        $this->{$verb.'UserInvitation'}(['class_year' => null])
             ->assertJsonValidationErrors('class_year');
     }
 
@@ -218,10 +218,10 @@ class ManageUserInvitationsTest extends TestCase
     {
         $this->signInWithPermission("user_invitations.$permission");
 
-        $this->{$verb . 'UserInvitation'}(['class_year' => 'Not a year'])
+        $this->{$verb.'UserInvitation'}(['class_year' => 'Not a year'])
             ->assertJsonValidationErrors('class_year');
 
-        $this->{$verb . 'UserInvitation'}(['class_year' => '15'])
+        $this->{$verb.'UserInvitation'}(['class_year' => '15'])
             ->assertJsonValidationErrors('class_year');
     }
 

@@ -265,7 +265,7 @@ class RestrictedChannelsTest extends TestCase
         $this->channel->createPermission($permission);
 
         Role::findByName('Administrator')
-            ->givePermissionTo($this->channel->{$permission . 'Permission'});
+            ->givePermissionTo($this->channel->{$permission.'Permission'});
     }
 
     /**
@@ -322,7 +322,7 @@ class RestrictedChannelsTest extends TestCase
     protected function storePost(Thread $thread): TestResponse
     {
         return $this->postJson(
-            $thread->path() . '/posts',
+            $thread->path().'/posts',
             Post::factory()->raw()
         );
     }

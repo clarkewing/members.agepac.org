@@ -77,7 +77,7 @@ class CreateCompanyTest extends TestCase
     /** @test */
     public function testWebsiteCannotBeLongerThan255Characters()
     {
-        $this->storeCompany(['website' => 'foo.com/' . str_repeat('-', 256 - 8)])
+        $this->storeCompany(['website' => 'foo.com/'.str_repeat('-', 256 - 8)])
             ->assertJsonValidationErrors('website');
     }
 

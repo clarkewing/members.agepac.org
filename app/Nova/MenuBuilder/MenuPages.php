@@ -36,7 +36,7 @@ class MenuPages extends MenuLinkable
      */
     public static function getDisplayValue($value = null, array $parameters = null)
     {
-        return 'Page: ' . static::getValue($value, $parameters)->title;
+        return 'Page: '.static::getValue($value, $parameters)->title;
     }
 
     public static function getValue($value = null, array $parameters = null)
