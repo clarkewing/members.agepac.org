@@ -1,9 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
+use App\Traits\Favoritable;
+use App\Traits\MentionsUsers;
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

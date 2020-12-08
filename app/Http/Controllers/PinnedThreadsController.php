@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
+use App\Models\Thread;
 use Illuminate\Support\Facades\Response;
 
 class PinnedThreadsController extends Controller
@@ -20,7 +20,7 @@ class PinnedThreadsController extends Controller
     /**
      * Pin a thread.
      *
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -36,7 +36,7 @@ class PinnedThreadsController extends Controller
     /**
      * Unpin a thread.
      *
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */

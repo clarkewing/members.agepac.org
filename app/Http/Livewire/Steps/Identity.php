@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Steps;
 
-use App\UserInvitation;
+use App\Models\UserInvitation;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
@@ -71,7 +71,7 @@ trait Identity
     /**
      * Find a UserInvitation matching the supplied name.
      *
-     * @return \App\UserInvitation|null
+     * @return \App\Models\UserInvitation|null
      */
     protected function findUserInvitationByName(): ?UserInvitation
     {
@@ -87,7 +87,7 @@ trait Identity
     /**
      * Find a UserInvitation matching the supplied details.
      *
-     * @return \App\UserInvitation|null
+     * @return \App\Models\UserInvitation|null
      */
     protected function findUserInvitationByDetails(): ?UserInvitation
     {

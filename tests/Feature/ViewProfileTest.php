@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Course;
-use App\Occupation;
-use App\Profile;
-use App\Thread;
-use App\User;
+use App\Models\Course;
+use App\Models\Occupation;
+use App\Models\Profile;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -191,7 +191,7 @@ class ViewProfileTest extends TestCase
     /**
      * Get the user's profile.
      *
-     * @param  \App\User|null  $user
+     * @param  \App\Models\User|null  $user
      * @return \Illuminate\Testing\TestResponse
      */
     protected function getProfile(User $user = null): \Illuminate\Testing\TestResponse

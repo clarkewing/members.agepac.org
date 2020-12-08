@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Aircraft;
-use App\Company;
-use App\Location;
-use App\Occupation;
-use App\User;
+use App\Models\Aircraft;
+use App\Models\Company;
+use App\Models\Location;
+use App\Models\Occupation;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 

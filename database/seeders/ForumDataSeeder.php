@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Activity;
-use App\Attachment;
-use App\Channel;
-use App\Favorite;
-use App\Poll;
-use App\Post;
-use App\Thread;
-use App\ThreadSubscription;
+use App\Models\Activity;
+use App\Models\Attachment;
+use App\Models\Channel;
+use App\Models\Favorite;
+use App\Models\Poll;
+use App\Models\Post;
+use App\Models\Thread;
+use App\Models\ThreadSubscription;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Filesystem\Filesystem;

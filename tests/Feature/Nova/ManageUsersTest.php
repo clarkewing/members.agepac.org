@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use LimeDeck\NovaCashierOverview\Http\Controllers\StripeSubscriptionsController;
 use Tests\NovaTestRequests;
@@ -393,7 +393,7 @@ class ManageUsersTest extends TestCase
      * Submits a request to update an existing user invitation.
      *
      * @param  array  $data
-     * @param  \App\User|null  $user
+     * @param  \App\Models\User|null  $user
      * @return \Illuminate\Testing\TestResponse
      */
     public function updateUser(array $data = [], User $user = null)

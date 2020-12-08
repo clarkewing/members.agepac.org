@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Location;
-use App\Profile;
+use App\Models\Location;
+use App\Models\Profile;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 

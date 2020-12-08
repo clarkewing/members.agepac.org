@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Thread;
-use App\User;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ThreadPolicy
@@ -13,8 +13,8 @@ class ThreadPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Thread  $thread
      * @return mixed
      */
     public function update(User $user, Thread $thread)
@@ -26,8 +26,8 @@ class ThreadPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Thread  $thread
      * @return mixed
      */
     public function delete(User $user, Thread $thread)
@@ -43,7 +43,7 @@ class ThreadPolicy
     /**
      * Determine whether the user can view deleted models.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function viewDeleted(User $user)
@@ -56,7 +56,7 @@ class ThreadPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function restore(User $user)
@@ -67,7 +67,7 @@ class ThreadPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function forceDelete(User $user)
@@ -78,8 +78,8 @@ class ThreadPolicy
     /**
      * Determine whether the user can lock the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Thread  $thread
      * @return mixed
      */
     public function lock(User $user, Thread $thread)
@@ -91,8 +91,8 @@ class ThreadPolicy
     /**
      * Determine whether the user can unlock the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Thread  $thread
      * @return mixed
      */
     public function unlock(User $user, Thread $thread)
@@ -104,8 +104,8 @@ class ThreadPolicy
     /**
      * Determine whether the user can pin the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Thread  $thread
      * @return mixed
      */
     public function pin(User $user, Thread $thread)
@@ -116,8 +116,8 @@ class ThreadPolicy
     /**
      * Determine whether the user can unpin the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Thread  $thread
      * @return mixed
      */
     public function unpin(User $user, Thread $thread)
@@ -128,8 +128,8 @@ class ThreadPolicy
     /**
      * Determine whether the user can attach a poll to the thread.
      *
-     * @param  \App\User  $user
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Thread  $thread
      * @return mixed
      */
     public function attachPoll(User $user, Thread $thread)

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
+use App\Models\Thread;
 
 class ThreadSubscriptionsController extends Controller
 {
@@ -20,7 +20,7 @@ class ThreadSubscriptionsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return void
      */
     public function store(string $channelSlug, Thread $thread): void
@@ -32,7 +32,7 @@ class ThreadSubscriptionsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return void
      */
     public function destroy(string $channelSlug, Thread $thread): void

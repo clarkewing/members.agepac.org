@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Location;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -22,7 +22,7 @@ class LocationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Location  $location
+     * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Location $location)
@@ -33,7 +33,7 @@ class LocationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Location  $location
+     * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
     public function destroy(Location $location)

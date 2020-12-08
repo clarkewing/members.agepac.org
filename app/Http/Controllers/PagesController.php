@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Page;
+use App\Models\Page;
 use VanOns\Laraberg\Helpers\EmbedHelper;
 
 class PagesController extends Controller
@@ -10,7 +10,7 @@ class PagesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Page  $page
+     * @param  \App\Models\Page  $page
      * @return \Illuminate\View\View
      */
     public function show(Page $page)

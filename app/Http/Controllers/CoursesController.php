@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use App\Models\Course;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -38,7 +38,7 @@ class CoursesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCourseRequest  $request
-     * @param  \App\Course  $course
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateCourseRequest $request, Course $course)
@@ -55,7 +55,7 @@ class CoursesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Course  $course
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\Rule;
@@ -74,7 +74,7 @@ class CompaniesController extends Controller
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Company  $company
+     * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function show(Request $request, Company $company)
@@ -92,7 +92,7 @@ class CompaniesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Company  $company
+     * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Company $company)

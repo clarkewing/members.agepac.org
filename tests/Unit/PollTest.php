@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Poll;
-use App\PollOption;
-use App\User;
+use App\Models\Poll;
+use App\Models\PollOption;
+use App\Models\User;
 use Tests\TestCase;
 
 class PollTest extends TestCase

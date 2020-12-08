@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Location;
+use App\Models\Location;
 use App\Rules\ValidLocation;
 use Tests\TestCase;
 

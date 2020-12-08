@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Profile;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;

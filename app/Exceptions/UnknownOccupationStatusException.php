@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Occupation;
+use App\Models\Occupation;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -11,7 +11,7 @@ class UnknownOccupationStatusException extends Exception
     /**
      * The occupation with the unknown status.
      *
-     * @var \App\Occupation
+     * @var \App\Models\Occupation
      */
     protected $occupation;
 
@@ -26,7 +26,7 @@ class UnknownOccupationStatusException extends Exception
      * Create a new authentication exception.
      *
      * @param  string  $message
-     * @param  \App\Occupation  $occupation
+     * @param  \App\Models\Occupation  $occupation
      * @param  mixed  $status
      */
     public function __construct($message, Occupation $occupation, $status = null)

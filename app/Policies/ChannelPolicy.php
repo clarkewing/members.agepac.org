@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Channel;
-use App\User;
+use App\Models\Channel;
+use App\Models\User;
 use Exception;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -32,8 +32,8 @@ class ChannelPolicy
      * Determine whether the user has the appropriate permission for the channel.
      *
      * @param  string  $permission
-     * @param  \App\User  $user
-     * @param  \App\Channel  $channel
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Channel  $channel
      * @return mixed
      */
     protected function hasChannelPermission(string $permission, User $user, Channel $channel)

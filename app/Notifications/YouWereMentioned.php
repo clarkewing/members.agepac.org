@@ -2,8 +2,8 @@
 
 namespace App\Notifications;
 
-use App\Post;
-use App\Thread;
+use App\Models\Post;
+use App\Models\Thread;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -29,7 +29,7 @@ class YouWereMentioned extends Notification
     /**
      * Create a new notification instance.
      *
-     * @param  \App\Post|\App\Thread  $subject
+     * @param  \App\Models\Post|\App\Models\Thread  $subject
      * @return void
      * @throws \Exception
      */

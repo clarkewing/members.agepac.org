@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Course;
-use App\Occupation;
-use App\Profile;
+use App\Models\Course;
+use App\Models\Occupation;
+use App\Models\Profile;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase

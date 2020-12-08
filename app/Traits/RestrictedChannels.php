@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
+use App\Collections\RestrictedChannelsCollection;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -70,7 +72,7 @@ trait RestrictedChannels
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  string  $permission
-     * @param  \App\User|null  $user
+     * @param  \App\Models\User|null  $user
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithPermission(Builder $query, string $permission, User $user = null)
@@ -91,7 +93,7 @@ trait RestrictedChannels
     /**
      * Return a Collection with all the user's channel permissions.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Support\Collection
      */
     private function getUserPermissions(User $user): Collection

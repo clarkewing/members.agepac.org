@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePollRequest;
 use App\Http\Requests\UpdatePollRequest;
-use App\Poll;
-use App\Thread;
+use App\Models\Poll;
+use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -26,7 +26,7 @@ class PollsController extends Controller
      * Show the poll.
      *
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(string $channelSlug, Thread $thread)
@@ -42,7 +42,7 @@ class PollsController extends Controller
      * Show the form for creating a new resource.
      *
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\View\View
      */
     public function create(string $channelSlug, Thread $thread)
@@ -55,7 +55,7 @@ class PollsController extends Controller
      *
      * @param  \App\Http\Requests\StorePollRequest  $request
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
     public function store(StorePollRequest $request, string $channelSlug, Thread $thread)
@@ -72,7 +72,7 @@ class PollsController extends Controller
      *
      * @param  \App\Http\Requests\UpdatePollRequest  $request
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdatePollRequest $request, string $channelSlug, Thread $thread)
@@ -91,7 +91,7 @@ class PollsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */

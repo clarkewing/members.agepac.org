@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Channel;
+use App\Models\Channel;
 use App\Trending;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;

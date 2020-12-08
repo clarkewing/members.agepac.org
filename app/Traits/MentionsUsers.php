@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Stevebauman\Purify\Facades\Purify;
 

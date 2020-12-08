@@ -28,7 +28,7 @@ class Channel extends Resource
      *
      * @var string
      */
-    public static $model = \App\Channel::class;
+    public static $model = \App\Models\Channel::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

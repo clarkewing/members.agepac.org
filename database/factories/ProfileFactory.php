@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Location;
-use App\Profile;
-use App\User;
+use App\Models\Location;
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*

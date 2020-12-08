@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Channel;
-use App\User;
+use App\Models\Channel;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ChannelNovaPolicy
@@ -13,7 +13,7 @@ class ChannelNovaPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -24,8 +24,8 @@ class ChannelNovaPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Channel  $channel
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Channel  $channel
      * @return mixed
      */
     public function view(User $user, Channel $channel)
@@ -36,7 +36,7 @@ class ChannelNovaPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -47,7 +47,7 @@ class ChannelNovaPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function update(User $user)
@@ -58,7 +58,7 @@ class ChannelNovaPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function delete(User $user)

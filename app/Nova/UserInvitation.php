@@ -28,7 +28,7 @@ class UserInvitation extends Resource
      *
      * @var string
      */
-    public static $model = \App\UserInvitation::class;
+    public static $model = \App\Models\UserInvitation::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

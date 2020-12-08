@@ -1,9 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Traits\HasReputation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
@@ -76,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 'type' => 'created_user',
                 'user_id' => $user->id,
                 'subject_id' => $user->id,
-                'subject_type' => get_class($user),
+                'subject_type' => array_flip(Relation::$morphMap)[static::class],
             ]);
         });
     }
@@ -126,7 +128,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the cache key for visited threads.
      *
-     * @param  \App\Thread $thread
+     * @param  \App\Models\Thread  $thread
      * @return string
      */
     public function read(Thread $thread)
@@ -206,7 +208,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the cache key for visited threads.
      *
-     * @param  \App\Thread $thread
+     * @param  \App\Models\Thread  $thread
      * @return string
      */
     public function visitedThreadCacheKey(Thread $thread)

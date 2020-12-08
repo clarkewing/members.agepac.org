@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Poll;
+use App\Models\Poll;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
@@ -11,7 +11,7 @@ use Illuminate\Validation\Validator;
 class UpdatePollRequest extends StorePollRequest
 {
     /**
-     * @var \App\Poll
+     * @var \App\Models\Poll
      */
     protected $poll;
 

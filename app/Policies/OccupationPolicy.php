@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Occupation;
-use App\User;
+use App\Models\Occupation;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OccupationPolicy
@@ -13,8 +13,8 @@ class OccupationPolicy
     /**
      * Determine whether the user can update the occupation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Occupation  $occupation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Occupation  $occupation
      * @return bool
      */
     public function update(User $user, Occupation $occupation): bool
@@ -25,8 +25,8 @@ class OccupationPolicy
     /**
      * Determine whether the user can delete the occupation.
      *
-     * @param  \App\User  $user
-     * @param  \App\Occupation  $occupation
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Occupation  $occupation
      * @return bool
      */
     public function delete(User $user, Occupation $occupation): bool

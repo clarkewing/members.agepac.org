@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Attachment;
-use App\Post;
-use App\Thread;
-use App\User;
+use App\Models\Attachment;
+use App\Models\Post;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 

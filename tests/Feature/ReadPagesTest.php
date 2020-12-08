@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Page;
+use App\Models\Page;
 use Tests\TestCase;
 
 class ReadPagesTest extends TestCase

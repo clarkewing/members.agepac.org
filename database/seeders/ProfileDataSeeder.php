@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Course;
-use App\Location;
-use App\Occupation;
-use App\User;
+use App\Models\Course;
+use App\Models\Location;
+use App\Models\Occupation;
+use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
@@ -39,7 +39,7 @@ class ProfileDataSeeder extends Seeder
      */
     protected function locations()
     {
-        Location::where('locatable_id', \App\User::class)->delete();
+        Location::where('locatable_id', \App\Models\User::class)->delete();
 
         User::inRandomOrder()->take(25)->each(function ($user) {
             Location::factory()
@@ -59,7 +59,7 @@ class ProfileDataSeeder extends Seeder
     {
         Occupation::truncate();
         Course::truncate();
-        Location::whereIn('locatable_id', [\App\Occupation::class, \App\Course::class])->delete();
+        Location::whereIn('locatable_id', [\App\Models\Occupation::class, \App\Models\Course::class])->delete();
 
         User::inRandomOrder()->take(25)->each(function ($user) {
             Occupation::factory()->count($this->faker->numberBetween(1, 10))

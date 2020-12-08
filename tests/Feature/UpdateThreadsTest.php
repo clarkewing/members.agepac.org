@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Thread;
+use App\Models\Thread;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 

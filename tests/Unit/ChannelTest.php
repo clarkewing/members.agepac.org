@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Channel;
-use App\Thread;
+use App\Models\Channel;
+use App\Models\Thread;
 use Tests\TestCase;
 
 class ChannelTest extends TestCase

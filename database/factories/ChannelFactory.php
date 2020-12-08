@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Channel;
+use App\Models\Channel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ChannelFactory extends Factory

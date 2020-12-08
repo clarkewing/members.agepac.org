@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Company;
-use App\Occupation;
+use App\Models\Company;
+use App\Models\Occupation;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class EditOccupationTest extends TestCase
 {
     /**
-     * @var \App\Occupation
+     * @var \App\Models\Occupation
      */
     protected $occupation;
 

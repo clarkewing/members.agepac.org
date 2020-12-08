@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
-use App\Aircraft;
+use App\Models\Aircraft;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
 
@@ -168,7 +168,7 @@ class ManageAircraftTest extends TestCase
      * Submits a request to update an existing aircraft.
      *
      * @param  array  $data
-     * @param  \App\Aircraft|null  $aircraft
+     * @param  \App\Models\Aircraft|null  $aircraft
      * @return \Illuminate\Testing\TestResponse
      */
     public function updateAircraft(array $data = [], Aircraft $aircraft = null)

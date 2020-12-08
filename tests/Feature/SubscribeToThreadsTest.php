@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Thread;
+use App\Models\Thread;
 use Tests\TestCase;
 
 class SubscribeToThreadsTest extends TestCase

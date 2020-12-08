@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Poll;
-use App\PollOption;
+use App\Models\Poll;
+use App\Models\PollOption;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PollOptionFactory extends Factory

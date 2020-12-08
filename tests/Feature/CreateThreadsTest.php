@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Channel;
-use App\Thread;
-use App\User;
+use App\Models\Channel;
+use App\Models\Thread;
+use App\Models\User;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase

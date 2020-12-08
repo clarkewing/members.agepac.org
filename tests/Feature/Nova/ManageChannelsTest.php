@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
-use App\Channel;
+use App\Models\Channel;
 use Illuminate\Support\Arr;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
@@ -328,7 +328,7 @@ class ManageChannelsTest extends TestCase
      * Submits a request to update an existing channel.
      *
      * @param  array  $data
-     * @param  \App\Channel|null  $channel
+     * @param  \App\Models\Channel|null  $channel
      * @return \Illuminate\Testing\TestResponse
      */
     public function updateChannel(array $data = [], Channel $channel = null)

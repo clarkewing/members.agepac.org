@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\User;
+use App\Models\User;
 
 abstract class StripeTestCase extends TestCase
 {

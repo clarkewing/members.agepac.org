@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Poll;
+use App\Models\Poll;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;

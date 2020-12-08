@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use App\Models\Post;
 
 class FavoritesController extends Controller
 {
@@ -19,7 +19,7 @@ class FavoritesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Post  $post
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
     public function store(Post $post)
@@ -32,7 +32,7 @@ class FavoritesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Post  $post
+     * @param  \App\Models\Post  $post
      * @return void
      */
     public function destroy(Post $post): void

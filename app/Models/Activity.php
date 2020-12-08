@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -17,7 +17,7 @@ class Activity extends Model
     /**
      * Return a user's activity feed.
      *
-     * @param  \App\User $user
+     * @param  \App\Models\User $user
      * @param  int $take
      * @return \Illuminate\Support\Collection
      */

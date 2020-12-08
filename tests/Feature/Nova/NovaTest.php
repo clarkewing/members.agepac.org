@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 
 class NovaTest extends TestCase

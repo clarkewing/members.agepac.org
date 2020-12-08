@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +23,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Sign in with a user.
      *
-     * @param  \App\User|null $user
+     * @param  \App\Models\User|null $user
      * @return $this
      */
     protected function signIn(?User $user = null)

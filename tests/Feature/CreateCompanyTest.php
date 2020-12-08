@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Company;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Tests\TestCase;

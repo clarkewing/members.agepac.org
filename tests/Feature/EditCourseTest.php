@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Course;
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class EditCourseTest extends TestCase
 {
     /**
-     * @var \App\Course
+     * @var \App\Models\Course
      */
     protected $course;
 

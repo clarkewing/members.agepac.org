@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
+use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -23,7 +23,7 @@ class PollResultsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */

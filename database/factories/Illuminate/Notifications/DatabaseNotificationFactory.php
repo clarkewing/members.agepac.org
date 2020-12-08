@@ -2,8 +2,9 @@
 
 namespace Database\Factories\Illuminate\Notifications;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
@@ -30,7 +31,7 @@ class DatabaseNotificationFactory extends Factory
             'notifiable_id' => function () {
                 return Auth::id() ?? User::factory()->create()->id;
             },
-            'notifiable_type' => \App\User::class,
+            'notifiable_type' => array_flip(Relation::$morphMap)[User::class],
             'data' => ['foo' => 'bar'],
         ];
     }

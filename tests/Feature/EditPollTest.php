@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Poll;
+use App\Models\Poll;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class EditPollTest extends TestCase
 {
-    /** @var \App\Poll */
+    /** @var \App\Models\Poll */
     protected $poll;
 
     protected function setUp(): void

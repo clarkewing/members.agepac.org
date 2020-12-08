@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Company;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -81,7 +81,7 @@ class BrowseCompaniesTest extends TestCase
     /**
      * Show the requested company.
      *
-     * @param  \App\Company  $company
+     * @param  \App\Models\Company  $company
      * @return \Illuminate\Testing\TestResponse
      */
     protected function showCompany(Company $company = null)
