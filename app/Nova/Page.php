@@ -25,7 +25,7 @@ class Page extends Resource
      *
      * @var string
      */
-    public static $model = \App\Page::class;
+    public static $model = \App\Models\Page::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

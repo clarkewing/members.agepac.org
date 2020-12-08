@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Thread;
+use App\Models\Thread;
 use App\Trending;
 use Tests\TestCase;
 

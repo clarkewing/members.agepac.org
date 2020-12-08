@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\UserInvitation;
+use App\Models\UserInvitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 

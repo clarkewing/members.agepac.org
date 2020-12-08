@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Post;
-use App\Thread;
-use App\User;
+use App\Models\Post;
+use App\Models\Thread;
+use App\Models\User;
 use Tests\TestCase;
 
 class MentionUsersTest extends TestCase

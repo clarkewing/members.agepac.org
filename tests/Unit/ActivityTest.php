@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Activity;
-use App\Post;
-use App\Thread;
-use App\User;
+use App\Models\Activity;
+use App\Models\Post;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -20,7 +20,7 @@ class ActivityTest extends TestCase
             'type' => 'created_user',
             'user_id' => $user->id,
             'subject_id' => $user->id,
-            'subject_type' => \App\User::class,
+            'subject_type' => \App\Models\User::class,
         ]);
 
         $activity = Activity::first();
@@ -60,7 +60,7 @@ class ActivityTest extends TestCase
             'type' => 'created_thread',
             'user_id' => Auth::id(),
             'subject_id' => $thread->id,
-            'subject_type' => \App\Thread::class,
+            'subject_type' => \App\Models\Thread::class,
         ]);
 
         $activity = Activity::first();
@@ -79,7 +79,7 @@ class ActivityTest extends TestCase
         $this->assertDatabaseHas('activities', [
             'type' => 'created_post',
             'subject_id' => $post->id,
-            'subject_type' => \App\Post::class,
+            'subject_type' => \App\Models\Post::class,
         ]);
     }
 

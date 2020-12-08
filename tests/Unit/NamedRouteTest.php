@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Attachment;
-use App\Channel;
-use App\Company;
-use App\Poll;
-use App\Post;
-use App\Thread;
-use App\User;
+use App\Models\Attachment;
+use App\Models\Channel;
+use App\Models\Company;
+use App\Models\Poll;
+use App\Models\Post;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 

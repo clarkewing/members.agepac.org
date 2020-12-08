@@ -2,7 +2,7 @@
 
 namespace App\Nova\MenuBuilder;
 
-use App\Page;
+use App\Models\Page;
 use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
 
 class MenuPages extends MenuLinkable

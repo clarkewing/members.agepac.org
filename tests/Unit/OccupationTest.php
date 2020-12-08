@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Exceptions\UnknownOccupationStatusException;
-use App\Occupation;
+use App\Models\Occupation;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 

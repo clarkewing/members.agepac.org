@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserNovaPolicy
@@ -12,7 +12,7 @@ class UserNovaPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\User  $signedInUser
+     * @param  \App\Models\User  $signedInUser
      * @return mixed
      */
     public function viewAny(User $signedInUser)
@@ -23,7 +23,7 @@ class UserNovaPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $signedInUser
+     * @param  \App\Models\User  $signedInUser
      * @return mixed
      */
     public function view(User $signedInUser)
@@ -36,7 +36,7 @@ class UserNovaPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\User  $signedInUser
+     * @param  \App\Models\User  $signedInUser
      * @return mixed
      */
     public function create(User $signedInUser)
@@ -47,7 +47,7 @@ class UserNovaPolicy
     /**
      * Determine whether the user can update the given profile.
      *
-     * @param  \App\User  $signedInUser
+     * @param  \App\Models\User  $signedInUser
      * @return mixed
      */
     public function update(User $signedInUser)
@@ -58,7 +58,7 @@ class UserNovaPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $signedInUser
+     * @param  \App\Models\User  $signedInUser
      * @return mixed
      */
     public function delete(User $signedInUser)

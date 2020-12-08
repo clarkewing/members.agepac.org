@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
+use App\Models\Company;
 use App\Http\Requests\StoreOccupationRequest;
 use App\Http\Requests\UpdateOccupationRequest;
-use App\Occupation;
+use App\Models\Occupation;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -48,7 +48,7 @@ class OccupationsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateOccupationRequest  $request
-     * @param  \App\Occupation  $occupation
+     * @param  \App\Models\Occupation  $occupation
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateOccupationRequest $request, Occupation $occupation)
@@ -73,7 +73,7 @@ class OccupationsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Occupation  $occupation
+     * @param  \App\Models\Occupation  $occupation
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception

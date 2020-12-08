@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Company;
-use App\Occupation;
+use App\Models\Company;
+use App\Models\Occupation;
 use Tests\TestCase;
 
 class CompanyTest extends TestCase

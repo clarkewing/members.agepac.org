@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Channel;
-use App\Post;
-use App\Thread;
+use App\Models\Channel;
+use App\Models\Post;
+use App\Models\Thread;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 

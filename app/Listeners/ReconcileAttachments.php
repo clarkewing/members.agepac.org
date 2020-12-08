@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Attachment;
+use App\Models\Attachment;
 use Illuminate\Support\Collection;
 use Symfony\Contracts\EventDispatcher\Event;
 

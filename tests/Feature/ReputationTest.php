@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Post;
+use App\Models\Post;
 use App\Reputation;
-use App\Thread;
-use App\User;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 

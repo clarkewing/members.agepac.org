@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Channel;
+use App\Models\Channel;
 use App\RestrictedChannels;
-use App\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
@@ -13,7 +13,7 @@ use Tests\TestCase;
 class RestrictedChannelsTest extends TestCase
 {
     /**
-     * @var \App\Channel
+     * @var \App\Models\Channel
      */
     public $channel;
 

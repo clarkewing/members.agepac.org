@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Company;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class EditCompanyTest extends TestCase
 {
     /**
-     * @var \App\Company
+     * @var \App\Models\Company
      */
     protected $company;
 

@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Http\Middleware\Authenticate;
 use App\Policies\UserPolicy;
 use App\Profile;
-use App\User;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;

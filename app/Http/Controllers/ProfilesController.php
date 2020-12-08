@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Activity;
+use App\Models\Activity;
 use App\Profile;
 use App\Rules\ValidLocation;
 use Illuminate\Http\Request;

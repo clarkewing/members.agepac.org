@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Page;
+use App\Models\Page;
 use Tests\TestCase;
 
 class PagesRoutesTest extends TestCase

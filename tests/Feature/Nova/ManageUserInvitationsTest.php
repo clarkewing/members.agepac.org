@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
-use App\UserInvitation;
+use App\Models\UserInvitation;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
 
@@ -243,7 +243,7 @@ class ManageUserInvitationsTest extends TestCase
      * Submits a request to update an existing user invitation.
      *
      * @param  array  $data
-     * @param  \App\UserInvitation|null  $userInvitation
+     * @param  \App\Models\UserInvitation|null  $userInvitation
      * @return \Illuminate\Testing\TestResponse
      */
     public function updateUserInvitation(array $data = [], UserInvitation $userInvitation = null)

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Channel;
+use App\Models\Channel;
 use App\Filters\ThreadFilters;
-use App\Thread;
+use App\Models\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +30,7 @@ class ThreadsController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Channel|null  $channel
+     * @param  \App\Models\Channel|null  $channel
      * @param  \App\Filters\ThreadFilters  $filters
      * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -108,7 +108,7 @@ class ThreadsController extends Controller
      * Display the specified resource.
      *
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @param  \App\Trending  $trending
      * @return \Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -139,7 +139,7 @@ class ThreadsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -157,7 +157,7 @@ class ThreadsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -177,7 +177,7 @@ class ThreadsController extends Controller
     /**
      * Return threads from given channel matching filters.
      *
-     * @param  \App\Channel  $channel
+     * @param  \App\Models\Channel  $channel
      * @param  \App\Filters\ThreadFilters  $filters
      * @return \Illuminate\Database\Eloquent\Collection
      */

@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Poll;
-use App\PollOption;
-use App\Thread;
+use App\Models\Poll;
+use App\Models\PollOption;
+use App\Models\Thread;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class CreatePollTest extends TestCase
 {
-    /** @var \App\Thread */
+    /** @var \App\Models\Thread */
     protected $thread;
 
     protected function setUp(): void

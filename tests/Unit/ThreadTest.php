@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Channel;
+use App\Models\Channel;
 use App\Notifications\ThreadWasUpdated;
-use App\Post;
-use App\Thread;
-use App\User;
+use App\Models\Post;
+use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;

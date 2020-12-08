@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Poll;
-use App\User;
+use App\Models\Poll;
+use App\Models\User;
 use Tests\TestCase;
 
 class ViewPollResultsTest extends TestCase
 {
-    /** @var \App\Poll */
+    /** @var \App\Models\Poll */
     protected $poll;
 
     protected function setUp(): void

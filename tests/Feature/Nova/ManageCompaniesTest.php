@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
-use App\Company;
+use App\Models\Company;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
 

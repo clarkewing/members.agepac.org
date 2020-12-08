@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Poll;
-use App\User;
+use App\Models\Poll;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PollPolicy
@@ -13,8 +13,8 @@ class PollPolicy
     /**
      * Determine whether the user can update the poll.
      *
-     * @param  \App\User  $user
-     * @param  \App\Poll  $poll
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Poll  $poll
      * @return mixed
      */
     public function update(User $user, Poll $poll)
@@ -28,8 +28,8 @@ class PollPolicy
     /**
      * Determine whether the user can delete the poll.
      *
-     * @param  \App\User  $user
-     * @param  \App\Poll  $poll
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Poll  $poll
      * @return mixed
      */
     public function delete(User $user, Poll $poll)
@@ -41,8 +41,8 @@ class PollPolicy
     /**
      * Determine whether the user can vote in the poll.
      *
-     * @param  \App\User  $user
-     * @param  \App\Poll  $poll
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Poll  $poll
      * @return mixed
      */
     public function vote(User $user, Poll $poll)
@@ -54,8 +54,8 @@ class PollPolicy
     /**
      * Determine whether the user can view the poll result.
      *
-     * @param  \App\User  $user
-     * @param  \App\Poll  $poll
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Poll  $poll
      * @return mixed
      */
     public function viewResults(User $user, Poll $poll)
@@ -67,8 +67,8 @@ class PollPolicy
     /**
      * Determine whether the user can view the poll votes.
      *
-     * @param  \App\User  $user
-     * @param  \App\Poll  $poll
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Poll  $poll
      * @return mixed
      */
     public function viewVotes(User $user, Poll $poll)

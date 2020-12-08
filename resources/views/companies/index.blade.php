@@ -185,6 +185,6 @@
 
 @push('scripts')
     <script>
-        window.App.companyTypes = @json(App\Company::typeStrings());
+        window.App.companyTypes = @json(App\Models\Company::typeStrings());
     </script>
 @endpush

@@ -138,7 +138,7 @@
 
 @push('scripts')
     <script>
-        window.App.aircrafts = {!! App\Aircraft::all()->toJson() !!};
-        window.App.occupationStatuses = @json(App\Occupation::statusStrings());
+        window.App.aircrafts = {!! App\Models\Aircraft::all()->toJson() !!};
+        window.App.occupationStatuses = @json(App\Models\Occupation::statusStrings());
     </script>
 @endpush

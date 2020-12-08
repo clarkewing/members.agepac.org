@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Post;
+use App\Models\Post;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -12,14 +12,14 @@ class PostCreated extends Event
     use Dispatchable, SerializesModels;
 
     /**
-     * \App\Post.
+     * \App\Models\Post.
      */
     public $post;
 
     /**
      * Create a new event instance.
      *
-     * @param  \App\Post $post
+     * @param  \App\Models\Post $post
      * @return void
      */
     public function __construct(Post $post)

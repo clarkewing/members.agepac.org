@@ -20,7 +20,7 @@ class Aircraft extends Resource
      *
      * @var string
      */
-    public static $model = \App\Aircraft::class;
+    public static $model = \App\Models\Aircraft::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

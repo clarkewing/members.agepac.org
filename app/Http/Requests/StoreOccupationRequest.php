@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Aircraft;
-use App\Company;
-use App\Occupation;
+use App\Models\Aircraft;
+use App\Models\Company;
+use App\Models\Occupation;
 use App\Rules\ValidLocation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

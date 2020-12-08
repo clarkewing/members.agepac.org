@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Poll;
-use App\Thread;
+use App\Models\Poll;
+use App\Models\Thread;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -25,7 +25,7 @@ class PollVotesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $channelSlug
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      * @throws \Illuminate\Auth\Access\AuthorizationException

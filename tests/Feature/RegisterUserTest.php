@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Http\Livewire\Register;
-use App\User;
-use App\UserInvitation;
+use App\Models\User;
+use App\Models\UserInvitation;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;

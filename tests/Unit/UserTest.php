@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Post;
-use App\User;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 

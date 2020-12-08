@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Course;
-use App\User;
+use App\Models\Course;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -66,7 +66,7 @@ class DeleteCourseTest extends TestCase
     /**
      * Send a request to delete the course.
      *
-     * @param  \App\Course|int  $course
+     * @param  \App\Models\Course|int  $course
      * @return \Illuminate\Testing\TestResponse
      */
     protected function deleteCourse($course)

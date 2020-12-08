@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Attachment;
+use App\Models\Attachment;
 use function GuzzleHttp\Psr7\mimetype_from_filename;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;

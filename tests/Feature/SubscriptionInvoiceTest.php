@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Support\Facades\Auth;
 use Tests\StripeTestCase;
@@ -68,7 +68,7 @@ class SubscriptionInvoiceTest extends StripeTestCase
     /**
      * Associate the user with a subscription.
      *
-     * @param  \App\User|null  $user
+     * @param  \App\Models\User|null  $user
      * @return void
      */
     protected function subscribeUser(User $user = null): void

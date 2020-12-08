@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Post;
-use App\Thread;
+use App\Models\Post;
+use App\Models\Thread;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;

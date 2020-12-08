@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Post;
-use App\Thread;
+use App\Models\Post;
+use App\Models\Thread;
 use Tests\TestCase;
 
 class SearchTest extends TestCase

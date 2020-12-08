@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Course;
-use App\Occupation;
+use App\Models\Course;
+use App\Models\Occupation;
 use App\Profile;
 use Tests\TestCase;
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Attachment;
-use App\Post;
-use App\Thread;
-use App\User;
+use App\Models\Attachment;
+use App\Models\Post;
+use App\Models\Thread;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +16,7 @@ use Tests\TestCase;
 class PostAttachmentsTest extends TestCase
 {
     /**
-     * @var \App\Post
+     * @var \App\Models\Post
      */
     protected $post;
 

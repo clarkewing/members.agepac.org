@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Nova;
 
-use App\Page;
+use App\Models\Page;
 use Illuminate\Support\Arr;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
@@ -403,7 +403,7 @@ class ManagePagesTest extends TestCase
      * Send a PUT request to update an existing page.
      *
      * @param  array  $data
-     * @param  \App\Page|null  $page
+     * @param  \App\Models\Page|null  $page
      * @return \Illuminate\Testing\TestResponse
      */
     public function updatePage(array $data = [], Page $page = null)

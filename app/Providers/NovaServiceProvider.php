@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-use App\Channel;
+use App\Models\Channel;
 use App\Policies\ChannelNovaPolicy;
 use App\Policies\MentorshipTagsPolicy;
 use App\Policies\MenuPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserNovaPolicy;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Events\ServingNova;

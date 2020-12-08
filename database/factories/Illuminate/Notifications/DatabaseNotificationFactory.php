@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Illuminate\Notifications;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +30,7 @@ class DatabaseNotificationFactory extends Factory
             'notifiable_id' => function () {
                 return Auth::id() ?? User::factory()->create()->id;
             },
-            'notifiable_type' => \App\User::class,
+            'notifiable_type' => \App\Models\User::class,
             'data' => ['foo' => 'bar'],
         ];
     }

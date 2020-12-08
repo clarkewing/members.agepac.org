@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Attachment;
+use App\Models\Attachment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;

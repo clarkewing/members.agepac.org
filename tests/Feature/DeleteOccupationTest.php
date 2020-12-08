@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Occupation;
-use App\User;
+use App\Models\Occupation;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -66,7 +66,7 @@ class DeleteOccupationTest extends TestCase
     /**
      * Send a request to delete the occupation.
      *
-     * @param  \App\Occupation|int  $occupation
+     * @param  \App\Models\Occupation|int  $occupation
      * @return \Illuminate\Testing\TestResponse
      */
     protected function deleteOccupation($occupation)

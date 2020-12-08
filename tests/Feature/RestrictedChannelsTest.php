@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Channel;
-use App\Poll;
-use App\Post;
-use App\Thread;
+use App\Models\Channel;
+use App\Models\Poll;
+use App\Models\Post;
+use App\Models\Thread;
 use Illuminate\Support\Arr;
 use Illuminate\Testing\TestResponse;
 use Spatie\Permission\Models\Role;
@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 class RestrictedChannelsTest extends TestCase
 {
-    /** @var \App\Channel */
+    /** @var \App\Models\Channel */
     public $channel;
 
     protected function setUp(): void
@@ -269,7 +269,7 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /**
-     * @param  \App\Channel|null  $channel
+     * @param  \App\Models\Channel|null  $channel
      * @return \Illuminate\Testing\TestResponse
      */
     protected function indexThreads(Channel $channel = null): TestResponse
@@ -278,7 +278,7 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /**
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Testing\TestResponse
      */
     protected function showThread(Thread $thread): TestResponse
@@ -287,7 +287,7 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /**
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Testing\TestResponse
      */
     protected function indexPosts(Thread $thread): TestResponse
@@ -316,7 +316,7 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /**
-     * @param  \App\Thread  $thread
+     * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Testing\TestResponse
      */
     protected function storePost(Thread $thread): TestResponse
@@ -338,7 +338,7 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /**
-     * @param  \App\Poll  $poll
+     * @param  \App\Models\Poll  $poll
      * @return \Illuminate\Testing\TestResponse
      */
     protected function voteInPoll(Poll $poll): TestResponse
