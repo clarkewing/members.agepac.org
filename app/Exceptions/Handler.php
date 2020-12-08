@@ -34,9 +34,12 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
+        $this->renderable(function (Throwable $e) {
             if ($e instanceof ThrottleException) {
-                return Response::make('Du calme moussaillon. Tu postes beaucoup, prends une petite pause.', 429);
+                return Response::make(
+                    $e->getMessage() ?? 'Du calme moussaillon. Tu postes beaucoup, prends une petite pause.',
+                    429
+                );
             }
         });
     }

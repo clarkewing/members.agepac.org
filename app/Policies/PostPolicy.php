@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Exceptions\ThrottleException;
 use App\Post;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -15,14 +16,15 @@ class PostPolicy
      *
      * @param  \App\User  $user
      * @return mixed
+     * @throws \App\Exceptions\ThrottleException
      */
     public function create(User $user)
     {
-        if (is_null($lastPost = $user->fresh()->lastPost)) {
-            return true;
+        if (optional($user->fresh()->lastPost)->wasJustPublished()) {
+            throw new ThrottleException('Du calme moussaillon. Tu postes beaucoup, prends une petite pause.');
         }
 
-        return ! $lastPost->wasJustPublished();
+        return true;
     }
 
     /**
