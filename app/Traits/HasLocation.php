@@ -14,7 +14,7 @@ trait HasLocation
     protected static function bootHasLocation()
     {
         static::deleting(function ($model) {
-            $model->location->delete();
+            $model->location()->delete();
         });
     }
 

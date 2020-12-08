@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
@@ -48,6 +49,18 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Paginator::useBootstrap();
+
+        Relation::morphMap([
+            'activity' => 'App\Models\Activity',
+            'course' => 'App\Models\Course',
+            'favorite' => 'App\Models\Favorite',
+            'location' => 'App\Models\Location',
+            'occupation' => 'App\Models\Occupation',
+            'post' => 'App\Models\Post',
+            'profile' => 'App\Models\Profile',
+            'thread' => 'App\Models\Thread',
+            'user' => 'App\Models\User',
+        ]);
 
         Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {
             return ! array_key_exists($attribute, $validator->getData());
