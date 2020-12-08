@@ -43,7 +43,7 @@ class ManagePagesTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotViewAPage()
     {
-        $page = create(Page::class);
+        $page = Page::factory()->create();
 
         $this->signIn();
 
@@ -68,7 +68,7 @@ class ManagePagesTest extends TestCase
     public function testUnauthorizedUsersCannotEditAPage()
     {
         foreach (Arr::except($this->permissionProvider(), 'edit') as [$permission]) {
-            $page = create(Page::class, ['title' => 'Foo Page']);
+            $page = Page::factory()->create(['title' => 'Foo Page']);
 
             $this->signInWithPermission("pages.$permission");
 
@@ -83,7 +83,7 @@ class ManagePagesTest extends TestCase
     public function testUnauthorizedUsersCannotDeleteAPage()
     {
         foreach (Arr::except($this->permissionProvider(), 'delete') as [$permission]) {
-            $page = create(Page::class, ['title' => 'Foo Page']);
+            $page = Page::factory()->create(['title' => 'Foo Page']);
 
             $this->signInWithPermission("pages.$permission");
 
@@ -100,7 +100,7 @@ class ManagePagesTest extends TestCase
     public function testUnauthorizedUsersCannotViewDeletedPages()
     {
         foreach (Arr::except($this->permissionProvider(), 'viewDeleted') as [$permission]) {
-            $page = tap(create(Page::class))->delete();
+            $page = tap(Page::factory()->create())->delete();
 
             $this->assertSoftDeleted('pages', ['id' => $page->id]);
 
@@ -115,7 +115,7 @@ class ManagePagesTest extends TestCase
     public function testUnauthorizedUsersCannotRestoreAPage()
     {
         foreach (Arr::except($this->permissionProvider(), 'restore') as [$permission]) {
-            $page = tap(create(Page::class))->delete();
+            $page = tap(Page::factory()->create())->delete();
 
             $this->signInWithPermission("pages.$permission");
 
@@ -132,7 +132,7 @@ class ManagePagesTest extends TestCase
     public function testUnauthorizedUsersCannotForceDeleteAPage()
     {
         foreach (Arr::except($this->permissionProvider(), 'forceDelete') as [$permission]) {
-            $page = create(Page::class);
+            $page = Page::factory()->create();
 
             $this->signInWithPermission("pages.$permission");
 
@@ -150,7 +150,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.create');
 
-        $this->storePage($data = make(Page::class)->toArray())
+        $this->storePage($data = Page::factory()->raw())
             ->assertJsonMissingValidationErrors()
             ->assertCreated();
 
@@ -162,7 +162,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.edit');
 
-        $this->updatePage($data = make(Page::class)->toArray())
+        $this->updatePage($data = Page::factory()->raw())
             ->assertJsonMissingValidationErrors()
             ->assertOk();
 
@@ -174,7 +174,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.delete');
 
-        $page = create(Page::class);
+        $page = Page::factory()->create();
 
         $this->deleteResource('pages', $page->id)
             ->assertOk();
@@ -187,7 +187,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.viewDeleted');
 
-        $page = tap(create(Page::class))->delete();
+        $page = tap(Page::factory()->create())->delete();
 
         $this->showResource('pages', $page->id)
             ->assertOk();
@@ -198,7 +198,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.restore');
 
-        $page = tap(create(Page::class))->delete();
+        $page = tap(Page::factory()->create())->delete();
 
         $this->assertSoftDeleted('pages', ['id' => $page->id]);
 
@@ -213,7 +213,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.forceDelete');
 
-        $page = create(Page::class);
+        $page = Page::factory()->create();
 
         $this->forceDeleteResource('pages', $page->id)
             ->assertOk();
@@ -265,7 +265,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission("pages.$permission");
 
-        create(Page::class, ['path' => 'foo/bar']);
+        Page::factory()->create(['path' => 'foo/bar']);
 
         $this->{$verb . 'Page'}(['path' => 'foo/bar'])
             ->assertJsonValidationErrors('path');
@@ -394,7 +394,7 @@ class ManagePagesTest extends TestCase
     public function storePage(array $overrides = [])
     {
         return $this->storeResource('pages', array_merge(
-            make(Page::class)->toArray(),
+            Page::factory()->raw(),
             $overrides
         ));
     }
@@ -408,7 +408,7 @@ class ManagePagesTest extends TestCase
      */
     public function updatePage(array $data = [], Page $page = null)
     {
-        $page = $page ?? create(Page::class);
+        $page = $page ?? Page::factory()->create();
 
         return $this->updateResource(
             'pages', $page->id,

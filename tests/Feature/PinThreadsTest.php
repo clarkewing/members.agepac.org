@@ -12,7 +12,7 @@ class PinThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->post(route('threads.pin', $thread))
             ->assertStatus(403);
@@ -25,7 +25,7 @@ class PinThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = create(Thread::class, ['pinned' => true]);
+        $thread = Thread::factory()->create(['pinned' => true]);
 
         $this->delete(route('threads.unpin', $thread))
             ->assertStatus(403);
@@ -38,7 +38,7 @@ class PinThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.pin');
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->post(route('threads.pin', $thread))
             ->assertStatus(204);
@@ -51,7 +51,7 @@ class PinThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.unpin');
 
-        $thread = create(Thread::class, ['pinned' => true]);
+        $thread = Thread::factory()->create(['pinned' => true]);
 
         $this->delete(route('threads.unpin', $thread))
             ->assertStatus(204);
@@ -64,7 +64,7 @@ class PinThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.pin');
 
-        [$threadOne, $threadTwo, $threadThree] = create(Thread::class, [], 3);
+        [$threadOne, $threadTwo, $threadThree] = Thread::factory()->count(3)->create();
 
         $this->getJson(route('threads.index'))->assertJson([
             'data' => [

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -11,7 +12,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Company extends Model
 {
-    use HasSlug, Searchable;
+    use HasFactory, HasSlug, Searchable;
 
     const AIRLINE = 1;
     const AIRWORK = 2;

@@ -14,13 +14,13 @@ class ActivityTest extends TestCase
     /** @test */
     public function testRecordsActivityWhenUserIsCreated()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_user',
             'user_id' => $user->id,
             'subject_id' => $user->id,
-            'subject_type' => 'App\User',
+            'subject_type' => \App\User::class,
         ]);
 
         $activity = Activity::first();
@@ -41,7 +41,7 @@ class ActivityTest extends TestCase
             'type' => 'updated_profile',
             'user_id' => Auth::id(),
             'subject_id' => $profile->id,
-            'subject_type' => 'App\Profile',
+            'subject_type' => \App\Profile::class,
         ]);
 
         $activity = Activity::first();
@@ -54,13 +54,13 @@ class ActivityTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_thread',
             'user_id' => Auth::id(),
             'subject_id' => $thread->id,
-            'subject_type' => 'App\Thread',
+            'subject_type' => \App\Thread::class,
         ]);
 
         $activity = Activity::first();
@@ -74,12 +74,12 @@ class ActivityTest extends TestCase
         $this->signIn();
 
         // Will also create associated thread.
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_post',
             'subject_id' => $post->id,
-            'subject_type' => 'App\Post',
+            'subject_type' => \App\Post::class,
         ]);
     }
 
@@ -88,7 +88,7 @@ class ActivityTest extends TestCase
     {
         $this->signIn();
 
-        create(Thread::class, ['user_id' => Auth::id()], 2);
+        Thread::factory()->count(2)->create(['user_id' => Auth::id()]);
         Auth::user()->activity()->first()->update(['created_at' => now()->subWeek()]);
 
         $feed = Activity::feed(Auth::user());

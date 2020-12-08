@@ -11,8 +11,8 @@ class ChannelTest extends TestCase
     /** @test */
     public function testConsistsOfThreads()
     {
-        $channel = create(Channel::class);
-        $thread = create(Thread::class, ['channel_id' => $channel->id]);
+        $channel = Channel::factory()->create();
+        $thread = Thread::factory()->create(['channel_id' => $channel->id]);
 
         $this->assertTrue($channel->threads->contains($thread));
     }
@@ -20,7 +20,7 @@ class ChannelTest extends TestCase
     /** @test */
     public function testCanBeArchived()
     {
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $this->assertFalse($channel->archived);
 
@@ -32,7 +32,7 @@ class ChannelTest extends TestCase
     /** @test */
     public function testCanBeUnarchived()
     {
-        $channel = create(Channel::class, ['archived' => true]);
+        $channel = Channel::factory()->create(['archived' => true]);
 
         $this->assertTrue($channel->archived);
 
@@ -44,8 +44,8 @@ class ChannelTest extends TestCase
     /** @test */
     public function testArchivedChannelsAreExcludedByDefault()
     {
-        create(Channel::class);
-        create(Channel::class, ['archived' => true]);
+        Channel::factory()->create();
+        Channel::factory()->create(['archived' => true]);
 
         $this->assertEquals(1, Channel::count());
     }
@@ -53,9 +53,9 @@ class ChannelTest extends TestCase
     /** @test */
     public function testSortedAlphabeticallyByDefault()
     {
-        $channelOne = create(Channel::class, ['name' => 'Brontosaurus']);
-        $channelTwo = create(Channel::class, ['name' => 'Antelope']);
-        $channelThree = create(Channel::class, ['name' => 'Zebra']);
+        $channelOne = Channel::factory()->create(['name' => 'Brontosaurus']);
+        $channelTwo = Channel::factory()->create(['name' => 'Antelope']);
+        $channelThree = Channel::factory()->create(['name' => 'Zebra']);
 
         $this->assertEquals(
             [
@@ -70,9 +70,9 @@ class ChannelTest extends TestCase
     /** @test */
     public function testCanGroupByParent()
     {
-        $fooChannels = create(Channel::class, ['parent_id' => create(Channel::class, ['name' => 'Foo'])->id], 1);
-        $barChannels = create(Channel::class, ['parent_id' => create(Channel::class, ['name' => 'Bar'])->id], 2);
-        $bazChannels = create(Channel::class, ['parent_id' => create(Channel::class, ['name' => 'Baz'])->id], 3);
+        $fooChannels = Channel::factory()->count(1)->create(['parent_id' => Channel::factory()->create(['name' => 'Foo'])->id]);
+        $barChannels = Channel::factory()->count(2)->create(['parent_id' => Channel::factory()->create(['name' => 'Bar'])->id]);
+        $bazChannels = Channel::factory()->count(3)->create(['parent_id' => Channel::factory()->create(['name' => 'Baz'])->id]);
 
         // We expect 4 groups because the parent channels' parent is null.
         $this->assertCount(4, Channel::all()->groupBy('parent.name'));
@@ -81,8 +81,8 @@ class ChannelTest extends TestCase
     /** @test */
     public function testWhenParentIsDeletedChildParentIdIsSetToNull()
     {
-        $parentChannel = create(Channel::class);
-        $childChannel = create(Channel::class, ['parent_id' => $parentChannel->id]);
+        $parentChannel = Channel::factory()->create();
+        $childChannel = Channel::factory()->create(['parent_id' => $parentChannel->id]);
 
         $this->assertEquals($parentChannel->id, $childChannel->parent_id);
 

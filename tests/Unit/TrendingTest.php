@@ -13,7 +13,7 @@ class TrendingTest extends TestCase
      */
     protected $trending;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -25,7 +25,7 @@ class TrendingTest extends TestCase
     /** @test */
     public function IncrementsScoreEachTimeAThreadIsPushed()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertEquals(0, $this->trending->score($thread));
 
@@ -38,12 +38,12 @@ class TrendingTest extends TestCase
     public function ReturnsTheTop5Threads()
     {
         $threads = [
-            1 => create(Thread::class),
-            2 => create(Thread::class),
-            3 => create(Thread::class),
-            4 => create(Thread::class),
-            5 => create(Thread::class),
-            6 => create(Thread::class),
+            1 => Thread::factory()->create(),
+            2 => Thread::factory()->create(),
+            3 => Thread::factory()->create(),
+            4 => Thread::factory()->create(),
+            5 => Thread::factory()->create(),
+            6 => Thread::factory()->create(),
         ];
 
         $this->trending->push($threads[1], 1);

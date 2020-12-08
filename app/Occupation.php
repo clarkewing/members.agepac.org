@@ -3,12 +3,13 @@
 namespace App;
 
 use App\Exceptions\UnknownOccupationStatusException;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
 class Occupation extends Model
 {
-    use HasLocation;
+    use HasFactory, HasLocation;
 
     const EMPLOYED_FULL_TIME = 1;
     const EMPLOYED_PART_TIME = 2;

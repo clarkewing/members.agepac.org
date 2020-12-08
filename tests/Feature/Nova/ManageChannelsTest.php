@@ -31,7 +31,7 @@ class ManageChannelsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotViewAChannel()
     {
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $this->signIn();
 
@@ -53,7 +53,7 @@ class ManageChannelsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotEditAChannel()
     {
-        $channel = create(Channel::class, ['name' => 'Foobar']);
+        $channel = Channel::factory()->create(['name' => 'Foobar']);
 
         $this->signIn();
 
@@ -66,7 +66,7 @@ class ManageChannelsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotDeleteAChannel()
     {
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $this->signIn();
 
@@ -88,7 +88,7 @@ class ManageChannelsTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanViewAChannel()
     {
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $this->signInWithPermission('channels.manage');
 
@@ -110,7 +110,7 @@ class ManageChannelsTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanEditAChannel()
     {
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $this->signInWithPermission('channels.manage');
 
@@ -123,7 +123,7 @@ class ManageChannelsTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanDeleteAChannel()
     {
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $this->signInWithPermission('channels.manage');
 
@@ -165,7 +165,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        create(Channel::class, ['name' => 'Foo Channel']);
+        Channel::factory()->create(['name' => 'Foo Channel']);
 
         $this->{$verb . 'Channel'}(['name' => 'Foo Channel'])
             ->assertJsonValidationErrors('name');
@@ -176,7 +176,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $channel = create(Channel::class, ['name' => 'Foo Channel']);
+        $channel = Channel::factory()->create(['name' => 'Foo Channel']);
 
         $this->updateChannel(['name' => 'Foo Channel'], $channel)
             ->assertJsonMissingValidationErrors('name');
@@ -214,7 +214,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        create(Channel::class, ['slug' => 'foo']);
+        Channel::factory()->create(['slug' => 'foo']);
 
         $this->{$verb . 'Channel'}(['slug' => 'foo'])
             ->assertJsonValidationErrors('slug');
@@ -225,7 +225,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $channel = create(Channel::class, ['slug' => 'foo']);
+        $channel = Channel::factory()->create(['slug' => 'foo']);
 
         $this->updateChannel(['slug' => 'foo'], $channel)
             ->assertJsonMissingValidationErrors('slug');
@@ -272,7 +272,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $this->assertFalse($channel->isRestricted('post'));
 
@@ -292,7 +292,7 @@ class ManageChannelsTest extends TestCase
     {
         $this->signInWithPermission('channels.manage');
 
-        $channel = create(Channel::class);
+        $channel = Channel::factory()->create();
 
         $permission = $channel->createPermission('view');
 
@@ -319,7 +319,7 @@ class ManageChannelsTest extends TestCase
     public function storeChannel(array $overrides = [])
     {
         return $this->storeResource('channels', array_merge(
-            make(Channel::class)->toArray(),
+            Channel::factory()->make()->toArray(),
             $overrides
         ));
     }
@@ -333,7 +333,7 @@ class ManageChannelsTest extends TestCase
      */
     public function updateChannel(array $data = [], Channel $channel = null)
     {
-        $channel = $channel ?? create(Channel::class);
+        $channel = $channel ?? Channel::factory()->create();
 
         return $this->updateResource(
             'channels', $channel->id,

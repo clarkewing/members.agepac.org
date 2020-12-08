@@ -21,7 +21,7 @@ class ReputationTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -31,7 +31,7 @@ class ReputationTest extends TestCase
     /** @test */
     public function testUserEarnsPointsWhenCreatingAThread()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertEquals($this->points['thread_published'], $thread->creator->reputation);
     }
@@ -41,7 +41,7 @@ class ReputationTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
 
         $this->assertEquals($this->points['thread_published'], $thread->creator->reputation);
 
@@ -53,10 +53,10 @@ class ReputationTest extends TestCase
     /** @test */
     public function testUserEarnsPointsWhenPostingOnAThread()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $post = $thread->addPost([
-            'user_id' => create(User::class)->id,
+            'user_id' => User::factory()->create()->id,
             'body' => 'Here is a post.',
         ]);
 
@@ -68,7 +68,7 @@ class ReputationTest extends TestCase
     {
         $this->signIn();
 
-        $post = create(Post::class, ['user_id' => Auth::id()]);
+        $post = Post::factory()->create(['user_id' => Auth::id()]);
 
         $this->assertEquals($this->points['reply_posted'], $post->owner->reputation);
 
@@ -80,10 +80,10 @@ class ReputationTest extends TestCase
     /** @test */
     public function testUserEarnsPointsWhenTheirPostIsMarkedAsBest()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $thread->markBestPost($post = $thread->addPost([
-            'user_id' => create(User::class)->id,
+            'user_id' => User::factory()->create()->id,
             'body' => 'Here is a post.',
         ]));
 
@@ -93,8 +93,8 @@ class ReputationTest extends TestCase
 
     public function testOnBestPostChangeThePointsShouldBeTransferred()
     {
-        $thread = create(Thread::class);
-        [$firstPost, $secondPost] = create(Post::class, [], 2);
+        $thread = Thread::factory()->create();
+        [$firstPost, $secondPost] = Post::factory()->count(2)->create();
 
         $thread->markBestPost($firstPost);
 
@@ -115,7 +115,7 @@ class ReputationTest extends TestCase
 
     public function testUserLosesPointsWhenTheirBestPostIsUnmarked()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
         $thread = $post->thread;
 
         $thread->markBestPost($post);
@@ -131,7 +131,7 @@ class ReputationTest extends TestCase
 
     public function testUserLosesPointsWhenTheirBestPostIsDeleted()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
         $thread = $post->thread;
 
         $thread->markBestPost($post);
@@ -149,7 +149,7 @@ class ReputationTest extends TestCase
     {
         $this->signIn();
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $post->favorite();
 
@@ -160,7 +160,7 @@ class ReputationTest extends TestCase
     /** @test */
     public function testUserLosesPointsWhenTheirPostIsUnfavorited()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->signIn();
 
@@ -180,7 +180,7 @@ class ReputationTest extends TestCase
     /** @test */
     public function testUserCanHaveTheirReputationReset()
     {
-        $user = create(User::class, ['reputation' => 100]);
+        $user = User::factory()->create(['reputation' => 100]);
 
         $this->assertEquals(100, $user->reputation);
 

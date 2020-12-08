@@ -12,13 +12,13 @@ class VoteInPollTest extends TestCase
     /** @var \App\Poll */
     protected $poll;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->withExceptionHandling()->signIn();
 
-        $this->poll = create(Poll::class);
+        $this->poll = Poll::factory()->create();
     }
 
     /** @test */

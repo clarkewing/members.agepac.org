@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class AttachmentTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -19,7 +19,7 @@ class AttachmentTest extends TestCase
     /** @test */
     public function testGetsUuidOnCreation()
     {
-        $attachment = make(Attachment::class);
+        $attachment = Attachment::factory()->make();
 
         $this->assertEquals('', $attachment->id);
 
@@ -31,7 +31,7 @@ class AttachmentTest extends TestCase
     /** @test */
     public function testDeletingDeletesAssociatedFileInStorage()
     {
-        $attachment = create(Attachment::class);
+        $attachment = Attachment::factory()->create();
 
         $this->assertDatabaseHas('attachments', ['id' => $attachment->id]);
         Storage::disk('public')->assertExists($attachment->path);

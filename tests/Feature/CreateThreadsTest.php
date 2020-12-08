@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Channel;
-use App\Post;
 use App\Thread;
 use App\User;
 use Tests\TestCase;
@@ -26,16 +25,14 @@ class CreateThreadsTest extends TestCase
     public function testNewUserMustFirstVerifyEmailBeforeCreatingThreads()
     {
         $this->signIn(
-            factory(User::class)->states('unverified_email')->create()
+            User::factory()->unverifiedEmail()->create()
         );
 
         $this->get(route('threads.create'))
             ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
 
-        $thread = make(Thread::class);
-
-        $this->post(route('threads.store'), $thread->toArray())
+        $this->post(route('threads.store'), Thread::factory()->raw())
             ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
     }
@@ -79,7 +76,7 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function testThreadRequiresAValidChannel()
     {
-        factory(Channel::class, 2)->create();
+        Channel::factory()->count(2)->create();
 
         $this->publishThread(['channel_id' => null])
             ->assertSessionHasErrors('channel_id');
@@ -91,7 +88,7 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function testThreadCantBeCreatedInAnArchivedChannel()
     {
-        $archivedChannel = create(Channel::class, ['archived' => true]);
+        $archivedChannel = Channel::factory()->create(['archived' => true]);
 
         $this->publishThread(['channel_id' => $archivedChannel->id])
             ->assertSessionHasErrors('channel_id');
@@ -104,7 +101,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $existingThread = create(Thread::class, ['title' => 'Foo Title']);
+        $existingThread = Thread::factory()->create(['title' => 'Foo Title']);
 
         $this->assertEquals('foo-title', $existingThread->fresh()->slug);
 
@@ -118,7 +115,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $existingThread = create(Thread::class, ['title' => 'Financials 2020']);
+        $existingThread = Thread::factory()->create(['title' => 'Financials 2020']);
 
         $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 
@@ -136,12 +133,12 @@ class CreateThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = factory(Thread::class)->states('with_body')->make($overrides);
+        $thread = Thread::factory()->withBody()->raw($overrides);
 
         if ($wantsJson) {
-            return $this->postJson(route('threads.store'), $thread->toArray());
+            return $this->postJson(route('threads.store'), $thread);
         }
 
-        return $this->post(route('threads.store'), $thread->toArray());
+        return $this->post(route('threads.store'), $thread);
     }
 }

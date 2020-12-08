@@ -8,46 +8,45 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.3|^8.0",
         "ext-json": "*",
-        "algolia/algoliasearch-client-php": "^2.2",
+        "algolia/algoliasearch-client-php": "^2.7",
         "barryvdh/laravel-snappy": "^0.4.7",
         "davidpiesse/nova-toggle": "^0.0.6",
         "drobee/nova-sluggable": "^1.2",
-        "fideloper/proxy": "^4.2",
-        "fruitcake/laravel-cors": "^1.0",
+        "fideloper/proxy": "^4.4",
+        "fruitcake/laravel-cors": "^2.0",
         "genealabs/nova-gutenberg": "^0.2.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^7.0.1",
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "inspheric/nova-indicator-field": "^1.43",
         "jbroadway/urlify": "^1.2",
-        "laravel/cashier": "^11.2",
-        "laravel/framework": "^7.0",
-        "laravel/helpers": "^1.2",
-        "laravel/nova": "~3.0",
-        "laravel/scout": "^8.0",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0",
+        "laravel/cashier": "^12.4",
+        "laravel/framework": "^8.17",
+        "laravel/helpers": "^1.3",
+        "laravel/nova": "^3.15",
+        "laravel/scout": "^8.3",
+        "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.0",
         "limedeck/nova-cashier-overview": "^2.0",
         "livewire/livewire": "^2.3",
         "optimistdigital/nova-menu-builder": "^2.3",
         "propaganistas/laravel-phone": "^4.2",
-        "spatie/laravel-menu": "^3.5",
-        "spatie/laravel-permission": "^3.13",
-        "spatie/laravel-sluggable": "^2.2",
-        "spatie/laravel-tags": "^2.6",
+        "spatie/laravel-menu": "^3.6",
+        "spatie/laravel-permission": "^3.17",
+        "spatie/laravel-sluggable": "^2.5",
+        "spatie/laravel-tags": "^3.0",
         "stevebauman/purify": "^3.0",
-        "torann/geoip": "^1.2",
+        "torann/geoip": "^3.0",
         "vyuldashev/nova-permission": "^2.9"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.2",
-        "facade/ignition": "^2.0",
-        "fzaninotto/faker": "^1.9.1",
-        "johnkary/phpunit-speedtrap": "^3.2",
-        "mockery/mockery": "^1.3.1",
-        "nunomaduro/collision": "^4.1",
-        "phpunit/phpunit": "^8.5"
+        "barryvdh/laravel-debugbar": "^3.5",
+        "facade/ignition": "^2.5",
+        "mockery/mockery": "^1.4.2",
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.3.3",
+        "fakerphp/faker": "^1.9.1"
     },
     "config": {
         "optimize-autoloader": true,
@@ -61,18 +60,15 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
-        },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        },
-        "files": ["tests/utilities/helpers.php"]
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -37,7 +37,7 @@ class CreateOccupationTest extends TestCase
         ],
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -293,7 +293,7 @@ class CreateOccupationTest extends TestCase
     /** @test */
     public function testCompanyWithIdReusesCompany()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->assertDatabaseCount('companies', 1);
 

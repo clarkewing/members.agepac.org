@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Activity;
 use App\Attachment;
 use App\Channel;
@@ -43,10 +45,10 @@ class ForumDataSeeder extends Seeder
     {
         Channel::truncate();
 
-        factory(Channel::class, 2)->create();
-        factory(Channel::class, 2)->create(['parent_id' => factory(Channel::class)->create()->id]);
-        factory(Channel::class, 3)->create(['parent_id' => factory(Channel::class)->create()->id]);
-        factory(Channel::class, 4)->create(['parent_id' => factory(Channel::class)->create()->id]);
+        Channel::factory()->count(2)->create();
+        Channel::factory()->count(2)->create(['parent_id' => Channel::factory()->create()->id]);
+        Channel::factory()->count(3)->create(['parent_id' => Channel::factory()->create()->id]);
+        Channel::factory()->count(4)->create(['parent_id' => Channel::factory()->create()->id]);
 
         return $this;
     }
@@ -64,16 +66,16 @@ class ForumDataSeeder extends Seeder
         ThreadSubscription::truncate();
         Favorite::truncate();
 
-        factory(Thread::class, 30)->states('from_existing_channel_and_user')->create()
+        Thread::factory()->count(30)->fromExistingChannelAndUser()->create()
             ->each(function ($thread) {
                 $this->recordActivity($thread, 'created', $thread->creator->id);
 
                 // Attach poll to thread in 15% of cases.
                 if ($this->faker->boolean(15)) {
-                    factory(Poll::class)->create(['thread_id' => $thread->id]);
+                    Poll::factory()->create(['thread_id' => $thread->id]);
                 }
 
-                factory(Post::class, $this->faker->numberBetween(1, 10))
+                Post::factory()->count($this->faker->numberBetween(1, 10))
                     ->states($this->faker->boolean(10)
                         ? ['from_existing_user']
                         : ['from_existing_user', 'with_attachment']

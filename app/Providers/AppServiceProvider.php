@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -45,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
 
             throw new \Exception('Concat macro not defined for the current database driver.');
         });
+
+        Paginator::useBootstrap();
 
         Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {
             return ! array_key_exists($attribute, $validator->getData());

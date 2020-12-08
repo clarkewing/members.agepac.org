@@ -13,7 +13,7 @@ class ValidLocationRuleTest extends TestCase
      */
     protected $rule;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -149,7 +149,7 @@ class ValidLocationRuleTest extends TestCase
     /** @test */
     public function testPassesWithRandomLocation()
     {
-        $this->assertRulePasses(make(Location::class)->toArray());
+        $this->assertRulePasses(Location::factory()->raw());
     }
 
     /**
@@ -191,6 +191,6 @@ class ValidLocationRuleTest extends TestCase
 
     protected function location(array $overrides = [])
     {
-        return array_merge(make(Location::class)->toArray(), $overrides);
+        return array_merge(Location::factory()->raw(), $overrides);
     }
 }

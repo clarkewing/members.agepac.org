@@ -12,9 +12,9 @@ class UserTest extends TestCase
     /** @test */
     public function testUserCanFetchTheirMostRecentPost()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
-        $post = create(Post::class, ['user_id' => $user->id]);
+        $post = Post::factory()->create(['user_id' => $user->id]);
 
         $this->assertEquals($post->id, $user->lastPost->id);
     }
@@ -22,7 +22,7 @@ class UserTest extends TestCase
     /** @test */
     public function testUserCanDetermineTheirAvatarPath()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
         $this->assertTrue(Str::endsWith($user->avatar_path, 'images/avatars/default.jpg'));
 
         $user->avatar_path = 'avatars/me.jpg';
@@ -32,7 +32,7 @@ class UserTest extends TestCase
     /** @test */
     public function testHasUsername()
     {
-        $user = create(User::class, ['username' => 'foo.bar']);
+        $user = User::factory()->create(['username' => 'foo.bar']);
 
         $this->assertEquals('foo.bar', $user->username);
     }
@@ -40,7 +40,7 @@ class UserTest extends TestCase
     /** @test */
     public function testHasFirstName()
     {
-        $user = create(User::class, ['first_name' => 'John']);
+        $user = User::factory()->create(['first_name' => 'John']);
 
         $this->assertEquals('John', $user->first_name);
     }
@@ -48,7 +48,7 @@ class UserTest extends TestCase
     /** @test */
     public function testHasLastName()
     {
-        $user = create(User::class, ['last_name' => 'Doe']);
+        $user = User::factory()->create(['last_name' => 'Doe']);
 
         $this->assertEquals('Doe', $user->last_name);
     }
@@ -56,7 +56,7 @@ class UserTest extends TestCase
     /** @test */
     public function testKnowsItsFullName()
     {
-        $user = create(User::class, ['first_name' => 'John', 'last_name' => 'Doe']);
+        $user = User::factory()->create(['first_name' => 'John', 'last_name' => 'Doe']);
 
         $this->assertEquals('John Doe', $user->name);
     }
@@ -64,7 +64,7 @@ class UserTest extends TestCase
     /** @test */
     public function testKnowsItsFullClass()
     {
-        $user = create(User::class, ['class_course' => 'EPL/S', 'class_year' => 2015]);
+        $user = User::factory()->create(['class_course' => 'EPL/S', 'class_year' => 2015]);
 
         $this->assertEquals('EPL/S 2015', $user->class);
     }
@@ -78,7 +78,7 @@ class UserTest extends TestCase
     /** @test */
     public function testBirthdateCanBeNull()
     {
-        $user = create(User::class, ['birthdate' => null]);
+        $user = User::factory()->create(['birthdate' => null]);
 
         $this->assertNull($user->birthdate);
     }
@@ -86,11 +86,11 @@ class UserTest extends TestCase
     /** @test */
     public function testPhoneCanBeNull()
     {
-        $user = create(User::class, ['phone' => null]);
+        $user = User::factory()->create(['phone' => null]);
 
         $this->assertNull($user->phone);
 
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $user->fill(['phone' => null])->save();
 

@@ -1,31 +1,48 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Attachment;
 use App\Post;
 use App\Thread;
 use App\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 
-$factory->define(Post::class, function (Faker $faker) {
-    return [
-        'thread_id' => function () {
-            return factory(Thread::class)->create()->id;
-        },
-        'user_id' => function () {
-            return factory(User::class)->create()->id;
-        },
-        'body' => $faker->paragraph,
-        'is_thread_initiator' => false,
-    ];
-});
+class PostFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Post::class;
 
-$factory->state(Post::class, 'with_attachment', function (Faker $faker) {
-    $attachment = factory(Attachment::class)->create();
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'thread_id' => function () {
+                return Thread::factory()->create()->id;
+            },
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+            'body' => $this->faker->paragraph,
+            'is_thread_initiator' => false,
+        ];
+    }
 
-    $trixAttachment = '<figure data-trix-attachment="'
+    public function withAttachment()
+    {
+        return $this->state(function () {
+            $attachment = Attachment::factory()->create();
+
+            $trixAttachment = '<figure data-trix-attachment="'
                       . htmlentities(json_encode([
                           'contentType' => Storage::disk('public')->mimeType($attachment->path),
                           'filename' => basename($attachment->path),
@@ -36,15 +53,20 @@ $factory->state(Post::class, 'with_attachment', function (Faker $faker) {
                       ]))
                       . '" class="attachment attachment--file"></figure>';
 
-    return [
-        'body' => $faker->paragraph . $trixAttachment . $faker->paragraph,
-    ];
-});
+            return [
+                'body' => $this->faker->paragraph . $trixAttachment . $this->faker->paragraph,
+            ];
+        });
+    }
 
-$factory->state(Post::class, 'from_existing_user', function (Faker $faker) {
-    return [
-        'user_id' => function () {
-            return User::all()->random()->id;
-        },
-    ];
-});
+    public function fromExistingUser()
+    {
+        return $this->state(function () {
+            return [
+                'user_id' => function () {
+                    return User::all()->random()->id;
+                },
+            ];
+        });
+    }
+}

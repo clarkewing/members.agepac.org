@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class ReadPagesTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -17,14 +17,14 @@ class ReadPagesTest extends TestCase
     /** @test */
     public function testGuestsCanViewUnrestrictedPages()
     {
-        $this->get(route('pages.show', create(Page::class, ['restricted' => false])))
+        $this->get(route('pages.show', Page::factory()->create(['restricted' => false])))
             ->assertOk();
     }
 
     /** @test */
     public function testGuestsCannotViewRestrictedPages()
     {
-        $this->get(route('pages.show', create(Page::class, ['restricted' => true])))
+        $this->get(route('pages.show', Page::factory()->create(['restricted' => true])))
             ->assertRedirect(route('login'));
     }
 
@@ -33,17 +33,17 @@ class ReadPagesTest extends TestCase
     {
         $this->signIn();
 
-        $this->get(route('pages.show', create(Page::class, ['restricted' => true])))
+        $this->get(route('pages.show', Page::factory()->create(['restricted' => true])))
             ->assertOk();
     }
 
     /** @test */
     public function testGuestsCannotViewUnpublishedPages()
     {
-        $this->get(route('pages.show', create(Page::class, ['published_at' => null])))
+        $this->get(route('pages.show', Page::factory()->create(['published_at' => null])))
             ->assertForbidden();
 
-        $this->get(route('pages.show', create(Page::class, ['published_at' => now()->addYear()])))
+        $this->get(route('pages.show', Page::factory()->create(['published_at' => now()->addYear()])))
             ->assertForbidden();
     }
 
@@ -52,10 +52,10 @@ class ReadPagesTest extends TestCase
     {
         $this->signIn();
 
-        $this->get(route('pages.show', create(Page::class, ['published_at' => null])))
+        $this->get(route('pages.show', Page::factory()->create(['published_at' => null])))
             ->assertForbidden();
 
-        $this->get(route('pages.show', create(Page::class, ['published_at' => now()->addYear()])))
+        $this->get(route('pages.show', Page::factory()->create(['published_at' => now()->addYear()])))
             ->assertForbidden();
     }
 
@@ -64,17 +64,17 @@ class ReadPagesTest extends TestCase
     {
         $this->signInWithPermission('pages.viewUnpublished');
 
-        $this->get(route('pages.show', create(Page::class, ['published_at' => null])))
+        $this->get(route('pages.show', Page::factory()->create(['published_at' => null])))
             ->assertOk();
 
-        $this->get(route('pages.show', create(Page::class, ['published_at' => now()->addYear()])))
+        $this->get(route('pages.show', Page::factory()->create(['published_at' => now()->addYear()])))
             ->assertOk();
     }
 
     /** @test */
     public function testCanViewPage()
     {
-        $page = create(Page::class);
+        $page = Page::factory()->create();
 
         $this->get(route('pages.show', $page))
             ->assertSee($page->title)

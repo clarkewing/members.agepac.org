@@ -1,17 +1,33 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Poll;
 use App\PollOption;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(PollOption::class, function (Faker $faker) {
-    return [
-        'poll_id' => function () {
-            return factory(Poll::class)->create()->id;
-        },
-        'label' => $faker->sentence,
-        'color' => $faker->hexColor,
-    ];
-});
+class PollOptionFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = PollOption::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'poll_id' => function () {
+                return Poll::factory()->create()->id;
+            },
+            'label' => $this->faker->sentence,
+            'color' => $this->faker->hexColor,
+        ];
+    }
+}

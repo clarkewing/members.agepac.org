@@ -195,7 +195,7 @@ class User extends Resource
     /**
      * @return \Inspheric\Fields\Indicator
      */
-    protected function membershipIndicatorField(): \Inspheric\Fields\Indicator
+    protected function membershipIndicatorField(): Indicator
     {
         return Indicator::make('Membership', function () {
             if ($this->subscribed('default')) {
@@ -235,7 +235,7 @@ class User extends Resource
     /**
      * @return \Laravel\Nova\Fields\Avatar
      */
-    protected function avatarField(): \Laravel\Nova\Fields\Avatar
+    protected function avatarField(): Avatar
     {
         return Avatar::make('Avatar', 'avatar_path')
             ->disableDownload() // Tough to make it work.

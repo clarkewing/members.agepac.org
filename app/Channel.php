@@ -3,13 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class Channel extends Model
 {
-    use RestrictedChannels;
+    use HasFactory, RestrictedChannels;
 
     /**
      * The permissions configured for the channel.
@@ -70,7 +71,7 @@ class Channel extends Model
      */
     public function parent()
     {
-        return $this->belongsTo(Channel::class, 'parent_id')->withoutGlobalScopes();
+        return $this->belongsTo(self::class, 'parent_id')->withoutGlobalScopes();
     }
 
     /**

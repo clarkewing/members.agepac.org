@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\ThrottleException;
 use App\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
@@ -17,17 +16,6 @@ class CreatePostRequest extends FormRequest
     public function authorize()
     {
         return Gate::allows('create', Post::class);
-    }
-
-    /**
-     * Handle a failed authorization attempt.
-     *
-     * @return void
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    protected function failedAuthorization()
-    {
-        throw new ThrottleException('Du calme moussaillon. Tu postes beaucoup, prends une petite pause.');
     }
 
     /**

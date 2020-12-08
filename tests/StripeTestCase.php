@@ -6,7 +6,7 @@ use App\User;
 
 abstract class StripeTestCase extends TestCase
 {
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         // Ensure created Stripe customers aren't persisted.
         User::whereNotNull('stripe_id')->get()->map(function ($user) {
@@ -29,7 +29,7 @@ abstract class StripeTestCase extends TestCase
         bool $withDefaultPaymentMethod = false,
         string $paymentMethodId = 'pm_card_visa'
     ) {
-        $user = tap(create(User::class, $overrides))->createAsStripeCustomer();
+        $user = tap(User::factory()->create($overrides))->createAsStripeCustomer();
 
         $user->{$withDefaultPaymentMethod ? 'updateDefaultPaymentMethod' : 'addPaymentMethod'}($paymentMethodId);
 

@@ -16,11 +16,11 @@ class ThreadTest extends TestCase
 {
     protected $thread;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->thread = create(Thread::class);
+        $this->thread = Thread::factory()->create();
     }
 
     /** @test */
@@ -35,7 +35,7 @@ class ThreadTest extends TestCase
     /** @test */
     public function testPathUnaffectedByArchivedChannel()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
         $path = $thread->path();
 
         $thread->channel->archive();
@@ -55,7 +55,7 @@ class ThreadTest extends TestCase
         $this->assertCount(1, $this->thread->posts);
         $this->assertInstanceOf(Collection::class, $this->thread->posts);
 
-        create(Post::class, ['thread_id' => $this->thread->id]);
+        Post::factory()->create(['thread_id' => $this->thread->id]);
 
         $this->assertCount(2, $this->thread->fresh()->posts);
         $this->assertInstanceOf(Collection::class, $this->thread->fresh()->posts);
@@ -73,7 +73,7 @@ class ThreadTest extends TestCase
         $this->assertCount(0, $this->thread->replies);
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
 
-        create(Post::class, ['thread_id' => $this->thread->id]);
+        Post::factory()->create(['thread_id' => $this->thread->id]);
 
         $this->assertCount(1, $this->thread->fresh()->replies);
         $this->assertInstanceOf(Collection::class, $this->thread->fresh()->replies);
@@ -103,7 +103,7 @@ class ThreadTest extends TestCase
             ->subscribe()
             ->addPost([
                 'body' => 'Foobar',
-                'user_id' => create(User::class)->id,
+                'user_id' => User::factory()->create()->id,
             ]);
 
         Notification::assertSentTo(Auth::user(), ThreadWasUpdated::class);
@@ -153,7 +153,7 @@ class ThreadTest extends TestCase
     /** @test */
     public function testCanCheckIfTheAuthenticatedUserHasReadAllPosts()
     {
-        $this->signIn($user = create(User::class));
+        $this->signIn($user = User::factory()->create());
 
         $this->assertTrue($this->thread->hasUpdatesFor($user));
 
@@ -165,7 +165,7 @@ class ThreadTest extends TestCase
     /** @test */
     public function testBodyIsSanitizedAutomatically()
     {
-        $thread = make(Thread::class, ['body' => '<script>alert("bad");</script><p>This is okay.</p>']);
+        $thread = Thread::factory()->make(['body' => '<script>alert("bad");</script><p>This is okay.</p>']);
 
         $this->assertEquals($thread->body, '<p>This is okay.</p>');
     }
@@ -173,7 +173,7 @@ class ThreadTest extends TestCase
     /** @test */
     public function testCanHaveABestPost()
     {
-        $post = create(Post::class, ['thread_id' => $this->thread->id]);
+        $post = Post::factory()->create(['thread_id' => $this->thread->id]);
 
         $this->thread->markBestPost($post);
 

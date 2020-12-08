@@ -23,8 +23,8 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
-        $post = make(Post::class);
+        $thread = Thread::factory()->create();
+        $post = Post::factory()->make();
 
         $this->post($thread->path() . '/posts', $post->toArray())
             ->assertStatus(201);
@@ -40,12 +40,11 @@ class ParticipateInThreadsTest extends TestCase
 //        $this->withExceptionHandling();
 //        $this->signIn();
 //
-//        $thread = create(Thread::class);
-//        $post = make(Post::class, [
-//            'body' => 'Yahoo Customer Support',
-//        ]);
+//        $thread = Thread::factory()->create();
 //
-//        $this->json('post', $thread->path() . '/posts', $post->toArray())
+//        $this->json('post', $thread->path() . '/posts', Post::factory()->raw([
+//            'body' => 'Yahoo Customer Support',
+//        ]))
 //            ->assertStatus(422);
 //    }
 
@@ -54,10 +53,8 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = create(Thread::class);
-        $post = make(Post::class, ['body' => null]);
-
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $thread = Thread::factory()->create();
+        $this->post($thread->path() . '/posts', Post::factory()->raw(['body' => null]))
             ->assertSessionHasErrors('body');
     }
 
@@ -66,7 +63,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->delete(route('posts.destroy', $post))
             ->assertRedirect('/login');
@@ -81,7 +78,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $post = create(Post::class, ['user_id' => Auth::id()]);
+        $post = Post::factory()->create(['user_id' => Auth::id()]);
 
         $this->deleteJson(route('posts.destroy', $post))
             ->assertSuccessful();
@@ -94,7 +91,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.delete');
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->deleteJson(route('posts.destroy', $post))
             ->assertSuccessful();
@@ -108,7 +105,7 @@ class ParticipateInThreadsTest extends TestCase
         $this->withExceptionHandling()
             ->signIn();
 
-        $post = create(Post::class, [
+        $post = Post::factory()->create([
             'user_id' => Auth::id(),
             'is_thread_initiator' => true,
         ]);
@@ -124,7 +121,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        ($post = create(Post::class))->delete();
+        ($post = Post::factory()->create())->delete();
 
         $this->patch(route('posts.update', $post), ['deleted_at' => null])
             ->assertRedirect('/login');
@@ -139,7 +136,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.restore');
 
-        ($post = create(Post::class))->delete();
+        ($post = Post::factory()->create())->delete();
 
         $this->patchJson(route('posts.update', $post), ['deleted_at' => null])
             ->assertSuccessful();
@@ -152,7 +149,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->patch(route('posts.update', $post))
             ->assertRedirect('/login');
@@ -167,7 +164,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $post = create(Post::class, ['user_id' => Auth::id()]);
+        $post = Post::factory()->create(['user_id' => Auth::id()]);
 
         $updatedPost = 'You been changed, fool.';
         $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
@@ -183,7 +180,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.edit');
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $updatedPost = 'You been changed, fool.';
         $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
@@ -200,16 +197,16 @@ class ParticipateInThreadsTest extends TestCase
         $this->withExceptionHandling();
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
-        $post = make(Post::class, [
+        $post = Post::factory()->raw([
             'body' => 'My simple post.',
         ]);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path() . '/posts', $post)
             ->assertStatus(201);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path() . '/posts', $post)
             ->assertStatus(429); // Too many requests
     }
 }

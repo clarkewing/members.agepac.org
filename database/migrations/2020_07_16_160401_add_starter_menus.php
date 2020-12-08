@@ -31,7 +31,7 @@ class AddStarterMenus extends Migration
         MenuItem::forceCreate([
             'menu_id' => $mainNavbar->id,
             'name' => 'Annuaire des EPL',
-            'class' => 'App\Nova\MenuBuilder\MenuRoute',
+            'class' => \App\Nova\MenuBuilder\MenuRoute::class,
             'value' => 'profiles.index',
             'parameters' => null,
             'parent_id' => 1,
@@ -41,7 +41,7 @@ class AddStarterMenus extends Migration
         MenuItem::forceCreate([
             'menu_id' => $mainNavbar->id,
             'name' => 'Annuaire des Compagnies',
-            'class' => 'App\Nova\MenuBuilder\MenuRoute',
+            'class' => \App\Nova\MenuBuilder\MenuRoute::class,
             'value' => 'companies.index',
             'parameters' => null,
             'parent_id' => 1,
@@ -51,7 +51,7 @@ class AddStarterMenus extends Migration
         MenuItem::forceCreate([
             'menu_id' => $mainNavbar->id,
             'name' => 'Forum',
-            'class' => 'App\Nova\MenuBuilder\MenuRoute',
+            'class' => \App\Nova\MenuBuilder\MenuRoute::class,
             'value' => 'threads.index',
             'parameters' => null,
             'order' => 2,

@@ -15,7 +15,7 @@ use Tests\TestCase;
 
 class RegisterUserTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -86,7 +86,7 @@ class RegisterUserTest extends TestCase
     /** @test */
     public function testIfNameMatchesInvitationItAsksForConfirmation()
     {
-        $invitation = create(UserInvitation::class);
+        $invitation = UserInvitation::factory()->create();
 
         Livewire::test(Register::class)
             ->set('active', 0)
@@ -104,7 +104,7 @@ class RegisterUserTest extends TestCase
     /** @test */
     public function testIfFullDetailsMatchInvitationItAsksForConfirmation()
     {
-        $invitation = create(UserInvitation::class);
+        $invitation = UserInvitation::factory()->create();
 
         Livewire::test(Register::class)
             ->set('active', 0)
@@ -233,7 +233,7 @@ class RegisterUserTest extends TestCase
     /** @test */
     public function testIfGuestConfirmsInvitationItAsksForCredentials()
     {
-        $invitation = create(UserInvitation::class);
+        $invitation = UserInvitation::factory()->create();
 
         Livewire::test(Register::class)
             ->set('active', 0)
@@ -281,7 +281,7 @@ class RegisterUserTest extends TestCase
     /** @test */
     public function testEmailMustBeUnique()
     {
-        create(User::class, ['email' => 'john@example.com']);
+        User::factory()->create(['email' => 'john@example.com']);
 
         Livewire::test(Register::class)
             ->set('active', 1)
@@ -463,7 +463,7 @@ class RegisterUserTest extends TestCase
     {
         $this->assertDatabaseCount('users', 0);
 
-        $this->fillForm($user = make(User::class)->getAttributes())
+        $this->fillForm($user = User::factory()->make()->getAttributes())
             ->call('run');
 
         $this->assertDatabaseCount('users', 1);
@@ -478,7 +478,7 @@ class RegisterUserTest extends TestCase
     /** @test */
     public function testUserInvitationIsDeletedAfterRegistration()
     {
-        $userInvitation = create(UserInvitation::class);
+        $userInvitation = UserInvitation::factory()->create();
         $this->assertDatabaseHas('user_invitations', ['id' => $userInvitation->id]);
 
         $this->fillForm(Arr::only(
@@ -563,13 +563,11 @@ class RegisterUserTest extends TestCase
     public function fillForm(array $overrides = [])
     {
         $data = array_merge(
-            make(
-                User::class,
-                create(
-                    UserInvitation::class,
+            User::factory()->raw(
+                UserInvitation::factory()->create(
                     Arr::only($overrides, ['first_name', 'last_name', 'class_course', 'class_year'])
                 )->toArray()
-            )->getAttributes(),
+            ),
             $overrides,
             ['password' => 'password']
         );

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
@@ -15,7 +16,7 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasReputation, HasRoles, Notifiable;
+    use HasFactory, Billable, HasReputation, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.

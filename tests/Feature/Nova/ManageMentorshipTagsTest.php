@@ -210,7 +210,7 @@ class ManageMentorshipTagsTest extends TestCase
      * @param  array  $values
      * @return \Tests\Feature\Nova\ManageMentorshipTagsTest
      */
-    protected function assertDatabaseHasTag(array $values): \Tests\Feature\Nova\ManageMentorshipTagsTest
+    protected function assertDatabaseHasTag(array $values): self
     {
         return $this->assertDatabaseHas('tags', $this->dbValues($values));
     }
@@ -219,7 +219,7 @@ class ManageMentorshipTagsTest extends TestCase
      * @param  array  $values
      * @return \Tests\Feature\Nova\ManageMentorshipTagsTest
      */
-    protected function assertDatabaseMissingTag(array $values): \Tests\Feature\Nova\ManageMentorshipTagsTest
+    protected function assertDatabaseMissingTag(array $values): self
     {
         return $this->assertDatabaseMissing('tags', $this->dbValues($values));
     }

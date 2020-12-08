@@ -1,28 +1,52 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Poll;
 use App\PollOption;
 use App\Thread;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Poll::class, function (Faker $faker) {
-    return [
-        'thread_id' => function () {
-            return factory(Thread::class)->create()->id;
-        },
-        'title' => $faker->sentence,
-        'votes_editable' => $faker->boolean,
-        'max_votes' => 1,
-        'votes_privacy' => $faker->randomElement(Poll::$votesPrivacyValues),
-        'results_before_voting' => $faker->boolean,
-        'locked_at' => $faker->dateTimeBetween('now', '+1 year'),
-    ];
-});
+class PollFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Poll::class;
 
-$factory->afterCreating(Poll::class, function ($poll, Faker $faker) {
-    factory(PollOption::class, $faker->numberBetween(2, 10))->create([
-        'poll_id' => $poll->id,
-    ]);
-});
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function ($poll) {
+            PollOption::factory()->count($this->faker->numberBetween(2, 10))->create([
+                'poll_id' => $poll->id,
+            ]);
+        });
+    }
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'thread_id' => function () {
+                return Thread::factory()->create()->id;
+            },
+            'title' => $this->faker->sentence,
+            'votes_editable' => $this->faker->boolean,
+            'max_votes' => 1,
+            'votes_privacy' => $this->faker->randomElement(Poll::$votesPrivacyValues),
+            'results_before_voting' => $this->faker->boolean,
+            'locked_at' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d H:i:s'),
+        ];
+    }
+}

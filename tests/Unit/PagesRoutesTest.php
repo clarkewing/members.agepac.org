@@ -12,12 +12,12 @@ class PagesRoutesTest extends TestCase
     {
         $this->signIn();
 
-        create(Page::class, ['path' => 'foo', 'title' => 'Foo title']);
+        Page::factory()->create(['path' => 'foo', 'title' => 'Foo title']);
 
         $this->get('/pages/foo')
             ->assertOk();
 
-        create(Page::class, ['path' => 'foo/bar-baz', 'title' => 'Bar baz title']);
+        Page::factory()->create(['path' => 'foo/bar-baz', 'title' => 'Bar baz title']);
 
         $this->get('/pages/foo/bar-baz')
             ->assertOk();
@@ -28,12 +28,12 @@ class PagesRoutesTest extends TestCase
     {
         $this->assertEquals(
             config('app.url') . '/pages/foo',
-            route('pages.show', create(Page::class, ['path' => 'foo']))
+            route('pages.show', Page::factory()->create(['path' => 'foo']))
         );
 
         $this->assertEquals(
             config('app.url') . '/pages/foo/bar-baz',
-            route('pages.show', create(Page::class, ['path' => 'foo/bar-baz']))
+            route('pages.show', Page::factory()->create(['path' => 'foo/bar-baz']))
         );
     }
 }

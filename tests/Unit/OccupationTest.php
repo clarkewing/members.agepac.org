@@ -18,11 +18,11 @@ class OccupationTest extends TestCase
     /** @test */
     public function testKnowsIfItIsPilotOccupation()
     {
-        $pilotOccupation = factory(Occupation::class)->states('pilot')->create();
+        $pilotOccupation = Occupation::factory()->pilot()->create();
 
         $this->assertTrue($pilotOccupation->is_pilot);
 
-        $otherOccupation = factory(Occupation::class)->states('not_pilot')->create();
+        $otherOccupation = Occupation::factory()->notPilot()->create();
 
         $this->assertFalse($otherOccupation->is_pilot);
     }
@@ -30,14 +30,14 @@ class OccupationTest extends TestCase
     /** @test */
     public function testHasTitle()
     {
-        $pilotOccupation = factory(Occupation::class)->states('pilot')->create();
+        $pilotOccupation = Occupation::factory()->pilot()->create();
 
         $this->assertEquals(
             "{$pilotOccupation->position} sur {$pilotOccupation->aircraft->name}",
             $pilotOccupation->title
         );
 
-        $otherOccupation = factory(Occupation::class)->states('not_pilot')->create();
+        $otherOccupation = Occupation::factory()->notPilot()->create();
 
         $this->assertEquals($otherOccupation->position, $otherOccupation->title);
     }
@@ -47,22 +47,22 @@ class OccupationTest extends TestCase
     {
         $this->assertEquals(
             'Salarié à temps plein',
-            make(Occupation::class, ['status_code' => Occupation::EMPLOYED_FULL_TIME])->status
+            Occupation::factory()->make(['status_code' => Occupation::EMPLOYED_FULL_TIME])->status
         );
 
         $this->assertEquals(
             'Salarié à temps partiel',
-            make(Occupation::class, ['status_code' => Occupation::EMPLOYED_PART_TIME])->status
+            Occupation::factory()->make(['status_code' => Occupation::EMPLOYED_PART_TIME])->status
         );
 
         $this->assertEquals(
             'Auto-entrepreneur',
-            make(Occupation::class, ['status_code' => Occupation::SELF_EMPLOYED])->status
+            Occupation::factory()->make(['status_code' => Occupation::SELF_EMPLOYED])->status
         );
 
         $this->assertEquals(
             'Bénévole',
-            make(Occupation::class, ['status_code' => Occupation::UNPAID])->status
+            Occupation::factory()->make(['status_code' => Occupation::UNPAID])->status
         );
     }
 
@@ -72,7 +72,7 @@ class OccupationTest extends TestCase
         $this->expectException(UnknownOccupationStatusException::class);
 
         $id = DB::table('occupations')->insertGetId(
-            array_merge(make(Occupation::class)->getAttributes(), ['status_code' => 999])
+            array_merge(Occupation::factory()->make()->getAttributes(), ['status_code' => 999])
         );
 
         Occupation::find($id)->status;
@@ -81,28 +81,28 @@ class OccupationTest extends TestCase
     /** @test */
     public function testSetsStatusAsInt()
     {
-        $occupation = create(Occupation::class, ['status' => 'Salarié à temps plein']);
+        $occupation = Occupation::factory()->create(['status' => 'Salarié à temps plein']);
 
         $this->assertDatabaseHas('occupations', [
             'id' => $occupation->id,
             'status_code' => Occupation::EMPLOYED_FULL_TIME,
         ]);
 
-        $occupation = create(Occupation::class, ['status' => 'Salarié à temps partiel']);
+        $occupation = Occupation::factory()->create(['status' => 'Salarié à temps partiel']);
 
         $this->assertDatabaseHas('occupations', [
             'id' => $occupation->id,
             'status_code' => Occupation::EMPLOYED_PART_TIME,
         ]);
 
-        $occupation = create(Occupation::class, ['status' => 'Auto-entrepreneur']);
+        $occupation = Occupation::factory()->create(['status' => 'Auto-entrepreneur']);
 
         $this->assertDatabaseHas('occupations', [
             'id' => $occupation->id,
             'status_code' => Occupation::SELF_EMPLOYED,
         ]);
 
-        $occupation = create(Occupation::class, ['status' => 'Bénévole']);
+        $occupation = Occupation::factory()->create(['status' => 'Bénévole']);
 
         $this->assertDatabaseHas('occupations', [
             'id' => $occupation->id,
@@ -115,7 +115,7 @@ class OccupationTest extends TestCase
     {
         $this->expectException(UnknownOccupationStatusException::class);
 
-        create(Occupation::class, ['status' => 'foobar']);
+        Occupation::factory()->create(['status' => 'foobar']);
     }
 
     /** @test */
@@ -123,6 +123,6 @@ class OccupationTest extends TestCase
     {
         $this->expectException(UnknownOccupationStatusException::class);
 
-        create(Occupation::class, ['status' => 999]);
+        Occupation::factory()->create(['status' => 999]);
     }
 }

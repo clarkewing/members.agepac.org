@@ -11,7 +11,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function signIn(?User $user = null)
     {
-        $user = $user ?? create(User::class);
+        $user = $user ?? User::factory()->create();
 
         $this->be($user);
 
@@ -44,7 +44,7 @@ abstract class TestCase extends BaseTestCase
     protected function signInWithPermission($permission)
     {
         return $this->signIn(
-            create(User::class)
+            User::factory()->create()
                 ->givePermissionTo($permission)
         );
     }
@@ -58,7 +58,7 @@ abstract class TestCase extends BaseTestCase
     protected function signInWithRole($role)
     {
         return $this->signIn(
-            create(User::class)
+            User::factory()->create()
                 ->assignRole($role)
         );
     }

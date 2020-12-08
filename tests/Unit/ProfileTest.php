@@ -12,7 +12,7 @@ class ProfileTest extends TestCase
     /** @test */
     public function testCanHaveBio()
     {
-        $profile = create(Profile::class, ['bio' => 'This is a pretty awesome bio.']);
+        $profile = Profile::factory()->create(['bio' => 'This is a pretty awesome bio.']);
 
         $this->assertEquals('This is a pretty awesome bio.', $profile->bio);
     }
@@ -20,7 +20,7 @@ class ProfileTest extends TestCase
     /** @test */
     public function testCanHaveFlightHours()
     {
-        $profile = create(Profile::class, ['flight_hours' => 150]);
+        $profile = Profile::factory()->create(['flight_hours' => 150]);
 
         $this->assertSame(150, $profile->flight_hours);
     }
@@ -28,11 +28,11 @@ class ProfileTest extends TestCase
     /** @test */
     public function testCanHaveExperience()
     {
-        $profile = create(Profile::class);
+        $profile = Profile::factory()->create();
 
         $this->assertEmpty($profile->experience);
 
-        create(Occupation::class, ['user_id' => $profile->id]);
+        Occupation::factory()->create(['user_id' => $profile->id]);
 
         $this->assertCount(1, $profile->fresh()->experience);
     }
@@ -40,21 +40,21 @@ class ProfileTest extends TestCase
     /** @test */
     public function testExperienceOrderedLatestFirst()
     {
-        $profile = create(Profile::class);
+        $profile = Profile::factory()->create();
 
-        $occupationOne = create(Occupation::class, [
+        $occupationOne = Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2010-01-01',
             'end_date' => '2012-01-01',
         ]);
 
-        $occupationTwo = create(Occupation::class, [
+        $occupationTwo = Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => '2012-12-31',
         ]);
 
-        $occupationThree = create(Occupation::class, [
+        $occupationThree = Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2015-01-01',
             'end_date' => null,
@@ -68,16 +68,16 @@ class ProfileTest extends TestCase
     /** @test */
     public function testPrimaryOccupationIsFirstExperience()
     {
-        $profile = create(Profile::class);
+        $profile = Profile::factory()->create();
 
-        $primaryOccupation = create(Occupation::class, [
+        $primaryOccupation = Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2010-01-01',
             'end_date' => null,
             'is_primary' => true,
         ]);
 
-        $otherOccupation = create(Occupation::class, [
+        $otherOccupation = Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => null,
@@ -90,13 +90,13 @@ class ProfileTest extends TestCase
     /** @test */
     public function testCanGetCurrentOccupation()
     {
-        $profile = create(Profile::class);
+        $profile = Profile::factory()->create();
 
         // Has no experience
         $this->assertNull($profile->currentOccupation());
 
         // Has experience but none ongoing
-        create(Occupation::class, [
+        Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => '2012-12-31',
@@ -104,7 +104,7 @@ class ProfileTest extends TestCase
         $this->assertNull($profile->fresh()->currentOccupation());
 
         // Has ongoing experience but no primary set
-        $occupationOne = create(Occupation::class, [
+        $occupationOne = Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2015-01-01',
             'end_date' => null,
@@ -112,7 +112,7 @@ class ProfileTest extends TestCase
         $this->assertEquals($occupationOne->id, $profile->fresh()->currentOccupation()->id);
 
         // Has two ongoing experiences with no primary set
-        $occupationTwo = create(Occupation::class, [
+        $occupationTwo = Occupation::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2017-01-01',
             'end_date' => null,
@@ -127,11 +127,11 @@ class ProfileTest extends TestCase
     /** @test */
     public function testKnowsIfItHasAnOccupation()
     {
-        $profile = create(Profile::class);
+        $profile = Profile::factory()->create();
 
         $this->assertFalse($profile->hasOccupation());
 
-        create(Occupation::class, [
+        Occupation::factory()->create([
             'user_id' => $profile->id,
             'end_date' => null,
         ]);
@@ -141,11 +141,11 @@ class ProfileTest extends TestCase
     /** @test */
     public function testCanHaveEducation()
     {
-        $profile = create(Profile::class);
+        $profile = Profile::factory()->create();
 
         $this->assertEmpty($profile->education);
 
-        create(Course::class, ['user_id' => $profile->id]);
+        Course::factory()->create(['user_id' => $profile->id]);
 
         $this->assertCount(1, $profile->fresh()->education);
     }
@@ -153,21 +153,21 @@ class ProfileTest extends TestCase
     /** @test */
     public function testEducationOrderedLatestFirst()
     {
-        $profile = create(Profile::class);
+        $profile = Profile::factory()->create();
 
-        $courseOne = create(Course::class, [
+        $courseOne = Course::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2010-01-01',
             'end_date' => '2012-01-01',
         ]);
 
-        $courseTwo = create(Course::class, [
+        $courseTwo = Course::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2012-01-01',
             'end_date' => '2012-12-31',
         ]);
 
-        $courseThree = create(Course::class, [
+        $courseThree = Course::factory()->create([
             'user_id' => $profile->id,
             'start_date' => '2015-01-01',
             'end_date' => null,

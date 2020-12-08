@@ -1,63 +1,96 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Aircraft;
 use App\Company;
 use App\Location;
 use App\Occupation;
 use App\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
-$factory->define(Occupation::class, function (Faker $faker) {
-    $is_pilot = $faker->boolean;
+class OccupationFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Occupation::class;
 
-    return [
-        'user_id' => function () {
-            return factory(User::class)->create()->id;
-        },
-        'position' => $is_pilot ? Arr::random(['CDB', 'OPL']) : $faker->jobTitle,
-        'aircraft_id' => $is_pilot ? Aircraft::all()->random()->id : null,
-        'company_id' => function () {
-            return factory(Company::class)->create()->id;
-        },
-        'status' => Arr::random(array_keys(Occupation::statusStrings())),
-        'description' => $faker->paragraph,
-        'start_date' => $start_date = $faker->date,
-        'end_date' => $faker->boolean ? $faker->dateTimeBetween($start_date, 'now') : null,
-        'is_primary' => false,
-    ];
-});
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function ($occupation) {
+            Location::factory()->create([
+                'locatable_id' => $occupation->id,
+                'locatable_type' => get_class($occupation),
+            ]);
+        });
+    }
 
-$factory->state(Occupation::class, 'pilot', [
-    'position' => Arr::random(['CDB', 'OPL']),
-    'aircraft_id' => Aircraft::all()->random()->id,
-]);
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $is_pilot = $this->faker->boolean;
 
-$factory->state(Occupation::class, 'not_pilot', function ($faker) {
-    return [
-        'position' => $faker->jobTitle,
-        'aircraft_id' => null,
-    ];
-});
+        return [
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+            'position' => $is_pilot ? Arr::random(['CDB', 'OPL']) : $this->faker->jobTitle,
+            'aircraft_id' => $is_pilot ? Aircraft::all()->random()->id : null,
+            'company_id' => function () {
+                return Company::factory()->create()->id;
+            },
+            'status' => Arr::random(array_keys(Occupation::statusStrings())),
+            'description' => $this->faker->paragraph,
+            'start_date' => $start_date = $this->faker->date,
+            'end_date' => $this->faker->boolean ? $this->faker->dateTimeBetween($start_date, 'now') : null,
+            'is_primary' => false,
+        ];
+    }
 
-$factory->state(Occupation::class, 'past', function ($faker) {
-    return [
-        'start_date' => $start_date = $faker->date,
-        'end_date' => $faker->dateTimeBetween($start_date, 'now'),
-    ];
-});
+    public function pilot()
+    {
+        return $this->state(['position' => Arr::random(['CDB', 'OPL']), 'aircraft_id' => Aircraft::all()->random()->id]);
+    }
 
-$factory->state(Occupation::class, 'current', function () {
-    return [
-        'end_date' => null,
-    ];
-});
+    public function notPilot()
+    {
+        return $this->state(function () {
+            return [
+                'position' => $this->faker->jobTitle,
+                'aircraft_id' => null,
+            ];
+        });
+    }
 
-$factory->afterCreating(Occupation::class, function ($occupation) {
-    factory(Location::class)->create([
-        'locatable_id' => $occupation->id,
-        'locatable_type' => get_class($occupation),
-    ]);
-});
+    public function past()
+    {
+        return $this->state(function () {
+            return [
+                'start_date' => $start_date = $this->faker->date,
+                'end_date' => $this->faker->dateTimeBetween($start_date, 'now'),
+            ];
+        });
+    }
+
+    public function current()
+    {
+        return $this->state(function () {
+            return [
+                'end_date' => null,
+            ];
+        });
+    }
+}

@@ -13,13 +13,13 @@ class EditCourseTest extends TestCase
      */
     protected $course;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->withExceptionHandling()->signIn();
 
-        $this->course = create(Course::class, ['user_id' => Auth::id()]);
+        $this->course = Course::factory()->create(['user_id' => Auth::id()]);
     }
 
     /** @test */

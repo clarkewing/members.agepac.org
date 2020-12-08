@@ -14,8 +14,8 @@ class BestPostTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
-        $posts = create(Post::class, ['thread_id' => $thread->id], 2);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
 
         $this->assertFalse($posts[1]->isBest());
 
@@ -29,8 +29,8 @@ class BestPostTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
-        $posts = create(Post::class, ['thread_id' => $thread->id], 2);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
 
         $thread->markBestPost($posts[1]);
         $this->assertTrue($posts[1]->fresh()->isBest());
@@ -46,8 +46,8 @@ class BestPostTest extends TestCase
         $this->withExceptionHandling();
         $this->signIn();
 
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
-        $posts = create(Post::class, ['thread_id' => $thread->id], 2);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
 
         $this->signIn();
 
@@ -63,8 +63,8 @@ class BestPostTest extends TestCase
         $this->withExceptionHandling();
         $this->signIn();
 
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
-        $posts = create(Post::class, ['thread_id' => $thread->id], 2);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
 
         $thread->markBestPost($posts[1]);
 
@@ -81,7 +81,7 @@ class BestPostTest extends TestCase
     {
         $this->signIn();
 
-        $post = create(Post::class, ['user_id' => Auth::id()]);
+        $post = Post::factory()->create(['user_id' => Auth::id()]);
 
         $post->thread->markBestPost($post);
 
