@@ -22,7 +22,7 @@ class ManageCompaniesTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotViewACompany()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->signIn();
 
@@ -35,7 +35,7 @@ class ManageCompaniesTest extends TestCase
     {
         $this->signIn();
 
-        $this->storeResource('companies', make(Company::class, ['name' => 'FakeBus'])->toArray())
+        $this->storeResource('companies', Company::factory()->make(['name' => 'FakeBus'])->toArray())
             ->assertForbidden();
 
         $this->assertDatabaseMissing('companies', ['name' => 'FakeBus']);
@@ -44,7 +44,7 @@ class ManageCompaniesTest extends TestCase
     /** @test */
     public function testEditingACompanyOnNovaIsForbidden()
     {
-        $company = create(Company::class, ['name' => 'Acme Inc.']);
+        $company = Company::factory()->create(['name' => 'Acme Inc.']);
 
         $this->signInWithPermission('companies.delete');
 
@@ -57,7 +57,7 @@ class ManageCompaniesTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotDeleteACompany()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->signIn();
 
@@ -79,7 +79,7 @@ class ManageCompaniesTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanViewACompany()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->signInWithPermission('companies.delete');
 
@@ -90,7 +90,7 @@ class ManageCompaniesTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanDeleteACompany()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->signInWithPermission('companies.delete');
 

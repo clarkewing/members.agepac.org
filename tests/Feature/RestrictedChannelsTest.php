@@ -22,7 +22,7 @@ class RestrictedChannelsTest extends TestCase
 
         $this->signIn()->withExceptionHandling();
 
-        $this->channel = create(Channel::class, ['name' => 'Foobar Channel']);
+        $this->channel = Channel::factory()->create(['name' => 'Foobar Channel']);
     }
 
     /** @test */
@@ -30,8 +30,8 @@ class RestrictedChannelsTest extends TestCase
     {
         $this->setupPermission('view');
 
-        $unrestrictedThread = create(Thread::class);
-        $restrictedThread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $unrestrictedThread = Thread::factory()->create();
+        $restrictedThread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $threads = $this->indexThreads()
             ->assertSuccessful()
@@ -49,8 +49,8 @@ class RestrictedChannelsTest extends TestCase
 
         $this->setupPermission('view');
 
-        $unrestrictedThread = create(Thread::class);
-        $restrictedThread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $unrestrictedThread = Thread::factory()->create();
+        $restrictedThread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $threads = $this->indexThreads()
             ->assertSuccessful()
@@ -104,7 +104,7 @@ class RestrictedChannelsTest extends TestCase
     {
         $this->setupPermission('view');
 
-        $thread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $this->showThread($thread)
             ->assertForbidden();
@@ -117,7 +117,7 @@ class RestrictedChannelsTest extends TestCase
 
         $this->setupPermission('view');
 
-        $thread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $this->showThread($thread)
             ->assertSuccessful();
@@ -128,7 +128,7 @@ class RestrictedChannelsTest extends TestCase
     {
         $this->setupPermission('view');
 
-        $thread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $this->indexPosts($thread)
             ->assertForbidden();
@@ -141,7 +141,7 @@ class RestrictedChannelsTest extends TestCase
 
         $this->setupPermission('view');
 
-        $thread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $this->indexPosts($thread)
             ->assertSuccessful();
@@ -212,7 +212,7 @@ class RestrictedChannelsTest extends TestCase
     {
         $this->setupPermission('post');
 
-        $thread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $this->storePost($thread)
             ->assertForbidden();
@@ -225,7 +225,7 @@ class RestrictedChannelsTest extends TestCase
 
         $this->setupPermission('post');
 
-        $thread = create(Thread::class, ['channel_id' => $this->channel->id]);
+        $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
         $this->storePost($thread)
             ->assertSuccessful();
@@ -324,7 +324,7 @@ class RestrictedChannelsTest extends TestCase
     {
         return $this->postJson(
             $thread->path() . '/posts',
-            make(Post::class)->toArray()
+            Post::factory()->make()->toArray()
         );
     }
 
@@ -333,9 +333,8 @@ class RestrictedChannelsTest extends TestCase
      */
     protected function createPoll()
     {
-        return create(
-            Poll::class,
-            ['thread_id' => create(Thread::class, ['channel_id' => $this->channel->id])->id]
+        return Poll::factory()->create(
+            ['thread_id' => Thread::factory()->create(['channel_id' => $this->channel->id])->id]
         );
     }
 

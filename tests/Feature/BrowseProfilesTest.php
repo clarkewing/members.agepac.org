@@ -27,7 +27,7 @@ class BrowseProfilesTest extends TestCase
     /** @test */
     public function testUserCanGetIndexOfProfiles()
     {
-        $profiles = create(Profile::class, [], 10);
+        $profiles = Profile::factory()->count(10)->create();
 
         $this->get(route('profiles.index'))
             ->assertViewIs('profiles.index');
@@ -51,9 +51,9 @@ class BrowseProfilesTest extends TestCase
 
         $search = 'Didier';
 
-        create(Profile::class, [], 2);
-        create(Profile::class, ['first_name' => $search, 'last_name' => 'Labyt']);
-        create(Profile::class, ['first_name' => $search, 'last_name' => 'Raoult']);
+        Profile::factory()->count(2)->create();
+        Profile::factory()->create(['first_name' => $search, 'last_name' => 'Labyt']);
+        Profile::factory()->create(['first_name' => $search, 'last_name' => 'Raoult']);
 
         $maxTime = now()->addSeconds(20);
 
@@ -79,7 +79,7 @@ class BrowseProfilesTest extends TestCase
     {
         return $this->getJson(route(
             'profiles.show',
-            $profile ?? create(Profile::class)
+            $profile ?? Profile::factory()->create()
         ));
     }
 }

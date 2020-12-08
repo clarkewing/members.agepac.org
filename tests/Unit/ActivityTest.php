@@ -14,7 +14,7 @@ class ActivityTest extends TestCase
     /** @test */
     public function testRecordsActivityWhenUserIsCreated()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_user',
@@ -54,7 +54,7 @@ class ActivityTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_thread',
@@ -74,7 +74,7 @@ class ActivityTest extends TestCase
         $this->signIn();
 
         // Will also create associated thread.
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_post',
@@ -88,7 +88,7 @@ class ActivityTest extends TestCase
     {
         $this->signIn();
 
-        create(Thread::class, ['user_id' => Auth::id()], 2);
+        Thread::factory()->count(2)->create(['user_id' => Auth::id()]);
         Auth::user()->activity()->first()->update(['created_at' => now()->subWeek()]);
 
         $feed = Activity::feed(Auth::user());

@@ -26,7 +26,7 @@ class DeleteCourseTest extends TestCase
     /** @test */
     public function testOnlyAuthorizedUserCanDeleteCourse()
     {
-        $course = create(Course::class);
+        $course = Course::factory()->create();
 
         $this->signIn();
 
@@ -53,7 +53,7 @@ class DeleteCourseTest extends TestCase
     {
         $this->signIn();
 
-        $course = create(Course::class, ['user_id' => Auth::id()]);
+        $course = Course::factory()->create(['user_id' => Auth::id()]);
 
         $this->assertDatabaseHas('courses', ['id' => $course->id]);
 

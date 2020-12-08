@@ -33,7 +33,7 @@ class CreateThreadsTest extends TestCase
             ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
 
-        $thread = make(Thread::class);
+        $thread = Thread::factory()->make();
 
         $this->post(route('threads.store'), $thread->toArray())
             ->assertRedirect(route('threads.index'))
@@ -91,7 +91,7 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function testThreadCantBeCreatedInAnArchivedChannel()
     {
-        $archivedChannel = create(Channel::class, ['archived' => true]);
+        $archivedChannel = Channel::factory()->create(['archived' => true]);
 
         $this->publishThread(['channel_id' => $archivedChannel->id])
             ->assertSessionHasErrors('channel_id');
@@ -104,7 +104,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $existingThread = create(Thread::class, ['title' => 'Foo Title']);
+        $existingThread = Thread::factory()->create(['title' => 'Foo Title']);
 
         $this->assertEquals('foo-title', $existingThread->fresh()->slug);
 
@@ -118,7 +118,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $existingThread = create(Thread::class, ['title' => 'Financials 2020']);
+        $existingThread = Thread::factory()->create(['title' => 'Financials 2020']);
 
         $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
 

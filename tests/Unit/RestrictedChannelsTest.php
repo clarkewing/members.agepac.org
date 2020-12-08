@@ -21,7 +21,7 @@ class RestrictedChannelsTest extends TestCase
     {
         parent::setUp();
 
-        $this->channel = create(Channel::class);
+        $this->channel = Channel::factory()->create();
     }
 
     /** @test */
@@ -88,7 +88,7 @@ class RestrictedChannelsTest extends TestCase
     public function testCanScopeUnrestrictedChannels()
     {
         $restrictedChannel = $this->channel->createPermission('view');
-        $unrestrictedChannel = create(Channel::class);
+        $unrestrictedChannel = Channel::factory()->create();
 
         $this->assertEquals(1, Channel::unrestricted()->count());
         $this->assertTrue($unrestrictedChannel->is(Channel::unrestricted()->first()));
@@ -98,9 +98,9 @@ class RestrictedChannelsTest extends TestCase
     public function testCanScopeChannelsWithPermission()
     {
         $restrictedChannel = tap($this->channel)->createPermission('view');
-        $unrestrictedChannel = create(Channel::class);
+        $unrestrictedChannel = Channel::factory()->create();
 
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->assertEquals(1, Channel::withPermission('view', $user)->count());
         $this->assertTrue($unrestrictedChannel->is(Channel::withPermission('view', $user)->first()));
@@ -116,7 +116,7 @@ class RestrictedChannelsTest extends TestCase
         $this->signIn();
 
         $restrictedChannel = tap($this->channel)->createPermission('view');
-        $unrestrictedChannel = create(Channel::class);
+        $unrestrictedChannel = Channel::factory()->create();
 
         $this->assertEquals(1, Channel::withPermission('view')->count());
         $this->assertTrue($unrestrictedChannel->is(Channel::withPermission('view')->first()));
@@ -130,11 +130,11 @@ class RestrictedChannelsTest extends TestCase
     public function testCanFilterChannelsCollectionWithPermission()
     {
         $restrictedChannel = tap($this->channel)->createPermission('view');
-        $unrestrictedChannel = create(Channel::class);
+        $unrestrictedChannel = Channel::factory()->create();
 
         $allChannels = Channel::all();
 
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->assertEquals(1, $allChannels->withPermission('view', $user)->count());
         $this->assertTrue($unrestrictedChannel->is($allChannels->withPermission('view', $user)->first()));
@@ -150,7 +150,7 @@ class RestrictedChannelsTest extends TestCase
         $this->signIn();
 
         $restrictedChannel = tap($this->channel)->createPermission('view');
-        $unrestrictedChannel = create(Channel::class);
+        $unrestrictedChannel = Channel::factory()->create();
 
         $allChannels = Channel::all();
 

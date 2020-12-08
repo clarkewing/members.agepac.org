@@ -18,7 +18,7 @@ class UpdateThreadsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersMayNotUpdateThreads()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->patch($thread->path(), [])
             ->assertStatus(403);
@@ -27,7 +27,7 @@ class UpdateThreadsTest extends TestCase
     /** @test */
     public function testAThreadRequiresATitleToBeUpdated()
     {
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
 
         $this->patch($thread->path(), [
             'title' => null,
@@ -37,7 +37,7 @@ class UpdateThreadsTest extends TestCase
     /** @test */
     public function testAThreadCanBeUpdatedByItsCreator()
     {
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
 
         $this->patch($thread->path(), [
             'title' => 'Changed',
@@ -49,7 +49,7 @@ class UpdateThreadsTest extends TestCase
     /** @test */
     public function testAThreadCanBeUpdatedByAnAuthorizedUser()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->signInWithPermission('threads.edit');
 

@@ -23,8 +23,8 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
-        $post = make(Post::class);
+        $thread = Thread::factory()->create();
+        $post = Post::factory()->make();
 
         $this->post($thread->path() . '/posts', $post->toArray())
             ->assertStatus(201);
@@ -40,8 +40,8 @@ class ParticipateInThreadsTest extends TestCase
 //        $this->withExceptionHandling();
 //        $this->signIn();
 //
-//        $thread = create(Thread::class);
-//        $post = make(Post::class, [
+//        $thread = Thread::factory()->create();
+//        $post = Post::factory()->make([
 //            'body' => 'Yahoo Customer Support',
 //        ]);
 //
@@ -54,8 +54,8 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = create(Thread::class);
-        $post = make(Post::class, ['body' => null]);
+        $thread = Thread::factory()->create();
+        $post = Post::factory()->make(['body' => null]);
 
         $this->post($thread->path() . '/posts', $post->toArray())
             ->assertSessionHasErrors('body');
@@ -66,7 +66,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->delete(route('posts.destroy', $post))
             ->assertRedirect('/login');
@@ -81,7 +81,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $post = create(Post::class, ['user_id' => Auth::id()]);
+        $post = Post::factory()->create(['user_id' => Auth::id()]);
 
         $this->deleteJson(route('posts.destroy', $post))
             ->assertSuccessful();
@@ -94,7 +94,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.delete');
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->deleteJson(route('posts.destroy', $post))
             ->assertSuccessful();
@@ -108,7 +108,7 @@ class ParticipateInThreadsTest extends TestCase
         $this->withExceptionHandling()
             ->signIn();
 
-        $post = create(Post::class, [
+        $post = Post::factory()->create([
             'user_id' => Auth::id(),
             'is_thread_initiator' => true,
         ]);
@@ -124,7 +124,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        ($post = create(Post::class))->delete();
+        ($post = Post::factory()->create())->delete();
 
         $this->patch(route('posts.update', $post), ['deleted_at' => null])
             ->assertRedirect('/login');
@@ -139,7 +139,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.restore');
 
-        ($post = create(Post::class))->delete();
+        ($post = Post::factory()->create())->delete();
 
         $this->patchJson(route('posts.update', $post), ['deleted_at' => null])
             ->assertSuccessful();
@@ -152,7 +152,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->patch(route('posts.update', $post))
             ->assertRedirect('/login');
@@ -167,7 +167,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $post = create(Post::class, ['user_id' => Auth::id()]);
+        $post = Post::factory()->create(['user_id' => Auth::id()]);
 
         $updatedPost = 'You been changed, fool.';
         $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
@@ -183,7 +183,7 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.edit');
 
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $updatedPost = 'You been changed, fool.';
         $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
@@ -200,9 +200,9 @@ class ParticipateInThreadsTest extends TestCase
         $this->withExceptionHandling();
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
-        $post = make(Post::class, [
+        $post = Post::factory()->make([
             'body' => 'My simple post.',
         ]);
 

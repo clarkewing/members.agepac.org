@@ -29,7 +29,7 @@ class TrendingThreadsTest extends TestCase
     {
         $this->assertCount(0, $this->trending->get());
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
         $this->get($thread->path());
 
         $this->assertCount(1, $trending = $this->trending->get());

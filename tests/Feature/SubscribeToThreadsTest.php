@@ -12,7 +12,7 @@ class SubscribeToThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->post($thread->path() . '/subscriptions');
 
@@ -24,7 +24,7 @@ class SubscribeToThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
         $thread->subscribe();
 
         $this->delete($thread->path() . '/subscriptions');

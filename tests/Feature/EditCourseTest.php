@@ -19,7 +19,7 @@ class EditCourseTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->course = create(Course::class, ['user_id' => Auth::id()]);
+        $this->course = Course::factory()->create(['user_id' => Auth::id()]);
     }
 
     /** @test */

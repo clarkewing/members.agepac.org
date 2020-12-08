@@ -19,7 +19,7 @@ class DeleteThreadsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersMayNotDeleteThreads()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->delete($thread->path())
             ->assertForbidden();
@@ -28,8 +28,8 @@ class DeleteThreadsTest extends TestCase
     /** @test */
     public function testAThreadCanBeDeletedByAnAuthorizedUser()
     {
-        $thread = create(Thread::class);
-        $post = create(Post::class, ['thread_id' => $thread->id]);
+        $thread = Thread::factory()->create();
+        $post = Post::factory()->create(['thread_id' => $thread->id]);
 
         $this->signInWithPermission('threads.delete');
 
@@ -45,9 +45,9 @@ class DeleteThreadsTest extends TestCase
     /** @test */
     public function testAThreadWithRepliesCannotBeDeletedByItsCreator()
     {
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
 
-        create(Post::class, ['thread_id' => $thread->id]);
+        Post::factory()->create(['thread_id' => $thread->id]);
 
         $this->delete($thread->path())->assertForbidden();
 
@@ -57,7 +57,7 @@ class DeleteThreadsTest extends TestCase
     /** @test */
     public function testAThreadWithNoRepliesCanBeDeletedByItsCreator()
     {
-        $thread = create(Thread::class, ['user_id' => Auth::id()]);
+        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
 
         $this->delete($thread->path());
 

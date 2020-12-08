@@ -33,7 +33,7 @@ class ManageUsersTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotViewUsers()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->signIn();
 
@@ -44,7 +44,7 @@ class ManageUsersTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotEditUsers()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->signIn();
 
@@ -60,7 +60,7 @@ class ManageUsersTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotDeleteUsers()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->signIn();
 
@@ -90,7 +90,7 @@ class ManageUsersTest extends TestCase
      */
     public function testAuthorizedUsersCanViewUsers($permission)
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->signInWithPermission("users.$permission");
 
@@ -104,7 +104,7 @@ class ManageUsersTest extends TestCase
         $this->signInWithPermission('users.edit');
 
         $this->updateUser(
-            $user = make(User::class)
+            $user = User::factory()->make()
                 ->makeVisible('email')
                 ->makeHidden(['name'])
                 ->toArray()
@@ -116,7 +116,7 @@ class ManageUsersTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanDeleteUsers()
     {
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $this->signInWithPermission('users.delete');
 
@@ -131,7 +131,7 @@ class ManageUsersTest extends TestCase
     {
         $this->signIn();
 
-        $this->storeResource('users', make(User::class)->toArray())
+        $this->storeResource('users', User::factory()->make()->toArray())
             ->assertForbidden();
 
         $this->assertDatabaseCount('users', 1); // The currently signed in user
@@ -331,7 +331,7 @@ class ManageUsersTest extends TestCase
     {
         $this->signInWithPermission('users.edit');
 
-        create(User::class, ['email' => 'john@example.com']);
+        User::factory()->create(['email' => 'john@example.com']);
 
         $this->updateUser(['email' => 'john@example.com'])
             ->assertJsonValidationErrors('email');
@@ -360,7 +360,7 @@ class ManageUsersTest extends TestCase
     {
         $this->signInWithPermission('users.view');
 
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $fields = $this->showResource('users', $user->id)->json('resource.fields');
 
@@ -377,7 +377,7 @@ class ManageUsersTest extends TestCase
     {
         $this->signInWithPermission(['users.view', 'subscriptions.manage']);
 
-        $user = create(User::class);
+        $user = User::factory()->create();
 
         $fields = $this->showResource('users', $user->id)->json('resource.fields');
 
@@ -398,7 +398,7 @@ class ManageUsersTest extends TestCase
      */
     public function updateUser(array $data = [], User $user = null)
     {
-        $user = $user ?? create(User::class);
+        $user = $user ?? User::factory()->create();
 
         return $this->updateResource(
             'users', $user->id,

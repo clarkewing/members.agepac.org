@@ -18,7 +18,7 @@ class HasLocationTest extends TestCase
     {
         parent::setUp();
 
-        $this->model = create(Profile::class); // Uses HasLocation
+        $this->model = Profile::factory()->create(); // Uses HasLocation
     }
 
     /** @test */
@@ -107,7 +107,7 @@ class HasLocationTest extends TestCase
     protected function getLocationData()
     {
         return Arr::except(
-            make(Location::class)->toArray(),
+            Location::factory()->make()->toArray(),
             ['locatable_id', 'locatable_type']
         );
     }

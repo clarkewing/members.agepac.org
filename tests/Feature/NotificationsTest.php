@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Thread;
 use App\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -20,7 +21,7 @@ class NotificationsTest extends TestCase
     /** @test */
     public function testNotificationIsPreparedWhenASubscribedThreadReceivesANewPostThatIsNotByTheAuthenticatedUser()
     {
-        $thread = create(Thread::class)->subscribe();
+        $thread = Thread::factory()->create()->subscribe();
 
         $this->assertCount(0, Auth::user()->notifications);
 
@@ -32,7 +33,7 @@ class NotificationsTest extends TestCase
         $this->assertCount(0, Auth::user()->fresh()->notifications);
 
         $thread->addPost([
-            'user_id' => create(User::class)->id,
+            'user_id' => User::factory()->create()->id,
             'body' => 'This is a post.',
         ]);
 
@@ -42,7 +43,7 @@ class NotificationsTest extends TestCase
     /** @test */
     public function testAUserCanFetchTheirUnreadNotifications()
     {
-        create(DatabaseNotification::class);
+        Factory::factoryForModel(DatabaseNotification::class)->create();
 
         $this->assertCount(
             1,
@@ -53,7 +54,7 @@ class NotificationsTest extends TestCase
     /** @test */
     public function testAUserCanMarkANotificationAsRead()
     {
-        create(DatabaseNotification::class);
+        Factory::factoryForModel(DatabaseNotification::class)->create();
 
         $this->assertCount(1, Auth::user()->unreadNotifications);
 

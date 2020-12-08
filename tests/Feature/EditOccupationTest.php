@@ -20,7 +20,7 @@ class EditOccupationTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->occupation = create(Occupation::class, ['user_id' => Auth::id()]);
+        $this->occupation = Occupation::factory()->create(['user_id' => Auth::id()]);
     }
 
     /** @test */
@@ -305,7 +305,7 @@ class EditOccupationTest extends TestCase
         ])->assertJsonValidationErrors('is_primary');
 
         // End date not being updated in request.
-        $occupation = create(Occupation::class, [
+        $occupation = Occupation::factory()->create([
             'user_id' => Auth::id(),
             'end_date' => '2000-01-01',
         ]);
@@ -355,7 +355,7 @@ class EditOccupationTest extends TestCase
     /** @test */
     public function testCompanyWithIdReusesCompany()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->assertDatabaseCount('companies', 2);
 

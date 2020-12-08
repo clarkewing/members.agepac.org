@@ -27,7 +27,7 @@ class BrowseCompaniesTest extends TestCase
     /** @test */
     public function testUserCanViewCompany()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->showCompany($company)
             ->assertJson($company->toArray());
@@ -36,7 +36,7 @@ class BrowseCompaniesTest extends TestCase
     /** @test */
     public function testUserCanGetIndexOfCompanies()
     {
-        $companies = create(Company::class, [], 10);
+        $companies = Company::factory()->count(10)->create();
 
         $this->get(route('companies.index'))
             ->assertViewIs('companies.index');
@@ -60,9 +60,9 @@ class BrowseCompaniesTest extends TestCase
 
         $search = 'Foobar';
 
-        create(Company::class, [], 2);
-        create(Company::class, ['name' => "{$search} Inc"]);
-        create(Company::class, ['name' => "{$search} Ltd"]);
+        Company::factory()->count(2)->create();
+        Company::factory()->create(['name' => "{$search} Inc"]);
+        Company::factory()->create(['name' => "{$search} Ltd"]);
 
         $maxTime = now()->addSeconds(20);
 
@@ -88,7 +88,7 @@ class BrowseCompaniesTest extends TestCase
     {
         return $this->getJson(route(
             'companies.show',
-            $company ?? create(Company::class)
+            $company ?? Company::factory()->create()
         ));
     }
 }

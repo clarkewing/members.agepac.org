@@ -29,7 +29,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testThreadIndexWithChannel()
     {
-        $channel = make(Channel::class);
+        $channel = Channel::factory()->make();
 
         $this->assertRoutePathIs("/threads/{$channel->slug}", 'threads.index', $channel);
     }
@@ -55,7 +55,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testThreadShow()
     {
-        $thread = create(Thread::class); // Create required to generate slug
+        $thread = Thread::factory()->create(); // Create required to generate slug
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}",
@@ -66,7 +66,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testThreadUpdate()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}",
@@ -77,7 +77,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testThreadDestroy()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}",
@@ -88,7 +88,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testLockThread()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/locked-threads/{$thread->slug}",
@@ -99,7 +99,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testUnlockThread()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/locked-threads/{$thread->slug}",
@@ -110,7 +110,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testThreadSubscriptionsStore()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
@@ -121,7 +121,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testThreadSubscriptionsDestroy()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
@@ -132,7 +132,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsIndex()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/posts",
@@ -143,7 +143,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsStore()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/posts",
@@ -154,7 +154,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsUpdate()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}",
@@ -165,7 +165,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsDestroy()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}",
@@ -176,7 +176,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsMarkBest()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}/best",
@@ -187,7 +187,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsUnmarkBest()
     {
-        $posts = create(Post::class);
+        $posts = Post::factory()->create();
 
         $this->assertRoutePathIs(
             "/posts/{$posts->id}/best",
@@ -198,7 +198,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsFavorite()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}/favorites",
@@ -209,7 +209,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPostsUnfavorite()
     {
-        $post = create(Post::class);
+        $post = Post::factory()->create();
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}/favorites",
@@ -229,7 +229,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testAttachmentsDestroy()
     {
-        $attachment = create(Attachment::class);
+        $attachment = Attachment::factory()->create();
 
         $this->assertRoutePathIs(
             "/attachments/{$attachment->id}",
@@ -240,7 +240,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPollsShow()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}",
@@ -251,7 +251,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPollsCreate()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/create",
@@ -262,7 +262,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPollsStore()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
@@ -273,7 +273,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPollsUpdate()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
@@ -284,7 +284,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPollsDestroy()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
@@ -295,7 +295,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPollVotesUpdate()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/vote",
@@ -306,7 +306,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testPollResultsShow()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/results",
@@ -326,7 +326,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testProfilesShow()
     {
-        $user = make(User::class);
+        $user = User::factory()->make();
 
         $this->assertRoutePathIs(
             '/profiles/' . $user->username,
@@ -337,7 +337,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testProfilesUpdate()
     {
-        $user = make(User::class);
+        $user = User::factory()->make();
 
         $this->assertRoutePathIs(
             '/profiles/' . $user->username,
@@ -366,7 +366,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testCompaniesShow()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->assertRoutePathIs(
             '/companies/' . $company->slug,
@@ -377,7 +377,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testCompaniesUpdate()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $this->assertRoutePathIs(
             '/companies/' . $company->slug,
@@ -465,7 +465,7 @@ class NamedRouteTest extends TestCase
     /* @test */
     public function testApiUsersAvatarStore()
     {
-        $user = make(User::class);
+        $user = User::factory()->make();
 
         $this->assertRoutePathIs(
             '/api/users/' . $user->username . '/avatar',

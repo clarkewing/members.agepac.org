@@ -18,7 +18,7 @@ class EditProfileTest extends TestCase
     {
         parent::setUp();
 
-        $this->profile = create(Profile::class);
+        $this->profile = Profile::factory()->create();
 
         $this->withExceptionHandling()->signIn($this->profile);
     }
@@ -28,14 +28,14 @@ class EditProfileTest extends TestCase
     {
         Auth::logout();
 
-        $this->updateProfile([], create(Profile::class))
+        $this->updateProfile([], Profile::factory()->create())
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     /** @test */
     public function testUsersCanOnlyUpdateTheirOwnProfile()
     {
-        $otherProfile = create(Profile::class);
+        $otherProfile = Profile::factory()->create();
 
         $this->updateProfile([], $otherProfile)
             ->assertStatus(Response::HTTP_FORBIDDEN);

@@ -10,7 +10,7 @@ class PollOptionTest extends TestCase
     /** @test */
     public function testIfColorMissingOnCreationThenItIsRandomlyGenerated()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $pollOption = $poll->addOption(['label' => 'Option label']);
 

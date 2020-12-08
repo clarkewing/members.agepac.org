@@ -12,24 +12,24 @@ class PollTest extends TestCase
     /** @test */
     public function testStringVotesPrivacyIsConvertedToIntValueInDB()
     {
-        $poll = create(Poll::class, ['votes_privacy' => 'public']);
+        $poll = Poll::factory()->create(['votes_privacy' => 'public']);
         $this->assertEquals(0, $poll->fresh()->votes_privacy);
 
-        $poll = create(Poll::class, ['votes_privacy' => 'private']);
+        $poll = Poll::factory()->create(['votes_privacy' => 'private']);
         $this->assertEquals(1, $poll->fresh()->votes_privacy);
 
-        $poll = create(Poll::class, ['votes_privacy' => 'anonymous']);
+        $poll = Poll::factory()->create(['votes_privacy' => 'anonymous']);
         $this->assertEquals(2, $poll->fresh()->votes_privacy);
     }
 
     /** @test */
     public function testCanAddOptionToPoll()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $optionsCount = $poll->options()->count();
 
-        $poll->addOption(make(PollOption::class)->toArray());
+        $poll->addOption(PollOption::factory()->make()->toArray());
 
         $this->assertEquals($optionsCount + 1, $poll->options()->count());
     }
@@ -37,11 +37,11 @@ class PollTest extends TestCase
     /** @test */
     public function testCanAddMultipleOptionsToPoll()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $optionsCount = $poll->options()->count();
 
-        $poll->addOptions(make(PollOption::class, [], 3)->toArray());
+        $poll->addOptions(PollOption::factory()->count(3)->make()->toArray());
 
         $this->assertEquals($optionsCount + 3, $poll->options()->count());
     }
@@ -49,7 +49,7 @@ class PollTest extends TestCase
     /** @test */
     public function testCanAddNoOptionsToPoll()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $optionsCount = $poll->options()->count();
 
@@ -65,7 +65,7 @@ class PollTest extends TestCase
     /** @test */
     public function testCanSyncPollOptions()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $poll->syncOptions(null);
 
@@ -75,11 +75,11 @@ class PollTest extends TestCase
 
         $this->assertEquals(0, $poll->options()->count());
 
-        $poll->syncOptions([make(PollOption::class)->toArray()]);
+        $poll->syncOptions([PollOption::factory()->make()->toArray()]);
 
         $this->assertEquals(1, $poll->options()->count());
 
-        $poll->syncOptions(make(PollOption::class, [], 3)->toArray());
+        $poll->syncOptions(PollOption::factory()->count(3)->make()->toArray());
 
         $this->assertEquals(3, $poll->options()->count());
     }
@@ -87,22 +87,22 @@ class PollTest extends TestCase
     /** @test */
     public function testReturnsFormattedResults()
     {
-        ($poll = create(Poll::class))
-            ->syncOptions(make(PollOption::class, [], 2)->toArray());
+        ($poll = Poll::factory()->create())
+            ->syncOptions(PollOption::factory()->count(2)->make()->toArray());
 
         $this->assertEquals(0, $poll->getResults()[0]->votes_count);
         $this->assertEquals(0, $poll->getResults()[0]->votes_percent);
         $this->assertEquals(0, $poll->getResults()[1]->votes_count);
         $this->assertEquals(0, $poll->getResults()[1]->votes_percent);
 
-        $poll->castVote([$poll->options[0]->id], create(User::class));
+        $poll->castVote([$poll->options[0]->id], User::factory()->create());
 
         $this->assertEquals(1, $poll->getResults()[0]->votes_count);
         $this->assertEquals(100, $poll->getResults()[0]->votes_percent);
         $this->assertEquals(0, $poll->getResults()[1]->votes_count);
         $this->assertEquals(0, $poll->getResults()[1]->votes_percent);
 
-        $poll->castVote([$poll->options[1]->id], create(User::class));
+        $poll->castVote([$poll->options[1]->id], User::factory()->create());
 
         $this->assertEquals(1, $poll->getResults()[0]->votes_count);
         $this->assertEquals(50, $poll->getResults()[0]->votes_percent);
@@ -113,12 +113,12 @@ class PollTest extends TestCase
     /** @test */
     public function testResultsPercentagesAreRoundedTo3DecimalPoints()
     {
-        ($poll = create(Poll::class))
-            ->syncOptions(make(PollOption::class, [], 2)->toArray());
+        ($poll = Poll::factory()->create())
+            ->syncOptions(PollOption::factory()->count(2)->make()->toArray());
 
-        $poll->castVote([$poll->options[0]->id], create(User::class));
-        $poll->castVote([$poll->options[0]->id], create(User::class));
-        $poll->castVote([$poll->options[1]->id], create(User::class));
+        $poll->castVote([$poll->options[0]->id], User::factory()->create());
+        $poll->castVote([$poll->options[0]->id], User::factory()->create());
+        $poll->castVote([$poll->options[1]->id], User::factory()->create());
 
         $this->assertEquals(66.667, $poll->getResults()[0]->votes_percent);
         $this->assertEquals(33.333, $poll->getResults()[1]->votes_percent);
@@ -127,9 +127,9 @@ class PollTest extends TestCase
     /** @test */
     public function testResultsCanIncludeVoters()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
-        $poll->castVote([$poll->options[0]->id], $voter = create(User::class));
+        $poll->castVote([$poll->options[0]->id], $voter = User::factory()->create());
 
         $this->assertTrue($voter->is($poll->getResults()[0]->voters[0]));
     }
@@ -137,11 +137,11 @@ class PollTest extends TestCase
     /** @test */
     public function testKnowsIfVotesWereCast()
     {
-        $poll = create(Poll::class);
+        $poll = Poll::factory()->create();
 
         $this->assertFalse($poll->has_votes);
 
-        $poll->castVote([$poll->options[0]->id], $voter = create(User::class));
+        $poll->castVote([$poll->options[0]->id], $voter = User::factory()->create());
 
         $this->assertTrue($poll->has_votes);
     }

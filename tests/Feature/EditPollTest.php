@@ -15,7 +15,7 @@ class EditPollTest extends TestCase
     {
         parent::setUp();
 
-        $this->poll = create(Poll::class);
+        $this->poll = Poll::factory()->create();
 
         $this->withExceptionHandling()->signIn($this->poll->thread->creator);
     }

@@ -168,7 +168,7 @@ class CreateCompanyTest extends TestCase
     /** @test */
     public function testCanStoreCompany()
     {
-        $data = make(Company::class)->setAppends([])->attributesToArray();
+        $data = Company::factory()->make()->setAppends([])->attributesToArray();
 
         $this->storeCompany($data)
             ->assertJsonMissingValidationErrors()
@@ -182,7 +182,7 @@ class CreateCompanyTest extends TestCase
     public function testNonJsonRequestReturnsRedirect()
     {
         $this->post(
-            route('companies.store'), $company = make(Company::class)->toArray()
+            route('companies.store'), $company = Company::factory()->make()->toArray()
         )->assertRedirect(route('companies.show', Str::slug($company['name'])));
     }
 
@@ -196,7 +196,7 @@ class CreateCompanyTest extends TestCase
     {
         return $this->postJson(
             route('companies.store'), array_merge(
-                make(Company::class)->toArray(),
+                Company::factory()->make()->toArray(),
                 $overrides
             )
         );

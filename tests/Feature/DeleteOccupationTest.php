@@ -26,7 +26,7 @@ class DeleteOccupationTest extends TestCase
     /** @test */
     public function testOnlyAuthorizedUserCanDeleteOccupation()
     {
-        $occupation = create(Occupation::class);
+        $occupation = Occupation::factory()->create();
 
         $this->signIn();
 
@@ -53,7 +53,7 @@ class DeleteOccupationTest extends TestCase
     {
         $this->signIn();
 
-        $occupation = create(Occupation::class, ['user_id' => Auth::id()]);
+        $occupation = Occupation::factory()->create(['user_id' => Auth::id()]);
 
         $this->assertDatabaseHas('occupations', ['id' => $occupation->id]);
 

@@ -42,7 +42,7 @@ class NovaTest extends TestCase
     /** @test */
     public function testUsersWithARoleCanAccessNovaInterface()
     {
-        $this->signIn(create(User::class)->assignRole('Administrator'));
+        $this->signIn(User::factory()->create()->assignRole('Administrator'));
 
         $this->getNovaDashboard()
             ->assertSuccessful();
@@ -71,7 +71,7 @@ class NovaTest extends TestCase
     /** @test */
     public function testUserWithARoleCanSeeAdministrationLinkInNavbar()
     {
-        $this->signIn(create(User::class)->assignRole('Administrator'));
+        $this->signIn(User::factory()->create()->assignRole('Administrator'));
 
         $this->get(route('home'))
             ->assertOk()

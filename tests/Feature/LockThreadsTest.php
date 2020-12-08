@@ -13,7 +13,7 @@ class LockThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->post(route('threads.lock', $thread))
             ->assertStatus(403);
@@ -26,7 +26,7 @@ class LockThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = create(Thread::class, ['locked' => true]);
+        $thread = Thread::factory()->create(['locked' => true]);
 
         $this->delete(route('threads.unlock', $thread))
             ->assertStatus(403);
@@ -39,7 +39,7 @@ class LockThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.lock');
 
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->post(route('threads.lock', $thread))
             ->assertStatus(204);
@@ -52,7 +52,7 @@ class LockThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.unlock');
 
-        $thread = create(Thread::class, ['locked' => true]);
+        $thread = Thread::factory()->create(['locked' => true]);
 
         $this->delete(route('threads.unlock', $thread))
             ->assertStatus(204);
@@ -65,7 +65,7 @@ class LockThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create(Thread::class, ['locked' => true]);
+        $thread = Thread::factory()->create(['locked' => true]);
 
         $this->post($thread->path() . '/posts', [
             'body' => 'Foobar',

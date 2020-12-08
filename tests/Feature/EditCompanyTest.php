@@ -19,7 +19,7 @@ class EditCompanyTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->company = create(Company::class);
+        $this->company = Company::factory()->create();
     }
 
     /** @test */
@@ -174,7 +174,7 @@ class EditCompanyTest extends TestCase
     /** @test */
     public function testCanUpdateCompany()
     {
-        $data = make(Company::class)->toArray();
+        $data = Company::factory()->make()->toArray();
 
         $this->updateCompany($data)
             ->assertJsonMissingValidationErrors()

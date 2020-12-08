@@ -19,44 +19,44 @@ class CompanyTest extends TestCase
     {
         $this->assertEquals(
             'Compagnie aérienne',
-            make(Company::class, ['type_code' => Company::AIRLINE])->type
+            Company::factory()->make(['type_code' => Company::AIRLINE])->type
         );
 
         $this->assertEquals(
             'Travail aérien',
-            make(Company::class, ['type_code' => Company::AIRWORK])->type
+            Company::factory()->make(['type_code' => Company::AIRWORK])->type
         );
 
         $this->assertEquals(
             'École',
-            make(Company::class, ['type_code' => Company::SCHOOL])->type
+            Company::factory()->make(['type_code' => Company::SCHOOL])->type
         );
 
         $this->assertEquals(
             'Aéroclub',
-            make(Company::class, ['type_code' => Company::FLYING_CLUB])->type
+            Company::factory()->make(['type_code' => Company::FLYING_CLUB])->type
         );
 
         $this->assertEquals(
             'Agence gouvernementale',
-            make(Company::class, ['type_code' => Company::GOV_AGENCY])->type
+            Company::factory()->make(['type_code' => Company::GOV_AGENCY])->type
         );
 
         $this->assertEquals(
             'Association',
-            make(Company::class, ['type_code' => Company::ASSOCIATION])->type
+            Company::factory()->make(['type_code' => Company::ASSOCIATION])->type
         );
 
         $this->assertEquals(
             'Autre entreprise',
-            make(Company::class, ['type_code' => Company::OTHER_BUSINESS])->type
+            Company::factory()->make(['type_code' => Company::OTHER_BUSINESS])->type
         );
     }
 
     /** @test */
     public function testSlugGeneratedOnCreate()
     {
-        $company = create(Company::class, ['name' => 'Air France']);
+        $company = Company::factory()->create(['name' => 'Air France']);
 
         $this->assertEquals('air-france', $company->slug);
     }
@@ -64,7 +64,7 @@ class CompanyTest extends TestCase
     /** @test */
     public function testSlugRegeneratedOnUpdate()
     {
-        $company = create(Company::class, ['name' => 'Hop!']);
+        $company = Company::factory()->create(['name' => 'Hop!']);
 
         $this->assertEquals('hop', $company->slug);
 
@@ -81,12 +81,12 @@ class CompanyTest extends TestCase
     public function testDescriptionFetchedFromWikipediaWhenEmptyOnCreation()
     {
         // Filled if found.
-        $company = create(Company::class, ['name' => 'Air France', 'description' => null]);
+        $company = Company::factory()->create(['name' => 'Air France', 'description' => null]);
 
         $this->assertNotEmpty($company->description);
 
         // Left empty if not found.
-        $company = create(Company::class, ['name' => 'Para76', 'description' => null]);
+        $company = Company::factory()->create(['name' => 'Para76', 'description' => null]);
 
         $this->assertNull($company->description);
     }
@@ -94,9 +94,9 @@ class CompanyTest extends TestCase
     /** @test */
     public function testCanGetEmployees()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
-        $occupations = create(Occupation::class, ['company_id' => $company->id], 3);
+        $occupations = Occupation::factory()->count(3)->create(['company_id' => $company->id]);
 
         $this->assertCount(3, $company->employees);
     }
@@ -104,7 +104,7 @@ class CompanyTest extends TestCase
     /** @test */
     public function testCanGetCurrentEmployees()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $pastOccupations = Occupation::factory()->count(3)->past()->create(['company_id' => $company->id]);
         $currentOccupations = Occupation::factory()->count(2)->current()->create(['company_id' => $company->id]);
@@ -115,7 +115,7 @@ class CompanyTest extends TestCase
     /** @test */
     public function testCanGetFormerEmployees()
     {
-        $company = create(Company::class);
+        $company = Company::factory()->create();
 
         $formerOccupations = Occupation::factory()->count(3)->past()->create(['company_id' => $company->id]);
         $currentOccupations = Occupation::factory()->count(2)->current()->create(['company_id' => $company->id]);

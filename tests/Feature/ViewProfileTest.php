@@ -20,7 +20,7 @@ class ViewProfileTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->profile = create(Profile::class);
+        $this->profile = Profile::factory()->create();
     }
 
     /** @test */
@@ -63,7 +63,7 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileHidesPhoneNumberIfNone()
     {
-        $this->getProfile(create(User::class, ['phone' => null]))
+        $this->getProfile(User::factory()->create(['phone' => null]))
             ->assertDontSee('Téléphone :');
     }
 
@@ -85,7 +85,7 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysCurrentOccupation()
     {
-        $occupation = create(Occupation::class, [
+        $occupation = Occupation::factory()->create([
             'user_id' => $this->profile->id,
             'end_date' => null,
         ]);
@@ -115,14 +115,14 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileHidesFlightHoursIfUnknown()
     {
-        $this->getProfile(create(User::class, ['flight_hours' => null]))
+        $this->getProfile(User::factory()->create(['flight_hours' => null]))
             ->assertDontSee('profile.flight-hours');
     }
 
     /** @test */
     public function testProfileDisplaysFlightHours()
     {
-        $this->getProfile(create(User::class, ['flight_hours' => 150]))
+        $this->getProfile(User::factory()->create(['flight_hours' => 150]))
             ->assertSee('profile.flight-hours')
             ->assertSee(json_encode(['flight_hours' => 150]));
     }
@@ -130,7 +130,7 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileHidesBioIfEmpty()
     {
-        $this->getProfile(create(User::class, ['bio' => null]))
+        $this->getProfile(User::factory()->create(['bio' => null]))
             ->assertDontSee('profile.bio');
     }
 
@@ -152,7 +152,7 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysExperience()
     {
-        $this->profile->experience()->save(make(Occupation::class));
+        $this->profile->experience()->save(Occupation::factory()->make());
 
         $this->getProfile()
             ->assertSee('profile.experience')
@@ -169,7 +169,7 @@ class ViewProfileTest extends TestCase
     /** @test */
     public function testProfileDisplaysEducation()
     {
-        $this->profile->education()->save(make(Course::class));
+        $this->profile->education()->save(Course::factory()->make());
 
         $this->getProfile()
             ->assertSee('profile.education')
@@ -181,7 +181,7 @@ class ViewProfileTest extends TestCase
     {
         $this->signIn($this->profile);
 
-        $thread = create(Thread::class, ['user_id' => $this->profile->id]);
+        $thread = Thread::factory()->create(['user_id' => $this->profile->id]);
 
         $this->getProfile()
             ->assertSee($thread->title)

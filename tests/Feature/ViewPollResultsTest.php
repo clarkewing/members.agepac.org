@@ -15,7 +15,7 @@ class ViewPollResultsTest extends TestCase
     {
         parent::setUp();
 
-        $this->poll = create(Poll::class);
+        $this->poll = Poll::factory()->create();
 
         $this->withExceptionHandling();
     }
@@ -126,7 +126,7 @@ class ViewPollResultsTest extends TestCase
     {
         $this->poll->update(['votes_privacy' => 'anonymous', 'results_before_voting' => true]);
 
-        $this->actingAs(create(User::class))
+        $this->actingAs(User::factory()->create())
             ->assertArrayNotHasKey('voters', $this->getPollResults()->json()[0]);
 
         $this->actingAs($this->poll->thread->creator)

@@ -18,7 +18,7 @@ class ReadThreadsTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->thread = create(Thread::class);
+        $this->thread = Thread::factory()->create();
     }
 
     /** @test */
@@ -65,8 +65,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanViewListOfChannelsGroupedByParentOnThreadsIndex()
     {
-        $parentChannel = create(Channel::class);
-        $childChannel = create(Channel::class, ['parent_id' => $parentChannel->id]);
+        $parentChannel = Channel::factory()->create();
+        $childChannel = Channel::factory()->create(['parent_id' => $parentChannel->id]);
 
         $this->get(route('threads.index'))
             ->assertSuccessful()
@@ -78,9 +78,9 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByChannel()
     {
-        $channel = create(Channel::class);
-        $threadInChannel = create(Thread::class, ['channel_id' => $channel->id]);
-        $threadNotInChannel = create(Thread::class);
+        $channel = Channel::factory()->create();
+        $threadInChannel = Thread::factory()->create(['channel_id' => $channel->id]);
+        $threadNotInChannel = Thread::factory()->create();
 
         $this->get(route('threads.index', $channel))
             ->assertSee($threadInChannel->title)
@@ -90,8 +90,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByArchivedChannel()
     {
-        $channel = create(Channel::class, ['archived' => true]);
-        $thread = create(Thread::class, ['channel_id' => $channel->id]);
+        $channel = Channel::factory()->create(['archived' => true]);
+        $thread = Thread::factory()->create(['channel_id' => $channel->id]);
 
         $this->get(route('threads.index', $channel))
             ->assertSee($thread->title);
@@ -100,8 +100,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByUsername()
     {
-        $threadByUser = create(Thread::class, ['user_id' => Auth::id()]);
-        $threadNotByUser = create(Thread::class);
+        $threadByUser = Thread::factory()->create(['user_id' => Auth::id()]);
+        $threadNotByUser = Thread::factory()->create();
 
         $this->get(route('threads.index') . '?by=' . Auth::user()->username)
             ->assertSee($threadByUser->title)
@@ -111,11 +111,11 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanFilterThreadsByPopularity()
     {
-        $threadWithTwoReplies = create(Thread::class);
-        create(Post::class, ['thread_id' => $threadWithTwoReplies->id], 2);
+        $threadWithTwoReplies = Thread::factory()->create();
+        Post::factory()->count(2)->create(['thread_id' => $threadWithTwoReplies->id]);
 
-        $threadWithThreeReplies = create(Thread::class);
-        create(Post::class, ['thread_id' => $threadWithThreeReplies->id], 3);
+        $threadWithThreeReplies = Thread::factory()->create();
+        Post::factory()->count(3)->create(['thread_id' => $threadWithThreeReplies->id]);
 
         $threadWithNoPosts = $this->thread;
 
@@ -129,8 +129,8 @@ class ReadThreadsTest extends TestCase
     {
         $threadWithNoReplies = $this->thread;
 
-        $threadWithReply = create(Thread::class);
-        create(Post::class, ['thread_id' => $threadWithReply->id]);
+        $threadWithReply = Thread::factory()->create();
+        Post::factory()->create(['thread_id' => $threadWithReply->id]);
 
         $response = $this->getJson(route('threads.index') . '?unanswered=1')->json();
 
@@ -140,7 +140,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUserCanRequestAllPostsForAGivenThread()
     {
-        create(Post::class, ['thread_id' => $this->thread->id], 2);
+        Post::factory()->count(2)->create(['thread_id' => $this->thread->id]);
 
         $response = $this->getJson($this->thread->path() . '/posts')->json();
 
@@ -152,7 +152,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotSeeDeletedPosts()
     {
-        create(Post::class, ['thread_id' => $this->thread->id])->delete();
+        Post::factory()->create(['thread_id' => $this->thread->id])->delete();
 
         $response = $this->getJson($this->thread->path() . '/posts')->json();
 
@@ -166,7 +166,7 @@ class ReadThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.viewDeleted');
 
-        create(Post::class, ['thread_id' => $this->thread->id])->delete();
+        Post::factory()->create(['thread_id' => $this->thread->id])->delete();
 
         $response = $this->getJson($this->thread->path() . '/posts')->json();
 
@@ -178,7 +178,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function testRecordsNewVisitEachTimeThreadIsRead()
     {
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         $this->assertSame(0, $thread->visits);
 

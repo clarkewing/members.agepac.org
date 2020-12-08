@@ -39,7 +39,7 @@ class ManageUserInvitationsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotViewUserInvitations()
     {
-        $userInvitation = create(UserInvitation::class);
+        $userInvitation = UserInvitation::factory()->create();
 
         $this->signIn();
 
@@ -59,7 +59,7 @@ class ManageUserInvitationsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotEditUserInvitations()
     {
-        $userInvitation = create(UserInvitation::class);
+        $userInvitation = UserInvitation::factory()->create();
 
         $this->signIn();
 
@@ -75,7 +75,7 @@ class ManageUserInvitationsTest extends TestCase
     /** @test */
     public function testUnauthorizedUsersCannotDeleteUserInvitations()
     {
-        $userInvitation = create(UserInvitation::class);
+        $userInvitation = UserInvitation::factory()->create();
 
         $this->signIn();
 
@@ -105,7 +105,7 @@ class ManageUserInvitationsTest extends TestCase
      */
     public function testAuthorizedUsersCanViewUserInvitations($permission)
     {
-        $userInvitation = create(UserInvitation::class);
+        $userInvitation = UserInvitation::factory()->create();
 
         $this->signInWithPermission("user_invitations.$permission");
 
@@ -119,7 +119,7 @@ class ManageUserInvitationsTest extends TestCase
         $this->signInWithPermission('user_invitations.create');
 
         $this->storeUserInvitation(
-            $userInvitation = make(UserInvitation::class)->toArray()
+            $userInvitation = UserInvitation::factory()->make()->toArray()
         )->assertCreated();
 
         $this->assertDatabaseHas('user_invitations', $userInvitation);
@@ -131,7 +131,7 @@ class ManageUserInvitationsTest extends TestCase
         $this->signInWithPermission('user_invitations.edit');
 
         $this->updateUserInvitation(
-            $userInvitation = make(UserInvitation::class)->toArray()
+            $userInvitation = UserInvitation::factory()->make()->toArray()
         )->assertOk();
 
         $this->assertDatabaseHas('user_invitations', $userInvitation);
@@ -140,7 +140,7 @@ class ManageUserInvitationsTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanDeleteUserInvitations()
     {
-        $userInvitation = create(UserInvitation::class);
+        $userInvitation = UserInvitation::factory()->create();
 
         $this->signInWithPermission('user_invitations.delete');
 
@@ -234,7 +234,7 @@ class ManageUserInvitationsTest extends TestCase
     public function storeUserInvitation(array $overrides = [])
     {
         return $this->storeResource('user-invitations', array_merge(
-            make(UserInvitation::class)->toArray(),
+            UserInvitation::factory()->make()->toArray(),
             $overrides
         ));
     }
@@ -248,7 +248,7 @@ class ManageUserInvitationsTest extends TestCase
      */
     public function updateUserInvitation(array $data = [], UserInvitation $userInvitation = null)
     {
-        $userInvitation = $userInvitation ?? create(UserInvitation::class);
+        $userInvitation = $userInvitation ?? UserInvitation::factory()->create();
 
         return $this->updateResource(
             'user-invitations', $userInvitation->id,

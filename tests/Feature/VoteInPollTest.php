@@ -18,7 +18,7 @@ class VoteInPollTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->poll = create(Poll::class);
+        $this->poll = Poll::factory()->create();
     }
 
     /** @test */

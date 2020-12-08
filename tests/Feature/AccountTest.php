@@ -62,7 +62,7 @@ class AccountTest extends TestCase
     public function testUserCannotChangeName()
     {
         Auth::logout();
-        $this->signIn(create(User::class, [
+        $this->signIn(User::factory()->create([
             'first_name' => 'John',
             'last_name' => 'Doe',
         ]));
@@ -175,7 +175,7 @@ class AccountTest extends TestCase
     /** @test */
     public function testEmailMustBeUnique()
     {
-        create(User::class, ['email' => 'existing@email.com']);
+        User::factory()->create(['email' => 'existing@email.com']);
 
         $this->updateAccount([
             'email' => 'existing@email.com',
@@ -187,7 +187,7 @@ class AccountTest extends TestCase
     public function testCurrentEmailIsAccepted()
     {
         Auth::logout();
-        $this->signIn(create(User::class, ['email' => 'john@supercool.com']));
+        $this->signIn(User::factory()->create(['email' => 'john@supercool.com']));
 
         $this->updateAccount([
             'email' => 'john@supercool.com',

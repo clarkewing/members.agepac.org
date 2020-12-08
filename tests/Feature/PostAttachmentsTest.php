@@ -28,7 +28,7 @@ class PostAttachmentsTest extends TestCase
 
         Storage::fake('public');
 
-        $this->post = create(Post::class);
+        $this->post = Post::factory()->create();
     }
 
     /** @test */
@@ -72,7 +72,7 @@ class PostAttachmentsTest extends TestCase
     public function testPreviouslyUploadedAttachmentsAreAssociatedWithStoredPost()
     {
         // We need a thread to post to.
-        $thread = create(Thread::class);
+        $thread = Thread::factory()->create();
 
         // The user uploads an  attachment while typing up a post.
         ($attachmentResponse = $this->signIn()->uploadAttachment([
