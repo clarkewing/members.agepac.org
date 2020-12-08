@@ -150,7 +150,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.create');
 
-        $this->storePage($data = Page::factory()->make()->toArray())
+        $this->storePage($data = Page::factory()->raw())
             ->assertJsonMissingValidationErrors()
             ->assertCreated();
 
@@ -162,7 +162,7 @@ class ManagePagesTest extends TestCase
     {
         $this->signInWithPermission('pages.edit');
 
-        $this->updatePage($data = Page::factory()->make()->toArray())
+        $this->updatePage($data = Page::factory()->raw())
             ->assertJsonMissingValidationErrors()
             ->assertOk();
 
@@ -394,7 +394,7 @@ class ManagePagesTest extends TestCase
     public function storePage(array $overrides = [])
     {
         return $this->storeResource('pages', array_merge(
-            Page::factory()->make()->toArray(),
+            Page::factory()->raw(),
             $overrides
         ));
     }

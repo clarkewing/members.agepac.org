@@ -119,7 +119,7 @@ class ManageUserInvitationsTest extends TestCase
         $this->signInWithPermission('user_invitations.create');
 
         $this->storeUserInvitation(
-            $userInvitation = UserInvitation::factory()->make()->toArray()
+            $userInvitation = UserInvitation::factory()->raw()
         )->assertCreated();
 
         $this->assertDatabaseHas('user_invitations', $userInvitation);
@@ -131,7 +131,7 @@ class ManageUserInvitationsTest extends TestCase
         $this->signInWithPermission('user_invitations.edit');
 
         $this->updateUserInvitation(
-            $userInvitation = UserInvitation::factory()->make()->toArray()
+            $userInvitation = UserInvitation::factory()->raw()
         )->assertOk();
 
         $this->assertDatabaseHas('user_invitations', $userInvitation);
@@ -234,7 +234,7 @@ class ManageUserInvitationsTest extends TestCase
     public function storeUserInvitation(array $overrides = [])
     {
         return $this->storeResource('user-invitations', array_merge(
-            UserInvitation::factory()->make()->toArray(),
+            UserInvitation::factory()->raw(),
             $overrides
         ));
     }

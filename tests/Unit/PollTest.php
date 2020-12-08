@@ -29,7 +29,7 @@ class PollTest extends TestCase
 
         $optionsCount = $poll->options()->count();
 
-        $poll->addOption(PollOption::factory()->make()->toArray());
+        $poll->addOption(PollOption::factory()->raw());
 
         $this->assertEquals($optionsCount + 1, $poll->options()->count());
     }
@@ -41,7 +41,7 @@ class PollTest extends TestCase
 
         $optionsCount = $poll->options()->count();
 
-        $poll->addOptions(PollOption::factory()->count(3)->make()->toArray());
+        $poll->addOptions(PollOption::factory()->count(3)->raw());
 
         $this->assertEquals($optionsCount + 3, $poll->options()->count());
     }
@@ -75,11 +75,11 @@ class PollTest extends TestCase
 
         $this->assertEquals(0, $poll->options()->count());
 
-        $poll->syncOptions([PollOption::factory()->make()->toArray()]);
+        $poll->syncOptions([PollOption::factory()->raw()]);
 
         $this->assertEquals(1, $poll->options()->count());
 
-        $poll->syncOptions(PollOption::factory()->count(3)->make()->toArray());
+        $poll->syncOptions(PollOption::factory()->count(3)->raw());
 
         $this->assertEquals(3, $poll->options()->count());
     }
@@ -88,7 +88,7 @@ class PollTest extends TestCase
     public function testReturnsFormattedResults()
     {
         ($poll = Poll::factory()->create())
-            ->syncOptions(PollOption::factory()->count(2)->make()->toArray());
+            ->syncOptions(PollOption::factory()->count(2)->raw());
 
         $this->assertEquals(0, $poll->getResults()[0]->votes_count);
         $this->assertEquals(0, $poll->getResults()[0]->votes_percent);
@@ -114,7 +114,7 @@ class PollTest extends TestCase
     public function testResultsPercentagesAreRoundedTo3DecimalPoints()
     {
         ($poll = Poll::factory()->create())
-            ->syncOptions(PollOption::factory()->count(2)->make()->toArray());
+            ->syncOptions(PollOption::factory()->count(2)->raw());
 
         $poll->castVote([$poll->options[0]->id], User::factory()->create());
         $poll->castVote([$poll->options[0]->id], User::factory()->create());

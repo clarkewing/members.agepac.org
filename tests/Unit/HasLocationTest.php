@@ -107,7 +107,7 @@ class HasLocationTest extends TestCase
     protected function getLocationData()
     {
         return Arr::except(
-            Location::factory()->make()->toArray(),
+            Location::factory()->raw(),
             ['locatable_id', 'locatable_type']
         );
     }

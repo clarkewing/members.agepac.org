@@ -174,7 +174,7 @@ class EditCompanyTest extends TestCase
     /** @test */
     public function testCanUpdateCompany()
     {
-        $data = Company::factory()->make()->toArray();
+        $data = Company::factory()->raw();
 
         $this->updateCompany($data)
             ->assertJsonMissingValidationErrors()

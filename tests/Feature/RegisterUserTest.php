@@ -563,11 +563,11 @@ class RegisterUserTest extends TestCase
     public function fillForm(array $overrides = [])
     {
         $data = array_merge(
-            User::factory()->make(
+            User::factory()->raw(
                 UserInvitation::factory()->create(
                     Arr::only($overrides, ['first_name', 'last_name', 'class_course', 'class_year'])
                 )->toArray()
-            )->getAttributes(),
+            ),
             $overrides,
             ['password' => 'password']
         );

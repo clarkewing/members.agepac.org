@@ -35,7 +35,7 @@ class ManageCompaniesTest extends TestCase
     {
         $this->signIn();
 
-        $this->storeResource('companies', Company::factory()->make(['name' => 'FakeBus'])->toArray())
+        $this->storeResource('companies', Company::factory()->raw(['name' => 'FakeBus']))
             ->assertForbidden();
 
         $this->assertDatabaseMissing('companies', ['name' => 'FakeBus']);

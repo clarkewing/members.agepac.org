@@ -41,11 +41,10 @@ class ParticipateInThreadsTest extends TestCase
 //        $this->signIn();
 //
 //        $thread = Thread::factory()->create();
-//        $post = Post::factory()->make([
-//            'body' => 'Yahoo Customer Support',
-//        ]);
 //
-//        $this->json('post', $thread->path() . '/posts', $post->toArray())
+//        $this->json('post', $thread->path() . '/posts', Post::factory()->raw([
+//            'body' => 'Yahoo Customer Support',
+//        ]))
 //            ->assertStatus(422);
 //    }
 
@@ -55,9 +54,7 @@ class ParticipateInThreadsTest extends TestCase
         $this->withExceptionHandling()->signIn();
 
         $thread = Thread::factory()->create();
-        $post = Post::factory()->make(['body' => null]);
-
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path() . '/posts', Post::factory()->raw(['body' => null]))
             ->assertSessionHasErrors('body');
     }
 
@@ -202,14 +199,14 @@ class ParticipateInThreadsTest extends TestCase
 
         $thread = Thread::factory()->create();
 
-        $post = Post::factory()->make([
+        $post = Post::factory()->raw([
             'body' => 'My simple post.',
         ]);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path() . '/posts', $post)
             ->assertStatus(201);
 
-        $this->post($thread->path() . '/posts', $post->toArray())
+        $this->post($thread->path() . '/posts', $post)
             ->assertStatus(429); // Too many requests
     }
 }

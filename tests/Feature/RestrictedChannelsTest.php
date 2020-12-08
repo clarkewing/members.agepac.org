@@ -311,8 +311,7 @@ class RestrictedChannelsTest extends TestCase
         return $this->postJson(
             route('threads.store'),
             Thread::factory()->withBody()
-                ->make(['channel_id' => $this->channel->id])
-                ->toArray()
+                ->raw(['channel_id' => $this->channel->id])
         );
     }
 
@@ -324,7 +323,7 @@ class RestrictedChannelsTest extends TestCase
     {
         return $this->postJson(
             $thread->path() . '/posts',
-            Post::factory()->make()->toArray()
+            Post::factory()->raw()
         );
     }
 

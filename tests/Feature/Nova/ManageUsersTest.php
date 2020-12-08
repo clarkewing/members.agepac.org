@@ -131,7 +131,7 @@ class ManageUsersTest extends TestCase
     {
         $this->signIn();
 
-        $this->storeResource('users', User::factory()->make()->toArray())
+        $this->storeResource('users', User::factory()->raw())
             ->assertForbidden();
 
         $this->assertDatabaseCount('users', 1); // The currently signed in user

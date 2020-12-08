@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Channel;
-use App\Post;
 use App\Thread;
 use App\User;
 use Tests\TestCase;
@@ -33,9 +32,7 @@ class CreateThreadsTest extends TestCase
             ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
 
-        $thread = Thread::factory()->make();
-
-        $this->post(route('threads.store'), $thread->toArray())
+        $this->post(route('threads.store'), Thread::factory()->raw())
             ->assertRedirect(route('threads.index'))
             ->assertSessionHas('flash', 'Tu dois vérifier ton adresse email avant de pouvoir publier.');
     }
@@ -136,12 +133,12 @@ class CreateThreadsTest extends TestCase
     {
         $this->withExceptionHandling()->signIn();
 
-        $thread = Thread::factory()->withBody()->make($overrides);
+        $thread = Thread::factory()->withBody()->raw($overrides);
 
         if ($wantsJson) {
-            return $this->postJson(route('threads.store'), $thread->toArray());
+            return $this->postJson(route('threads.store'), $thread);
         }
 
-        return $this->post(route('threads.store'), $thread->toArray());
+        return $this->post(route('threads.store'), $thread);
     }
 }

@@ -46,7 +46,7 @@ class PollFactory extends Factory
             'max_votes' => 1,
             'votes_privacy' => $this->faker->randomElement(Poll::$votesPrivacyValues),
             'results_before_voting' => $this->faker->boolean,
-            'locked_at' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'locked_at' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d H:i:s'),
         ];
     }
 }

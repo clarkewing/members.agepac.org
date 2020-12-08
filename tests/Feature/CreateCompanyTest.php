@@ -182,7 +182,7 @@ class CreateCompanyTest extends TestCase
     public function testNonJsonRequestReturnsRedirect()
     {
         $this->post(
-            route('companies.store'), $company = Company::factory()->make()->toArray()
+            route('companies.store'), $company = Company::factory()->raw()
         )->assertRedirect(route('companies.show', Str::slug($company['name'])));
     }
 

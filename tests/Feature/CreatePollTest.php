@@ -242,8 +242,8 @@ class CreatePollTest extends TestCase
         return $this->postJson(
             route('polls.store', ['channel' => $this->thread->channel, 'thread' => $this->thread]),
             array_merge(
-                Arr::except(Poll::factory()->make()->toArray(), 'thread_id'),
-                ['options' => PollOption::factory()->count(rand(2, 10))->make(['poll_id' => null])->toArray()],
+                Arr::except(Poll::factory()->raw(), 'thread_id'),
+                ['options' => PollOption::factory()->count(rand(2, 10))->raw(['poll_id' => null])],
                 $data,
             )
         );
