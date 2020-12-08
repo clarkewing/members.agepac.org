@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Channel;
 use App\Http\Controllers\PagesController;
+use App\Models\Channel;
 use App\Models\Post;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;

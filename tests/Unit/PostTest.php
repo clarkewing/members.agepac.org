@@ -52,7 +52,7 @@ class PostTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'Hello <a href="'.route('profiles.show', 'jane.doe', false).'">@jane.doe</a>.',
+            'Hello <a href="' . route('profiles.show', 'jane.doe', false) . '">@jane.doe</a>.',
             $post->body
         );
     }

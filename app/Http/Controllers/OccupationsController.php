@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
 use App\Http\Requests\StoreOccupationRequest;
 use App\Http\Requests\UpdateOccupationRequest;
+use App\Models\Company;
 use App\Models\Occupation;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;

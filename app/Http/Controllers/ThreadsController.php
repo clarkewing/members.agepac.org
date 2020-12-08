@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Channel;
 use App\Filters\ThreadFilters;
+use App\Models\Channel;
 use App\Models\Thread;
 use App\Trending;
 use Illuminate\Http\Request;

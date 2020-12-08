@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Course;
 use App\Models\Occupation;
-use App\Profile;
 use App\Models\Thread;
 use App\Models\User;
+use App\Profile;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
@@ -43,7 +43,7 @@ class ViewProfileTest extends TestCase
     public function testProfileDisplaysReputation()
     {
         $this->getProfile()
-            ->assertSee($this->profile->reputation.' XP');
+            ->assertSee($this->profile->reputation . ' XP');
     }
 
     /** @test */

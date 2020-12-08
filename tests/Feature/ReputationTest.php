@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
-use App\Reputation;
 use App\Models\Thread;
 use App\Models\User;
+use App\Reputation;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 

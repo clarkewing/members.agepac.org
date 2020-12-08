@@ -27,12 +27,12 @@ class PagesRoutesTest extends TestCase
     public function testGeneratesNamedRoute()
     {
         $this->assertEquals(
-            config('app.url').'/pages/foo',
+            config('app.url') . '/pages/foo',
             route('pages.show', Page::factory()->create(['path' => 'foo']))
         );
 
         $this->assertEquals(
-            config('app.url').'/pages/foo/bar-baz',
+            config('app.url') . '/pages/foo/bar-baz',
             route('pages.show', Page::factory()->create(['path' => 'foo/bar-baz']))
         );
     }

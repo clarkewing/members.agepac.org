@@ -14,7 +14,7 @@ class SubscribeToThreadsTest extends TestCase
 
         $thread = Thread::factory()->create();
 
-        $this->post($thread->path().'/subscriptions');
+        $this->post($thread->path() . '/subscriptions');
 
         $this->assertCount(1, $thread->subscriptions);
     }
@@ -27,7 +27,7 @@ class SubscribeToThreadsTest extends TestCase
         $thread = Thread::factory()->create();
         $thread->subscribe();
 
-        $this->delete($thread->path().'/subscriptions');
+        $this->delete($thread->path() . '/subscriptions');
 
         $this->assertCount(0, $thread->subscriptions);
     }

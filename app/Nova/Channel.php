@@ -176,7 +176,7 @@ class Channel extends Resource
      */
     protected function restrictionField($permission): \Laravel\Nova\Fields\Field
     {
-        return Boolean::make(Str::title($permission).'ing Restricted')
+        return Boolean::make(Str::title($permission) . 'ing Restricted')
             ->resolveUsing(function () use ($permission) {
                 return $this->isRestricted($permission);
             })
@@ -201,10 +201,10 @@ class Channel extends Resource
      */
     protected function permissionModelField($permission): \Laravel\Nova\Fields\Field
     {
-        return Text::make(Str::title($permission).' Permission', function () use ($permission) {
+        return Text::make(Str::title($permission) . ' Permission', function () use ($permission) {
             $permissionModel = $this->{"{$permission}Permission"};
 
-            $href = config('nova.path').'/resources/permissions/'.$permissionModel->id;
+            $href = config('nova.path') . '/resources/permissions/' . $permissionModel->id;
 
             return "<a class=\"no-underline font-bold dim text-primary\" href=\"$href\">$permissionModel->name</a>";
         })->asHtml();

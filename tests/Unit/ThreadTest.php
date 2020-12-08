@@ -3,10 +3,10 @@
 namespace Tests\Unit;
 
 use App\Models\Channel;
-use App\Notifications\ThreadWasUpdated;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;

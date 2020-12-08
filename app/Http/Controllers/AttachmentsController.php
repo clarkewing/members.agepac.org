@@ -35,7 +35,7 @@ class AttachmentsController extends Controller
         return Response::make(
             Attachment::create([
                 'path' => Storage::disk('public')->putFileAs(
-                    'attachments/'.Str::random(40),
+                    'attachments/' . Str::random(40),
                     $uploadedFile,
                     $uploadedFile->getClientOriginalName()
                 ),

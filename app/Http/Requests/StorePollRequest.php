@@ -49,7 +49,7 @@ class StorePollRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         if ($validator->passes()) {
-            $validator->addRules(['max_votes' => 'max:'.count($this->input('options'))]);
+            $validator->addRules(['max_votes' => 'max:' . count($this->input('options'))]);
         }
     }
 }

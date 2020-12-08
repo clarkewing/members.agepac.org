@@ -39,9 +39,9 @@ class AddAvatarTest extends TestCase
             'avatar' => $file = UploadedFile::fake()->image('avatar.jpg'),
         ]);
 
-        $this->assertEquals(Storage::url('avatars/'.$file->hashName()), Auth::user()->avatar_path);
+        $this->assertEquals(Storage::url('avatars/' . $file->hashName()), Auth::user()->avatar_path);
 
-        Storage::disk('public')->assertExists('avatars/'.$file->hashName());
+        Storage::disk('public')->assertExists('avatars/' . $file->hashName());
     }
 
     /** @test */
@@ -55,14 +55,14 @@ class AddAvatarTest extends TestCase
             'avatar' => $old_file = UploadedFile::fake()->image('old_avatar.jpg'),
         ]);
 
-        Storage::disk('public')->assertExists('avatars/'.$old_file->hashName());
+        Storage::disk('public')->assertExists('avatars/' . $old_file->hashName());
 
         $this->postJson(route('api.users.avatar.store', Auth::user()), [
             'avatar' => $new_file = UploadedFile::fake()->image('new_avatar.jpg'),
         ]);
 
-        Storage::disk('public')->assertMissing('avatars/'.$old_file->hashName());
+        Storage::disk('public')->assertMissing('avatars/' . $old_file->hashName());
 
-        Storage::disk('public')->assertExists('avatars/'.$new_file->hashName());
+        Storage::disk('public')->assertExists('avatars/' . $new_file->hashName());
     }
 }

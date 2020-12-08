@@ -263,7 +263,7 @@ class RegisterUserTest extends TestCase
     {
         Livewire::test(Register::class)
             ->set('active', 1)
-            ->set('email', str_repeat('a', 256).'@example.com')
+            ->set('email', str_repeat('a', 256) . '@example.com')
             ->call('run')
             ->assertHasErrors(['email']);
     }
@@ -574,7 +574,7 @@ class RegisterUserTest extends TestCase
 
         return Livewire::test(Register::class)
             ->assertSet('active', 0)
-            ->set('name', $data['first_name'].' '.$data['last_name'])
+            ->set('name', $data['first_name'] . ' ' . $data['last_name'])
             ->call('findInvitation')
             ->call('run')
             ->assertSet('active', 1)

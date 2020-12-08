@@ -84,15 +84,15 @@ class PostAttachmentsTest extends TestCase
         // The user submits the post.
         $postResponse = $this->postJson(route('posts.store', [$thread->channel, $thread]), [
             'body' => '<figure data-trix-attachment="'
-                      .htmlentities(json_encode([
+                      . htmlentities(json_encode([
                           'contentType' => 'application/pdf',
                           'filename' => 'document.pdf',
                           'filesize' => 1000,
                           'id' => $attachmentResponse->json('id'),
-                          'href' => '/storage/'.$attachmentResponse->json('path'),
-                          'url' => '/storage/'.$attachmentResponse->json('path'),
+                          'href' => '/storage/' . $attachmentResponse->json('path'),
+                          'url' => '/storage/' . $attachmentResponse->json('path'),
                       ]))
-                      .'" class="attachment attachment--file attachment--pdf"></figure>',
+                      . '" class="attachment attachment--file attachment--pdf"></figure>',
         ]);
 
         $this->assertEquals(0, Attachment::where('post_id', null)->count());
@@ -109,15 +109,15 @@ class PostAttachmentsTest extends TestCase
 
         $this->patchJson(route('posts.update', $this->post), [
             'body' => '<figure data-trix-attachment="'
-                      .htmlentities(json_encode([
+                      . htmlentities(json_encode([
                           'contentType' => 'application/pdf',
                           'filename' => 'document.pdf',
                           'filesize' => 1000,
                           'id' => $response->json('id'),
-                          'href' => '/storage/'.$response->json('path'),
-                          'url' => '/storage/'.$response->json('path'),
+                          'href' => '/storage/' . $response->json('path'),
+                          'url' => '/storage/' . $response->json('path'),
                       ]))
-                      .'" class="attachment attachment--file attachment--pdf"></figure>',
+                      . '" class="attachment attachment--file attachment--pdf"></figure>',
         ]);
 
         $this->assertCount(1, $this->post->fresh()->attachments);
