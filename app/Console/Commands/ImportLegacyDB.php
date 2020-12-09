@@ -28,16 +28,6 @@ class ImportLegacyDB extends Command
     protected $description = 'Imports data from the legacy site DB CSV exports.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return void
@@ -46,40 +36,74 @@ class ImportLegacyDB extends Command
     {
         Model::unguard();
 
-        $this->output->title('Importing Users');
+        $this->section('Users', $this->importUsers());
 
-        $this->line('Importing Users - Basic info');
-        (new UsersImport)->withOutput($this->output)
-            ->import('agepacprzeforum/agepacprzeforum_table_user.csv');
 
-        $this->line('Importing Users - Additional fields');
-        (new UserFieldsImport)->withOutput($this->output)
-            ->import('agepacprzeforum/agepacprzeforum_table_userfield.csv');
-
-//        $this->line('Importing Users - Subscriptions');
-//        (new SubscriptionsImport)->withOutput($this->output)
-//            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
-
-        $this->info('Users imported!');
-
-        $this->output->title('Importing Profiles');
-
-        $this->line('Importing Profiles - Bio and flight hours');
-        (new ProfileInfoImport)->withOutput($this->output)
-            ->import('agepacprzeforum/agepacprzeforum_table_u_parcours.csv');
-
-        $this->line('Importing Profiles - Courses');
-        (new CoursesImport)->withOutput($this->output)
-            ->import('agepacprzeforum/agepacprzeforum_table_u_formation.csv');
-
-        $this->line('Importing Profiles - Occupations');
-        (new OccupationsImport)->withOutput($this->output)
-            ->import('agepacprzeforum/agepacprzeforum_table_u_emploi.csv');
-
-        $this->info('Profiles imported!');
+        $this->section('Profiles', $this->importProfiles());
 
         Model::reguard();
 
         $this->output->success('Import successful');
+    }
+
+    /**
+     * Import Users.
+     *
+     * @return \Closure
+     */
+    protected function importUsers(): \Closure
+    {
+        return function () {
+            $this->line('Importing Users - Basic info');
+            (new UsersImport)->withOutput($this->output)
+                ->import('agepacprzeforum/agepacprzeforum_table_user.csv');
+
+            $this->line('Importing Users - Additional fields');
+            (new UserFieldsImport)->withOutput($this->output)
+                ->import('agepacprzeforum/agepacprzeforum_table_userfield.csv');
+
+            //        $this->line('Importing Users - Subscriptions');
+            //        (new SubscriptionsImport)->withOutput($this->output)
+            //            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
+        };
+    }
+
+
+    /**
+     * Import Profiles.
+     *
+     * @return \Closure
+     */
+    protected function importProfiles(): \Closure
+    {
+        return function () {
+            $this->line('Importing Profiles - Bio and flight hours');
+            (new ProfileInfoImport)->withOutput($this->output)
+                ->import('agepacprzeforum/agepacprzeforum_table_u_parcours.csv');
+
+            $this->line('Importing Profiles - Courses');
+            (new CoursesImport)->withOutput($this->output)
+                ->import('agepacprzeforum/agepacprzeforum_table_u_formation.csv');
+
+            $this->line('Importing Profiles - Occupations');
+            (new OccupationsImport)->withOutput($this->output)
+                ->import('agepacprzeforum/agepacprzeforum_table_u_emploi.csv');
+        };
+    }
+
+    /**
+     * Define an import section.
+     *
+     * @param  string  $name
+     * @param  callable  $callback
+     * @return void
+     */
+    protected function section(string $name, callable $callback): void
+    {
+        $this->output->title("Importing $name");
+
+        call_user_func($callback);
+
+        $this->info("$name imported!");
     }
 }
