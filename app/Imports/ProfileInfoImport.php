@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
@@ -23,13 +23,10 @@ class UserAviationInfoImport implements OnEachRow, WithHeadingRow, WithValidatio
      */
     public function onRow(Row $row)
     {
-        $user = User::find($row['userid']);
-
-        $user->flight_hours = $row['hdv'];
-
-        $user->bio = implode("\n", array_filter([$row['avion'], $row['competence']])) ?: null;
-
-        $user->save();
+        Profile::where('id', $row['userid'])->update([
+            'flight_hours' => $row['hdv'],
+            'bio' => implode("\n", array_filter([$row['avion'], $row['competence']])) ?: null,
+        ]);
     }
 
     /**

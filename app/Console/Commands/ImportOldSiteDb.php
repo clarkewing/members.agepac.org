@@ -4,13 +4,12 @@ namespace App\Console\Commands;
 
 use App\Imports\CoursesImport;
 use App\Imports\OccupationsImport;
+use App\Imports\ProfileInfoImport;
 use App\Imports\SubscriptionsImport;
-use App\Imports\UserAviationInfoImport;
 use App\Imports\UserFieldsImport;
 use App\Imports\UsersImport;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ImportOldSiteDb extends Command
 {
@@ -57,19 +56,27 @@ class ImportOldSiteDb extends Command
         (new UserFieldsImport)->withOutput($this->output)
             ->import('agepacprzeforum/agepacprzeforum_table_userfield.csv');
 
-        $this->line('Importing Users - Aviation info');
-        (new UserAviationInfoImport)->withOutput($this->output)
-            ->import('agepacprzeforum/agepacprzeforum_table_u_parcours.csv');
-
-//        $this->line('Importing Users - Subscriptions');
-//        (new SubscriptionsImport)->withOutput($this->output)
-//            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
+        $this->line('Importing Users - Subscriptions');
+        (new SubscriptionsImport)->withOutput($this->output)
+            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
 
         $this->info('Users imported!');
 
-//        Excel::import(new CoursesImport, base_path('agepacprzeforum/agepacprzeforum_table_u_formation.csv'));
-//
-//        Excel::import(new OccupationsImport, base_path('agepacprzeforum/agepacprzeforum_table_u_emploi.csv'));
+        $this->output->title('Importing Profiles');
+
+        $this->line('Importing Profiles - Bio and flight hours');
+        (new ProfileInfoImport)->withOutput($this->output)
+            ->import('agepacprzeforum/agepacprzeforum_table_u_parcours.csv');
+
+        $this->line('Importing Profiles - Courses');
+        (new CoursesImport)->withOutput($this->output)
+            ->import('agepacprzeforum/agepacprzeforum_table_u_formation.csv');
+
+        $this->line('Importing Profiles - Occupations');
+        (new OccupationsImport)->withOutput($this->output)
+            ->import('agepacprzeforum/agepacprzeforum_table_u_emploi.csv');
+
+        $this->info('Profiles imported!');
 
         Model::reguard();
 
