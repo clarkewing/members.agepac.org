@@ -7,7 +7,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class CoursesImport extends OldSiteImport implements ToModel
+class CoursesImport extends LegacyDBImport implements ToModel
 {
     /**
      * @param  array  $row

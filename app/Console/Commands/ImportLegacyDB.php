@@ -11,21 +11,21 @@ use App\Imports\UsersImport;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
-class ImportOldSiteDb extends Command
+class ImportLegacyDB extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'old-site:import-db';
+    protected $signature = 'legacy:import-db';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Imports data from the old site from the `database/old-site.sql` file';
+    protected $description = 'Imports data from the legacy site DB CSV exports.';
 
     /**
      * Create a new command instance.

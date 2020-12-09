@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Row;
 
-class ProfileInfoImport extends OldSiteImport implements OnEachRow
+class ProfileInfoImport extends LegacyDBImport implements OnEachRow
 {
     /**
      * @param  \Maatwebsite\Excel\Row  $row

@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Row;
 
-class SubscriptionsImport extends OldSiteImport implements OnEachRow
+class SubscriptionsImport extends LegacyDBImport implements OnEachRow
 {
     /**
      * @param  \Maatwebsite\Excel\Row  $row

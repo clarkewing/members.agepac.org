@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\CleanupAttachments::class,
-        Commands\ImportOldSiteDb::class,
+        Commands\ImportLegacyDB::class,
     ];
 
     /**

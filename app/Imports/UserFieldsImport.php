@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Row;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
-class UserFieldsImport extends OldSiteImport implements OnEachRow
+class UserFieldsImport extends LegacyDBImport implements OnEachRow
 {
     /**
      * @param  \Maatwebsite\Excel\Row  $row
