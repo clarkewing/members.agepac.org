@@ -22,7 +22,7 @@ class CompanyCommentsImport extends LegacyDBImport implements OnEachRow
 
         $company->remarks = implode("\n\n", array_filter([
             $company->remarks,
-            "{$author->name} ({$time->toDateTimeString()}) :\n{$row['texte']}"
+            "{$author->name} ({$time->toDateTimeString()}) :\n{$row['texte']}",
         ]));
 
         $company->save();

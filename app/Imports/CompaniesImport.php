@@ -11,10 +11,10 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 class CompaniesImport extends LegacyDBImport implements ToModel, WithUpserts
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         $company = new Company([
