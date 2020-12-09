@@ -2,6 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Imports\CoursesImport;
+use App\Imports\OccupationsImport;
+use App\Imports\SubscriptionsImport;
+use App\Imports\UserAviationInfoImport;
+use App\Imports\UserFieldsImport;
 use App\Imports\UsersImport;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
@@ -48,7 +53,23 @@ class ImportOldSiteDb extends Command
         (new UsersImport)->withOutput($this->output)
             ->import('agepacprzeforum/agepacprzeforum_table_user.csv');
 
+        $this->line('Importing Users - Additional fields');
+        (new UserFieldsImport)->withOutput($this->output)
+            ->import('agepacprzeforum/agepacprzeforum_table_userfield.csv');
+
+        $this->line('Importing Users - Aviation info');
+        (new UserAviationInfoImport)->withOutput($this->output)
+            ->import('agepacprzeforum/agepacprzeforum_table_u_parcours.csv');
+
+//        $this->line('Importing Users - Subscriptions');
+//        (new SubscriptionsImport)->withOutput($this->output)
+//            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
+
         $this->info('Users imported!');
+
+//        Excel::import(new CoursesImport, base_path('agepacprzeforum/agepacprzeforum_table_u_formation.csv'));
+//
+//        Excel::import(new OccupationsImport, base_path('agepacprzeforum/agepacprzeforum_table_u_emploi.csv'));
 
         Model::reguard();
 
