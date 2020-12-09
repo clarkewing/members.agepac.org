@@ -6,18 +6,10 @@ use App\Models\Company;
 use App\Models\Occupation;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithValidation;
 
-class OccupationsImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure, WithProgressBar
+class OccupationsImport extends OldSiteImport implements ToModel
 {
-    use Importable, SkipsFailures;
-
     /**
      * @param  array  $row
      * @return \Illuminate\Database\Eloquent\Model

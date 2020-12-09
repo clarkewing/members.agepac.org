@@ -5,20 +5,12 @@ namespace App\Imports;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use libphonenumber\NumberParseException;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
-class UserFieldsImport implements OnEachRow, WithHeadingRow, WithValidation, SkipsOnFailure, WithProgressBar
+class UserFieldsImport extends OldSiteImport implements OnEachRow
 {
-    use Importable, SkipsFailures;
-
     /**
      * @param  \Maatwebsite\Excel\Row  $row
      * @return void

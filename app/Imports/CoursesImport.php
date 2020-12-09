@@ -5,18 +5,10 @@ namespace App\Imports;
 use App\Models\Course;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithValidation;
 
-class CoursesImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure, WithProgressBar
+class CoursesImport extends OldSiteImport implements ToModel
 {
-    use Importable, SkipsFailures;
-
     /**
      * @param  array  $row
      * @return \Illuminate\Database\Eloquent\Model

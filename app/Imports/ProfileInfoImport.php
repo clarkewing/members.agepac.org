@@ -4,19 +4,11 @@ namespace App\Imports;
 
 use App\Models\Profile;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 
-class UserAviationInfoImport implements OnEachRow, WithHeadingRow, WithValidation, SkipsOnFailure, WithProgressBar
+class ProfileInfoImport extends OldSiteImport implements OnEachRow
 {
-    use Importable, SkipsFailures;
-
     /**
      * @param  \Maatwebsite\Excel\Row  $row
      * @return void

@@ -6,19 +6,11 @@ use App\Models\User;
 use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithUpserts;
-use Maatwebsite\Excel\Concerns\WithValidation;
 
-class UsersImport implements ToModel, WithHeadingRow, WithUpserts, WithValidation, SkipsOnFailure, WithProgressBar
+class UsersImport extends OldSiteImport implements ToModel, WithUpserts
 {
-    use Importable, SkipsFailures;
-
     /**
      * @param  array  $row
      * @return \Illuminate\Database\Eloquent\Model

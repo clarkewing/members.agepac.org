@@ -56,9 +56,9 @@ class ImportOldSiteDb extends Command
         (new UserFieldsImport)->withOutput($this->output)
             ->import('agepacprzeforum/agepacprzeforum_table_userfield.csv');
 
-        $this->line('Importing Users - Subscriptions');
-        (new SubscriptionsImport)->withOutput($this->output)
-            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
+//        $this->line('Importing Users - Subscriptions');
+//        (new SubscriptionsImport)->withOutput($this->output)
+//            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
 
         $this->info('Users imported!');
 

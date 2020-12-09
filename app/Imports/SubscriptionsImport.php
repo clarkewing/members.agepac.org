@@ -5,19 +5,11 @@ namespace App\Imports;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 
-class SubscriptionsImport implements OnEachRow, WithHeadingRow, WithValidation, SkipsOnFailure, WithProgressBar
+class SubscriptionsImport extends OldSiteImport implements OnEachRow
 {
-    use Importable, SkipsFailures;
-
     /**
      * @param  \Maatwebsite\Excel\Row  $row
      */
