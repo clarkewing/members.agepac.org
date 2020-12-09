@@ -51,9 +51,9 @@ class Company extends Model
      */
     protected static function booted()
     {
-        static::creating(function ($user) {
-            if (is_null($user->description)) {
-                $user->setDescriptionFromWikipedia();
+        static::creating(function ($company) {
+            if (is_null($company->description)) {
+                $company->setDescriptionFromWikipedia();
             }
         });
     }
