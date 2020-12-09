@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Imports\CompaniesImport;
+use App\Imports\CompanyCommentsImport;
 use App\Imports\CoursesImport;
 use App\Imports\OccupationsImport;
 use App\Imports\ProfileInfoImport;
@@ -38,6 +40,7 @@ class ImportLegacyDB extends Command
 
         $this->section('Users', $this->importUsers());
 
+        $this->section('Companies', $this->importCompanies());
 
         $this->section('Profiles', $this->importProfiles());
 
@@ -68,6 +71,23 @@ class ImportLegacyDB extends Command
         };
     }
 
+    /**
+     * Import Companies.
+     *
+     * @return \Closure
+     */
+    protected function importCompanies(): \Closure
+    {
+        return function () {
+            $this->line('Importing Companies - Basic info');
+            (new CompaniesImport)->withOutput($this->output)
+                ->import('agepacprzeforum/agepacprzeforum_table_c_airline.csv');
+
+            $this->line('Importing Companies - Comments');
+            (new CompanyCommentsImport)->withOutput($this->output)
+                ->import('agepacprzeforum/agepacprzeforum_table_c_comment.csv');
+        };
+    }
 
     /**
      * Import Profiles.
