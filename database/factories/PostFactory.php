@@ -37,8 +37,12 @@ class PostFactory extends Factory
         ];
     }
 
-    public function withAttachment()
+    public function withAttachment(bool $shouldAttach = true)
     {
+        if (! $shouldAttach) {
+            return $this;
+        }
+
         return $this->state(function () {
             $attachment = Attachment::factory()->create();
 
