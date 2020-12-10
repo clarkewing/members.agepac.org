@@ -59,15 +59,15 @@ class ImportLegacyDB extends Command
         return function () {
             $this->line('Importing Users - Basic info');
             (new UsersImport)->withOutput($this->output)
-                ->import('agepacprzeforum/agepacprzeforum_table_user.csv');
+                ->import($this->csvPath('agepacprzeforum_table_user'));
 
             $this->line('Importing Users - Additional fields');
             (new UserFieldsImport)->withOutput($this->output)
-                ->import('agepacprzeforum/agepacprzeforum_table_userfield.csv');
+                ->import($this->csvPath('agepacprzeforum_table_userfield'));
 
             //        $this->line('Importing Users - Subscriptions');
             //        (new SubscriptionsImport)->withOutput($this->output)
-            //            ->import('agepacprzeforum/agepacprzeforum_table_u_cotisation.csv');
+            //            ->import($this->csvPath('agepacprzeforum_table_u_cotisation'));
         };
     }
 
@@ -81,11 +81,11 @@ class ImportLegacyDB extends Command
         return function () {
             $this->line('Importing Companies - Basic info');
             (new CompaniesImport)->withOutput($this->output)
-                ->import('agepacprzeforum/agepacprzeforum_table_c_airline.csv');
+                ->import($this->csvPath('agepacprzeforum_table_c_airline'));
 
             $this->line('Importing Companies - Comments');
             (new CompanyCommentsImport)->withOutput($this->output)
-                ->import('agepacprzeforum/agepacprzeforum_table_c_comment.csv');
+                ->import($this->csvPath('agepacprzeforum_table_c_comment'));
         };
     }
 
@@ -99,15 +99,15 @@ class ImportLegacyDB extends Command
         return function () {
             $this->line('Importing Profiles - Bio and flight hours');
             (new ProfileInfoImport)->withOutput($this->output)
-                ->import('agepacprzeforum/agepacprzeforum_table_u_parcours.csv');
+                ->import($this->csvPath('agepacprzeforum_table_u_parcours'));
 
             $this->line('Importing Profiles - Courses');
             (new CoursesImport)->withOutput($this->output)
-                ->import('agepacprzeforum/agepacprzeforum_table_u_formation.csv');
+                ->import($this->csvPath('agepacprzeforum_table_u_formation'));
 
             $this->line('Importing Profiles - Occupations');
             (new OccupationsImport)->withOutput($this->output)
-                ->import('agepacprzeforum/agepacprzeforum_table_u_emploi.csv');
+                ->import($this->csvPath('agepacprzeforum_table_u_emploi'));
         };
     }
 
@@ -125,5 +125,16 @@ class ImportLegacyDB extends Command
         call_user_func($callback);
 
         $this->info("$name imported!");
+    }
+
+    /**
+     * Retrieve the path of the given CSV.
+     *
+     * @param  string  $fileName
+     * @return string
+     */
+    protected function csvPath(string $fileName): string
+    {
+        return storage_path("app/legacy-import/database/$fileName.csv");
     }
 }
