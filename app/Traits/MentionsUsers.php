@@ -16,8 +16,11 @@ trait MentionsUsers
      */
     public function setBodyAttribute($body): void
     {
-        // TODO: Replace hardcoded href with dynamic route.
-        $this->attributes['body'] = preg_replace($this->mentionPattern(), '<a href="/profiles/$1">$0</a>', $body);
+        foreach ($this->mentionedUsers($body)->pluck('username') as $username) {
+            $body = str_replace("@$username", "<a href=\"/profiles/$username\">@$username</a>", $body);
+        }
+
+        $this->attributes['body'] = $body;
     }
 
     /**
@@ -34,22 +37,23 @@ trait MentionsUsers
     /**
      * Returns an array of users mentioned in body.
      *
+     * @param  string|null  $body
      * @return \Illuminate\Support\Collection
      */
-    public function mentionedUsers(): Collection
+    public function mentionedUsers(string $body = null): Collection
     {
-        preg_match_all($this->mentionPattern(), $this->body, $matches);
+        preg_match_all($this->mentionPattern(), $body ?? $this->body, $matches);
 
         return User::whereIn('username', $matches[1])->get();
     }
 
     /**
-     * Returns the used for matching usernames.
+     * Returns the pattern used for matching usernames.
      *
      * @return string
      */
     protected function mentionPattern(): string
     {
-        return '/@([\w.-]+[^[:punct:]\s])/';
+        return '/\B@([a-z-]+\.[a-z-]+\b)/i';
     }
 }
