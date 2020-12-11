@@ -160,6 +160,37 @@ class Post extends Model
     }
 
     /**
+     * Sets the body of the subject.
+     *
+     * @param  string  $body
+     * @return void
+     */
+    public function setBodyAttribute(string $body): void
+    {
+        // Remove any divs added by Trix.
+        $body = str_replace(['<div>', '</div>'], '', $body);
+
+        $this->attributes['body'] = $this->replaceMentions(
+            $this->parseParagraphs($body)
+        );
+    }
+
+    /**
+     * Replace double line breaks with paragraphs.
+     *
+     * @param  string  $body
+     * @return string
+     */
+    protected function parseParagraphs(string $body)
+    {
+        return preg_replace(
+            '/(\S.*?)(?:\s|&nbsp;)*(?:(?:<br\s*\/?>(?:\s|&nbsp;)*){2,}|$)/s',
+            '<p>$1</p>',
+            $body
+        );
+    }
+
+    /**
      * Determines whether the post is marked as the best one on its thread.
      *
      * @return bool
