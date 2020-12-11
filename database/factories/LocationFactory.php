@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 
 class LocationFactory extends Factory
@@ -27,7 +28,7 @@ class LocationFactory extends Factory
             'locatable_id' => function () {
                 return User::factory()->create()->id;
             },
-            'locatable_type' => \App\Models\User::class,
+            'locatable_type' => array_flip(Relation::$morphMap)[\App\Models\User::class],
             'type' => Arr::random(['country', 'city', 'address', 'busStop', 'trainStation', 'townhall', 'airport']),
             'name' => $this->faker->sentence,
             'street_line_1' => $this->faker->streetAddress,
