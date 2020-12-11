@@ -2,19 +2,34 @@
 
 namespace App\Console\Commands;
 
+use App\Events\Dispatchers\NullEventDispatcher;
+use App\Events\PostCreated;
+use App\Events\PostUpdated;
 use App\Imports\CompaniesImport;
 use App\Imports\CompanyCommentsImport;
 use App\Imports\CoursesImport;
+use App\Imports\ForumAttachmentsImport;
+use App\Imports\ForumChannelsImport;
+use App\Imports\ForumPostsImport;
+use App\Imports\ForumThreadsImport;
 use App\Imports\OccupationsImport;
 use App\Imports\ProfileInfoImport;
 use App\Imports\SubscriptionsImport;
 use App\Imports\UserFieldsImport;
 use App\Imports\UsersImport;
+use App\Models\Attachment;
+use App\Models\Post;
+use App\Traits\SuppressesEvents;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class ImportLegacyDB extends Command
 {
+    use SuppressesEvents;
+
     /**
      * The name and signature of the console command.
      *
@@ -39,10 +54,12 @@ class ImportLegacyDB extends Command
         Model::unguard();
 
         $this->section('Users', $this->importUsers());
+//
+//        $this->section('Companies', $this->importCompanies());
+//
+//        $this->section('Profiles', $this->importProfiles());
 
-        $this->section('Companies', $this->importCompanies());
-
-        $this->section('Profiles', $this->importProfiles());
+        $this->section('Forum', $this->importForum());
 
         Model::reguard();
 
@@ -112,6 +129,53 @@ class ImportLegacyDB extends Command
     }
 
     /**
+     * Import Forum.
+     *
+     * @return \Closure
+     */
+    protected function importForum(): \Closure
+    {
+        return function () {
+            $this->line('Importing Forum - Channels');
+            Schema::disableForeignKeyConstraints();
+            (new ForumChannelsImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_forum'));
+            Schema::enableForeignKeyConstraints();
+
+            $this->line('Importing Forum - Threads');
+            (new ForumThreadsImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_thread'));
+
+            $this->line('Importing Forum - Attachments');
+            (new ForumAttachmentsImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_attachment'));
+
+            Post::withoutSyncingToSearch(function () {
+                $this->suppressingModelEvents(Post::class, [PostCreated::class, PostUpdated::class], function () {
+                    $this->line('Importing Forum - Posts');
+                    (new ForumPostsImport)->withOutput($this->output)
+                        ->import($this->csvPath('agepacprzeforum_table_post'));
+
+                    $this->line('Importing Forum - Embedding attachments');
+                    $this->addUnembeddedAttachmentsToPosts();
+
+                    $this->line('Importing Forum - Setting thread initiators');
+                    $this->setThreadInitiators();
+                });
+
+                $this->line('Importing Forum - Running PostCreated events');
+                Post::all()->each(function ($post) {
+                    event(new PostCreated($post));
+                });
+            });
+//
+//            $this->line('Importing Forum - Polls');
+//            (new ForumPollsImport)->withOutput($this->output)
+//                ->import($this->csvPath('agepacprzeforum_table_u_emploi'));
+        };
+    }
+
+    /**
      * Define an import section.
      *
      * @param  string  $name
@@ -125,6 +189,32 @@ class ImportLegacyDB extends Command
         call_user_func($callback);
 
         $this->info("$name imported!");
+    }
+
+    /**
+     * Adds attachments which weren't embedded to posts.
+     *
+     * @return void
+     */
+    protected function addUnembeddedAttachmentsToPosts(): void
+    {
+        Attachment::all()->each(function ($attachment) {
+            if (! Str::contains($attachment->post->body, $attachment->id)) {
+                $attachment->post->update([
+                    'body' => $attachment->post->body . $attachment->html(),
+                ]);
+            }
+        });
+    }
+
+    /**
+     * Set `is_thread_initiator` on appropriate posts.
+     *
+     * @return void
+     */
+    protected function setThreadInitiators(): void
+    {
+        Post::select(DB::raw('min(`created_at`)'))->groupBy('thread_id')
     }
 
     /**
