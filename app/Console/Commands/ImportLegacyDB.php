@@ -11,6 +11,7 @@ use App\Imports\ForumAttachmentsImport;
 use App\Imports\ForumChannelsImport;
 use App\Imports\ForumPollsImport;
 use App\Imports\ForumPollVotesImport;
+use App\Imports\ForumPostFavoritesImport;
 use App\Imports\ForumPostsImport;
 use App\Imports\ForumThreadsImport;
 use App\Imports\OccupationsImport;
@@ -174,6 +175,9 @@ class ImportLegacyDB extends Command
             $this->line('Importing Forum - Polls');
             (new ForumPollsImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_poll'));
+            $this->line('Importing Forum - Post Favorites');
+            (new ForumPostFavoritesImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_post_thanks'));
 
             Poll::where('title', '')->delete();
 
