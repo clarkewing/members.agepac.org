@@ -3,11 +3,6 @@
 namespace App\Traits;
 
 use App\Events\Dispatchers\NullEventDispatcher;
-use App\Events\PostCreated;
-use App\Events\PostUpdated;
-use App\Imports\ForumPostsImport;
-use App\Models\Post;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 
 trait SuppressesEvents
