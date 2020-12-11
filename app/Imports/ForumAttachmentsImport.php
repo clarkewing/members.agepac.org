@@ -13,10 +13,10 @@ use Maatwebsite\Excel\Concerns\ToModel;
 class ForumAttachmentsImport extends LegacyDBImport implements ToModel
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         $fileLocation = Arr::first(
