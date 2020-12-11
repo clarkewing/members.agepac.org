@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Models\Favorite;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -12,10 +11,10 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 class ForumPostFavoritesImport extends LegacyDBImport implements ToModel, WithUpserts
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         $createdAt = Carbon::createFromTimestamp($row['date']);
