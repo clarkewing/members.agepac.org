@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Events\Dispatchers\NullEventDispatcher;
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
 use App\Imports\CompaniesImport;
