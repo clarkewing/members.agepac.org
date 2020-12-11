@@ -214,7 +214,20 @@ class ImportLegacyDB extends Command
      */
     protected function setThreadInitiators(): void
     {
-        Post::select(DB::raw('min(`created_at`)'))->groupBy('thread_id')
+        $firstPostsQuery = Post::withoutGlobalScopes()
+            ->select('thread_id', DB::raw('MIN(`created_at`) AS first_post_created_at'))
+            ->groupBy('thread_id');
+
+        $firstPostsIds = Post::withoutGlobalScopes()
+            ->select('id')->distinct() // Select prevents eager loading
+            ->joinSub($firstPostsQuery, 'first_posts', function ($join) {
+                $join->on('posts.thread_id', '=', 'first_posts.thread_id')
+                    ->on('posts.created_at', '=', 'first_post_created_at');
+            })
+            ->pluck('id');
+
+        Post::whereIn('id', $firstPostsIds)
+            ->update(['is_thread_initiator' => true]);
     }
 
     /**
