@@ -14,6 +14,7 @@ use App\Imports\ForumPollVotesImport;
 use App\Imports\ForumPostFavoritesImport;
 use App\Imports\ForumPostsImport;
 use App\Imports\ForumThreadsImport;
+use App\Imports\ForumThreadSubscriptionsImport;
 use App\Imports\OccupationsImport;
 use App\Imports\ProfileInfoImport;
 use App\Imports\SubscriptionsImport;
@@ -38,14 +39,14 @@ class ImportLegacyDB extends Command
      *
      * @var string
      */
-    protected $signature = 'legacy:import-db';
+    protected $signature = 'legacy:import';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Imports data from the legacy site DB CSV exports.';
+    protected $description = 'Imports data from the legacy site DB CSV exports and download folder.';
 
     /**
      * Execute the console command.
@@ -57,10 +58,10 @@ class ImportLegacyDB extends Command
         Model::unguard();
 
         $this->section('Users', $this->importUsers());
-//
-//        $this->section('Companies', $this->importCompanies());
-//
-//        $this->section('Profiles', $this->importProfiles());
+
+        $this->section('Companies', $this->importCompanies());
+
+        $this->section('Profiles', $this->importProfiles());
 
         $this->section('Forum', $this->importForum());
 
@@ -149,6 +150,10 @@ class ImportLegacyDB extends Command
             (new ForumThreadsImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_thread'));
 
+            $this->line('Importing Forum - Thread Subsciptions');
+            (new ForumThreadSubscriptionsImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_subscribethread'));
+
             $this->line('Importing Forum - Attachments');
             (new ForumAttachmentsImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_attachment'));
@@ -172,12 +177,13 @@ class ImportLegacyDB extends Command
                 });
             });
 
-            $this->line('Importing Forum - Polls');
-            (new ForumPollsImport)->withOutput($this->output)
-                ->import($this->csvPath('agepacprzeforum_table_poll'));
             $this->line('Importing Forum - Post Favorites');
             (new ForumPostFavoritesImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_post_thanks'));
+
+            $this->line('Importing Forum - Polls');
+            (new ForumPollsImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_poll'));
 
             Poll::where('title', '')->delete();
 
