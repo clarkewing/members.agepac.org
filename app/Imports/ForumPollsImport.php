@@ -19,15 +19,15 @@ class ForumPollsImport extends LegacyDBImport implements OnEachRow
         $createdAt = Carbon::createFromTimestamp($row['dateline']);
 
         $poll->fill([
-                'title' => $row['question'],
-                'votes_editable' => false,
-                'max_votes' => $row['multiple'] ? null : 1,
-                'votes_privacy' => (int) ! $row['public'],
-                'results_before_voting' => $row['public'],
-                'locked_at' => null,
-                'created_at' => $createdAt->toDateTimeString(),
-                'updated_at' => $createdAt->toDateTimeString(),
-            ]);
+            'title' => $row['question'],
+            'votes_editable' => false,
+            'max_votes' => $row['multiple'] ? null : 1,
+            'votes_privacy' => (int) ! $row['public'],
+            'results_before_voting' => $row['public'],
+            'locked_at' => null,
+            'created_at' => $createdAt->toDateTimeString(),
+            'updated_at' => $createdAt->toDateTimeString(),
+        ]);
 
         if ($row['timeout'] !== 0) {
             $poll->locked_at = $createdAt->copy()->addDays($row['timeout'])->toDateTimeString();

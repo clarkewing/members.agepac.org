@@ -84,8 +84,8 @@ class ImportLegacyDB extends Command
             (new UserFieldsImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_userfield'));
 
-                    $this->line('Importing Users - Subscriptions');
-                    (new SubscriptionsImport)->withOutput($this->output)
+            $this->line('Importing Users - Subscriptions');
+            (new SubscriptionsImport)->withOutput($this->output)
                         ->import($this->csvPath('agepacprzeforum_table_u_cotisation'));
         };
     }

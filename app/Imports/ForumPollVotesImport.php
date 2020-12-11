@@ -11,10 +11,10 @@ use Maatwebsite\Excel\Concerns\ToModel;
 class ForumPollVotesImport extends LegacyDBImport implements ToModel
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         $createdAt = Carbon::createFromTimestamp($row['votedate']);
