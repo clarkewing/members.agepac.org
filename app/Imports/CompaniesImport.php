@@ -3,48 +3,43 @@
 namespace App\Imports;
 
 use App\Models\Company;
+use App\Traits\ParsesLegacyBBCode;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithUpserts;
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Row;
 
-class CompaniesImport extends LegacyDBImport implements ToModel, WithUpserts
+class CompaniesImport extends LegacyDBImport implements OnEachRow
 {
+    use ParsesLegacyBBCode;
+
     /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * ForumPostsImport constructor.
      */
-    public function model(array $row)
+    public function __construct()
     {
-        $company = new Company([
-            'id' => $row['cid'],
-            'name' => $row['titre'],
-            'type_code' => [
-                'Compagnie Aérienne' => Company::AIRLINE,
-                'Ecole / Formation' => Company::SCHOOL,
-                'Aéroclub' => Company::FLYING_CLUB,
-                'Association' => Company::ASSOCIATION,
-                'Entreprise' => Company::OTHER_BUSINESS,
-                'Autre' => Company::OTHER_BUSINESS,
-            ][$row['type']],
-            'description' => strip_tags($row['description']),
-            'conditions' => strip_tags($row['condition'] . '<br><br>' . $row['perspective']),
-            'created_at' => Carbon::createFromTimestamp($row['d_date'])->toDateTimeString(),
-            'updated_at' => Carbon::createFromTimestamp($row['u_date'])->toDateTimeString(),
-        ]);
-
-        $company->generateSlug();
-
-        return $company;
+        $this->instantiateBBCode();
     }
 
     /**
-     * @return string|array
+     * @param  \Maatwebsite\Excel\Row  $row
+     * @return void
      */
-    public function uniqueBy()
+    public function onRow(Row $row)
     {
-        return 'id';
+        $updatedAt = Carbon::createFromFormat('Y-m-d H:i:s', $row['d_maj']);
+
+        $company = Company::firstOrNew([
+            'name' => $row['titre'],
+        ]);
+
+        $company->fill([
+            'type_code' => $row['type'] === 1 ? Company::AIRLINE : Company::OTHER_BUSINESS,
+            'description' => $row['p_description'],
+            'remarks' => strip_tags($this->parseBBCode($row['texte'])),
+            'created_at' => ($company->exists ? min($company->created_at, $updatedAt) : $updatedAt)->toDateTimeString(),
+            'updated_at' => $updatedAt->toDateString(),
+        ])->save();
     }
 
     /**
@@ -53,18 +48,11 @@ class CompaniesImport extends LegacyDBImport implements ToModel, WithUpserts
     public function rules(): array
     {
         return [
-            'cid' => ['required', 'integer'],
-            'd_date' => ['required', 'date_format:U'],
-            'u_date' => ['required', 'date_format:U'],
+            'type' => ['required', 'integer', Rule::in([1, 2, 3, 4])],
             'titre' => ['required', 'string', 'max:255'],
-            'type' => [
-                'required',
-                'string',
-                Rule::in(['Compagnie Aérienne', 'Ecole / Formation', 'Aéroclub', 'Association', 'Entreprise', 'Autre']),
-            ],
-            'perspective' => ['nullable', 'string', 'max:65535'],
-            'description' => ['nullable', 'string', 'max:65535'],
-            'condition' => ['nullable', 'string', 'max:65535'],
+            'd_maj' => ['required', 'date_format:Y-m-d H:i:s'],
+            'p_description' => ['nullable', 'string', 'max:65535'],
+            'texte' => ['nullable', 'string', 'max:65535'],
         ];
     }
 }

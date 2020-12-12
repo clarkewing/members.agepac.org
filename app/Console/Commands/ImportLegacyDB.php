@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
 use App\Imports\CompaniesImport;
+use App\Imports\OldCompaniesImport;
 use App\Imports\CompanyCommentsImport;
 use App\Imports\CoursesImport;
 use App\Imports\ForumAttachmentsImport;
@@ -103,13 +104,17 @@ class ImportLegacyDB extends Command
     {
         return function () {
             Company::withoutSyncingToSearch(function () {
-                $this->line('Importing Companies - Basic info');
-                (new CompaniesImport)->withOutput($this->output)
+                $this->line('Importing Old Companies Implementation - Basic info');
+                (new OldCompaniesImport)->withOutput($this->output)
                     ->import($this->csvPath('agepacprzeforum_table_c_airline'));
 
-                $this->line('Importing Companies - Comments');
+                $this->line('Importing Old Companies Implementation - Comments');
                 (new CompanyCommentsImport)->withOutput($this->output)
                     ->import($this->csvPath('agepacprzeforum_table_c_comment'));
+
+                $this->line('Importing New Companies Implementation');
+                (new CompaniesImport)->withOutput($this->output)
+                    ->import($this->csvPath('agepacprzeforum_table_fiche_compagnie'));
             });
 
             $this->line('Indexing Companies');
