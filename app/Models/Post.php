@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
 use App\Traits\Favoritable;
