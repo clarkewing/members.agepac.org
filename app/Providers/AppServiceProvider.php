@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -61,6 +62,38 @@ class AppServiceProvider extends ServiceProvider
             'thread' => 'App\Models\Thread',
             'user' => 'App\Models\User',
         ]);
+
+        Str::macro('nameCase', function (
+            string $value,
+            array $delimiters = [' ', '-', "O'", "L'", "D'", 'St.', 'Mc'],
+            array $lowercaseExceptions = ['the', 'van', 'den', 'von', 'und', 'der', 'de', 'de la', 'da', 'of', 'and', "l'", "d'"],
+            array $uppercaseExceptions = ['III', 'IV', 'VI', 'VII', 'VIII', 'IX']
+        ) {
+            $value = Str::lower($value);
+
+            foreach ($delimiters as $delimiter) {
+                $words = explode($delimiter, $value);
+                $newWords = [];
+
+                foreach ($words as $word) {
+                    if (in_array(Str::upper($word), $uppercaseExceptions)) {
+                        $newWords[] = Str::upper($word);
+                    } elseif (! in_array($word, $lowercaseExceptions)) {
+                        $newWords[] = Str::ucfirst($word);
+                    } else {
+                        $newWords[] = $word;
+                    }
+                }
+
+                if (in_array(Str::lower($delimiter), $lowercaseExceptions)) {
+                    $delimiter = Str::lower($delimiter);
+                }
+
+                $value = implode($delimiter, $newWords);
+            }
+
+            return $value;
+        });
 
         Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {
             return ! array_key_exists($attribute, $validator->getData());

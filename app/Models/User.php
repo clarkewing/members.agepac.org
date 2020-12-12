@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Spatie\Permission\Traits\HasRoles;
@@ -137,6 +138,33 @@ class User extends Authenticatable implements MustVerifyEmail
             $this->visitedThreadCacheKey($thread),
             now()
         );
+    }
+
+    /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstNameAttribute(string $value): void
+    {
+        $isAllLowerCase = Str::upper($value) === $value;
+        $isAllUpperCase = Str::upper($value) === $value;
+
+        if ($isAllLowerCase || $isAllUpperCase) {
+            Str::nameCase($value);
+        }
+    }
+
+    /**
+     * Set the user's last name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setLastNameAttribute(string $value): void
+    {
+        $this->setFirstNameAttribute($value);
     }
 
     /**
