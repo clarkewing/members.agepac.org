@@ -11,6 +11,7 @@
         "php": "^7.3|^8.0",
         "ext-json": "*",
         "algolia/algoliasearch-client-php": "^2.7",
+        "algolia/scout-extended": "^1.10",
         "barryvdh/laravel-snappy": "^0.4.7",
         "davidpiesse/nova-toggle": "^0.0.6",
         "drobee/nova-sluggable": "^1.2",

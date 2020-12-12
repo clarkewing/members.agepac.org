@@ -21,8 +21,10 @@ use App\Imports\SubscriptionsImport;
 use App\Imports\UserFieldsImport;
 use App\Imports\UsersImport;
 use App\Models\Attachment;
+use App\Models\Company;
 use App\Models\Poll;
 use App\Models\Post;
+use App\Models\Profile;
 use App\Traits\SuppressesEvents;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
@@ -100,13 +102,20 @@ class ImportLegacyDB extends Command
     protected function importCompanies(): \Closure
     {
         return function () {
-            $this->line('Importing Companies - Basic info');
-            (new CompaniesImport)->withOutput($this->output)
-                ->import($this->csvPath('agepacprzeforum_table_c_airline'));
+            Company::withoutSyncingToSearch(function () {
+                $this->line('Importing Companies - Basic info');
+                (new CompaniesImport)->withOutput($this->output)
+                    ->import($this->csvPath('agepacprzeforum_table_c_airline'));
 
-            $this->line('Importing Companies - Comments');
-            (new CompanyCommentsImport)->withOutput($this->output)
-                ->import($this->csvPath('agepacprzeforum_table_c_comment'));
+                $this->line('Importing Companies - Comments');
+                (new CompanyCommentsImport)->withOutput($this->output)
+                    ->import($this->csvPath('agepacprzeforum_table_c_comment'));
+            });
+
+            $this->line('Indexing Companies');
+            $this->call('scout:import', [
+                'searchable' => Company::class,
+            ]);
         };
     }
 
@@ -118,17 +127,24 @@ class ImportLegacyDB extends Command
     protected function importProfiles(): \Closure
     {
         return function () {
-            $this->line('Importing Profiles - Bio and flight hours');
-            (new ProfileInfoImport)->withOutput($this->output)
-                ->import($this->csvPath('agepacprzeforum_table_u_parcours'));
+            Profile::withoutSyncingToSearch(function () {
+                $this->line('Importing Profiles - Bio and flight hours');
+                (new ProfileInfoImport)->withOutput($this->output)
+                    ->import($this->csvPath('agepacprzeforum_table_u_parcours'));
 
-            $this->line('Importing Profiles - Courses');
-            (new CoursesImport)->withOutput($this->output)
-                ->import($this->csvPath('agepacprzeforum_table_u_formation'));
+                $this->line('Importing Profiles - Courses');
+                (new CoursesImport)->withOutput($this->output)
+                    ->import($this->csvPath('agepacprzeforum_table_u_formation'));
 
-            $this->line('Importing Profiles - Occupations');
-            (new OccupationsImport)->withOutput($this->output)
-                ->import($this->csvPath('agepacprzeforum_table_u_emploi'));
+                $this->line('Importing Profiles - Occupations');
+                (new OccupationsImport)->withOutput($this->output)
+                    ->import($this->csvPath('agepacprzeforum_table_u_emploi'));
+            });
+
+            $this->line('Indexing Profiles');
+            $this->call('scout:import', [
+                'searchable' => Profile::class,
+            ]);
         };
     }
 
@@ -190,6 +206,11 @@ class ImportLegacyDB extends Command
             $this->line('Importing Forum - Poll Votes');
             (new ForumPollVotesImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_pollvote'));
+
+            $this->line('Indexing Forum');
+            $this->call('scout:import', [
+                'searchable' => Post::class,
+            ]);
         };
     }
 

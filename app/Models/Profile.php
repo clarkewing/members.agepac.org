@@ -146,7 +146,7 @@ class Profile extends User
      */
     public function searchableAs()
     {
-        return 'profiles';
+        return config('scout.prefix') . 'profiles';
     }
 
     /**
@@ -156,7 +156,7 @@ class Profile extends User
      */
     public function toSearchableArray()
     {
-        return [
+        return $this->transform([
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
@@ -165,6 +165,6 @@ class Profile extends User
             'class_year' => $this->class_year,
             'avatar_path' => $this->avatar_path,
             'mentorship_tags' => $this->mentorship_tags->pluck('name')->all(),
-        ];
+        ]);
     }
 }

@@ -3,7 +3,11 @@
 @section('content')
     @if(Route::is('threads.search'))
         <instant-search inline-template>
-            <ais-instant-search :search-client="searchClient" index-name="posts" :routing="routing">
+            <ais-instant-search
+                :search-client="searchClient"
+                index-name="{{ (new App\Models\Post)->searchableAs() }}"
+                :routing="routing"
+            >
                 <ais-configure query="{{ Request::query('query') }}"></ais-configure>
                 @endif
 

@@ -2,7 +2,11 @@
 
 @section('content')
     <instant-search inline-template>
-        <ais-instant-search :search-client="searchClient" index-name="companies" :routing="routing">
+        <ais-instant-search
+            :search-client="searchClient"
+            index-name="{{ (new App\Models\Company)->searchableAs() }}"
+            :routing="routing"
+        >
             <ais-configure query="{{ Request::query('query') }}"></ais-configure>
 
             <div class="container text-primary bg-white mt-n4 py-4 border border-top-0 rounded-bottom">

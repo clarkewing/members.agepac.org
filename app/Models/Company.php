@@ -144,13 +144,13 @@ class Company extends Model
      */
     public function toSearchableArray()
     {
-        return [
+        return $this->transform([
             'id' => $this->id,
             'slug' => $this->slug,
             'name' => $this->name,
             'type' => $this->type,
             'website' => $this->website,
-        ];
+        ]);
     }
 
     public function setDescriptionFromWikipedia()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Algolia\ScoutExtended\Splitters\HtmlSplitter;
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
 use App\Traits\Favoritable;
@@ -10,6 +11,7 @@ use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 class Post extends Model
@@ -211,6 +213,26 @@ class Post extends Model
     }
 
     /**
+     * Splits the body for indexing.
+     * Returns content of h1-h6 and p tags split at line breaks.
+     *
+     * @param  string  $body
+     * @return array
+     */
+    public function splitBody($body)
+    {
+        preg_match_all('/<(h[1-6]|p)>(.*?)<\/\1>/i', $body, $matches);
+
+        return array_filter(
+            array_map('strip_tags', Arr::flatten(
+                array_map(function ($part) {
+                    return preg_split('/\s*<br\s*\/?>\s*/', $part);
+                }, $matches[2])
+            ))
+        );
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
@@ -262,6 +284,6 @@ class Post extends Model
             $searchableData['thread']['channel']['lvl1'] = $this->thread->channel->parent->name . ' > ' . $this->thread->channel->name;
         }
 
-        return $searchableData;
+        return $this->transform($searchableData);
     }
 }
