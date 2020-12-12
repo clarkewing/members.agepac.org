@@ -148,12 +148,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function setFirstNameAttribute(string $value): void
     {
-        $isAllLowerCase = Str::upper($value) === $value;
-        $isAllUpperCase = Str::upper($value) === $value;
-
-        if ($isAllLowerCase || $isAllUpperCase) {
-            Str::nameCase($value);
-        }
+        $this->attributes['first_name'] = $this->ensureNameCapitalized($value);
     }
 
     /**
@@ -164,7 +159,26 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function setLastNameAttribute(string $value): void
     {
-        $this->setFirstNameAttribute($value);
+        $this->attributes['last_name'] = $this->ensureNameCapitalized($value);
+    }
+
+    /**
+     * Ensure the given name value is properly capitalized.
+     * If not all lower or upper case, then apply nameCase method.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function ensureNameCapitalized(string $value): string
+    {
+        $isAllLowerCase = Str::lower($value) === $value;
+        $isAllUpperCase = Str::upper($value) === $value;
+
+        if ($isAllLowerCase || $isAllUpperCase) {
+            return Str::nameCase($value);
+        }
+
+        return $value;
     }
 
     /**
