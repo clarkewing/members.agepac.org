@@ -214,22 +214,40 @@ class Post extends Model
 
     /**
      * Splits the body for indexing.
-     * Returns content of h1-h6 and p tags split at line breaks.
      *
      * @param  string  $body
      * @return array
      */
     public function splitBody($body)
     {
+        // First, we split the body into a gazillion small parts based on h*, p, and br tags.
         preg_match_all('/<(h[1-6]|p)>(.*?)<\/\1>/i', $body, $matches);
 
-        return array_filter(
+        $smallParts = array_filter(
             array_map('strip_tags', Arr::flatten(
                 array_map(function ($part) {
                     return preg_split('/\s*<br\s*\/?>\s*/', $part);
                 }, $matches[2])
             ))
         );
+
+        // Next, we look at all these parts and combine them into bigger parts not over 8kB.
+        $i = 0;
+        $bigParts = [];
+
+        foreach ($smallParts as $nextPart) {
+            $implodedParts = $bigParts[$i] ?? '';
+
+            if (mb_strlen($implodedParts, '8bit') + mb_strlen($nextPart, '8bit') < 8000) {
+                $bigParts[$i] = implode("\n", array_filter([$implodedParts, $nextPart]));
+            } else {
+                $i++;
+                $bigParts[$i] = $nextPart;
+            }
+        }
+
+        // Tadaaaa!
+        return $bigParts;
     }
 
     /**
