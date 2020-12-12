@@ -19,7 +19,10 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Billable, HasReputation, HasRoles, Notifiable;
+    use HasFactory, HasReputation, HasRoles, Notifiable;
+    use Billable {
+        createAsStripeCustomer as protected traitCreateAsStripeCustomer;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -228,7 +231,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getPhoneAttribute($value)
     {
         if (is_null($value)) {
-            return;
+            return null;
         }
 
         return PhoneNumber::make($value);
@@ -268,5 +271,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function makeUsername(string $firstName, string $lastName): string
     {
         return strtolower(URLify::filter($firstName) . '.' . URLify::filter($lastName));
+    }
+
+    /**
+     * Create a Stripe customer for the given model.
+     *
+     * @param  array  $options
+     * @return \Stripe\Customer
+     *
+     * @throws \Laravel\Cashier\Exceptions\CustomerAlreadyCreated
+     */
+    public function createAsStripeCustomer(array $options = []): \Stripe\Customer
+    {
+        return $this->traitCreateAsStripeCustomer(array_merge(
+            [
+                'name' => $this->name,
+                'description' => $this->class,
+                'phone' => optional($this->phone)->formatInternational(),
+            ],
+            $options
+        ));
     }
 }
