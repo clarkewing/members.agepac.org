@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use libphonenumber\NumberParseException;
 use Maatwebsite\Excel\Concerns\OnEachRow;
@@ -19,9 +20,9 @@ class UserFieldsImport extends LegacyDBImport implements OnEachRow
     {
         $user = User::find($row['userid']);
 
-        $user->first_name = $row['field5'];
+        $user->first_name = Str::nameCase($row['field5']);
 
-        $user->last_name = $row['field6'];
+        $user->last_name = Str::nameCase($row['field6']);
 
         $user->class_course = $row['field7'] === 'Non EPL'
             ? null
