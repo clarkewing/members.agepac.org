@@ -44,7 +44,7 @@ class CreateThreadsTest extends TestCase
             ->publishThread(['title' => 'Some title', 'body' => 'This is the body.'])
             ->assertSee('Some title');
 
-        $this->assertDatabaseHas('posts', ['body' => 'This is the body.']);
+        $this->assertDatabaseHas('posts', ['body' => '<p>This is the body.</p>']);
     }
 
     /** @test */
@@ -54,7 +54,7 @@ class CreateThreadsTest extends TestCase
 
         $this->assertDatabaseHas('threads', ['title' => 'Some title']);
         $this->assertDatabaseHas('posts', [
-            'body' => 'This is the body.',
+            'body' => '<p>This is the body.</p>',
             'is_thread_initiator' => true,
         ]);
     }
