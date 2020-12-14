@@ -31,7 +31,8 @@ class Migrate extends Component
     public $gender = ''; // Ensure select is initially blank
     public $phone;
 
-    protected function rules() {
+    protected function rules()
+    {
         return [
             'class_course' => ['required', Rule::in(config('council.courses'))],
             'class_year' => ['required', 'digits:4'],
@@ -49,7 +50,7 @@ class Migrate extends Component
     public function verify()
     {
         $this->validate([
-            'token' => ['required', 'string', 'digits:6', Rule::in([$this->getExpectedToken()])]
+            'token' => ['required', 'string', 'digits:6', Rule::in([$this->getExpectedToken()])],
         ]);
 
         $this->verified = true;
@@ -112,7 +113,7 @@ class Migrate extends Component
 
     protected function generateExpectedToken(): string
     {
-        return tap(sprintf("%06d", mt_rand(0, 999999)),
+        return tap(sprintf('%06d', mt_rand(0, 999999)),
             function ($value) {
                 Session::put('expectedToken', $value);
             }

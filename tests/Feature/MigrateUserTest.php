@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Livewire\Migrate;
-use App\Http\Livewire\Register;
 use App\Models\User;
 use App\Notifications\VerificationToken;
 use Illuminate\Support\Facades\Hash;
@@ -111,7 +110,7 @@ class MigrateUserTest extends TestCase
 
         // Ensure we use an incorrect token.
         do {
-            $incorrectToken = sprintf("%06d", mt_rand(0, 999999));
+            $incorrectToken = sprintf('%06d', mt_rand(0, 999999));
         } while ($incorrectToken === $this->getExpectedToken());
 
         $testLivewireComponent
