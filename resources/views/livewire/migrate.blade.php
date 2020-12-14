@@ -88,7 +88,8 @@
                         <small class="form-text text-muted"
                                id="class_courseHelp"
                         >
-                            Les EPL/S sont ab-initio, les EPL/U sont ceux entrés avec un ATPL théorique.
+                            Les EPL/S sont ab-initio, les EPL/U sont ceux entrés avec un ATPL théorique,
+                            et les EPL/P ceux entrés avec un CPL pratique.
                         </small>
 
                         @error('class_course')
