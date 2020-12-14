@@ -51,9 +51,9 @@ class Company extends Model
      */
     protected static function booted()
     {
-        static::creating(function ($user) {
-            if (is_null($user->description)) {
-                $user->setDescriptionFromWikipedia();
+        static::creating(function ($company) {
+            if (is_null($company->description)) {
+                $company->setDescriptionFromWikipedia();
             }
         });
     }
@@ -144,13 +144,13 @@ class Company extends Model
      */
     public function toSearchableArray()
     {
-        return [
+        return $this->transform([
             'id' => $this->id,
             'slug' => $this->slug,
             'name' => $this->name,
             'type' => $this->type,
             'website' => $this->website,
-        ];
+        ]);
     }
 
     public function setDescriptionFromWikipedia()

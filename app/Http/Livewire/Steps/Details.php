@@ -30,12 +30,7 @@ trait Details
         $this->validate([
             'gender' => ['required', Rule::in(array_keys(config('council.genders')))],
             'birthdate' => ['required', 'date_format:Y-m-d', 'before:13 years ago'],
-            'phone' => [
-                'required',
-                Rule::phone()
-                    ->detect() // Auto-detect country if country code supplied
-                    ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]), // Fallback to France then GeoIP if unable to auto-detect
-            ],
+            'phone' => ['required', Rule::opinionatedPhone()],
         ]);
 
         $this->formatPhone();

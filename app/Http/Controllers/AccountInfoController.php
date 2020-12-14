@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Torann\GeoIP\Facades\GeoIP;
 
 class AccountInfoController extends Controller
 {
@@ -43,10 +42,7 @@ class AccountInfoController extends Controller
             'first_name' => 'not_present',
             'last_name' => 'not_present',
             'birthdate' => ['date_format:Y-m-d', 'before:13 years ago'],
-            'phone' => [
-                Rule::phone()->detect() // Auto-detect country if country code supplied
-                    ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]), // Fallback to France then GeoIP if unable to auto-detect
-            ],
+            'phone' => [Rule::opinionatedPhone()],
             'email' => ['email', Rule::unique('users')->ignore($user->id)],
             'current_password' => [
                 'password',

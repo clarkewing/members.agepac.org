@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Spatie\Permission\Traits\HasRoles;
@@ -18,7 +19,10 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Billable, HasReputation, HasRoles, Notifiable;
+    use HasFactory, HasReputation, HasRoles, Notifiable;
+    use Billable {
+        createAsStripeCustomer as protected traitCreateAsStripeCustomer;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -140,6 +144,47 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstNameAttribute(string $value): void
+    {
+        $this->attributes['first_name'] = $this->ensureNameCapitalized($value);
+    }
+
+    /**
+     * Set the user's last name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setLastNameAttribute(string $value): void
+    {
+        $this->attributes['last_name'] = $this->ensureNameCapitalized($value);
+    }
+
+    /**
+     * Ensure the given name value is properly capitalized.
+     * If not all lower or upper case, then apply nameCase method.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function ensureNameCapitalized(string $value): string
+    {
+        $isAllLowerCase = Str::lower($value) === $value;
+        $isAllUpperCase = Str::upper($value) === $value;
+
+        if ($isAllLowerCase || $isAllUpperCase) {
+            return Str::nameCase($value);
+        }
+
+        return $value;
+    }
+
+    /**
      * Get the user's full name.
      *
      * @return string
@@ -186,7 +231,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getPhoneAttribute($value)
     {
         if (is_null($value)) {
-            return;
+            return null;
         }
 
         return PhoneNumber::make($value);
@@ -226,5 +271,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function makeUsername(string $firstName, string $lastName): string
     {
         return strtolower(URLify::filter($firstName) . '.' . URLify::filter($lastName));
+    }
+
+    /**
+     * Create a Stripe customer for the given model.
+     *
+     * @param  array  $options
+     * @return \Stripe\Customer
+     *
+     * @throws \Laravel\Cashier\Exceptions\CustomerAlreadyCreated
+     */
+    public function createAsStripeCustomer(array $options = []): \Stripe\Customer
+    {
+        return $this->traitCreateAsStripeCustomer(array_merge(
+            [
+                'name' => $this->name,
+                'description' => $this->class,
+                'phone' => optional($this->phone)->formatInternational(),
+            ],
+            $options
+        ));
     }
 }

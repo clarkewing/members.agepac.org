@@ -10,6 +10,7 @@ use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 class Post extends Model
@@ -160,6 +161,37 @@ class Post extends Model
     }
 
     /**
+     * Sets the body of the subject.
+     *
+     * @param  string  $body
+     * @return void
+     */
+    public function setBodyAttribute(string $body): void
+    {
+        // Remove any divs added by Trix.
+        $body = str_replace(['<div>', '</div>'], '', $body);
+
+        $this->attributes['body'] = $this->replaceMentions(
+            $this->parseParagraphs($body)
+        );
+    }
+
+    /**
+     * Replace double line breaks with paragraphs.
+     *
+     * @param  string  $body
+     * @return string
+     */
+    protected function parseParagraphs(string $body)
+    {
+        return preg_replace(
+            '/(\S.*?)(?:\s|&nbsp;)*(?:(?:<br\s*\/?>(?:\s|&nbsp;)*){2,}|$)/s',
+            '<p>$1</p>',
+            $body
+        );
+    }
+
+    /**
      * Determines whether the post is marked as the best one on its thread.
      *
      * @return bool
@@ -177,6 +209,44 @@ class Post extends Model
     public function getIsBestAttribute(): bool
     {
         return $this->isBest();
+    }
+
+    /**
+     * Splits the body for indexing.
+     *
+     * @param  string  $body
+     * @return array
+     */
+    public function splitBody($body)
+    {
+        // First, we split the body into a gazillion small parts based on h*, p, and br tags.
+        preg_match_all('/<(h[1-6]|p)>(.*?)<\/\1>/i', $body, $matches);
+
+        $smallParts = array_filter(
+            array_map('strip_tags', Arr::flatten(
+                array_map(function ($part) {
+                    return preg_split('/\s*<br\s*\/?>\s*/', $part);
+                }, $matches[2])
+            ))
+        );
+
+        // Next, we look at all these parts and combine them into bigger parts not over 8kB.
+        $i = 0;
+        $bigParts = [];
+
+        foreach ($smallParts as $nextPart) {
+            $implodedParts = $bigParts[$i] ?? '';
+
+            if (mb_strlen($implodedParts, '8bit') + mb_strlen($nextPart, '8bit') < 8000) {
+                $bigParts[$i] = implode("\n", array_filter([$implodedParts, $nextPart]));
+            } else {
+                $i++;
+                $bigParts[$i] = $nextPart;
+            }
+        }
+
+        // Tadaaaa!
+        return $bigParts;
     }
 
     /**
@@ -231,6 +301,6 @@ class Post extends Model
             $searchableData['thread']['channel']['lvl1'] = $this->thread->channel->parent->name . ' > ' . $this->thread->channel->name;
         }
 
-        return $searchableData;
+        return $this->transform($searchableData);
     }
 }

@@ -9,6 +9,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Torann\GeoIP\Facades\GeoIP;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -61,6 +64,44 @@ class AppServiceProvider extends ServiceProvider
             'thread' => 'App\Models\Thread',
             'user' => 'App\Models\User',
         ]);
+
+        Str::macro('nameCase', function (
+            string $value,
+            array $delimiters = [' ', '-', "O'", "L'", "D'", 'St.', 'Mc'],
+            array $lowercaseExceptions = ['the', 'van', 'den', 'von', 'und', 'der', 'de', 'de la', 'da', 'of', 'and', "l'", "d'"],
+            array $uppercaseExceptions = ['III', 'IV', 'VI', 'VII', 'VIII', 'IX']
+        ) {
+            $value = Str::lower($value);
+
+            foreach ($delimiters as $delimiter) {
+                $words = explode($delimiter, $value);
+                $newWords = [];
+
+                foreach ($words as $word) {
+                    if (in_array(Str::upper($word), $uppercaseExceptions)) {
+                        $newWords[] = Str::upper($word);
+                    } elseif (! in_array($word, $lowercaseExceptions)) {
+                        $newWords[] = Str::ucfirst($word);
+                    } else {
+                        $newWords[] = $word;
+                    }
+                }
+
+                if (in_array(Str::lower($delimiter), $lowercaseExceptions)) {
+                    $delimiter = Str::lower($delimiter);
+                }
+
+                $value = implode($delimiter, $newWords);
+            }
+
+            return $value;
+        });
+
+        Rule::macro('opinionatedPhone', function () {
+            return Rule::phone()
+                ->detect() // Auto-detect country if country code supplied
+                ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]); // Fallback to France then GeoIP if unable to auto-detect)
+        });
 
         Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {
             return ! array_key_exists($attribute, $validator->getData());

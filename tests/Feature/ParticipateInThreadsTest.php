@@ -29,7 +29,7 @@ class ParticipateInThreadsTest extends TestCase
         $this->post($thread->path() . '/posts', $post->toArray())
             ->assertStatus(201);
 
-        $this->assertDatabaseHas('posts', ['body' => $post->body]);
+        $this->assertDatabaseHas('posts', ['body' => "<p>{$post->body}</p>"]);
     }
 
 //    /**
@@ -171,7 +171,7 @@ class ParticipateInThreadsTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
-            'body' => $updatedPost,
+            'body' => "<p>$updatedPost</p>",
         ]);
     }
 
@@ -187,7 +187,7 @@ class ParticipateInThreadsTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
-            'body' => $updatedPost,
+            'body' => "<p>$updatedPost</p>",
         ]);
     }
 

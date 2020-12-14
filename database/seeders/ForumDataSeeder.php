@@ -76,10 +76,9 @@ class ForumDataSeeder extends Seeder
                 }
 
                 Post::factory()->count($this->faker->numberBetween(1, 10))
-                    ->states($this->faker->boolean(10)
-                        ? ['from_existing_user']
-                        : ['from_existing_user', 'with_attachment']
-                    )->create([
+                    ->fromExistingUser()
+                    ->withAttachment($this->faker->boolean(10))
+                    ->create([
                         'thread_id' => $thread->id,
                     ])->each(function ($post) {
                         $this->recordActivity($post, 'created', $post->owner->id);

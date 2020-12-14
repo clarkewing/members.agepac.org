@@ -59,4 +59,61 @@ class Attachment extends Model
     {
         return $this->belongsTo(Post::class);
     }
+
+    /**
+     * Get the HTML to render the attachment.
+     */
+    public function html(): string
+    {
+        $trixType = 'file';
+
+        $trixData = [
+            'contentType' => Storage::disk('public')->mimeType($this->path),
+            'filename' => basename($this->path),
+            'filesize' => Storage::disk('public')->size($this->path),
+            'id' => $this->id,
+            'href' => '/storage/' . $this->path,
+            'url' => '/storage/' . $this->path,
+        ];
+
+        if (Str::startsWith($trixData['contentType'], 'image')) {
+            $trixType = 'preview';
+
+            [$trixData['width'], $trixData['height']] = getimagesize(
+                Storage::disk('public')->path($this->path)
+            );
+        }
+
+        $html = '<figure data-trix-attachment="' . htmlentities(json_encode($trixData)) . '" class="attachment attachment--' . $trixType . '">'
+                . '<a href="' . $trixData['href'] . '">';
+
+        if ($trixType === 'preview') {
+            $html .= '<img src="' . $trixData['url'] . '" width="' . $trixData['width'] . '" height="' . $trixData['height'] . '" alt="' . $trixData['filename'] . '">';
+        }
+
+        return $html
+             . '<figcaption class="attachment__caption">'
+             . '<span class="attachment__name">' . $trixData['filename'] . '</span>'
+             . '<span class="attachment__size">' . $this->humanSize . '</span>'
+             . '</figcaption>'
+             . '</a>'
+             . '</figure>';
+    }
+
+    /**
+     * Get the attachment's human readable size.
+     *
+     * @return string
+     */
+    public function getHumanSizeAttribute(): string
+    {
+        $bytes = Storage::disk('public')->size($this->path);
+        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+
+        for ($i = 0; $bytes > 1024; $i++) {
+            $bytes /= 1024;
+        }
+
+        return round($bytes, 2) . ' ' . $units[$i];
+    }
 }
