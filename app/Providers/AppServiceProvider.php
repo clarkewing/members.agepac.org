@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Torann\GeoIP\Facades\GeoIP;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -93,6 +95,12 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return $value;
+        });
+
+        Rule::macro('opinionatedPhone', function () {
+            return Rule::phone()
+                ->detect() // Auto-detect country if country code supplied
+                ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]); // Fallback to France then GeoIP if unable to auto-detect)
         });
 
         Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {

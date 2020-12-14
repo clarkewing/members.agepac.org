@@ -127,10 +127,7 @@ class User extends Resource
                         return $phone->formatInternational();
                     })
                     ->hideFromIndex()
-                    ->rules(
-                        'required',
-                        Rule::phone()->detect()->country(['FR', GeoIP::getLocation(request()->ip())->iso_code])
-                    ),
+                    ->rules('required', Rule::opinionatedPhone()),
             ]),
 
             $this->membershipIndicatorField()
