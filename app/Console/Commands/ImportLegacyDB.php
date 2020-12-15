@@ -26,12 +26,15 @@ use App\Models\Company;
 use App\Models\Poll;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\User;
 use App\Traits\SuppressesEvents;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Laravel\Scout\ModelObserver;
 
 class ImportLegacyDB extends Command
 {
@@ -58,6 +61,7 @@ class ImportLegacyDB extends Command
      */
     public function handle()
     {
+        $this->disableSearchSyncingFor([Company::class, Profile::class, Post::class]);
         Model::unguard();
 
         $this->section('Users', $this->importUsers());
@@ -69,8 +73,11 @@ class ImportLegacyDB extends Command
         $this->section('Forum', $this->importForum());
 
         Model::reguard();
+        $this->enableSearchSyncingFor([Company::class, Profile::class, Post::class]);
 
         $this->output->success('Import successful');
+
+        $this->line('Remember to run `scout:import` for the following models: Company, Profile, Post');
     }
 
     /**
@@ -103,24 +110,17 @@ class ImportLegacyDB extends Command
     protected function importCompanies(): \Closure
     {
         return function () {
-            Company::withoutSyncingToSearch(function () {
-                $this->line('Importing Old Companies Implementation - Basic info');
-                (new OldCompaniesImport)->withOutput($this->output)
-                    ->import($this->csvPath('agepacprzeforum_table_c_airline'));
+            $this->line('Importing Old Companies Implementation - Basic info');
+            (new OldCompaniesImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_c_airline'));
 
-                $this->line('Importing Old Companies Implementation - Comments');
-                (new CompanyCommentsImport)->withOutput($this->output)
-                    ->import($this->csvPath('agepacprzeforum_table_c_comment'));
+            $this->line('Importing Old Companies Implementation - Comments');
+            (new CompanyCommentsImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_c_comment'));
 
-                $this->line('Importing New Companies Implementation');
-                (new CompaniesImport)->withOutput($this->output)
-                    ->import($this->csvPath('agepacprzeforum_table_fiche_compagnie'));
-            });
-
-            $this->line('Indexing Companies');
-            $this->call('scout:import', [
-                'searchable' => Company::class,
-            ]);
+            $this->line('Importing New Companies Implementation');
+            (new CompaniesImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_fiche_compagnie'));
         };
     }
 
@@ -132,24 +132,17 @@ class ImportLegacyDB extends Command
     protected function importProfiles(): \Closure
     {
         return function () {
-            Profile::withoutSyncingToSearch(function () {
-                $this->line('Importing Profiles - Bio and flight hours');
-                (new ProfileInfoImport)->withOutput($this->output)
-                    ->import($this->csvPath('agepacprzeforum_table_u_parcours'));
+            $this->line('Importing Profiles - Bio and flight hours');
+            (new ProfileInfoImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_u_parcours'));
 
-                $this->line('Importing Profiles - Courses');
-                (new CoursesImport)->withOutput($this->output)
-                    ->import($this->csvPath('agepacprzeforum_table_u_formation'));
+            $this->line('Importing Profiles - Courses');
+            (new CoursesImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_u_formation'));
 
-                $this->line('Importing Profiles - Occupations');
-                (new OccupationsImport)->withOutput($this->output)
-                    ->import($this->csvPath('agepacprzeforum_table_u_emploi'));
-            });
-
-            $this->line('Indexing Profiles');
-            $this->call('scout:import', [
-                'searchable' => Profile::class,
-            ]);
+            $this->line('Importing Profiles - Occupations');
+            (new OccupationsImport)->withOutput($this->output)
+                ->import($this->csvPath('agepacprzeforum_table_u_emploi'));
         };
     }
 
@@ -179,23 +172,21 @@ class ImportLegacyDB extends Command
             (new ForumAttachmentsImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_attachment'));
 
-            Post::withoutSyncingToSearch(function () {
-                $this->suppressingModelEvents(Post::class, [PostCreated::class, PostUpdated::class], function () {
-                    $this->line('Importing Forum - Posts');
-                    (new ForumPostsImport)->withOutput($this->output)
-                        ->import($this->csvPath('agepacprzeforum_table_post'));
+            $this->suppressingModelEvents(Post::class, [PostCreated::class, PostUpdated::class], function () {
+                $this->line('Importing Forum - Posts');
+                (new ForumPostsImport)->withOutput($this->output)
+                    ->import($this->csvPath('agepacprzeforum_table_post'));
 
-                    $this->line('Importing Forum - Embedding attachments');
-                    $this->addUnembeddedAttachmentsToPosts();
+                $this->line('Importing Forum - Embedding attachments');
+                $this->addUnembeddedAttachmentsToPosts();
 
-                    $this->line('Importing Forum - Setting thread initiators');
-                    $this->setThreadInitiators();
-                });
+                $this->line('Importing Forum - Setting thread initiators');
+                $this->setThreadInitiators();
+            });
 
-                $this->line('Importing Forum - Running PostCreated events');
-                Post::all()->each(function ($post) {
-                    event(new PostCreated($post));
-                });
+            $this->line('Importing Forum - Running PostCreated events');
+            Post::all()->each(function ($post) {
+                event(new PostCreated($post));
             });
 
             $this->line('Importing Forum - Post Favorites');
@@ -211,11 +202,6 @@ class ImportLegacyDB extends Command
             $this->line('Importing Forum - Poll Votes');
             (new ForumPollVotesImport)->withOutput($this->output)
                 ->import($this->csvPath('agepacprzeforum_table_pollvote'));
-
-            $this->line('Indexing Forum');
-            $this->call('scout:import', [
-                'searchable' => Post::class,
-            ]);
         };
     }
 
@@ -283,5 +269,25 @@ class ImportLegacyDB extends Command
     protected function csvPath(string $fileName): string
     {
         return storage_path("app/legacy-import/database/$fileName.csv");
+    }
+
+    /**
+     * @param  array|string  $models
+     */
+    protected function disableSearchSyncingFor($models): void
+    {
+        foreach (Arr::wrap($models) as $model) {
+            ModelObserver::disableSyncingFor($model);
+        }
+    }
+
+    /**
+     * @param  array|string  $models
+     */
+    protected function enableSearchSyncingFor($models): void
+    {
+        foreach (Arr::wrap($models) as $model) {
+            ModelObserver::enableSyncingFor($model);
+        }
     }
 }
