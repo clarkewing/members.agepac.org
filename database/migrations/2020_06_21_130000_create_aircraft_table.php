@@ -21,7 +21,7 @@ class CreateAircraftTable extends Migration
 
         Artisan::call('db:seed', [
             '--class' => 'AircraftSeeder',
-            '--force'
+            '--force',
         ]);
     }
 
