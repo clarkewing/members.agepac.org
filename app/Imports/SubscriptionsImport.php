@@ -24,6 +24,10 @@ class SubscriptionsImport extends LegacyDBImport implements OnEachRow
 
         $expiry = Carbon::createFromTimestamp($row['d_expiry'])->startOfDay();
 
+        if ($expiry->isToday()) {
+            return;
+        }
+
         $diffYears = $expiry->diffInYears(today()->addDay());
         $prepaidCycles = min($diffYears + 1, 3);
 
