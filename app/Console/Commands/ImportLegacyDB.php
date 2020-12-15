@@ -26,7 +26,6 @@ use App\Models\Company;
 use App\Models\Poll;
 use App\Models\Post;
 use App\Models\Profile;
-use App\Models\User;
 use App\Traits\SuppressesEvents;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
