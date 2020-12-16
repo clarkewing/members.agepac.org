@@ -192,6 +192,9 @@ class MigrateUserTest extends TestCase
             ->assertSet('class_course', '')
             ->assertSet('class_year', null)
             ->assertSet('birthdate', null)
+            ->assertSet('birthdate_year', '')
+            ->assertSet('birthdate_month', '')
+            ->assertSet('birthdate_day', '')
             ->assertSet('phone', null);
     }
 

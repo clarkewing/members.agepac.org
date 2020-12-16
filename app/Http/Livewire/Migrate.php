@@ -100,15 +100,21 @@ class Migrate extends Component
 
     public function updatedBirthdate()
     {
-        try {
-            $birthdate = Carbon::parse($this->birthdate);
-        } catch (InvalidFormatException $e) {
+        if (is_null($this->birthdate)) {
+            $this->birthdate_year = $this->birthdate_month = $this->birthdate_day = '';
+
             return;
         }
 
-        $this->birthdate_year = $birthdate->year;
-        $this->birthdate_month = $birthdate->month;
-        $this->birthdate_day = $birthdate->day;
+        try {
+            $birthdate = Carbon::parse($this->birthdate);
+
+            $this->birthdate_year = $birthdate->year;
+            $this->birthdate_month = $birthdate->month;
+            $this->birthdate_day = $birthdate->day;
+        } catch (InvalidFormatException $e) {
+            return;
+        }
     }
 
     protected function generateExpectedToken(): string
