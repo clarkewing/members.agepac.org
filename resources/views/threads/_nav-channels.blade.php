@@ -47,7 +47,7 @@
                         data-target="#subChannel_{{ $parent }}"
                         aria-expanded="{{ Route::is('threads.index') && Route::input('channel') && optional(Route::input('channel'))->parent == $parent ? 'true' : 'false' }}"
                         aria-controls="collapseExample">
-                    {{ $parent ? strtoupper($parent) : 'GÉNÉRAL' }}
+                    {{ $parent ? Str::upper($parent) : 'GÉNÉRAL' }}
                 </button>
 
                 <ul id="subChannel_{{ $parent }}"
@@ -56,7 +56,7 @@
                         <li>
                             <a class="link-muted{{ Route::is('threads.index') && Route::input('channel') == $channel ? ' active' : '' }}"
                                href="{{ route('threads.index', $channel) }}">
-                                {{ ucwords($channel->name) }}
+                                {{ Str::title($channel->name) }}
                             </a>
                         </li>
                     @endforeach

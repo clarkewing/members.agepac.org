@@ -1,13 +1,13 @@
 <template>
-    <div class="row no-gutters flex-nowrap w-100 pt-2 mb-4">
-        <div class="d-flex pr-3">
+    <div class="d-flex pt-2 mb-4">
+        <div class="pr-3">
             <img :src="thread.creator.avatar_path"
                  :alt="thread.creator.name"
                  class="rounded-circle cover"
                  style="width: 2.5rem; height: 2.5rem;">
         </div>
 
-        <div class="d-flex flex-column flex-grow-1 border-gray-700 border-bottom">
+        <div class="flex-fill border-gray-700 border-bottom">
             <h3 class="h5 mb-1">
                 <svg v-if="thread.pinned" class="bi bi-flag-fill text-orange" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M3.5 1a.5.5 0 01.5.5v13a.5.5 0 01-1 0v-13a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
@@ -33,7 +33,7 @@
 
             <p class="mb-4"
                v-else
-               v-text="striptags(thread.snippet)"
+               v-text="striptags(thread.snippet).replace(/\S{100,}/g, '')"
                v-line-clamp="3" style="word-break: normal !important;">
             </p>
 

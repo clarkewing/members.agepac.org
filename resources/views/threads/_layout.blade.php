@@ -12,7 +12,7 @@
                 @endif
 
                 <div class="container-lg border-bottom border-lg-x rounded-bottom my-n4">
-                    <div class="row">
+                    <div class="row flex-sm-nowrap">
                         @section('sidebar')
                             @include('threads._sidebar')
                         @show
