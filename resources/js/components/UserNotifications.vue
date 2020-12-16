@@ -16,19 +16,21 @@
              style="width: 300px;">
             <h6 class="dropdown-header">Notifications</h6>
 
-            <a class="dropdown-item d-flex align-items-center text-wrap px-3"
-               v-for="notification in notifications"
-               :key="notification.id"
-               :href="notification.data.link"
-               @click.prevent="markAsRead(notification)"
-            >
-                <img :src="notification.data.notifier.avatar_path"
-                     :alt="notification.data.notifier.username"
-                     class="rounded-circle cover mr-2"
-                     style="width: 1.5em; height: 1.5em;">
+            <div class="overflow-auto" style="height: 90vh; max-height: 400px;">
+                <a class="dropdown-item d-flex align-items-center text-wrap px-3"
+                   v-for="notification in notifications"
+                   :key="notification.id"
+                   :href="notification.data.link"
+                   @click.prevent="markAsRead(notification)"
+                >
+                    <img :src="notification.data.notifier.avatar_path"
+                         :alt="notification.data.notifier.username"
+                         class="rounded-circle cover mr-2"
+                         style="width: 1.5em; height: 1.5em;">
 
-                <span class="small" v-text="notification.data.message"></span>
-            </a>
+                    <span class="small" v-text="notification.data.message"></span>
+                </a>
+            </div>
 
             <p class="mb-0 small text-center py-5" v-if="! notifications.length">
                 Aucune notification
