@@ -67,7 +67,7 @@
                 <a class="text-muted" :href="companyPath(fields.company)" v-text="fields.company.name"></a>
             </h6>
 
-            <h6 class="flex-shrink-0 flex-grow-1 small text-muted mr-4">
+            <h6 class="flex-shrink-0 flex-grow-1 small text-muted mr-4" v-if="fields.location">
                 <svg class="bi bi-geo mr-1" width="1em" height="1em" viewBox="0 0 16 16"
                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11 4a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
