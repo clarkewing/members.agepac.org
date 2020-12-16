@@ -88,6 +88,7 @@ return [
             'span[style|class]',
             'figure[class|data-trix-attachment|data-trix-attributes|data-trix-content-type]',
             'figcaption[class]',
+            'blockquote',
             'img[width|height|alt|src]',
         ]),
 
