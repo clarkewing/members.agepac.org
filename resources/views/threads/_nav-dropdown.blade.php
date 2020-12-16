@@ -53,11 +53,11 @@
         <div class="dropdown-divider"></div>
 
         @foreach($channels->withPermission('view')->sortBy('parent.name')->groupBy('parent.name') as $parent => $channels)
-            <h6 class="dropdown-header font-weight-bold">{{ $parent ? strtoupper($parent) : 'GÉNÉRAL' }}</h6>
+            <h6 class="dropdown-header font-weight-bold">{{ $parent ? Str::upper($parent) : 'GÉNÉRAL' }}</h6>
 
             @foreach($channels as $channel)
                 <a class="dropdown-item" href="{{ route('threads.index', $channel) }}">
-                    {{ ucwords($channel->name) }}
+                    {{ Str::title($channel->name) }}
                 </a>
             @endforeach
         @endforeach
