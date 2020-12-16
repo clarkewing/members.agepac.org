@@ -1,5 +1,5 @@
 <template>
-    <div class="row no-gutters pt-2 mb-4">
+    <div class="row no-gutters pt-2 mb-4" :id="'post-' + post.id">
         <div class="col-auto flex-column pr-3">
             <img :src="post.owner.avatar_path"
                  :alt="post.owner.name"
