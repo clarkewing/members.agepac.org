@@ -122,6 +122,24 @@
                 @endif
 
                 <div class="form-group">
+                    <label for="email">
+                        Adresse email
+                    </label>
+
+                    <input type="email"
+                           class="form-control"
+                           id="email"
+                           value="{{ $user->email }}"
+                           disabled>
+
+                    <small class="form-text text-muted"
+                           id="emailHelp"
+                    >
+                        Tu pourras modifier ton adresse email une fois connecté.
+                    </small>
+                </div>
+
+                <div class="form-group">
                     <label for="password">
                         Mot de passe
                     </label>
