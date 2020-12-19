@@ -25,7 +25,7 @@ class UsersImport extends LegacyDBImport implements ToModel, WithUpserts
             'gender' => 'U', // U for Unknown
             'email' => strtolower($row['email']),
             'created_at' => $row['joindate'] === 0
-                ? null
+                ? Carbon::create(2010)->toDateTimeString() // If the value is missing, just use 2010
                 : Carbon::createFromTimestamp($row['joindate'])->toDateTimeString(),
         ]);
 
