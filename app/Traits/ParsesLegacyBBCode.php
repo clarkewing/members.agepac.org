@@ -158,7 +158,7 @@ trait ParsesLegacyBBCode
             ->addParser(
                 'namedlink',
                 '/\[url\="?(.*?)"?\](.*?)\[\/url\]/s',
-                '<a href="$1">$1</a>',
+                '<a href="$1">$2</a>',
                 '$2'
             )
             ->addParser(
