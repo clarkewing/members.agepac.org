@@ -156,6 +156,12 @@ trait ParsesLegacyBBCode
                 '$2'
             )
             ->addParser(
+                'namedlink',
+                '/\[url\="?(.*?)"?\](.*?)\[\/url\]/s',
+                '<a href="$1">$1</a>',
+                '$2'
+            )
+            ->addParser(
                 'email',
                 '/\[email\](.*?)\[\/email\]/s',
                 '<a href="mailto:$1">$1</a>',
