@@ -6,10 +6,14 @@
         <div class="col-md">
             <ul class="nav justify-content-md-end flex-column flex-md-row">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Politique de confidentialité</a>
+                    <a class="nav-link" href="{{ route('pages.show', 'policies/privacy') }}">
+                        Politique de confidentialité
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contactez-nous</a>
+                    <a class="nav-link" href="{{ route('pages.show', 'contact') }}">
+                        Contactez-nous
+                    </a>
                 </li>
             </ul>
         </div>
