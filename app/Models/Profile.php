@@ -132,11 +132,34 @@ class Profile extends User
     }
 
     /**
+     * Set the custom tag model.
+     */
+    public static function getTagClassName(): string
+    {
+        return MentorshipTag::class;
+    }
+
+    /**
+     * Get the model's mentorship tags.
+     */
+    public function tags()
+    {
+        return $this->morphToMany(
+            self::getTagClassName(),
+            'taggable',
+            'taggables',
+            null,
+            'tag_id',
+        )
+            ->orderBy('order_column');
+    }
+
+    /**
      * Get the model's mentorship tags.
      */
     public function mentorship_tags()
     {
-        return $this->tags()->withType('mentorship');
+        return $this->tags();
     }
 
     /**
