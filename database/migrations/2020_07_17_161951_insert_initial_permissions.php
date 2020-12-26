@@ -46,6 +46,7 @@ class InsertInitialPermissions extends Migration
             ])
             ->createSubjectPermissions('mentorship_tags', [
                 'edit',
+                'merge',
                 'delete',
             ])
 

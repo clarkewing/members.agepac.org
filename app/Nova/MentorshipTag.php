@@ -5,7 +5,6 @@ namespace App\Nova;
 use App\Nova\Actions\MergeModels;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -125,6 +124,11 @@ class MentorshipTag extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            (new MergeModels)
+                ->relationships(['profiles'])
+                ->canSeeWhen('merge', $this)
+                ->canRun(function () { return Gate::allows('merge', \App\Models\MentorshipTag::class); }),
+        ];
     }
 }

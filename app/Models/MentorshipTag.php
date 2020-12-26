@@ -38,6 +38,7 @@ class MentorshipTag extends BaseTag
             Profile::class,
             'taggable',
             'taggables',
+            'tag_id',
         );
     }
 }

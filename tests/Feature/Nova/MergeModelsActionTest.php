@@ -3,7 +3,9 @@
 namespace Tests\Feature\Nova;
 
 use App\Models\Company;
+use App\Models\MentorshipTag;
 use App\Models\Occupation;
+use App\Models\Profile;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
 
@@ -56,5 +58,25 @@ class MergeModelsActionTest extends TestCase
             ->assertJson(['message' => 'Models merged successfully.']);
 
         $this->assertEquals(1, Company::find(1)->employees()->count());
+    }
+
+    /** @test */
+    public function testIfTwoModelsRelatedToSameModelAreMergedThenDuplicateIsDeleted()
+    {
+        $this->signInWithPermission('mentorship_tags.merge');
+
+        $profile = tap(Profile::factory()->create())->attachTags([
+            MentorshipTag::create(['name' => 'foo']),
+            MentorshipTag::create(['name' => 'bar']),
+        ]);
+
+        $this->assertEquals(2, $profile->mentorship_tags()->count());
+        $this->assertDatabaseCount('taggables', 2);
+
+        $this->performMerge('mentorship-tags', [1, 2])
+            ->assertJson(['message' => 'Models merged successfully.']);
+
+        $this->assertEquals(1, $profile->mentorship_tags()->count());
+        $this->assertDatabaseCount('taggables', 1);
     }
 }

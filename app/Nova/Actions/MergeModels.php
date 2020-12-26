@@ -45,9 +45,9 @@ class MergeModels extends Action
             return Action::danger('At least two models must be selected to merge.');
         }
 
-        $models = $models->keyBy($this->primaryKey = $models->first()->getKeyName());
-
-        $preservedModel = $models->pull($fields->preserved_id);
+        $preservedModel = ($absorbedModels = $models->keyBy(
+            $this->primaryKey = $models->first()->getKeyName()
+        ))->pull($fields->preserved_id);
 
         if (is_null($preservedModel)) {
             return Action::danger('The model ID to be preserved was not found in the merge selection.');
@@ -59,14 +59,23 @@ class MergeModels extends Action
             if ($relationshipInstance instanceof BelongsToMany) {
                 $table = $relationshipInstance->getTable();
                 $foreignPivotKey = $relationshipInstance->getForeignPivotKeyName();
+                $relatedPivotKey = $relationshipInstance->getRelatedPivotKeyName();
 
+                // Update foreign pivot keys of absorbed models.
+                // If they already exist for the preserved model, we ignore them to ensure there are no duplicates.
                 DB::table($table)
-                    ->whereIn($foreignPivotKey, $models->pluck($this->primaryKey))
+                    ->whereIn($foreignPivotKey, $absorbedModels->pluck($this->primaryKey))
+                    ->whereNotIn($relatedPivotKey, $preservedModel->$relationshipName()->pluck($relatedPivotKey))
                     ->update([$foreignPivotKey => $preservedModel->{$this->primaryKey}]);
+
+                // Delete any remaining pivot rows with the absorbed model ids.
+                DB::table($table)
+                    ->whereIn($foreignPivotKey, $absorbedModels->pluck($this->primaryKey))
+                    ->delete();
             }
         }
 
-        $models->each->delete();
+        $absorbedModels->each->delete();
 
         return Action::message('Models merged successfully.');
     }
