@@ -2,7 +2,9 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\MergeModels;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -118,6 +120,13 @@ class Company extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            (new MergeModels)
+                ->relationships(['employees'])
+                ->canSeeWhen('merge', $this)
+                ->canRun(function () {
+                    return Gate::allows('merge', $this);
+                }),
+        ];
     }
 }

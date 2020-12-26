@@ -89,7 +89,7 @@ class ProfilesController extends Controller
         }
 
         if ($request->has('mentorship_tags')) {
-            $profile->syncTagsWithType($request->input('mentorship_tags'), 'mentorship');
+            $profile->syncTags($request->input('mentorship_tags'));
         }
 
         $profile->update($request->all());

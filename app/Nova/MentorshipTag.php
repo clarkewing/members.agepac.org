@@ -2,8 +2,9 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\MergeModels;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Hidden;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -22,7 +23,7 @@ class MentorshipTag extends Resource
      *
      * @var string
      */
-    public static $model = \Spatie\Tags\Tag::class;
+    public static $model = \App\Models\MentorshipTag::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -46,18 +47,6 @@ class MentorshipTag extends Resource
      * @var array
      */
     public static $orderBy = ['id' => 'asc'];
-
-    /**
-     * Build an "index" query for the given resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->where('type', 'mentorship');
-    }
 
     /**
      * Build a Scout search query for the given resource.
@@ -91,9 +80,6 @@ class MentorshipTag extends Resource
                     $model->setTranslation('name', 'fr', $request->get($requestAttribute));
                 })
                 ->rules('required', 'max:255'),
-
-            Hidden::make('Type')
-                ->default('mentorship'),
         ];
     }
 
@@ -138,6 +124,13 @@ class MentorshipTag extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            (new MergeModels)
+                ->relationships(['profiles'])
+                ->canSeeWhen('merge', $this)
+                ->canRun(function () {
+                    return Gate::allows('merge', \App\Models\MentorshipTag::class);
+                }),
+        ];
     }
 }

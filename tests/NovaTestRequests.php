@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Laravel\Nova\Http\Controllers\ActionController;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceForceDeleteController;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
@@ -118,6 +119,34 @@ trait NovaTestRequests
                 'resource' => $resource,
                 'resources[]' => $resourceId,
             ])
+        );
+    }
+
+    /**
+     * List the actions for the given resource.
+     *
+     * @param  string  $resource
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function listResourceActions(string $resource)
+    {
+        return $this->getJson(
+            action([ActionController::class, 'index'], compact('resource'))
+        );
+    }
+
+    /**
+     * Perform an action on the specified resources.
+     *
+     * @param  string  $resource
+     * @param  array  $data
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function performResourceAction(string $resource, string $action, array $data = [])
+    {
+        return $this->postJson(
+            action([ActionController::class, 'store'], compact('resource', 'action')),
+            $data
         );
     }
 }

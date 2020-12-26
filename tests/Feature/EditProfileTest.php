@@ -159,7 +159,7 @@ class EditProfileTest extends TestCase
     {
         $this->profile->attachTag('existing tag');
 
-        $this->assertCount(1, $this->profile->tags);
+        $this->assertCount(1, $this->profile->mentorship_tags);
 
         $this->updateProfile(['mentorship_tags' => ''])
             ->assertJsonMissingValidationErrors('mentorship_tags');

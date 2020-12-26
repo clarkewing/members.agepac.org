@@ -17,7 +17,9 @@ class MentorshipTagsPolicy
      */
     public function viewAny(User $user)
     {
-        return $this->create($user);
+        return
+            $this->create($user)
+            || $this->merge($user);
     }
 
     /**
@@ -63,5 +65,16 @@ class MentorshipTagsPolicy
     public function delete(User $user)
     {
         return $user->hasPermissionTo('mentorship_tags.delete');
+    }
+
+    /**
+     * Determine whether the user can merge models.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function merge(User $user)
+    {
+        return $user->hasPermissionTo('mentorship_tags.merge');
     }
 }

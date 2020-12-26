@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Nova;
 
+use App\Models\MentorshipTag;
 use Illuminate\Support\Arr;
-use Spatie\Tags\Tag as MentorshipTag;
 use Tests\NovaTestRequests;
 use Tests\TestCase;
 
@@ -171,7 +171,7 @@ class ManageMentorshipTagsTest extends TestCase
     public function storeMentorshipTag(array $overrides = [])
     {
         return $this->storeResource('mentorship-tags', array_merge(
-            ['name' => 'Foo tag', 'type' => 'mentorship'],
+            ['name' => 'Foo tag'],
             $overrides
         ));
     }
@@ -185,7 +185,7 @@ class ManageMentorshipTagsTest extends TestCase
     protected function createMentorshipTag(array $overrides = [])
     {
         return MentorshipTag::create(
-            array_merge(['name' => 'Foo Tag', 'type' => 'mentorship'], $overrides)
+            array_merge(['name' => 'Foo Tag'], $overrides)
         );
     }
 
@@ -193,7 +193,7 @@ class ManageMentorshipTagsTest extends TestCase
      * Submits a request to update an existing mentorship_tags.
      *
      * @param  array  $data
-     * @param  \Spatie\Tags\Tag  $mentorshipTag
+     * @param  \App\Models\MentorshipTag|null  $mentorshipTag
      * @return \Illuminate\Testing\TestResponse
      */
     protected function updateMentorshipTag(array $data = [], MentorshipTag $mentorshipTag = null)
