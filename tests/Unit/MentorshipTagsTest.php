@@ -19,6 +19,7 @@ class MentorshipTagsTest extends TestCase
         $this->assertCount(1, $mentorshipTags);
         $this->assertEquals('Foo', $mentorshipTags->first()->name);
     }
+
     /** @test */
     public function testAlwaysCreatesTagsWithMentorshipType()
     {

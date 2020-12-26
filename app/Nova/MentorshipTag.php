@@ -128,7 +128,9 @@ class MentorshipTag extends Resource
             (new MergeModels)
                 ->relationships(['profiles'])
                 ->canSeeWhen('merge', $this)
-                ->canRun(function () { return Gate::allows('merge', \App\Models\MentorshipTag::class); }),
+                ->canRun(function () {
+                    return Gate::allows('merge', \App\Models\MentorshipTag::class);
+                }),
         ];
     }
 }

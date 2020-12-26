@@ -33,7 +33,8 @@ class MentorshipTag extends BaseTag
     /**
      * Get all of the profiles that are assigned this tag.
      */
-    public function profiles() {
+    public function profiles()
+    {
         return $this->morphedByMany(
             Profile::class,
             'taggable',
