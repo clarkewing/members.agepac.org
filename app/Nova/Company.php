@@ -124,7 +124,9 @@ class Company extends Resource
             (new MergeModels)
                 ->relationships(['employees'])
                 ->canSeeWhen('merge', $this)
-                ->canRun(function () { return Gate::allows('merge', $this); }),
+                ->canRun(function () {
+                    return Gate::allows('merge', $this);
+                }),
         ];
     }
 }
