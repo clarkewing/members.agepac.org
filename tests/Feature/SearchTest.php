@@ -8,13 +8,38 @@ use Tests\TestCase;
 
 class SearchTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withExceptionHandling();
+    }
+
+    /** @test */
+    public function testGuestsCannotSearchTheForum()
+    {
+        $this->getJson(route('threads.search') . '?query=foobar')
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotSearchTheForum()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getJson(route('threads.search') . '?query=foobar')
+            ->assertPaymentRequired();
+    }
+
     /**
      * @test
      * @group external-api
      * @group algolia-api
      */
-    public function testAUserCanSearchTheForum()
+    public function testSubscribedUsersCanSearchTheForum()
     {
+        $this->signIn();
+
         if (! config('scout.algolia.id')) {
             $this->markTestSkipped('Algolia is not configured.');
         }
@@ -32,7 +57,9 @@ class SearchTest extends TestCase
         do {
             sleep(.25);
 
-            $results = $this->getJson(route('threads.search') . "?query=$search")->json()['data'];
+            $results = $this->getJson(route('threads.search') . "?query=$search")
+                ->assertOk()
+                ->json()['data'];
         } while (empty($results) && now()->lessThan($maxTime));
 
         $this->assertCount(2, $results);

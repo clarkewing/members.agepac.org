@@ -18,7 +18,7 @@ class EditOccupationTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signIn();
+        $this->withExceptionHandling()->signInUnsubscribed();
 
         $this->occupation = Occupation::factory()->create(['user_id' => Auth::id()]);
     }
@@ -33,12 +33,47 @@ class EditOccupationTest extends TestCase
     }
 
     /** @test */
+    public function testUserCanUpdateOccupation()
+    {
+        $data = [
+            'position' => 'FO',
+            'aircraft_id' => 32, // DHC8 Q400
+            'company' => [
+                'name' => 'Flybe',
+                'description' => 'Cool description',
+            ],
+            'status_code' => 1,
+            'description' => 'Awesome description, even though the company went bust.',
+            'start_date' => '2019-08-01',
+            'end_date' => '2020-03-05',
+            'is_primary' => false,
+            'location' => [
+                'type' => 'city',
+                'name' => 'Belfast, Royaume-Uni',
+                'street_line_1' => null,
+                'street_line_2' => null,
+                'municipality' => 'Belfast',
+                'administrative_area' => 'Northern Ireland',
+                'sub_administrative_area' => 'Royaume-Uni',
+                'postal_code' => 'BT1',
+                'country' => 'Royaume-Uni',
+                'country_code' => 'GB',
+            ],
+        ];
+
+        $this->updateOccupation($data)
+            ->assertJsonMissingValidationErrors()
+            ->assertOk()
+            ->assertJson($data);
+    }
+
+    /** @test */
     public function testOnlyAuthorizedUserCanUpdateOccupation()
     {
         $this->updateOccupation()
             ->assertOk();
 
-        $this->signIn(); // Other user
+        $this->signInUnsubscribed(); // Other user
 
         $this->updateOccupation()
             ->assertForbidden();
@@ -363,41 +398,6 @@ class EditOccupationTest extends TestCase
             ->assertJson(['company' => $company->toArray()]);
 
         $this->assertDatabaseCount('companies', 2);
-    }
-
-    /** @test */
-    public function testCanUpdateOccupation()
-    {
-        $data = [
-            'position' => 'FO',
-            'aircraft_id' => 32, // DHC8 Q400
-            'company' => [
-                'name' => 'Flybe',
-                'description' => 'Cool description',
-            ],
-            'status_code' => 1,
-            'description' => 'Awesome description, even though the company went bust.',
-            'start_date' => '2019-08-01',
-            'end_date' => '2020-03-05',
-            'is_primary' => false,
-            'location' => [
-                'type' => 'city',
-                'name' => 'Belfast, Royaume-Uni',
-                'street_line_1' => null,
-                'street_line_2' => null,
-                'municipality' => 'Belfast',
-                'administrative_area' => 'Northern Ireland',
-                'sub_administrative_area' => 'Royaume-Uni',
-                'postal_code' => 'BT1',
-                'country' => 'Royaume-Uni',
-                'country_code' => 'GB',
-            ],
-        ];
-
-        $this->updateOccupation($data)
-            ->assertJsonMissingValidationErrors()
-            ->assertOk()
-            ->assertJson($data);
     }
 
     /**

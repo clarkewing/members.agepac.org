@@ -22,6 +22,15 @@ class ReadPagesTest extends TestCase
     }
 
     /** @test */
+    public function testUnsubscribedUsersCanViewUnrestrictedPages()
+    {
+        $this->signInUnsubscribed();
+
+        $this->get(route('pages.show', Page::factory()->create(['restricted' => false])))
+            ->assertOk();
+    }
+
+    /** @test */
     public function testGuestsCannotViewRestrictedPages()
     {
         $this->get(route('pages.show', Page::factory()->create(['restricted' => true])))
@@ -29,7 +38,16 @@ class ReadPagesTest extends TestCase
     }
 
     /** @test */
-    public function testUsersCanViewRestrictedPages()
+    public function testUnsubscribedUsersCannotViewRestrictedPages()
+    {
+        $this->signInUnsubscribed();
+
+        $this->get(route('pages.show', Page::factory()->create(['restricted' => true])))
+            ->assertRedirect(route('subscription.edit'));
+    }
+
+    /** @test */
+    public function testSubscribedUsersCanViewRestrictedPages()
     {
         $this->signIn();
 

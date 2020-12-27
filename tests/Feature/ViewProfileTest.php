@@ -33,9 +33,28 @@ class ViewProfileTest extends TestCase
     }
 
     /** @test */
-    public function testUserHasAProfile()
+    public function testUnsubscribedUsersCannotSeeProfiles()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getProfile()
+            ->assertRedirect(route('subscription.edit'));
+    }
+
+    /** @test */
+    public function testUnsubscribedUserCanSeeOwnProfile()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getProfile(Auth::user())
+            ->assertOk();
+    }
+
+    /** @test */
+    public function testSubscribedUserCanSeeProfiles()
     {
         $this->getProfile()
+            ->assertOk()
             ->assertSee($this->profile->name);
     }
 

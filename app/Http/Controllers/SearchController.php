@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 class SearchController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('members-area');
+    }
+
+    /**
      * Display the search results.
      *
      * @param  \Illuminate\Http\Request  $request

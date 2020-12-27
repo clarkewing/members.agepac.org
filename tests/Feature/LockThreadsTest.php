@@ -8,30 +8,42 @@ use Tests\TestCase;
 
 class LockThreadsTest extends TestCase
 {
-    /** @test */
-    public function testUnauthorizedUsersCannotLockThreads()
+    protected $thread;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->withExceptionHandling()->signIn();
 
-        $thread = Thread::factory()->create();
-
-        $this->post(route('threads.lock', $thread))
-            ->assertStatus(403);
-
-        $this->assertFalse($thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
+        $this->thread = Thread::factory()->create();
     }
 
     /** @test */
-    public function testUnauthorizedUsersCannotUnlockThreads()
+    public function testGuestsCannotLockThreads()
     {
-        $this->withExceptionHandling()->signIn();
+        Auth::logout();
 
-        $thread = Thread::factory()->create(['locked' => true]);
+        $this->lockThread($this->thread)
+            ->assertUnauthorized();
+    }
 
-        $this->delete(route('threads.unlock', $thread))
-            ->assertStatus(403);
+    /** @test */
+    public function testUnsubscribedUsersCannotLockThreads()
+    {
+        $this->signInUnsubscribed();
 
-        $this->assertTrue($thread->fresh()->locked, 'Failed asserting that the thread was locked.');
+        $this->lockThread($this->thread)
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotLockThreads()
+    {
+        $this->lockThread($this->thread)
+            ->assertForbidden();
+
+        $this->assertFalse($this->thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
     }
 
     /** @test */
@@ -39,12 +51,21 @@ class LockThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.lock');
 
-        $thread = Thread::factory()->create();
+        $this->lockThread($this->thread)
+            ->assertNoContent();
 
-        $this->post(route('threads.lock', $thread))
-            ->assertStatus(204);
+        $this->assertTrue($this->thread->fresh()->locked, 'Failed asserting that the thread was locked.');
+    }
 
-        $this->assertTrue($thread->fresh()->locked, 'Failed asserting that the thread was locked.');
+    /** @test */
+    public function testUnauthorizedUsersCannotUnlockThreads()
+    {
+        $this->thread->update(['locked' => true]);
+
+        $this->unlockThread($this->thread)
+            ->assertForbidden();
+
+        $this->assertTrue($this->thread->fresh()->locked, 'Failed asserting that the thread was locked.');
     }
 
     /** @test */
@@ -52,24 +73,40 @@ class LockThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.unlock');
 
-        $thread = Thread::factory()->create(['locked' => true]);
+        $this->thread->update(['locked' => true]);
 
-        $this->delete(route('threads.unlock', $thread))
-            ->assertStatus(204);
+        $this->unlockThread($this->thread)
+            ->assertNoContent();
 
-        $this->assertFalse($thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
+        $this->assertFalse($this->thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
     }
 
     /** @test */
     public function testALockedThreadMayNotReceiveNewPosts()
     {
-        $this->signIn();
+        $this->thread->update(['locked' => true]);
 
-        $thread = Thread::factory()->create(['locked' => true]);
-
-        $this->post($thread->path() . '/posts', [
+        $this->post($this->thread->path() . '/posts', [
             'body' => 'Foobar',
             'user_id' => Auth::id(),
         ])->assertStatus(422);
+    }
+
+    /**
+     * @param  \App\Models\Thread  $thread
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function lockThread(Thread $thread): \Illuminate\Testing\TestResponse
+    {
+        return $this->postJson(route('threads.lock', $thread));
+    }
+
+    /**
+     * @param  \App\Models\Thread  $thread
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function unlockThread(Thread $thread): \Illuminate\Testing\TestResponse
+    {
+        return $this->deleteJson(route('threads.unlock', $thread));
     }
 }

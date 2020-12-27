@@ -21,7 +21,16 @@ class ViewDashboardTest extends TestCase
     }
 
     /** @test */
-    public function testUsersCanSeeDashboard()
+    public function testUnsubscribedUsersCannotSeeDashboard()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getDashboard()
+            ->assertRedirect(route('subscription.edit'));
+    }
+
+    /** @test */
+    public function testSubscribedUsersCanSeeDashboard()
     {
         $this->signIn();
 

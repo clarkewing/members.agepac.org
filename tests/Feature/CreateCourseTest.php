@@ -34,7 +34,7 @@ class CreateCourseTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signIn();
+        $this->withExceptionHandling()->signInUnsubscribed();
     }
 
     /** @test */
@@ -44,6 +44,15 @@ class CreateCourseTest extends TestCase
 
         $this->storeCourse()
             ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUserCanStoreCourse()
+    {
+        $this->storeCourse()
+            ->assertJsonMissingValidationErrors()
+            ->assertCreated()
+            ->assertJson($this->data);
     }
 
     /** @test */
@@ -189,15 +198,6 @@ class CreateCourseTest extends TestCase
     {
         $this->storeCourse(['description' => str_repeat('*', 65536)])
             ->assertJsonValidationErrors('description');
-    }
-
-    /** @test */
-    public function testCanStoreCourse()
-    {
-        $this->storeCourse()
-            ->assertJsonMissingValidationErrors()
-            ->assertCreated()
-            ->assertJson($this->data);
     }
 
     /**

@@ -19,7 +19,7 @@ class PollsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
+        $this->middleware('members-area');
     }
 
     /**

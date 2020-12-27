@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Testing\Assert as PHPUnit;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\Rule;
 use Torann\GeoIP\Facades\GeoIP;
 
@@ -101,6 +103,17 @@ class AppServiceProvider extends ServiceProvider
             return Rule::phone()
                 ->detect() // Auto-detect country if country code supplied
                 ->country(['FR', GeoIP::getLocation(request()->ip())->iso_code]); // Fallback to France then GeoIP if unable to auto-detect)
+        });
+
+        TestResponse::macro('assertPaymentRequired', function () {
+            $actual = $this->getStatusCode();
+
+            PHPUnit::assertSame(
+                402, $actual,
+                "Response status code [{$actual}] is not a payment required status code."
+            );
+
+            return $this;
         });
 
         Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {

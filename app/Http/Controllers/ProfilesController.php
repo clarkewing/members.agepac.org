@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UnsubscribedException;
 use App\Models\Activity;
 use App\Models\Profile;
 use App\Rules\ValidLocation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class ProfilesController extends Controller
@@ -18,6 +20,7 @@ class ProfilesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('members-area')->only('index');
     }
 
     /**
@@ -46,9 +49,14 @@ class ProfilesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Profile  $profile
      * @return array|\Illuminate\View\View
+     * @throws \App\Exceptions\UnsubscribedException
      */
     public function show(Request $request, Profile $profile)
     {
+        if ($profile->id !== Auth::id() && ! Auth::user()->subscribed('default')) {
+            throw new UnsubscribedException;
+        }
+
         $data = [
             'profile' => $profile,
             'activities' => Activity::feed($profile),

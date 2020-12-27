@@ -28,7 +28,16 @@ class ViewPollResultsTest extends TestCase
     }
 
     /** @test */
-    public function testIfAllowedUsersCanViewResultsBeforeVoting()
+    public function testUnsubscribedUsersCannotViewPollResults()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getPollResults()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testIfAllowedSubscribedUsersCanViewResultsBeforeVoting()
     {
         $this->signIn();
 
@@ -43,7 +52,7 @@ class ViewPollResultsTest extends TestCase
     }
 
     /** @test */
-    public function testIfNotAllowedUsersCannotViewResultsBeforeVoting()
+    public function testIfNotAllowedSubscribedUsersCannotViewResultsBeforeVoting()
     {
         $this->signIn();
 
@@ -71,7 +80,7 @@ class ViewPollResultsTest extends TestCase
     }
 
     /** @test */
-    public function testPollUsersWithPermissionsCanViewResultsWithoutVoting()
+    public function testUsersWithPermissionsCanViewResultsWithoutVoting()
     {
         $this->signInWithPermission('threads.edit');
 
@@ -82,7 +91,7 @@ class ViewPollResultsTest extends TestCase
     }
 
     /** @test */
-    public function testIfVotesArePublicUsersCanViewVotes()
+    public function testIfVotesArePublicSubscribedUsersCanViewVotes()
     {
         $this->signIn();
 
@@ -92,7 +101,7 @@ class ViewPollResultsTest extends TestCase
     }
 
     /** @test */
-    public function testIfVotesArePrivateUsersCannotViewVotes()
+    public function testIfVotesArePrivateSubscribedUsersCannotViewVotes()
     {
         $this->signIn();
 

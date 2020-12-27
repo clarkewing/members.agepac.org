@@ -9,33 +9,54 @@ use Tests\TestCase;
 
 class DeleteThreadsTest extends TestCase
 {
+    protected $thread;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->withExceptionHandling()->signIn();
+
+        $this->thread = Thread::factory()->create(['user_id' => Auth::id()]);
     }
 
     /** @test */
-    public function testUnauthorizedUsersMayNotDeleteThreads()
+    public function testGuestsCannotDeleteThreads()
     {
-        $thread = Thread::factory()->create();
+        Auth::logout();
 
-        $this->delete($thread->path())
+        $this->deleteThread()
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotDeleteThreads()
+    {
+        $this->signInUnsubscribed();
+
+        $this->deleteThread()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotDeleteThreads()
+    {
+        $this->signIn();
+
+        $this->deleteThread()
             ->assertForbidden();
     }
 
     /** @test */
     public function testAThreadCanBeDeletedByAnAuthorizedUser()
     {
-        $thread = Thread::factory()->create();
-        $post = Post::factory()->create(['thread_id' => $thread->id]);
+        $post = Post::factory()->create(['thread_id' => $this->thread->id]);
 
         $this->signInWithPermission('threads.delete');
 
-        $this->deleteJson($thread->path())->assertNoContent();
+        $this->deleteThread()->assertNoContent();
 
-        $this->assertSoftDeleted($thread);
+        $this->assertSoftDeleted($this->thread);
         $this->assertSoftDeleted($post);
 
         $this->assertDatabaseMissing('activities', ['type' => 'created_thread']);
@@ -45,22 +66,26 @@ class DeleteThreadsTest extends TestCase
     /** @test */
     public function testAThreadWithRepliesCannotBeDeletedByItsCreator()
     {
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        Post::factory()->create(['thread_id' => $this->thread->id]);
 
-        Post::factory()->create(['thread_id' => $thread->id]);
+        $this->deleteThread()->assertForbidden();
 
-        $this->delete($thread->path())->assertForbidden();
-
-        $this->assertDatabaseHas('threads', ['id' => $thread->id, 'deleted_at' => null]);
+        $this->assertDatabaseHas('threads', ['id' => $this->thread->id, 'deleted_at' => null]);
     }
 
     /** @test */
     public function testAThreadWithNoRepliesCanBeDeletedByItsCreator()
     {
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $this->deleteThread();
 
-        $this->delete($thread->path());
+        $this->assertSoftDeleted($this->thread);
+    }
 
-        $this->assertSoftDeleted($thread);
+    /**
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function deleteThread(): \Illuminate\Testing\TestResponse
+    {
+        return $this->deleteJson($this->thread->path());
     }
 }

@@ -8,55 +8,77 @@ use Tests\TestCase;
 
 class UpdateThreadsTest extends TestCase
 {
+    protected $thread;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->withExceptionHandling()->signIn();
+
+        $this->thread = Thread::factory()->create(['user_id' => Auth::id()]);
     }
 
     /** @test */
-    public function testUnauthorizedUsersMayNotUpdateThreads()
+    public function testGuestsCannotUpdateThreads()
     {
-        $thread = Thread::factory()->create();
+        Auth::logout();
 
-        $this->patch($thread->path(), [])
-            ->assertStatus(403);
+        $this->updateThread()
+            ->assertUnauthorized();
     }
 
     /** @test */
-    public function testAThreadRequiresATitleToBeUpdated()
+    public function testUnsubscribedUsersCannotUpdateThreads()
     {
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $this->signInUnsubscribed();
 
-        $this->patch($thread->path(), [
-            'title' => null,
-        ])->assertSessionHasErrors('title');
+        $this->updateThread()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotUpdateThreads()
+    {
+        $this->signIn();
+
+        $this->updateThread()
+            ->assertForbidden();
     }
 
     /** @test */
     public function testAThreadCanBeUpdatedByItsCreator()
     {
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $this->updateThread(['title' => 'Changed'])
+            ->assertOk();
 
-        $this->patch($thread->path(), [
-            'title' => 'Changed',
-        ])->assertOk();
-
-        $this->assertEquals('Changed', $thread->fresh()->title);
+        $this->assertEquals('Changed', $this->thread->fresh()->title);
     }
 
     /** @test */
     public function testAThreadCanBeUpdatedByAnAuthorizedUser()
     {
-        $thread = Thread::factory()->create();
-
         $this->signInWithPermission('threads.edit');
 
-        $this->patch($thread->path(), [
-            'title' => 'Changed',
-        ])->assertOk();
+        $this->updateThread(['title' => 'Changed'])
+            ->assertOk();
 
-        $this->assertEquals('Changed', $thread->fresh()->title);
+        $this->assertEquals('Changed', $this->thread->fresh()->title);
+    }
+
+    /** @test */
+    public function testAThreadRequiresATitleToBeUpdated()
+    {
+        $this->updateThread(['title' => null])
+            ->assertJsonValidationErrors('title');
+    }
+
+    /**
+     * @param  array  $data
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function updateThread(array $data = []): \Illuminate\Testing\TestResponse
+    {
+        return $this->patchJson($this->thread->path(), $data);
     }
 }

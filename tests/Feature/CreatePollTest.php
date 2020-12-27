@@ -33,6 +33,15 @@ class CreatePollTest extends TestCase
     }
 
     /** @test */
+    public function testUnsubscribedUsersCannotAttachPollToThread()
+    {
+        $this->signInUnsubscribed();
+
+        $this->attachPollToThread()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
     public function testOnlyThreadCreatorCanAttachPollToThread()
     {
         $this->attachPollToThread()

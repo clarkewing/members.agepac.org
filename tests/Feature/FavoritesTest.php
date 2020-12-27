@@ -2,53 +2,68 @@
 
 namespace Tests\Feature;
 
+use App\Models\Post;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class FavoritesTest extends TestCase
 {
+    protected $post;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withExceptionHandling()->signIn();
+
+        $this->post = Post::factory()->create();
+    }
+
     /** @test */
     public function testGuestsCannotFavoriteAnyPost()
     {
-        $this->withExceptionHandling()
-            ->post(route('posts.favorite', 1))
-            ->assertRedirect('/login');
+        Auth::logout();
+
+        $this->favoritePost()
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotFavoriteAnyPost()
+    {
+        $this->signInUnsubscribed();
+
+        $this->favoritePost()
+            ->assertPaymentRequired();
     }
 
     /** @test */
     public function testAuthenticatedUserCanFavoriteAnyPost()
     {
-        $this->signIn();
+        $this->favoritePost();
 
-        $post = \App\Models\Post::factory()->create();
-
-        $this->post(route('posts.favorite', $post));
-
-        $this->assertCount(1, $post->favorites);
+        $this->assertCount(1, $this->post->favorites);
     }
 
     /** @test */
     public function testAuthenticatedUserCanUnfavoriteAnyPost()
     {
-        $this->signIn();
+        $this->post->favorite();
 
-        $post = \App\Models\Post::factory()->create();
-        $post->favorite();
+        $this->unfavoritePost();
 
-        $this->delete(route('posts.unfavorite', $post));
-        $this->assertCount(0, $post->favorites);
+        $this->assertCount(0, $this->post->favorites);
     }
 
     /** @test */
     public function testAuthenticatedUserMayOnlyFavoriteAPostOnce()
     {
-        $this->signIn();
-
-        $post = \App\Models\Post::factory()->create();
+        $this->withoutExceptionHandling();
 
         try {
-            $this->post(route('posts.favorite', $post));
-            $this->post(route('posts.favorite', $post));
+            $this->favoritePost();
+            $this->favoritePost();
         } catch (QueryException $e) {
             if ($e->errorInfo[1] === 19) { // SQLite UNIQUE constraint code
                 $this->fail('Attempted to insert same record set twice.');
@@ -56,6 +71,22 @@ class FavoritesTest extends TestCase
             throw $e;
         }
 
-        $this->assertCount(1, $post->favorites);
+        $this->assertCount(1, $this->post->favorites);
+    }
+
+    /**
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function favoritePost(): \Illuminate\Testing\TestResponse
+    {
+        return $this->postJson(route('posts.favorite', $this->post));
+    }
+
+    /**
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function unfavoritePost(): \Illuminate\Testing\TestResponse
+    {
+        return $this->deleteJson(route('posts.unfavorite', $this->post));
     }
 }

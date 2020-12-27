@@ -30,6 +30,15 @@ class EditPollTest extends TestCase
     }
 
     /** @test */
+    public function testUnsubscribedUsersCannotEditPoll()
+    {
+        $this->signInUnsubscribed();
+
+        $this->updatePoll()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
     public function testOnlyPollThreadCreatorCanEditPoll()
     {
         $this->updatePoll()
@@ -262,6 +271,15 @@ class EditPollTest extends TestCase
 
         $this->deletePoll()
             ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotDeletePoll()
+    {
+        $this->signInUnsubscribed();
+
+        $this->deletePoll()
+            ->assertPaymentRequired();
     }
 
     /** @test */

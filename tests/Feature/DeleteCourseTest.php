@@ -13,12 +13,14 @@ class DeleteCourseTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling();
+        $this->withExceptionHandling()->signInUnsubscribed();
     }
 
     /** @test */
     public function testGuestCannotDeleteCourse()
     {
+        Auth::logout();
+
         $this->deleteCourse(1)
             ->assertUnauthorized();
     }
@@ -27,8 +29,6 @@ class DeleteCourseTest extends TestCase
     public function testOnlyAuthorizedUserCanDeleteCourse()
     {
         $course = Course::factory()->create();
-
-        $this->signIn();
 
         $this->deleteCourse($course->id)
             ->assertForbidden();
@@ -42,8 +42,6 @@ class DeleteCourseTest extends TestCase
     /** @test */
     public function testCourseMustExist()
     {
-        $this->signIn();
-
         $this->deleteCourse(999)
             ->assertNotFound();
     }
@@ -51,8 +49,6 @@ class DeleteCourseTest extends TestCase
     /** @test */
     public function testCourseOwnerCanDeleteIt()
     {
-        $this->signIn();
-
         $course = Course::factory()->create(['user_id' => Auth::id()]);
 
         $this->assertDatabaseHas('courses', ['id' => $course->id]);

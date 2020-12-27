@@ -9,10 +9,19 @@ use Tests\TestCase;
 
 class AddAvatarTest extends TestCase
 {
-    /** @test */
-    public function testOnlyMembersCanAddAvatars()
+    protected function setUp(): void
     {
-        $this->withExceptionHandling();
+        parent::setUp();
+
+        $this->withExceptionHandling()->signInUnsubscribed();
+
+        Storage::fake('public');
+    }
+
+    /** @test */
+    public function testGuestsCannotAddAvatars()
+    {
+        Auth::logout();
 
         $this->postJson(route('api.users.avatar.store', 1))
             ->assertStatus(401);
@@ -21,8 +30,6 @@ class AddAvatarTest extends TestCase
     /** @test */
     public function testAValidAvatarMustBeProvided()
     {
-        $this->withExceptionHandling()->signIn();
-
         $this->postJson(route('api.users.avatar.store', Auth::user()), [
             'avatar' => 'not-an-image',
         ])->assertStatus(422);
@@ -31,10 +38,6 @@ class AddAvatarTest extends TestCase
     /** @test */
     public function testAUserMayAddAnAvatarToTheirProfile()
     {
-        $this->signIn();
-
-        Storage::fake('public');
-
         $this->postJson(route('api.users.avatar.store', Auth::user()), [
             'avatar' => $file = UploadedFile::fake()->image('avatar.jpg'),
         ]);
@@ -47,10 +50,6 @@ class AddAvatarTest extends TestCase
     /** @test */
     public function testAddingANewAvatarDeletesTheOldOneFromDisk()
     {
-        $this->signIn();
-
-        Storage::fake('public');
-
         $this->postJson(route('api.users.avatar.store', Auth::user()), [
             'avatar' => $old_file = UploadedFile::fake()->image('old_avatar.jpg'),
         ]);

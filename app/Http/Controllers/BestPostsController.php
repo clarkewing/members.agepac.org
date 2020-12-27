@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 class BestPostsController extends Controller
 {
     /**
+     * Create a new controller instance.
+     */
+    public function __construct()
+    {
+        $this->middleware(['members-area']);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Models\Post  $post

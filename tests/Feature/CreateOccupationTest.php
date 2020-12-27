@@ -41,7 +41,7 @@ class CreateOccupationTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signIn();
+        $this->withExceptionHandling()->signInUnsubscribed();
     }
 
     /** @test */
@@ -51,6 +51,15 @@ class CreateOccupationTest extends TestCase
 
         $this->storeOccupation()
             ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUserCanStoreOccupation()
+    {
+        $this->storeOccupation()
+            ->assertJsonMissingValidationErrors()
+            ->assertCreated()
+            ->assertJson($this->data);
     }
 
     /** @test */
@@ -301,15 +310,6 @@ class CreateOccupationTest extends TestCase
             ->assertJson(['company' => $company->toArray()]);
 
         $this->assertDatabaseCount('companies', 1);
-    }
-
-    /** @test */
-    public function testCanStoreOccupation()
-    {
-        $this->storeOccupation()
-            ->assertJsonMissingValidationErrors()
-            ->assertCreated()
-            ->assertJson($this->data);
     }
 
     /**

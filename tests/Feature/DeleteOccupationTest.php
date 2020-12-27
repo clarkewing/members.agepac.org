@@ -13,12 +13,14 @@ class DeleteOccupationTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling();
+        $this->withExceptionHandling()->signInUnsubscribed();
     }
 
     /** @test */
     public function testGuestCannotDeleteOccupation()
     {
+        Auth::logout();
+
         $this->deleteOccupation(1)
             ->assertUnauthorized();
     }
@@ -27,8 +29,6 @@ class DeleteOccupationTest extends TestCase
     public function testOnlyAuthorizedUserCanDeleteOccupation()
     {
         $occupation = Occupation::factory()->create();
-
-        $this->signIn();
 
         $this->deleteOccupation($occupation->id)
             ->assertForbidden();
@@ -42,8 +42,6 @@ class DeleteOccupationTest extends TestCase
     /** @test */
     public function testOccupationMustExist()
     {
-        $this->signIn();
-
         $this->deleteOccupation(999)
             ->assertNotFound();
     }
@@ -51,8 +49,6 @@ class DeleteOccupationTest extends TestCase
     /** @test */
     public function testOccupationOwnerCanDeleteIt()
     {
-        $this->signIn();
-
         $occupation = Occupation::factory()->create(['user_id' => Auth::id()]);
 
         $this->assertDatabaseHas('occupations', ['id' => $occupation->id]);

@@ -31,7 +31,16 @@ class VoteInPollTest extends TestCase
     }
 
     /** @test */
-    public function testUsersCanViewPoll()
+    public function testUnsubscribedUsersCannotViewPoll()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getPoll()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testSubscribedUsersCanViewPoll()
     {
         $this->getPoll()
             ->assertOk()
@@ -62,7 +71,16 @@ class VoteInPollTest extends TestCase
     }
 
     /** @test */
-    public function testUsersWithAccessToTheThreadCanVote()
+    public function testUnsubscribedUsersCannotVote()
+    {
+        $this->signInUnsubscribed();
+
+        $this->voteInPoll()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testSubscribedUsersCanVote()
     {
         $this->voteInPoll()
             ->assertOk();

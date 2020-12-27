@@ -5,20 +5,40 @@ namespace Tests\Feature;
 use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withExceptionHandling()->signIn();
+    }
+
     /** @test */
     public function testGuestCannotCreateThread()
     {
-        $this->withExceptionHandling();
+        Auth::logout();
 
         $this->get(route('threads.create'))
             ->assertRedirect(route('login'));
 
-        $this->post(route('threads.store'))
-            ->assertRedirect(route('login'));
+        $this->postJson(route('threads.store'))
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUserCannotCreateThread()
+    {
+        $this->signInUnsubscribed();
+
+        $this->get(route('threads.create'))
+            ->assertRedirect(route('subscription.edit'));
+
+        $this->postJson(route('threads.store'))
+            ->assertPaymentRequired();
     }
 
     /** @test */
@@ -38,7 +58,7 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testUserCanCreateNewThreads()
+    public function testSubscribedUserCanCreateNewThreads()
     {
         $this->followingRedirects()
             ->publishThread(['title' => 'Some title', 'body' => 'This is the body.'])
@@ -99,8 +119,6 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function testThreadRequiresAUniqueSlug()
     {
-        $this->signIn();
-
         $existingThread = Thread::factory()->create(['title' => 'Foo Title']);
 
         $this->assertEquals('foo-title', $existingThread->fresh()->slug);
@@ -113,8 +131,6 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function testThreadWithATitleEndingInANumberShouldGenerateTheProperSlug()
     {
-        $this->signIn();
-
         $existingThread = Thread::factory()->create(['title' => 'Financials 2020']);
 
         $thread = $this->publishThread(['title' => $existingThread->title], true)->json();
@@ -131,8 +147,6 @@ class CreateThreadsTest extends TestCase
      */
     public function publishThread(array $overrides = [], bool $wantsJson = false)
     {
-        $this->withExceptionHandling()->signIn();
-
         $thread = Thread::factory()->withBody()->raw($overrides);
 
         if ($wantsJson) {
