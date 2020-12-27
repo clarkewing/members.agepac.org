@@ -28,7 +28,7 @@ class SubscriptionTest extends StripeTestCase
      */
     public function testAUserMustHaveADefaultPaymentMethodToSubscribe()
     {
-        $this->signIn();
+        $this->signInUnsubscribed();
 
         $this->createSubscription()->assertForbidden();
 

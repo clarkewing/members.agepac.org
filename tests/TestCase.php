@@ -36,6 +36,18 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Sign in with a user without a subscription.
+     *
+     * @return $this
+     */
+    protected function signInUnsubscribed()
+    {
+        return $this->signIn(
+            User::factory()->withoutSubscription()->create()
+        );
+    }
+
+    /**
      * Sign in with a user and give it a permission.
      *
      * @param  string|string[]  $permission
