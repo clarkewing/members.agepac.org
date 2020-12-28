@@ -31,6 +31,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Laravel\Scout\ModelObserver;
@@ -181,12 +182,11 @@ class ImportLegacyDB extends Command
 
                 $this->line('Importing Forum - Setting thread initiators');
                 $this->setThreadInitiators();
+                $this->newLine();
             });
 
             $this->line('Importing Forum - Running PostCreated events');
-            Post::all()->each(function ($post) {
-                event(new PostCreated($post));
-            });
+            $this->runPostCreatedEvents();
 
             $this->line('Importing Forum - Post Favorites');
             (new ForumPostFavoritesImport)->withOutput($this->output)
@@ -227,13 +227,14 @@ class ImportLegacyDB extends Command
      */
     protected function addUnembeddedAttachmentsToPosts(): void
     {
-        Attachment::all()->each(function ($attachment) {
+        $this->withProgressBar(Attachment::all(), function ($attachment) {
             if (! Str::contains($attachment->post->body, $attachment->id)) {
                 $attachment->post->update([
                     'body' => $attachment->post->body . $attachment->html(),
                 ]);
             }
         });
+        $this->newLine(2);
     }
 
     /**
@@ -257,6 +258,24 @@ class ImportLegacyDB extends Command
 
         Post::whereIn('id', $firstPostsIds)
             ->update(['is_thread_initiator' => true]);
+    }
+
+    /**
+     * Run PostCreated events, but suppress email notifications.
+     *
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected function runPostCreatedEvents(): void
+    {
+        Mail::fake();
+
+        $this->withProgressBar(Post::all(), function ($post) {
+            event(new PostCreated($post));
+        });
+        $this->newLine(2);
+
+        Mail::swap(app()->make('mail.manager'));
     }
 
     /**
