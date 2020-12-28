@@ -11,7 +11,7 @@ class VerificationToken extends Notification
     /**
      * @var string
      */
-    protected $token;
+    protected string $token;
 
     /**
      * Create a new notification instance.
