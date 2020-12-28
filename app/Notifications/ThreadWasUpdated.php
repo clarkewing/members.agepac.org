@@ -57,7 +57,7 @@ class ThreadWasUpdated extends Notification
             ->subject('Réponse à une discussion')
             ->greeting('Bonjour ' . $notifiable->first_name . ' !')
             ->line($this->message())
-            ->action('Voir la discussion', $this->subjectPath)
+            ->action('Voir la discussion', $this->post->path())
             ->line('Tu reçois cette notification car tu es abonné' . $notifiable->gender === 'F' ? 'e' : '' . ' à la discussion.');
     }
 
