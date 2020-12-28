@@ -5,6 +5,8 @@
 @endsection
 
 @section('section_content')
+    @include('account.subscription.alert')
+
     @include('account.subscription.plans')
 
     @include('account.subscription.payment-methods')
