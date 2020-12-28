@@ -2,7 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Models\Post;
+use App\Models\Thread;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class ThreadWasUpdated extends Notification
@@ -10,23 +13,22 @@ class ThreadWasUpdated extends Notification
     use Queueable;
 
     /**
-     * @var \App\Thread
+     * @var \App\Models\Thread
      */
-    protected $thread;
+    protected Thread $thread;
 
     /**
-     * @var \App\Post
+     * @var \App\Models\Post
      */
-    protected $post;
+    protected Post $post;
 
     /**
      * Create a new notification instance.
      *
-     * @param  \App\Thread $thread
-     * @param  \App\Post $post
-     * @return void
+     * @param  \App\Models\Thread  $thread
+     * @param  \App\Models\Post  $post
      */
-    public function __construct($thread, $post)
+    public function __construct(Thread $thread, Post $post)
     {
         $this->thread = $thread;
         $this->post = $post;
@@ -40,7 +42,23 @@ class ThreadWasUpdated extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'mail'];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable): MailMessage
+    {
+        return (new MailMessage)
+            ->subject('Réponse à une discussion')
+            ->greeting('Bonjour ' . $notifiable->first_name . ' !')
+            ->line($this->message())
+            ->action('Voir la discussion', $this->subjectPath)
+            ->line('Tu reçois cette notification car tu es abonné' . $notifiable->gender === 'F' ? 'e' : '' . ' à la discussion.');
     }
 
     /**
