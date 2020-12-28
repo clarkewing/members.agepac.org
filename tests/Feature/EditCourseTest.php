@@ -17,7 +17,7 @@ class EditCourseTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signIn();
+        $this->withExceptionHandling()->signInUnsubscribed();
 
         $this->course = Course::factory()->create(['user_id' => Auth::id()]);
     }
@@ -41,6 +41,35 @@ class EditCourseTest extends TestCase
 
         $this->updateCourse()
             ->assertForbidden();
+    }
+
+    /** @test */
+    public function testUserCanUpdateCourse()
+    {
+        $data = [
+            'title' => "Diplôme d'Élève Pilote de Ligne",
+            'school' => 'ENAC',
+            'description' => 'Best flight training in the world. Hands down.',
+            'start_date' => '2015-09-28',
+            'end_date' => '2018-06-13',
+            'location' => [
+                'type' => 'address',
+                'name' => '7 Avenue Edouard Belin, Toulouse, Occitanie, France',
+                'street_line_1' => '7 Avenue Edouard Belin',
+                'street_line_2' => null,
+                'municipality' => 'Toulouse',
+                'administrative_area' => 'Occitanie',
+                'sub_administrative_area' => 'Haute-Garonne',
+                'postal_code' => '31400',
+                'country' => 'France',
+                'country_code' => 'FR',
+            ],
+        ];
+
+        $this->updateCourse($data)
+            ->assertJsonMissingValidationErrors()
+            ->assertOk()
+            ->assertJson($data);
     }
 
     /** @test */
@@ -212,35 +241,6 @@ class EditCourseTest extends TestCase
     {
         $this->updateCourse(['description' => str_repeat('*', 65536)])
             ->assertJsonValidationErrors('description');
-    }
-
-    /** @test */
-    public function testCanUpdateCourse()
-    {
-        $data = [
-            'title' => "Diplôme d'Élève Pilote de Ligne",
-            'school' => 'ENAC',
-            'description' => 'Best flight training in the world. Hands down.',
-            'start_date' => '2015-09-28',
-            'end_date' => '2018-06-13',
-            'location' => [
-                'type' => 'address',
-                'name' => '7 Avenue Edouard Belin, Toulouse, Occitanie, France',
-                'street_line_1' => '7 Avenue Edouard Belin',
-                'street_line_2' => null,
-                'municipality' => 'Toulouse',
-                'administrative_area' => 'Occitanie',
-                'sub_administrative_area' => 'Haute-Garonne',
-                'postal_code' => '31400',
-                'country' => 'France',
-                'country_code' => 'FR',
-            ],
-        ];
-
-        $this->updateCourse($data)
-            ->assertJsonMissingValidationErrors()
-            ->assertOk()
-            ->assertJson($data);
     }
 
     /**

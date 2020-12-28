@@ -42,6 +42,11 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'members-area' => [
+            \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+            \App\Http\Middleware\EnsureUserIsSubscribed::class,
+        ],
     ];
 
     /**
@@ -58,7 +63,27 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'subscribed' => \App\Http\Middleware\EnsureUserIsSubscribed::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+    ];
+
+    /**
+     * The priority-sorted list of middleware.
+     *
+     * Forces non-global middleware to always be in the given order.
+     *
+     * @var string[]
+     */
+    protected $middlewarePriority = [
+        \Illuminate\Cookie\Middleware\EncryptCookies::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \App\Http\Middleware\EnsureUserIsSubscribed::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
     ];
 }

@@ -26,9 +26,33 @@ class SubscriptionTest extends StripeTestCase
      * @group external-api
      * @group stripe-api
      */
+    public function testBillingPageShowsAlertIfUnsubscribed()
+    {
+        $this->get(route('subscription.edit'))
+            ->assertSee('Ta cotisation n’est pas à jour.');
+    }
+
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
+    public function testBillingPageDoesntShowAlertIfSubscribed()
+    {
+        Auth::user()->newSubscription('default', config('council.plans.agepac'))->add();
+
+        $this->get(route('subscription.edit'))
+            ->assertDontSee('Ta cotisation n’est pas à jour.');
+    }
+
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testAUserMustHaveADefaultPaymentMethodToSubscribe()
     {
-        $this->signIn();
+        $this->signInUnsubscribed();
 
         $this->createSubscription()->assertForbidden();
 

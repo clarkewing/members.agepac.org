@@ -22,10 +22,10 @@ class TagsController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $type
+     * @param  string|null  $type
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request, string $type = null)
+    public function index(Request $request, string $type = null): \Illuminate\Http\JsonResponse
     {
         $request->validate([
             'query' => 'sometimes|string',

@@ -16,7 +16,7 @@ class AccountTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signIn();
+        $this->withExceptionHandling()->signInUnsubscribed();
     }
 
     /** @test */

@@ -43,6 +43,10 @@ trait RecordsActivity
      */
     protected function recordActivity($event): void
     {
+        if (Auth::guest()) {
+            return;
+        }
+
         $this->activity()->create([
             'user_id' => Auth::id(),
             'type' => $this->getActivityType($event),

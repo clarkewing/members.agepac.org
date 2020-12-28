@@ -13,6 +13,17 @@ use Tests\TestCase;
 class ActivityTest extends TestCase
 {
     /** @test */
+    public function testDoesntRecordActivityIfNoAuthenticatedUser()
+    {
+        $post = Post::factory()->create();
+
+        $this->assertDatabaseMissing('activities', [
+            'subject_id' => $post->id,
+            'subject_type' => array_flip(Relation::$morphMap)[get_class($post)],
+        ]);
+    }
+
+    /** @test */
     public function testRecordsActivityWhenUserIsCreated()
     {
         $user = User::factory()->create();

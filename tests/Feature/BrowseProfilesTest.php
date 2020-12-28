@@ -16,7 +16,7 @@ class BrowseProfilesTest extends TestCase
     }
 
     /** @test */
-    public function testGuestCannotSearchProfiles()
+    public function testGuestsCannotBrowseProfiles()
     {
         Auth::logout();
 
@@ -25,7 +25,16 @@ class BrowseProfilesTest extends TestCase
     }
 
     /** @test */
-    public function testUserCanGetIndexOfProfiles()
+    public function testUnsubscribedUsersCannotBrowseProfiles()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getJson(route('profiles.index'))
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testSubscribedUsersCanBrowseProfiles()
     {
         $profiles = Profile::factory()->count(10)->create();
 
@@ -67,19 +76,5 @@ class BrowseProfilesTest extends TestCase
 
         // Clean up index.
         Profile::latest()->take(4)->unsearchable();
-    }
-
-    /**
-     * Show the requested profile.
-     *
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function showProfile(Profile $profile = null)
-    {
-        return $this->getJson(route(
-            'profiles.show',
-            $profile ?? Profile::factory()->create()
-        ));
     }
 }

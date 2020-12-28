@@ -9,78 +9,86 @@ use Tests\TestCase;
 
 class BestPostTest extends TestCase
 {
+    protected $thread;
+
+    protected $posts;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withExceptionHandling()->signIn();
+
+        $this->thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $this->posts = Post::factory()->count(2)->create(['thread_id' => $this->thread->id]);
+    }
+
+    /** @test */
+    public function testGuestCannotMarkBestPost()
+    {
+        Auth::logout();
+
+        $this->postJson(route('posts.mark_best', [$this->posts[1]]))
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUserCannotMarkBestPost()
+    {
+        $this->signInUnsubscribed();
+
+        $this->postJson(route('posts.mark_best', [$this->posts[1]]))
+            ->assertPaymentRequired();
+    }
+
     /** @test */
     public function testThreadCreatorCanMarkAnyPostAsTheBestPost()
     {
-        $this->signIn();
+        $this->assertFalse($this->posts[1]->isBest());
 
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
-        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
+        $this->postJson(route('posts.mark_best', [$this->posts[1]]));
 
-        $this->assertFalse($posts[1]->isBest());
-
-        $this->postJson(route('posts.mark_best', [$posts[1]]));
-
-        $this->assertTrue($posts[1]->fresh()->isBest());
+        $this->assertTrue($this->posts[1]->fresh()->isBest());
     }
 
     /** @test */
     public function testThreadCreatorCanUnmarkBestPost()
     {
-        $this->signIn();
+        $this->thread->markBestPost($this->posts[1]);
+        $this->assertTrue($this->posts[1]->fresh()->isBest());
 
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
-        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
+        $this->deleteJson(route('posts.unmark_best', $this->posts[1]));
 
-        $thread->markBestPost($posts[1]);
-        $this->assertTrue($posts[1]->fresh()->isBest());
-
-        $this->deleteJson(route('posts.unmark_best', $posts[1]));
-
-        $this->assertFalse($posts[1]->fresh()->isBest());
+        $this->assertFalse($this->posts[1]->fresh()->isBest());
     }
 
     /** @test */
     public function testOnlyThreadCreatorMayMarkPostAsBest()
     {
-        $this->withExceptionHandling();
         $this->signIn();
 
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
-        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
-
-        $this->signIn();
-
-        $this->postJson(route('posts.mark_best', $posts[1]))
+        $this->postJson(route('posts.mark_best', $this->posts[1]))
             ->assertStatus(403);
 
-        $this->assertFalse($posts[1]->fresh()->isBest());
+        $this->assertFalse($this->posts[1]->fresh()->isBest());
     }
 
     /** @test */
     public function testOnlyThreadCreatorMayUnmarkPostAsBest()
     {
-        $this->withExceptionHandling();
-        $this->signIn();
-
-        $thread = Thread::factory()->create(['user_id' => Auth::id()]);
-        $posts = Post::factory()->count(2)->create(['thread_id' => $thread->id]);
-
-        $thread->markBestPost($posts[1]);
+        $this->thread->markBestPost($this->posts[1]);
 
         $this->signIn();
 
-        $this->deleteJson(route('posts.unmark_best', $posts[1]))
+        $this->deleteJson(route('posts.unmark_best', $this->posts[1]))
             ->assertStatus(403);
 
-        $this->assertTrue($posts[1]->fresh()->isBest());
+        $this->assertTrue($this->posts[1]->fresh()->isBest());
     }
 
     /** @test */
     public function testIfABestPostIsDeletedThenTheThreadIsProperlyUpdated()
     {
-        $this->signIn();
-
         $post = Post::factory()->create(['user_id' => Auth::id()]);
 
         $post->thread->markBestPost($post);

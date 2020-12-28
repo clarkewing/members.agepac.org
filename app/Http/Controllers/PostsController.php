@@ -19,7 +19,7 @@ class PostsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
+        $this->middleware('members-area');
         $this->middleware('verified:threads,Tu dois vérifier ton adresse email avant de pouvoir poster.')
             ->only(['store']);
     }

@@ -13,7 +13,7 @@ class CreateCompanyTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling()->signIn();
+        $this->withExceptionHandling()->signInUnsubscribed();
     }
 
     /** @test */
@@ -23,6 +23,19 @@ class CreateCompanyTest extends TestCase
 
         $this->storeCompany()
             ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUserCanStoreCompany()
+    {
+        $data = Company::factory()->make()->setAppends([])->attributesToArray();
+
+        $this->storeCompany($data)
+            ->assertJsonMissingValidationErrors()
+            ->assertCreated()
+            ->assertJson($data);
+
+        $this->assertDatabaseHas('companies', $data);
     }
 
     /** @test */
@@ -163,19 +176,6 @@ class CreateCompanyTest extends TestCase
     {
         $this->storeCompany(['remarks' => str_repeat('*', 65536)])
             ->assertJsonValidationErrors('remarks');
-    }
-
-    /** @test */
-    public function testCanStoreCompany()
-    {
-        $data = Company::factory()->make()->setAppends([])->attributesToArray();
-
-        $this->storeCompany($data)
-            ->assertJsonMissingValidationErrors()
-            ->assertCreated()
-            ->assertJson($data);
-
-        $this->assertDatabaseHas('companies', $data);
     }
 
     /** @test */

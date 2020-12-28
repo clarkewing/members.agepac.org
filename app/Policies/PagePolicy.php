@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Exceptions\UnsubscribedException;
 use App\Models\Page;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -34,11 +35,18 @@ class PagePolicy
      * @param  \App\Models\Page  $page
      * @return bool
      * @throws \Illuminate\Auth\AuthenticationException
+     * @throws \App\Exceptions\UnsubscribedException
      */
     public function view(?User $user, Page $page): bool
     {
-        if ($page->restricted && is_null($user)) {
-            throw new AuthenticationException;
+        if ($page->restricted) {
+            if (is_null($user)) {
+                throw new AuthenticationException;
+            }
+
+            if (! $user->subscribed('default')) {
+                throw new UnsubscribedException;
+            }
         }
 
         if ($page->trashed()) {

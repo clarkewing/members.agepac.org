@@ -12,12 +12,14 @@ class PaymentMethodsTest extends StripeTestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling();
+        $this->withExceptionHandling()->signInUnsubscribed();
     }
 
     /** @test */
     public function testGuestCannotGetPaymentIntent()
     {
+        Auth::logout();
+
         $this->get(route('subscription.payment-methods.create'))
             ->assertRedirect(route('login'));
     }
@@ -33,8 +35,6 @@ class PaymentMethodsTest extends StripeTestCase
             $this->markTestSkipped('Cashier is not configured.');
         }
 
-        $this->signIn();
-
         $this->get(route('subscription.payment-methods.create'))
             ->assertOk()
             ->assertJsonStructure(['intent' => ['client_secret']]);
@@ -43,14 +43,14 @@ class PaymentMethodsTest extends StripeTestCase
     /** @test */
     public function testGuestCannotAddPaymentMethod()
     {
+        Auth::logout();
+
         $this->addPaymentMethod()->assertUnauthorized();
     }
 
     /** @test */
     public function testPaymentMethodRequired()
     {
-        $this->signIn();
-
         $this->addPaymentMethod(['payment_method' => null])
             ->assertJsonValidationErrors('payment_method');
     }
@@ -65,8 +65,6 @@ class PaymentMethodsTest extends StripeTestCase
         if (! config('cashier.key')) {
             $this->markTestSkipped('Cashier is not configured.');
         }
-
-        $this->signIn();
 
         $this->addPaymentMethod()->assertCreated();
 
@@ -83,8 +81,6 @@ class PaymentMethodsTest extends StripeTestCase
         if (! config('cashier.key')) {
             $this->markTestSkipped('Cashier is not configured.');
         }
-
-        $this->signIn();
 
         $firstPaymentMethod = $this->addPaymentMethod()->json('id');
 
@@ -106,6 +102,8 @@ class PaymentMethodsTest extends StripeTestCase
     /** @test */
     public function testGuestCannotDeletePaymentMethod()
     {
+        Auth::logout();
+
         $this->deleteJson(route('subscription.payment-methods.destroy', 'pm_foobar'))
             ->assertUnauthorized();
     }
@@ -126,11 +124,11 @@ class PaymentMethodsTest extends StripeTestCase
         $this->assertCount(1, $customer->paymentMethods());
 
         // Other user attempts to delete.
-        $this->signIn()
-            ->deleteJson(route(
-                'subscription.payment-methods.destroy',
-                $customer->paymentMethods()->first()->id
-            ))->assertForbidden();
+        $this->deleteJson(route(
+            'subscription.payment-methods.destroy',
+            $customer->paymentMethods()->first()->id
+        ))
+            ->assertForbidden();
 
         $this->assertCount(1, $customer->paymentMethods());
     }
@@ -146,16 +144,16 @@ class PaymentMethodsTest extends StripeTestCase
             $this->markTestSkipped('Cashier is not configured.');
         }
 
-        $customer = $this->createCustomer([], true);
+        $this->signIn($customer = $this->createCustomer([], true));
 
         $this->assertNotNull($customer->defaultPaymentMethod());
         $this->assertCount(1, $customer->paymentMethods());
 
-        $this->signIn($customer)
-            ->deleteJson(route(
-                'subscription.payment-methods.destroy',
-                $customer->paymentMethods()->first()->id
-            ))->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->deleteJson(route(
+            'subscription.payment-methods.destroy',
+            $customer->paymentMethods()->first()->id
+        ))
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $this->assertCount(1, $customer->paymentMethods());
     }
@@ -171,15 +169,15 @@ class PaymentMethodsTest extends StripeTestCase
             $this->markTestSkipped('Cashier is not configured.');
         }
 
-        $customer = $this->createCustomer();
+        $this->signIn($customer = $this->createCustomer());
 
         $this->assertCount(1, $customer->paymentMethods());
 
-        $this->signIn($customer)
-            ->deleteJson(route(
-                'subscription.payment-methods.destroy',
-                $customer->paymentMethods()->first()->id
-            ))->assertNoContent();
+        $this->deleteJson(route(
+            'subscription.payment-methods.destroy',
+            $customer->paymentMethods()->first()->id
+        ))
+            ->assertNoContent();
 
         $this->assertCount(0, $customer->paymentMethods());
     }
@@ -187,6 +185,8 @@ class PaymentMethodsTest extends StripeTestCase
     /** @test */
     public function testGuestCannotUpdatePaymentMethod()
     {
+        Auth::logout();
+
         $this->patchJson(route('subscription.payment-methods.update', 'pm_foobar'))
             ->assertUnauthorized();
     }
@@ -205,11 +205,11 @@ class PaymentMethodsTest extends StripeTestCase
         $customer = $this->createCustomer();
 
         // Other user attempts to delete.
-        $this->signIn()
-            ->putJson(route(
-                'subscription.payment-methods.update',
-                $customer->paymentMethods()->first()->id
-            ))->assertForbidden();
+        $this->putJson(route(
+            'subscription.payment-methods.update',
+            $customer->paymentMethods()->first()->id
+        ))
+            ->assertForbidden();
     }
 
     /**
@@ -223,15 +223,15 @@ class PaymentMethodsTest extends StripeTestCase
             $this->markTestSkipped('Cashier is not configured.');
         }
 
-        $customer = $this->createCustomer();
+        $this->signIn($customer = $this->createCustomer());
         $paymentMethod = $customer->paymentMethods()->first();
 
         $this->assertNull($customer->defaultPaymentMethod());
 
-        $this->signIn($customer)
-            ->putJson(route('subscription.payment-methods.update', $paymentMethod->id), [
-                'default' => true,
-            ])->assertNoContent();
+        $this->putJson(route('subscription.payment-methods.update', $paymentMethod->id), [
+            'default' => true,
+        ])
+            ->assertNoContent();
 
         $this->assertEquals($paymentMethod->id, $customer->defaultPaymentMethod()->id);
     }

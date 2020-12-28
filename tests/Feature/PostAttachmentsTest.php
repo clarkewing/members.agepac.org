@@ -10,7 +10,6 @@ use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class PostAttachmentsTest extends TestCase
@@ -24,7 +23,7 @@ class PostAttachmentsTest extends TestCase
     {
         parent::setUp();
 
-        $this->withExceptionHandling();
+        $this->withExceptionHandling()->signIn();
 
         Storage::fake('public');
 
@@ -34,11 +33,23 @@ class PostAttachmentsTest extends TestCase
     /** @test */
     public function testGuestsCannotUploadAnAttachment()
     {
-        $this->uploadAttachment()->assertStatus(Response::HTTP_UNAUTHORIZED);
+        Auth::logout();
+
+        $this->uploadAttachment()
+            ->assertUnauthorized();
 
         $this->assertCount(0, $this->post->attachments);
 
         $this->assertEmpty(Storage::disk('public')->allFiles('attachments'));
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotUploadAnAttachment()
+    {
+        $this->signInUnsubscribed();
+
+        $this->uploadAttachment()
+            ->assertPaymentRequired();
     }
 
     /** @test */
@@ -46,19 +57,14 @@ class PostAttachmentsTest extends TestCase
     {
         $this->signIn(User::factory()->unverifiedEmail()->create());
 
-        $this->uploadAttachment()->assertStatus(Response::HTTP_FORBIDDEN);
-
-        $this->assertCount(0, $this->post->attachments);
-
-        $this->assertEmpty(Storage::disk('public')->allFiles('attachments'));
+        $this->uploadAttachment()
+            ->assertForbidden();
     }
 
     /** @test */
-    public function testAuthenticatedUserCanUploadAnAttachment()
+    public function testSubscribedAndVerifiedUsersCanUploadAnAttachment()
     {
-        $this->signIn();
-
-        ($response = $this->uploadAttachment())->assertCreated();
+        $response = tap($this->uploadAttachment())->assertCreated();
 
         $this->assertEquals(1, Attachment::count());
 
@@ -75,9 +81,10 @@ class PostAttachmentsTest extends TestCase
         $thread = Thread::factory()->create();
 
         // The user uploads an  attachment while typing up a post.
-        ($attachmentResponse = $this->signIn()->uploadAttachment([
+        $attachmentResponse = tap($this->uploadAttachment([
             'file' => UploadedFile::fake()->create('document.pdf', 1000, 'application/pdf'),
-        ]))->assertCreated();
+        ]))
+            ->assertCreated();
 
         $this->assertEquals(1, Attachment::where('post_id', null)->count());
 
@@ -103,6 +110,7 @@ class PostAttachmentsTest extends TestCase
     public function testPostCreatorCanAddAnAttachmentToTheirPost()
     {
         $this->signIn($this->post->owner);
+
         $this->assertCount(0, $this->post->attachments);
 
         $response = $this->uploadAttachment();
@@ -126,8 +134,8 @@ class PostAttachmentsTest extends TestCase
     /** @test */
     public function testPostCreatorCanDeleteAnAttachmentFromTheirPost()
     {
-        $this->signIn();
         $post = Post::factory()->withAttachment()->create(['user_id' => Auth::id()]);
+
         $this->assertCount(1, $attachments = $post->attachments);
 
         $this->patchJson(route('posts.update', $post), [
@@ -143,6 +151,7 @@ class PostAttachmentsTest extends TestCase
     public function testWhenPostIsDeletedAllAssociatedAttachmentsAreDeleted()
     {
         $post = Post::factory()->withAttachment()->create();
+
         $attachment = $post->attachments->first();
 
         $post->delete();

@@ -49,6 +49,18 @@ class UserFactory extends Factory
         ];
     }
 
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            SubscriptionFactory::new()->create(['user_id' => $user->id]);
+        });
+    }
+
     public function unverifiedEmail()
     {
         return $this->state(function () {
@@ -56,5 +68,10 @@ class UserFactory extends Factory
                 'email_verified_at' => null,
             ];
         });
+    }
+
+    public function withoutSubscription()
+    {
+        return $this->newInstance(['afterCreating' => collect([])]);
     }
 }

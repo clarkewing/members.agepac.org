@@ -22,7 +22,7 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testGuestCannotIndexThreads()
+    public function testGuestsCannotIndexThreads()
     {
         Auth::logout();
 
@@ -31,14 +31,41 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testUserCanIndexThreads()
+    public function testUnsubscribedUsersCannotIndexThreads()
+    {
+        $this->signInUnsubscribed();
+
+        $this->get(route('threads.index'))
+            ->assertRedirect(route('subscription.edit'));
+    }
+
+    /** @test */
+    public function testSubscribedUsersCanIndexThreads()
     {
         $this->get(route('threads.index'))
             ->assertSee($this->thread->title);
     }
 
     /** @test */
-    public function testUserCanViewASingleThread()
+    public function testGuestsCannotViewAThread()
+    {
+        Auth::logout();
+
+        $this->get($this->thread->path())
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotViewAThread()
+    {
+        $this->signInUnsubscribed();
+
+        $this->get($this->thread->path())
+            ->assertRedirect(route('subscription.edit'));
+    }
+
+    /** @test */
+    public function testUserCanViewAThread()
     {
         $this->get($this->thread->path())
             ->assertSee($this->thread->title);

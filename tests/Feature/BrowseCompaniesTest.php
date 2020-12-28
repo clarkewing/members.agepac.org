@@ -25,7 +25,16 @@ class BrowseCompaniesTest extends TestCase
     }
 
     /** @test */
-    public function testUserCanViewCompany()
+    public function testUnsubscribedUserCannotViewCompany()
+    {
+        $this->signInUnsubscribed();
+
+        $this->showCompany()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testSubscribedUserCanViewCompany()
     {
         $company = Company::factory()->create();
 

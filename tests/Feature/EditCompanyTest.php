@@ -32,6 +32,26 @@ class EditCompanyTest extends TestCase
     }
 
     /** @test */
+    public function testUnsubscribedUserCanUpdateCompany()
+    {
+        $this->signInUnsubscribed();
+
+        $this->updateCompany()
+            ->assertOk();
+    }
+
+    /** @test */
+    public function testSubscribedUserCanUpdateCompany()
+    {
+        $data = Company::factory()->raw();
+
+        $this->updateCompany($data)
+            ->assertJsonMissingValidationErrors()
+            ->assertOk()
+            ->assertJson($data);
+    }
+
+    /** @test */
     public function testNameIsRequiredIfSet()
     {
         $this->updateCompany(['name' => null])
@@ -169,17 +189,6 @@ class EditCompanyTest extends TestCase
     {
         $this->updateCompany(['remarks' => str_repeat('*', 65536)])
             ->assertJsonValidationErrors('remarks');
-    }
-
-    /** @test */
-    public function testCanUpdateCompany()
-    {
-        $data = Company::factory()->raw();
-
-        $this->updateCompany($data)
-            ->assertJsonMissingValidationErrors()
-            ->assertOk()
-            ->assertJson($data);
     }
 
     /**

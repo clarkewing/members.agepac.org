@@ -4,30 +4,47 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use App\Models\Thread;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class ParticipateInThreadsTest extends TestCase
 {
-    /** @test */
-    public function testUnauthenticatedUsersMayNotAddPosts()
+    protected $thread;
+
+    protected function setUp(): void
     {
-        $this->withExceptionHandling()
-            ->post('threads/some-channel/1/posts', [])
-            ->assertRedirect('/login');
+        parent::setUp();
+
+        $this->withExceptionHandling()->signIn();
+
+        $this->thread = Thread::factory()->create();
     }
 
     /** @test */
-    public function testAuthenticatedUserMayParticipateInForumThreads()
+    public function testGuestsCannotAddPosts()
     {
-        $this->signIn();
+        Auth::logout();
 
-        $thread = Thread::factory()->create();
+        $this->publishPost()
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotAddPosts()
+    {
+        $this->signInUnsubscribed();
+
+        $this->publishPost()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testSubscribedUserCanAddPost()
+    {
         $post = Post::factory()->make();
 
-        $this->post($thread->path() . '/posts', $post->toArray())
-            ->assertStatus(201);
+        $this->publishPost($post->toArray())
+            ->assertCreated();
 
         $this->assertDatabaseHas('posts', ['body' => "<p>{$post->body}</p>"]);
     }
@@ -37,12 +54,7 @@ class ParticipateInThreadsTest extends TestCase
 //     */
 //    public function testPostsThatContainSpamMayNotBeCreated()
 //    {
-//        $this->withExceptionHandling();
-//        $this->signIn();
-//
-//        $thread = Thread::factory()->create();
-//
-//        $this->json('post', $thread->path() . '/posts', Post::factory()->raw([
+//        $this->publishPost(Post::factory()->raw([
 //            'body' => 'Yahoo Customer Support',
 //        ]))
 //            ->assertStatus(422);
@@ -51,36 +63,41 @@ class ParticipateInThreadsTest extends TestCase
     /** @test */
     public function testPostRequiresABody()
     {
-        $this->withExceptionHandling()->signIn();
+        $this->publishPost(Post::factory()->raw(['body' => null]))
+            ->assertJsonValidationErrors('body');
+    }
 
-        $thread = Thread::factory()->create();
-        $this->post($thread->path() . '/posts', Post::factory()->raw(['body' => null]))
-            ->assertSessionHasErrors('body');
+    /** @test */
+    public function testGuestsCannotDeletePosts()
+    {
+        Auth::logout();
+
+        $this->deletePost()
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotDeletePosts()
+    {
+        $this->signInUnsubscribed();
+
+        $this->deletePost()
+            ->assertPaymentRequired();
     }
 
     /** @test */
     public function testUnauthorizedUsersCannotDeletePosts()
     {
-        $this->withExceptionHandling();
-
-        $post = Post::factory()->create();
-
-        $this->delete(route('posts.destroy', $post))
-            ->assertRedirect('/login');
-
-        $this->signIn()
-            ->delete(route('posts.destroy', $post))
-            ->assertStatus(Response::HTTP_FORBIDDEN);
+        $this->deletePost()
+            ->assertForbidden();
     }
 
     /** @test */
     public function testUsersCanDeleteTheirOwnPosts()
     {
-        $this->signIn();
-
         $post = Post::factory()->create(['user_id' => Auth::id()]);
 
-        $this->deleteJson(route('posts.destroy', $post))
+        $this->deletePost($post)
             ->assertSuccessful();
 
         $this->assertSoftDeleted('posts', ['id' => $post->id]);
@@ -93,7 +110,7 @@ class ParticipateInThreadsTest extends TestCase
 
         $post = Post::factory()->create();
 
-        $this->deleteJson(route('posts.destroy', $post))
+        $this->deletePost($post)
             ->assertSuccessful();
 
         $this->assertSoftDeleted('posts', ['id' => $post->id]);
@@ -102,33 +119,46 @@ class ParticipateInThreadsTest extends TestCase
     /** @test */
     public function testThreadInitiatorPostCannotBeDeleted()
     {
-        $this->withExceptionHandling()
-            ->signIn();
-
         $post = Post::factory()->create([
             'user_id' => Auth::id(),
             'is_thread_initiator' => true,
         ]);
 
-        $this->delete(route('posts.destroy', $post))
-            ->assertStatus(Response::HTTP_FORBIDDEN);
+        $this->deletePost($post)
+            ->assertForbidden();
 
         $this->assertDatabaseHas('posts', ['id' => $post->id, 'deleted_at' => null]);
     }
 
     /** @test */
+    public function testGuestsCannotRestorePosts()
+    {
+        Auth::logout();
+
+        $post = tap(Post::factory()->create())->delete();
+
+        $this->restorePost($post)
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotRestorePosts()
+    {
+        $this->signInUnsubscribed();
+
+        $post = tap(Post::factory()->create())->delete();
+
+        $this->restorePost($post)
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
     public function testUnauthorizedUsersCannotRestorePosts()
     {
-        $this->withExceptionHandling();
+        $post = tap(Post::factory()->create())->delete();
 
-        ($post = Post::factory()->create())->delete();
-
-        $this->patch(route('posts.update', $post), ['deleted_at' => null])
-            ->assertRedirect('/login');
-
-        $this->signIn()
-            ->patch(route('posts.update', $post), ['deleted_at' => null])
-            ->assertStatus(Response::HTTP_NOT_FOUND);
+        $this->restorePost($post)
+            ->assertNotFound();
     }
 
     /** @test */
@@ -136,42 +166,53 @@ class ParticipateInThreadsTest extends TestCase
     {
         $this->signInWithPermission('posts.restore');
 
-        ($post = Post::factory()->create())->delete();
+        $post = tap(Post::factory()->create())->delete();
 
-        $this->patchJson(route('posts.update', $post), ['deleted_at' => null])
+        $this->restorePost($post)
             ->assertSuccessful();
 
         $this->assertDatabaseHas('posts', ['id' => $post->id, 'deleted_at' => null]);
     }
 
     /** @test */
+    public function testGuestsCannotUpdatePosts()
+    {
+        Auth::logout();
+
+        $this->updatePost()
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotUpdatePosts()
+    {
+        $this->signInUnsubscribed();
+
+        $this->updatePost()
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
     public function testUnauthorizedUsersCannotUpdatePosts()
     {
-        $this->withExceptionHandling();
+        $this->withExceptionHandling()->signIn();
 
-        $post = Post::factory()->create();
-
-        $this->patch(route('posts.update', $post))
-            ->assertRedirect('/login');
-
-        $this->signIn()
-            ->patch(route('posts.update', $post))
-            ->assertStatus(Response::HTTP_FORBIDDEN);
+        $this->updatePost()
+            ->assertForbidden();
     }
 
     /** @test */
     public function testUsersCanUpdateTheirOwnPosts()
     {
-        $this->signIn();
-
         $post = Post::factory()->create(['user_id' => Auth::id()]);
 
-        $updatedPost = 'You been changed, fool.';
-        $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
+        $updatedBody = 'You been changed, fool.';
+
+        $this->updatePost(['body' => $updatedBody], $post);
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
-            'body' => "<p>$updatedPost</p>",
+            'body' => "<p>$updatedBody</p>",
         ]);
     }
 
@@ -182,31 +223,67 @@ class ParticipateInThreadsTest extends TestCase
 
         $post = Post::factory()->create();
 
-        $updatedPost = 'You been changed, fool.';
-        $this->patch(route('posts.update', $post), ['body' => $updatedPost]);
+        $updatedBody = 'You been changed, fool.';
+
+        $this->patch(route('posts.update', $post), ['body' => $updatedBody]);
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
-            'body' => "<p>$updatedPost</p>",
+            'body' => "<p>$updatedBody</p>",
         ]);
     }
 
     /** @test */
     public function testUsersMayOnlyPostAMaximumOfOncePerMinute()
     {
-        $this->withExceptionHandling();
-        $this->signIn();
-
-        $thread = Thread::factory()->create();
-
         $post = Post::factory()->raw([
             'body' => 'My simple post.',
         ]);
 
-        $this->post($thread->path() . '/posts', $post)
-            ->assertStatus(201);
+        $this->publishPost($post)
+            ->assertCreated();
 
-        $this->post($thread->path() . '/posts', $post)
+        $this->publishPost($post)
             ->assertStatus(429); // Too many requests
+    }
+
+    /**
+     * @param  array  $data
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function publishPost(array $data = []): \Illuminate\Testing\TestResponse
+    {
+        return $this->postJson($this->thread->path() . '/posts', $data);
+    }
+
+    /**
+     * @param  \App\Models\Post|null  $post
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function deletePost(Post $post = null): \Illuminate\Testing\TestResponse
+    {
+        return $this->deleteJson(route('posts.destroy', $post ?? Post::factory()->create()));
+    }
+
+    /**
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function restorePost(Post $post): \Illuminate\Testing\TestResponse
+    {
+        return $this->patchJson(route('posts.update', $post), ['deleted_at' => null]);
+    }
+
+    /**
+     * @param  array  $data
+     * @param  \App\Models\Post|null  $post
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function updatePost(array $data = [], Post $post = null): \Illuminate\Testing\TestResponse
+    {
+        return $this->patchJson(
+            route('posts.update', $post ?? Post::factory()->create()),
+            $data
+        );
     }
 }

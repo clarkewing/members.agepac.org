@@ -3,34 +3,47 @@
 namespace Tests\Feature;
 
 use App\Models\Thread;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class PinThreadsTest extends TestCase
 {
-    /** @test */
-    public function testUnauthorizedUsersCannotPinThreads()
+    protected $thread;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->withExceptionHandling()->signIn();
 
-        $thread = Thread::factory()->create();
-
-        $this->post(route('threads.pin', $thread))
-            ->assertStatus(403);
-
-        $this->assertFalse($thread->fresh()->pinned, 'Failed asserting that the thread was unpinned.');
+        $this->thread = Thread::factory()->create();
     }
 
     /** @test */
-    public function testUnauthorizedUsersCannotUnpinThreads()
+    public function testGuestsCannotPinThreads()
     {
-        $this->withExceptionHandling()->signIn();
+        Auth::logout();
 
-        $thread = Thread::factory()->create(['pinned' => true]);
+        $this->pinThread($this->thread)
+            ->assertUnauthorized();
+    }
 
-        $this->delete(route('threads.unpin', $thread))
-            ->assertStatus(403);
+    /** @test */
+    public function testUnsubscribedUsersCannotPinThreads()
+    {
+        $this->signInUnsubscribed();
 
-        $this->assertTrue($thread->fresh()->pinned, 'Failed asserting that the thread was pinned.');
+        $this->pinThread($this->thread)
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotPinThreads()
+    {
+        $this->pinThread($this->thread)
+            ->assertForbidden();
+
+        $this->assertFalse($this->thread->fresh()->pinned, 'Failed asserting that the thread was unpinned.');
     }
 
     /** @test */
@@ -38,25 +51,52 @@ class PinThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.pin');
 
-        $thread = Thread::factory()->create();
+        $this->pinThread($this->thread)
+            ->assertNoContent();
 
-        $this->post(route('threads.pin', $thread))
-            ->assertStatus(204);
+        $this->assertTrue($this->thread->fresh()->pinned, 'Failed asserting that the thread was pinned.');
+    }
 
-        $this->assertTrue($thread->fresh()->pinned, 'Failed asserting that the thread was pinned.');
+    /** @test */
+    public function testGuestsCannotUnpinThreads()
+    {
+        Auth::logout();
+
+        $this->unpinThread($this->thread)
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotUnpinThreads()
+    {
+        $this->signInUnsubscribed();
+
+        $this->unpinThread($this->thread)
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testUnauthorizedUsersCannotUnpinThreads()
+    {
+        $this->thread->update(['pinned' => true]);
+
+        $this->unpinThread($this->thread)
+            ->assertForbidden();
+
+        $this->assertTrue($this->thread->fresh()->pinned, 'Failed asserting that the thread was pinned.');
     }
 
     /** @test */
     public function testAuthorizedUsersCanUnpinThreads()
     {
+        $this->thread->update(['pinned' => true]);
+
         $this->signInWithPermission('threads.unpin');
 
-        $thread = Thread::factory()->create(['pinned' => true]);
+        $this->unpinThread($this->thread)
+            ->assertNoContent();
 
-        $this->delete(route('threads.unpin', $thread))
-            ->assertStatus(204);
-
-        $this->assertFalse($thread->fresh()->pinned, 'Failed asserting that the thread was unpinned.');
+        $this->assertFalse($this->thread->fresh()->pinned, 'Failed asserting that the thread was unpinned.');
     }
 
     /** @test */
@@ -64,7 +104,8 @@ class PinThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.pin');
 
-        [$threadOne, $threadTwo, $threadThree] = Thread::factory()->count(3)->create();
+        $threadOne = $this->thread;
+        [$threadTwo, $threadThree] = Thread::factory()->count(2)->create();
 
         $this->getJson(route('threads.index'))->assertJson([
             'data' => [
@@ -74,15 +115,33 @@ class PinThreadsTest extends TestCase
             ],
         ]);
 
-        $this->post(route('threads.pin', $pinned = $threadThree))
-            ->assertStatus(204);
+        $this->pinThread($pinnedThread = $threadThree)
+            ->assertNoContent();
 
         $this->getJson(route('threads.index'))->assertJson([
             'data' => [
-                ['id' => $pinned->id],
+                ['id' => $pinnedThread->id],
                 ['id' => $threadOne->id],
                 ['id' => $threadTwo->id],
             ],
         ]);
+    }
+
+    /**
+     * @param  \App\Models\Thread  $thread
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function pinThread(Thread $thread): \Illuminate\Testing\TestResponse
+    {
+        return $this->postJson(route('threads.pin', $thread));
+    }
+
+    /**
+     * @param  \App\Models\Thread  $thread
+     * @return \Illuminate\Testing\TestResponse
+     */
+    protected function unpinThread(Thread $thread): \Illuminate\Testing\TestResponse
+    {
+        return $this->deleteJson(route('threads.unpin', $thread));
     }
 }

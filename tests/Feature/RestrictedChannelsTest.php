@@ -20,7 +20,7 @@ class RestrictedChannelsTest extends TestCase
     {
         parent::setUp();
 
-        $this->signIn()->withExceptionHandling();
+        $this->withExceptionHandling()->signIn();
 
         $this->channel = Channel::factory()->create(['name' => 'Foobar Channel']);
     }
