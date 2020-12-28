@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
+use App\Notifications\YouWereMentioned;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class MentionUsersTest extends TestCase
@@ -12,6 +14,8 @@ class MentionUsersTest extends TestCase
     /** @test */
     public function testMentionedUsersInAPostAreNotified()
     {
+        Notification::fake();
+
         $john = User::factory()->create(['username' => 'john.doe']);
 
         $this->signIn($john);
@@ -24,12 +28,14 @@ class MentionUsersTest extends TestCase
             'body' => 'Hey @jane.doe look at this!',
         ]));
 
-        $this->assertCount(1, $jane->notifications);
+        Notification::assertSentTo($jane, YouWereMentioned::class);
     }
 
     /** @test */
     public function testMentionedUsersInAThreadAreNotified()
     {
+        Notification::fake();
+
         $john = User::factory()->create(['username' => 'john.doe']);
 
         $this->signIn($john);
@@ -40,7 +46,7 @@ class MentionUsersTest extends TestCase
             'body' => 'Hey @jane.doe look at this!',
         ])->toArray());
 
-        $this->assertCount(1, $jane->notifications);
+        Notification::assertSentTo($jane, YouWereMentioned::class);
     }
 
     /** @test */

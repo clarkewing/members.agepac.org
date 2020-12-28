@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Support\Testing\Fakes\NotificationFake;
 use Illuminate\Testing\Assert as PHPUnit;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Validation\Rule;
@@ -51,6 +52,12 @@ class AppServiceProvider extends ServiceProvider
             }
 
             throw new \Exception('Concat macro not defined for the current database driver.');
+        });
+
+        NotificationFake::macro('assertSentToVia', function($notifiable, $channel, $notification) {
+            $this->assertSentTo($notifiable, $notification, function ($notification, $channels) use ($channel) {
+                return in_array($channel, $channels);
+            });
         });
 
         Paginator::useBootstrap();
