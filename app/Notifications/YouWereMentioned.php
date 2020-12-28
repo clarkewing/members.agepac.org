@@ -60,12 +60,12 @@ class YouWereMentioned extends Notification
         return ['database', 'mail'];
     }
 
-     /**
-      * Get the mail representation of the notification.
-      *
-      * @param  mixed  $notifiable
-      * @return \Illuminate\Notifications\Messages\MailMessage
-      */
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)

@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
             throw new \Exception('Concat macro not defined for the current database driver.');
         });
 
-        NotificationFake::macro('assertSentToVia', function($notifiable, $channel, $notification) {
+        NotificationFake::macro('assertSentToVia', function ($notifiable, $channel, $notification) {
             $this->assertSentTo($notifiable, $notification, function ($notification, $channels) use ($channel) {
                 return in_array($channel, $channels);
             });
