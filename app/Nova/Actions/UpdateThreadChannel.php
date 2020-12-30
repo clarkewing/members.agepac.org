@@ -45,7 +45,16 @@ class UpdateThreadChannel extends Action
 
         return [
             Select::make('Channel', 'channel_id')
-                ->options($channels->pluck('name', 'id'))
+                ->options($channels->mapWithKeys(function ($channel) {
+                    return [
+                        $channel['id'] => [
+                            'label' => $channel->name,
+                            'group' => $channel->archived
+                                ? 'Archived'
+                                : optional($channel->parent)->name ?? $channel->name,
+                        ],
+                    ];
+                }))
                 ->rules(['required', Rule::in($channels->pluck('id'))]),
         ];
     }
