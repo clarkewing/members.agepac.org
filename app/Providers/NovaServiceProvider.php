@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Models\Channel;
+use App\Models\Thread;
 use App\Models\User;
 use App\Policies\ChannelNovaPolicy;
 use App\Policies\MentorshipTagsPolicy;
 use App\Policies\MenuPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
+use App\Policies\ThreadNovaPolicy;
 use App\Policies\UserNovaPolicy;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
@@ -33,6 +35,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             // Override Channel policy in Nova.
             Gate::policy(Channel::class, ChannelNovaPolicy::class);
+
+            // Override Thread policy in Nova.
+            Gate::policy(Thread::class, ThreadNovaPolicy::class);
 
             // Override User policy in Nova.
             Gate::policy(User::class, UserNovaPolicy::class);
