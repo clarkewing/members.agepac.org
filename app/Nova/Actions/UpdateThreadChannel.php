@@ -52,7 +52,7 @@ class UpdateThreadChannel extends Action
                             'group' => $channel->archived
                                 ? 'Archived'
                                 : optional($channel->parent)->name ?? $channel->name,
-                        ]
+                        ],
                     ];
                 }))
                 ->rules(['required', Rule::in($channels->pluck('id'))]),
