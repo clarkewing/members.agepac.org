@@ -31,7 +31,7 @@
             Ajouter mes heures de vol
         </button>
 
-        <div ref="modal" class="modal fade" id="editFlightHours" tabindex="-1" role="dialog" style="z-index: 1060;">
+        <div ref="modal" class="modal fade" id="editFlightHours" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-white">
