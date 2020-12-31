@@ -114,7 +114,7 @@ class InsertInitialPermissions extends Migration
      *
      * @param  string  $subject
      * @param  string[]  $permissions
-     * @return \InsertInitialPermissions
+     * @return $this
      */
     protected function createSubjectPermissions(string $subject, array $permissions)
     {
@@ -129,7 +129,7 @@ class InsertInitialPermissions extends Migration
      * Create a permission.
      *
      * @param  string  $name
-     * @return \InsertInitialPermissions
+     * @return $this
      */
     protected function createPermission(string $name)
     {

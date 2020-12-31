@@ -112,7 +112,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             NovaPermissionTool::make()
                 ->permissionPolicy(PermissionPolicy::class)
                 ->rolePolicy(RolePolicy::class),
-            new NovaKustomer,
+
+            (new NovaKustomer)->canSee(function ($request) {
+                return $request->user()->hasPermissionTo('feedback.manage');
+            }),
         ];
     }
 
