@@ -8,7 +8,7 @@ export default {
             endpoint: '',
             resourceId: null,
 
-            form: new Form(this.data),
+            form: new Form(),
 
             fields: this.data
         };
