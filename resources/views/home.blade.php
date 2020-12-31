@@ -27,7 +27,7 @@
             <div id="overflowContainer" class="position-relative mb-3">
                 <div class="d-flex flex-row flex-nowrap mx-0" style="overflow-x: scroll; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
 
-                    @foreach($threadUpdates as $thread)
+                    @forelse($threadUpdates as $thread)
                         <a href="{{ $thread->path() }}" class="d-inline-flex ml-0 mr-3" style="scroll-snap-align: start; flex: 0 0 auto;">
                             <div class="card bg-dark text-white w-full" style="width: 300px;">
                                 <div class="card-body pb-0">
@@ -45,7 +45,9 @@
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+                    @empty
+                        <p>Aucune discussion récente.</p>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -53,20 +55,24 @@
     <div class="row">
         <div class="col-md-8">
             <h3>À la une</h3>
-            <section>
-                <h4 class="text-primary">
-                    <a href="{{ $latestAnnouncement->path() }}">
-                        {{ $latestAnnouncement->title }}
-                    </a>
-                </h4>
-                <div>{!! $latestAnnouncement->initiatorPost->body !!}</div>
+            @if(is_null($latestAnnouncement))
+                <p>Aucune annonce récente.</p>
+            @else
+                <section>
+                    <h4 class="text-primary">
+                        <a href="{{ $latestAnnouncement->path() }}">
+                            {{ $latestAnnouncement->title }}
+                        </a>
+                    </h4>
+                    <div>{!! $latestAnnouncement->initiatorPost->body !!}</div>
                 </section>
+            @endif
         </div>
         <div class="col-md-4">
             <h3>Activité</h3>
             <table class="table">
                 <tbody>
-                    @foreach($feed as $activity)
+                    @forelse($feed as $activity)
                         <tr><td>
                             <p class="mb-0">
                                 @switch($activity->type)
@@ -92,7 +98,9 @@
                             </p>
                             <p class="small text-muted text-right mb-0">{{ $activity->created_at->diffForHumans() }}</p>
                         </td></tr>
-                    @endforeach
+                    @empty
+                        <p>Aucune activité récente.</p>
+                    @endforelse
                 </tbody>
             </table>
         </div>
