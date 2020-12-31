@@ -39,7 +39,7 @@ class HomeController extends Controller
                 ->whereIn('type', ['created_user', 'updated_profile', 'created_thread', 'created_post'])
                 ->latest()
                 ->take(10)
-                ->get()
+                ->get(),
         ]);
     }
 }
