@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f637c9d73f7e2a1a7dba292a3d36549",
+    "content-hash": "94ef558b4ec6a3cf8f0c852bb21f4e20",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4065,6 +4065,113 @@
                 }
             ],
             "time": "2020-11-14T18:14:52+00:00"
+        },
+        {
+            "name": "mydnic/laravel-kustomer",
+            "version": "v1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mydnic/laravel-feedback-component.git",
+                "reference": "6dca641ebc7cc2ff4caec8a6cab86d034f460613"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mydnic/laravel-feedback-component/zipball/6dca641ebc7cc2ff4caec8a6cab86d034f460613",
+                "reference": "6dca641ebc7cc2ff4caec8a6cab86d034f460613",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3",
+                "orchestra/testbench": "^3.7.8",
+                "phpunit/phpunit": "^7.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mydnic\\Kustomer\\KustomerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mydnic\\Kustomer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Clément Rigo",
+                    "email": "rigoclement@mydnic.be"
+                }
+            ],
+            "description": "Open Source Feedback Interface for Laravel",
+            "homepage": "https://github.com/mydnic/laravel-feedback-component",
+            "keywords": [
+                "customer",
+                "feedback",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/mydnic/laravel-feedback-component/issues",
+                "source": "https://github.com/mydnic/laravel-feedback-component/tree/v1.6.1"
+            },
+            "time": "2020-10-16T14:30:02+00:00"
+        },
+        {
+            "name": "mydnic/nova-kustomer",
+            "version": "v1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mydnic/nova-kustomer.git",
+                "reference": "59831d7786904fd711a212f94e6a2922bd18e7a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mydnic/nova-kustomer/zipball/59831d7786904fd711a212f94e6a2922bd18e7a5",
+                "reference": "59831d7786904fd711a212f94e6a2922bd18e7a5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mydnic\\NovaKustomer\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mydnic\\NovaKustomer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel Nova Kustomer Feedback Tool",
+            "keywords": [
+                "feedback",
+                "kustomer",
+                "laravel",
+                "mydnic",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/mydnic/nova-kustomer/issues",
+                "source": "https://github.com/mydnic/nova-kustomer/tree/master"
+            },
+            "time": "2019-12-18T08:58:16+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -12116,7 +12223,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4",
         "ext-json": "*"
     },
     "platform-dev": [],

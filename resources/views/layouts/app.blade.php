@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('vendor/kustomer/js/kustomer.js') }}" defer></script>
     <script>
         window.App = {!! json_encode([
             'signedIn' => Auth::check(),
@@ -51,6 +52,8 @@
         <flash message="{{ session('flash') }}"></flash>
     </div>
     @show
+
+    @include('kustomer::kustomer')
 
     @stack('scripts')
 </body>

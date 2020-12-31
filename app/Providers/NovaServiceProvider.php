@@ -17,6 +17,7 @@ use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Mydnic\NovaKustomer\NovaKustomer;
 use Vyuldashev\NovaPermission\NovaPermissionTool;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -111,6 +112,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             NovaPermissionTool::make()
                 ->permissionPolicy(PermissionPolicy::class)
                 ->rolePolicy(RolePolicy::class),
+
+            (new NovaKustomer)->canSee(function ($request) {
+                return $request->user()->hasPermissionTo('feedback.manage');
+            }),
         ];
     }
 
