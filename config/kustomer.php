@@ -100,5 +100,5 @@ return [
     |
      */
 
-    'screenshot' => true,
+    'screenshot' => false,
 ];
