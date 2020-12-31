@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Tests\StripeTestCase;
@@ -37,12 +38,47 @@ class SubscriptionTest extends StripeTestCase
      * @group external-api
      * @group stripe-api
      */
+    public function testBillingPageShowsAlertIfActiveSubscriptionButNoPaymentMethodSaved()
+    {
+        $this->signIn(tap(User::factory()->create())
+            ->createAsStripeCustomer(['balance' => -99999])); // Give user large credit
+
+        Auth::user()->newSubscription('default', config('council.plans.agepac'))->add();
+
+        $this->get(route('subscription.edit'))
+            ->assertSee('Aucun moyen de paiement n’est enregistré pour ton compte.');
+    }
+
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
+    public function testBillingPageDoesntShowAlertIfNoPaymentMethodSavedButUserCanceledSubscription()
+    {
+        $this->signIn(tap(User::factory()->create())
+            ->createAsStripeCustomer(['balance' => -99999])); // Give user large credit
+
+        Auth::user()->newSubscription('default', config('council.plans.agepac'))->add();
+
+        Auth::user()->subscription('default')->cancel();
+
+        $this->get(route('subscription.edit'))
+            ->assertDontSee('role="alert"', false)
+            ->assertDontSee('Aucun moyen de paiement n’est enregistré pour ton compte.');
+    }
+
+    /**
+     * @test
+     * @group external-api
+     * @group stripe-api
+     */
     public function testBillingPageDoesntShowAlertIfSubscribed()
     {
         Auth::user()->newSubscription('default', config('council.plans.agepac'))->add();
 
         $this->get(route('subscription.edit'))
-            ->assertDontSee('Ta cotisation n’est pas à jour.');
+            ->assertDontSee('role="alert"', false);
     }
 
     /**
