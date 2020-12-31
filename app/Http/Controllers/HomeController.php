@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
+use App\Models\Thread;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +24,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home', [
+            'threadUpdates' => Thread
+                ::orderBy('updated_at', 'desc')
+                ->take(8)
+                ->get(),
+            'latestAnnouncement' => Thread
+                ::whereIn('channel_id', [1, 5, 43, 54]) // Association and children
+                ->where('pinned', true)
+                ->latest()
+                ->first(),
+            'feed' => Activity
+                ::with('subject')
+                ->whereIn('type', ['created_user', 'updated_profile', 'created_thread', 'created_post'])
+                ->latest()
+                ->take(10)
+                ->get()
+        ]);
     }
 }
