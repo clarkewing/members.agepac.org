@@ -143,3 +143,11 @@
 .embed-responsive:hover .embedded-avatar-upload-btn {
     opacity: 1;
 }
+
+.kustomer-feedback-component {
+    z-index: 1;
+
+    .kustomer-popup .kustomer-header h1 {
+        white-space: normal !important;
+    }
+}
