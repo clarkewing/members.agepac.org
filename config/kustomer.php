@@ -83,9 +83,9 @@ return [
         'suggestion' => [
             'icon' => '/vendor/kustomer/assets/idea.svg',
         ],
-         'bug' => [
-             'icon' => '/vendor/kustomer/assets/bug.svg',
-         ],
+        'bug' => [
+            'icon' => '/vendor/kustomer/assets/bug.svg',
+        ],
     ],
 
     /*
