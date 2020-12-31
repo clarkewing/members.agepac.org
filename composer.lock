@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2cf6072070336e9b6dce8bad6582239",
+    "content-hash": "94ef558b4ec6a3cf8f0c852bb21f4e20",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -4124,6 +4124,54 @@
                 "source": "https://github.com/mydnic/laravel-feedback-component/tree/v1.6.1"
             },
             "time": "2020-10-16T14:30:02+00:00"
+        },
+        {
+            "name": "mydnic/nova-kustomer",
+            "version": "v1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mydnic/nova-kustomer.git",
+                "reference": "59831d7786904fd711a212f94e6a2922bd18e7a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mydnic/nova-kustomer/zipball/59831d7786904fd711a212f94e6a2922bd18e7a5",
+                "reference": "59831d7786904fd711a212f94e6a2922bd18e7a5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mydnic\\NovaKustomer\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mydnic\\NovaKustomer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel Nova Kustomer Feedback Tool",
+            "keywords": [
+                "feedback",
+                "kustomer",
+                "laravel",
+                "mydnic",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/mydnic/nova-kustomer/issues",
+                "source": "https://github.com/mydnic/nova-kustomer/tree/master"
+            },
+            "time": "2019-12-18T08:58:16+00:00"
         },
         {
             "name": "nesbot/carbon",
