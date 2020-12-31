@@ -108,7 +108,7 @@
                 body: this.post.body,
                 isBest: this.post.is_best,
                 isThreadInitiator: this.post.is_thread_initiator,
-                isDeleted: this.post.deleted_at !== null,
+                isDeleted: this.post.deleted_at !== undefined && this.post.deleted_at !== null,
                 tempBody: this.post.body
             }
         },
