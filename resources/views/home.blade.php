@@ -20,6 +20,8 @@
 <div class="container bg-white shadow-sm" style="margin-top: -1.5rem;">
     <div class="row justify-content-center py-4">
         <div class="col-md-12">
+            @include('account.subscription.alert')
+
             <h3>Quoi de neuf ?</h3>
 
             <div id="overflowContainer" class="position-relative mb-3">
