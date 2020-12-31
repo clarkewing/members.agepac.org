@@ -70,6 +70,10 @@
     }
 }
 
+.modal {
+    z-index: 1060;
+}
+
 #forumSidebar {
     @include media-breakpoint-up(sm) {
         min-width: 200px;
