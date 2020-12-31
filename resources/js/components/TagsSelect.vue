@@ -6,6 +6,7 @@
                  taggable
                  hide-selected
                  :internal-search="false"
+                 @open="getSuggestions"
                  @search-change="getSuggestions"
                  @tag="addTag"
     ></multiselect>
@@ -48,10 +49,6 @@
             },
 
             getSuggestions: _.debounce(function (query) {
-                if (! query.length) {
-                    return;
-                }
-
                 this.isLoading = true;
 
                 axios.get(this.endpoint, {
@@ -68,6 +65,6 @@
                     this.isLoading = false;
                 });
             }, 300),
-        }
+        },
     }
 </script>
