@@ -9,6 +9,17 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- We'll transition to a more privacy focused solution ASAP -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BD3RY2NEC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-4BD3RY2NEC');
+    </script>
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('vendor/kustomer/js/kustomer.js') }}" defer></script>
