@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Post;
 use App\Models\Thread;
 
 class HomeController extends Controller
@@ -25,10 +26,12 @@ class HomeController extends Controller
     public function index()
     {
         return view('home', [
-            'threadUpdates' => Thread
-                ::orderBy('updated_at', 'desc')
+            'threadUpdates' => Post
+                ::latest()
+                ->groupBy('thread_id')
                 ->take(8)
-                ->get(),
+                ->get()
+                ->pluck('thread'),
             'latestAnnouncement' => Thread
                 ::whereIn('channel_id', [1, 5, 43, 54]) // Association and children
                 ->where('pinned', true)
