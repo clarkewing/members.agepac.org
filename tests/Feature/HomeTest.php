@@ -70,4 +70,15 @@ class HomeTest extends TestCase
 
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8], $viewThreadUpdates->pluck('id')->all());
     }
+
+    /** @test */
+    public function testThreadUpdatesShowsOnlyThreadsUserCanSee()
+    {
+        Thread::find(1)->channel->createPermission('view');
+
+        $viewThreadUpdates = $this->get(route('home'))
+            ->viewData('threadUpdates');
+
+        $this->assertNotContains(1, $viewThreadUpdates->pluck('id')->all());
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Channel;
 use App\Models\Post;
 use App\Models\Thread;
 
@@ -31,7 +32,8 @@ class HomeController extends Controller
                 ->groupBy('thread_id')
                 ->take(8)
                 ->get()
-                ->pluck('thread'),
+                ->pluck('thread')
+                ->whereIn('channel_id', Channel::withPermission('view')->pluck('id')),
             'latestAnnouncement' => Thread
                 ::whereIn('channel_id', [1, 5, 43, 54]) // Association and children
                 ->where('pinned', true)
