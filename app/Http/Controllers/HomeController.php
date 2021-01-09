@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Channel;
-use App\Models\Post;
 use App\Models\Thread;
 
 class HomeController extends Controller
