@@ -54,27 +54,6 @@ class AppServiceProvider extends ServiceProvider
             throw new \Exception('Concat macro not defined for the current database driver.');
         });
 
-        Builder::macro('queryWithoutStrict', function ($query) {
-            $dbConnection = config('database.default');
-            $dbDriver = config("database.connections.$dbConnection.driver");
-
-            if ($dbDriver !== 'mysql') {
-                return $query();
-            }
-
-            config()->set('database.connections.mysql.strict', false);
-
-            DB::reconnect();
-
-            try {
-                return $query();
-            } finally {
-                config()->set('database.connections.mysql.strict', true);
-
-                DB::reconnect();
-            }
-        });
-
         NotificationFake::macro('assertSentToVia', function ($notifiable, $channel, $notification) {
             $this->assertSentTo($notifiable, $notification, function ($notification, $channels) use ($channel) {
                 return in_array($channel, $channels);
