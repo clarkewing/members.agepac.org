@@ -32,21 +32,23 @@ trait RestrictedChannels
      * Scope a query to only unrestricted channels.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string|null  $permission
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUnrestricted(Builder $query)
+    public function scopeUnrestricted(Builder $query, string $permission = null)
     {
-        return $query->whereNotIn('slug', $this->getAllRestrictions()->pluck('channel_slug'));
+        return $query->whereNotIn('slug', $this->getAllRestrictions($permission)->pluck('channel_slug'));
     }
 
     /**
      * Return a Collection with all the existing channel restrictions.
      *
+     * @param  string|null  $permission
      * @return \Illuminate\Support\Collection
      */
-    private function getAllRestrictions(): Collection
+    private function getAllRestrictions(string $permission = null): Collection
     {
-        return Permission::where('name', 'LIKE', 'channels.%.%')
+        return Permission::where('name', 'LIKE', 'channels.' . ($permission ?? '%') . '.%')
             ->pluck('name')
             ->map($this->extractPermissionInfo());
     }
@@ -79,7 +81,7 @@ trait RestrictedChannels
     {
         $user = $user ?? Auth::user();
 
-        return $query->unrestricted()
+        return $query->unrestricted($permission)
             ->orWhereIn(
                 'slug',
                 $this->getUserPermissions($user)

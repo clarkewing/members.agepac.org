@@ -111,6 +111,16 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /** @test */
+    public function testWithPermissionScopeIncludesChannelsWhereSpecifiedPermissionIsNotSet()
+    {
+        $restrictedChannel = tap($this->channel)->createPermission('post');
+
+        $user = User::factory()->create();
+
+        $this->assertEquals(1, Channel::withPermission('view', $user)->count());
+    }
+
+    /** @test */
     public function testCanScopeChannelsWithPermissionForLoggedInUser()
     {
         $this->signIn();
