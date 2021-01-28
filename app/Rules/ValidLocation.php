@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Rule as BaseRule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -9,9 +10,51 @@ use Illuminate\Validation\Rule;
 class ValidLocation implements BaseRule
 {
     /**
-     * @var \Illuminate\Support\Facades\Validator
+     * Validator factory used for slave validator creation.
+     *
+     * @var \Illuminate\Contracts\Validation\Factory
      */
-    protected $validator;
+    private $validatorFactory;
+
+    /**
+     * Validation error message bag from particular underlying validator.
+     *
+     * @var array
+     */
+    private $messageBag;
+
+    /**
+     * @param \Illuminate\Contracts\Validation\Factory|null $validatorFactory
+     */
+    public function __construct(Factory $validatorFactory = null)
+    {
+        if ($validatorFactory !== null) {
+            $this->setValidatorFactory($validatorFactory);
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Validation\Factory
+     */
+    public function getValidatorFactory(): Factory
+    {
+        if ($this->validatorFactory === null) {
+            $this->validatorFactory = Validator::getFacadeRoot();
+        }
+
+        return $this->validatorFactory;
+    }
+
+    /**
+     * @param \Illuminate\Contracts\Validation\Factory $validatorFactory
+     * @return static
+     */
+    public function setValidatorFactory(Factory $validatorFactory): self
+    {
+        $this->validatorFactory = $validatorFactory;
+
+        return $this;
+    }
 
     /**
      * Determine if the validation rule passes.
@@ -29,7 +72,7 @@ class ValidLocation implements BaseRule
         ];
 
         // First, validate the location is an array and has a type.
-        $this->validator = Validator::make([$attribute => $value], [
+        $validator = $this->getValidatorFactory()->make([$attribute => $value], [
             $attribute => 'array',
 
             "$attribute.type" => [
@@ -38,13 +81,14 @@ class ValidLocation implements BaseRule
             ],
         ]);
 
-        // If this fails, stop validating.
-        if (! $this->validator->passes()) {
-            return $this->validator->passes();
+        if ($validator->fails()) {
+            $this->messageBag = $validator->getMessageBag()->all();
+
+            return false;
         }
 
         // Otherwise, continue with the validation.
-        $this->validator = Validator::make([$attribute => $value], [
+        $validator = $this->getValidatorFactory()->make([$attribute => $value], [
             "$attribute.name" => array_merge($baseRules, [
                 Rule::requiredIf(function () use ($value) {
                     return in_array($value['type'], ['busStop', 'trainStation', 'townhall', 'airport']);
@@ -87,7 +131,13 @@ class ValidLocation implements BaseRule
             ],
         ]);
 
-        return $this->validator->passes();
+        if ($validator->fails()) {
+            $this->messageBag = $validator->getMessageBag()->all();
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -97,6 +147,6 @@ class ValidLocation implements BaseRule
      */
     public function message()
     {
-        return $this->validator->errors();
+        return $this->messageBag;
     }
 }
