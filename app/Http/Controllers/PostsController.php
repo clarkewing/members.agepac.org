@@ -57,7 +57,7 @@ class PostsController extends Controller
      */
     public function store(CreatePostRequest $request, string $channelSlug, Thread $thread)
     {
-        $this->authorize('post', $thread->channel);
+        $this->authorize('view', $thread->channel);
 
         if ($thread->locked) {
             return Response::make('Thread is locked.', 422);

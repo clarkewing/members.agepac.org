@@ -208,9 +208,9 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /** @test */
-    public function testUnauthorizedUsersCannotReplyToAThreadInARestrictedChannel()
+    public function testUsersThatCannotViewARestrictedThreadCannotReplyToIt()
     {
-        $this->setupPermission('post');
+        $this->setupPermission('view');
 
         $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
 
@@ -219,10 +219,8 @@ class RestrictedChannelsTest extends TestCase
     }
 
     /** @test */
-    public function testAuthorizedUsersCanReplyToAThreadInARestrictedChannel()
+    public function testUsersThatCanViewARestrictedThreadCanReplyToIt()
     {
-        $this->signInWithRole('Administrator');
-
         $this->setupPermission('post');
 
         $thread = Thread::factory()->create(['channel_id' => $this->channel->id]);
