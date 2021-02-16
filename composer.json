@@ -24,7 +24,7 @@
         "inspheric/nova-indicator-field": "^1.43",
         "jbroadway/urlify": "^1.2",
         "kabbouchi/nova-impersonate": "^1.5",
-        "laravel/cashier": "^12.4",
+        "laravel/cashier": "^12.8",
         "laravel/framework": "^8.17",
         "laravel/helpers": "^1.3",
         "laravel/nova": "^3.15",
