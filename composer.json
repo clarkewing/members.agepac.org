@@ -23,6 +23,7 @@
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "inspheric/nova-indicator-field": "^1.43",
         "jbroadway/urlify": "^1.2",
+        "kabbouchi/nova-impersonate": "^1.5",
         "laravel/cashier": "^12.4",
         "laravel/framework": "^8.17",
         "laravel/helpers": "^1.3",
