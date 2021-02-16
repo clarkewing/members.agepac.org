@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\CanImpersonate;
 use App\Traits\HasReputation;
+use App\Traits\Impersonatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -19,7 +21,12 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, HasReputation, HasRoles, Notifiable;
+    use HasFactory;
+    use HasReputation;
+    use HasRoles;
+    use Notifiable;
+    use CanImpersonate;
+    use Impersonatable;
     use Billable {
         createAsStripeCustomer as protected traitCreateAsStripeCustomer;
     }

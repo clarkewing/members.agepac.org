@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inspheric\Fields\Indicator;
+use KABBOUCHI\NovaImpersonate\Impersonate;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Line;
@@ -141,6 +142,8 @@ class User extends Resource
                 RoleBooleanGroup::make('Roles')->hideFromIndex(),
                 PermissionBooleanGroup::make('Permissions')->hideFromIndex(),
             ]),
+
+            Impersonate::make($this),
         ];
     }
 
