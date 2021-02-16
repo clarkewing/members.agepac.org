@@ -17,6 +17,17 @@ class FavoritesController extends Controller
     }
 
     /**
+     * Show the favorites for a given post.
+     *
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
+    {
+        return $post->favorites->pluck('owner.username');
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Models\Post  $post

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -72,6 +73,36 @@ class FavoritesTest extends TestCase
         }
 
         $this->assertCount(1, $this->post->favorites);
+    }
+
+    /** @test */
+    public function testGuestsCannotSeePostFavorites()
+    {
+        Auth::logout();
+
+        $this->getJson(route('posts.favorites', $this->post))
+            ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function testUnsubscribedUsersCannotSeePostFavorites()
+    {
+        $this->signInUnsubscribed();
+
+        $this->getJson(route('posts.favorites', $this->post))
+            ->assertPaymentRequired();
+    }
+
+    /** @test */
+    public function testAuthenticatedUserCanSeePostFavorites()
+    {
+        $this->getJson(route('posts.favorites', $this->post))
+            ->assertJson([]);
+
+        $this->post->favorite(User::factory()->create()->id);
+
+        $this->getJson(route('posts.favorites', $this->post))
+            ->assertJson($this->post->favorites->pluck('owner.username')->all());
     }
 
     /**
