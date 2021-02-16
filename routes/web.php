@@ -72,6 +72,7 @@ Route::delete('/posts/{post}/best', [BestPostsController::class, 'destroy'])->na
 
 Route::post('/posts/{post}/favorites', [FavoritesController::class, 'store'])->name('posts.favorite');
 Route::delete('/posts/{post}/favorites', [FavoritesController::class, 'destroy'])->name('posts.unfavorite');
+Route::get('/posts/{post}/favorites', [FavoritesController::class, 'show'])->name('posts.favorites');
 
 Route::post('/attachments', [AttachmentsController::class, 'store'])->name('attachments.store');
 Route::delete('/attachments/{attachment}', [AttachmentsController::class, 'destroy'])->name('attachments.destroy');

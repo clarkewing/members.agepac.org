@@ -23,4 +23,12 @@ class Favorite extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Get the user that owns the favorite.
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

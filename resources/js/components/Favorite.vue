@@ -13,9 +13,10 @@
             </svg>
         </button>
 
-        <p class="text-center mb-0"
+        <a class="d-block text-center mb-0"
            :class="[active ? 'text-info' : 'text-gray-400']"
-           v-text="count"></p>
+           :href="endpoint"
+           v-text="count"></a>
     </div>
 </template>
 
