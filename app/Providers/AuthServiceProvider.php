@@ -9,6 +9,7 @@ use App\Policies\UserPolicy;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Livewire;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -44,5 +45,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('viewNova', function (User $user) {
             return $user->getAllPermissions()->count();
         });
+
+        Livewire::addPersistentMiddleware([
+            \App\Http\Middleware\EnsureUserIsSubscribed::class,
+        ]);
     }
 }

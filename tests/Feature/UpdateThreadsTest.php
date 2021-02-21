@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Thread;
+use App\Http\Livewire\Thread;
+use App\Models\Thread as ThreadModel;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class UpdateThreadsTest extends TestCase
@@ -16,7 +18,14 @@ class UpdateThreadsTest extends TestCase
 
         $this->withExceptionHandling()->signIn();
 
-        $this->thread = Thread::factory()->create(['user_id' => Auth::id()]);
+        $this->thread = ThreadModel::factory()->create(['user_id' => Auth::id()]);
+    }
+
+    /** @test */
+    public function testThreadComponentIsRendered()
+    {
+        $this->get($this->thread->path)
+            ->assertSeeLivewire('thread');
     }
 
     /** @test */
@@ -25,16 +34,7 @@ class UpdateThreadsTest extends TestCase
         Auth::logout();
 
         $this->updateThread()
-            ->assertUnauthorized();
-    }
-
-    /** @test */
-    public function testUnsubscribedUsersCannotUpdateThreads()
-    {
-        $this->signInUnsubscribed();
-
-        $this->updateThread()
-            ->assertPaymentRequired();
+            ->assertForbidden();
     }
 
     /** @test */
@@ -70,15 +70,17 @@ class UpdateThreadsTest extends TestCase
     public function testAThreadRequiresATitleToBeUpdated()
     {
         $this->updateThread(['title' => null])
-            ->assertJsonValidationErrors('title');
+            ->assertHasErrors(['state.title' => 'required']);
     }
 
     /**
      * @param  array  $data
-     * @return \Illuminate\Testing\TestResponse
+     * @return \Livewire\Testing\TestableLivewire
      */
-    protected function updateThread(array $data = []): \Illuminate\Testing\TestResponse
+    protected function updateThread(array $data = []): \Livewire\Testing\TestableLivewire
     {
-        return $this->patchJson($this->thread->path(), $data);
+        return Livewire::test(Thread::class, [$this->thread])
+            ->set('state', $data)
+            ->call('update');
     }
 }

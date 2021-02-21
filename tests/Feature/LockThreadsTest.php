@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Thread;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class LockThreadsTest extends TestCase
@@ -20,27 +21,27 @@ class LockThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testGuestsCannotLockThreads()
+    public function testGuestsCannotToggleThreadLock()
     {
         Auth::logout();
 
-        $this->lockThread($this->thread)
-            ->assertUnauthorized();
+        $this->toggleThreadLock()
+            ->assertForbidden();
     }
 
     /** @test */
-    public function testUnsubscribedUsersCannotLockThreads()
+    public function testUnsubscribedUsersCannotToggleThreadLock()
     {
         $this->signInUnsubscribed();
 
-        $this->lockThread($this->thread)
-            ->assertPaymentRequired();
+        $this->toggleThreadLock()
+            ->assertForbidden();
     }
 
     /** @test */
     public function testUnauthorizedUsersCannotLockThreads()
     {
-        $this->lockThread($this->thread)
+        $this->toggleThreadLock()
             ->assertForbidden();
 
         $this->assertFalse($this->thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
@@ -51,8 +52,8 @@ class LockThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.lock');
 
-        $this->lockThread($this->thread)
-            ->assertNoContent();
+        $this->toggleThreadLock()
+            ->assertOk();
 
         $this->assertTrue($this->thread->fresh()->locked, 'Failed asserting that the thread was locked.');
     }
@@ -62,7 +63,7 @@ class LockThreadsTest extends TestCase
     {
         $this->thread->update(['locked' => true]);
 
-        $this->unlockThread($this->thread)
+        $this->toggleThreadLock()
             ->assertForbidden();
 
         $this->assertTrue($this->thread->fresh()->locked, 'Failed asserting that the thread was locked.');
@@ -75,8 +76,8 @@ class LockThreadsTest extends TestCase
 
         $this->thread->update(['locked' => true]);
 
-        $this->unlockThread($this->thread)
-            ->assertNoContent();
+        $this->toggleThreadLock()
+            ->assertOk();
 
         $this->assertFalse($this->thread->fresh()->locked, 'Failed asserting that the thread was unlocked.');
     }
@@ -93,20 +94,11 @@ class LockThreadsTest extends TestCase
     }
 
     /**
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Testing\TestResponse
+     * @return \Livewire\Testing\TestableLivewire
      */
-    protected function lockThread(Thread $thread): \Illuminate\Testing\TestResponse
+    protected function toggleThreadLock(): \Livewire\Testing\TestableLivewire
     {
-        return $this->postJson(route('threads.lock', $thread));
-    }
-
-    /**
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function unlockThread(Thread $thread): \Illuminate\Testing\TestResponse
-    {
-        return $this->deleteJson(route('threads.unlock', $thread));
+        return Livewire::test(\App\Http\Livewire\Thread::class, [$this->thread])
+            ->call('toggleLock');
     }
 }

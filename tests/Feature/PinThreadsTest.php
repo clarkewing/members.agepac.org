@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Thread;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class PinThreadsTest extends TestCase
@@ -20,27 +21,27 @@ class PinThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testGuestsCannotPinThreads()
+    public function testGuestsCannotToggleThreadPin()
     {
         Auth::logout();
 
-        $this->pinThread($this->thread)
-            ->assertUnauthorized();
+        $this->toggleThreadPin()
+            ->assertForbidden();
     }
 
     /** @test */
-    public function testUnsubscribedUsersCannotPinThreads()
+    public function testUnsubscribedUsersCannotToggleThreadPin()
     {
         $this->signInUnsubscribed();
 
-        $this->pinThread($this->thread)
-            ->assertPaymentRequired();
+        $this->toggleThreadPin()
+            ->assertForbidden();
     }
 
     /** @test */
     public function testUnauthorizedUsersCannotPinThreads()
     {
-        $this->pinThread($this->thread)
+        $this->toggleThreadPin()
             ->assertForbidden();
 
         $this->assertFalse($this->thread->fresh()->pinned, 'Failed asserting that the thread was unpinned.');
@@ -51,28 +52,10 @@ class PinThreadsTest extends TestCase
     {
         $this->signInWithPermission('threads.pin');
 
-        $this->pinThread($this->thread)
-            ->assertNoContent();
+        $this->toggleThreadPin()
+            ->assertOk();
 
         $this->assertTrue($this->thread->fresh()->pinned, 'Failed asserting that the thread was pinned.');
-    }
-
-    /** @test */
-    public function testGuestsCannotUnpinThreads()
-    {
-        Auth::logout();
-
-        $this->unpinThread($this->thread)
-            ->assertUnauthorized();
-    }
-
-    /** @test */
-    public function testUnsubscribedUsersCannotUnpinThreads()
-    {
-        $this->signInUnsubscribed();
-
-        $this->unpinThread($this->thread)
-            ->assertPaymentRequired();
     }
 
     /** @test */
@@ -80,7 +63,7 @@ class PinThreadsTest extends TestCase
     {
         $this->thread->update(['pinned' => true]);
 
-        $this->unpinThread($this->thread)
+        $this->toggleThreadPin()
             ->assertForbidden();
 
         $this->assertTrue($this->thread->fresh()->pinned, 'Failed asserting that the thread was pinned.');
@@ -89,12 +72,12 @@ class PinThreadsTest extends TestCase
     /** @test */
     public function testAuthorizedUsersCanUnpinThreads()
     {
-        $this->thread->update(['pinned' => true]);
-
         $this->signInWithPermission('threads.unpin');
 
-        $this->unpinThread($this->thread)
-            ->assertNoContent();
+        $this->thread->update(['pinned' => true]);
+
+        $this->toggleThreadPin()
+            ->assertOk();
 
         $this->assertFalse($this->thread->fresh()->pinned, 'Failed asserting that the thread was unpinned.');
     }
@@ -115,8 +98,9 @@ class PinThreadsTest extends TestCase
             ],
         ]);
 
-        $this->pinThread($pinnedThread = $threadThree)
-            ->assertNoContent();
+        Livewire::test(\App\Http\Livewire\Thread::class, [$pinnedThread = $threadThree])
+            ->call('togglePin')
+            ->assertOk();
 
         $this->getJson(route('threads.index'))->assertJson([
             'data' => [
@@ -128,20 +112,11 @@ class PinThreadsTest extends TestCase
     }
 
     /**
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Testing\TestResponse
+     * @return \Livewire\Testing\TestableLivewire
      */
-    protected function pinThread(Thread $thread): \Illuminate\Testing\TestResponse
+    protected function toggleThreadPin(): \Livewire\Testing\TestableLivewire
     {
-        return $this->postJson(route('threads.pin', $thread));
-    }
-
-    /**
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function unpinThread(Thread $thread): \Illuminate\Testing\TestResponse
-    {
-        return $this->deleteJson(route('threads.unpin', $thread));
+        return Livewire::test(\App\Http\Livewire\Thread::class, [$this->thread])
+            ->call('togglePin');
     }
 }

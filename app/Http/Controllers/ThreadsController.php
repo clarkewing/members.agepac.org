@@ -135,24 +135,6 @@ class ThreadsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $channelSlug
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function update(Request $request, string $channelSlug, Thread $thread)
-    {
-        $this->authorize('update', $thread);
-
-        return tap($thread)->update($request->validate([
-            'title' => 'required',
-        ]));
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request

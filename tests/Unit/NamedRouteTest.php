@@ -64,17 +64,6 @@ class NamedRouteTest extends TestCase
     }
 
     /* @test */
-    public function testThreadUpdate()
-    {
-        $thread = Thread::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$thread->channel->slug}/{$thread->slug}",
-            'threads.update', [$thread->channel, $thread]
-        );
-    }
-
-    /* @test */
     public function testThreadDestroy()
     {
         $thread = Thread::factory()->create();
@@ -82,50 +71,6 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}",
             'threads.destroy', [$thread->channel, $thread]
-        );
-    }
-
-    /* @test */
-    public function testLockThread()
-    {
-        $thread = Thread::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/locked-threads/{$thread->slug}",
-            'threads.lock', $thread
-        );
-    }
-
-    /* @test */
-    public function testUnlockThread()
-    {
-        $thread = Thread::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/locked-threads/{$thread->slug}",
-            'threads.unlock', $thread
-        );
-    }
-
-    /* @test */
-    public function testThreadSubscriptionsStore()
-    {
-        $thread = Thread::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
-            'threads.subscribe', [$thread->channel, $thread]
-        );
-    }
-
-    /* @test */
-    public function testThreadSubscriptionsDestroy()
-    {
-        $thread = Thread::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
-            'threads.unsubscribe', [$thread->channel, $thread]
         );
     }
 

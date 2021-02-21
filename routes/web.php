@@ -10,10 +10,8 @@ use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LockedThreadsController;
 use App\Http\Controllers\OccupationsController;
 use App\Http\Controllers\PaymentMethodsController;
-use App\Http\Controllers\PinnedThreadsController;
 use App\Http\Controllers\PollResultsController;
 use App\Http\Controllers\PollsController;
 use App\Http\Controllers\PollVotesController;
@@ -23,7 +21,6 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubscriptionInvoicesController;
 use App\Http\Controllers\ThreadsController;
-use App\Http\Controllers\ThreadSubscriptionsController;
 use App\Http\Controllers\UserNotificationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -50,17 +47,7 @@ Route::resource('threads', ThreadsController::class)->only(['create', 'store']);
 Route::get('/threads/search', [SearchController::class, 'show'])->name('threads.search');
 Route::get('/threads/{channel?}', [ThreadsController::class, 'index'])->name('threads.index');
 Route::get('/threads/{channel}/{thread}', [ThreadsController::class, 'show'])->name('threads.show');
-Route::patch('/threads/{channel}/{thread}', [ThreadsController::class, 'update'])->name('threads.update');
 Route::delete('/threads/{channel}/{thread}', [ThreadsController::class, 'destroy'])->name('threads.destroy');
-
-Route::post('/locked-threads/{thread}', [LockedThreadsController::class, 'store'])->name('threads.lock');
-Route::delete('/locked-threads/{thread}', [LockedThreadsController::class, 'destroy'])->name('threads.unlock');
-
-Route::post('pinned-threads/{thread}', [PinnedThreadsController::class, 'store'])->name('threads.pin');
-Route::delete('pinned-threads/{thread}', [PinnedThreadsController::class, 'destroy'])->name('threads.unpin');
-
-Route::post('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionsController::class, 'store'])->name('threads.subscribe');
-Route::delete('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionsController::class, 'destroy'])->name('threads.unsubscribe');
 
 /* Posts */
 Route::get('/threads/{channel}/{thread}/posts', [PostsController::class, 'index'])->name('posts.index');

@@ -36,7 +36,6 @@ Vue.component('profile-result', require('./components/ProfileResult').default);
 Vue.component('create-company', require('./components/CreateCompany').default);
 Vue.component('company-result', require('./components/CompanyResult').default);
 
-Vue.component('thread-view', require('./pages/Thread').default);
 Vue.component('instant-search', require('./pages/InstantSearch').default);
 Vue.component('subscription-plans', require('./pages/SubscriptionPlans').default);
 Vue.component('company-view', require('./pages/Company').default);
