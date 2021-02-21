@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Thread as ThreadModel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
-use App\Models\Thread as ThreadModel;
 
 class Thread extends Component
 {
