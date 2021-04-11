@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            @include("threads.polls.$panel")
+            @include("threads.poll.$panel")
         </div>
     </div>
 @endif

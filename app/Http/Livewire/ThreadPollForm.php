@@ -125,7 +125,7 @@ class ThreadPollForm extends Component
 
     public function render()
     {
-        return view('threads.polls.form');
+        return view('threads.poll.form');
     }
 
     protected function rules()

@@ -108,6 +108,6 @@ class ThreadHeader extends Component
 
     public function render()
     {
-        return view('livewire.thread-header');
+        return view('threads.header');
     }
 }

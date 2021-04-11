@@ -33,4 +33,4 @@
     </div>
 </div>
 
-@includeWhen($modalOption, 'threads.polls.voters-modal')
+@includeWhen($modalOption, 'threads.poll.voters-modal')

@@ -100,7 +100,7 @@ class ThreadPoll extends Component
 
     public function render()
     {
-        return view('livewire.thread-poll');
+        return view('threads.poll');
     }
 
     protected function rules()
