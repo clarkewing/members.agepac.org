@@ -164,7 +164,7 @@ class EditProfileTest extends TestCase
         $this->updateProfile(['mentorship_tags' => ''])
             ->assertJsonMissingValidationErrors('mentorship_tags');
 
-        $this->assertEmpty($this->profile->fresh()->mentorship_tags);
+        $this->assertTrue($this->profile->fresh()->mentorship_tags->isEmpty());
     }
 
     /** @test */

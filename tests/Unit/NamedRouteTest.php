@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Models\Attachment;
 use App\Models\Channel;
 use App\Models\Company;
-use App\Models\Poll;
 use App\Models\Post;
 use App\Models\Thread;
 use App\Models\User;
@@ -179,83 +178,6 @@ class NamedRouteTest extends TestCase
         $this->assertRoutePathIs(
             "/attachments/{$attachment->id}",
             'attachments.destroy', $attachment
-        );
-    }
-
-    /* @test */
-    public function testPollsShow()
-    {
-        $poll = Poll::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}",
-            'threads.show', [$poll->thread->channel, $poll->thread]
-        );
-    }
-
-    /* @test */
-    public function testPollsCreate()
-    {
-        $poll = Poll::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/create",
-            'polls.create', [$poll->thread->channel, $poll->thread]
-        );
-    }
-
-    /* @test */
-    public function testPollsStore()
-    {
-        $poll = Poll::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
-            'polls.store', [$poll->thread->channel, $poll->thread]
-        );
-    }
-
-    /* @test */
-    public function testPollsUpdate()
-    {
-        $poll = Poll::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
-            'polls.update', [$poll->thread->channel, $poll->thread]
-        );
-    }
-
-    /* @test */
-    public function testPollsDestroy()
-    {
-        $poll = Poll::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
-            'polls.destroy', [$poll->thread->channel, $poll->thread]
-        );
-    }
-
-    /* @test */
-    public function testPollVotesUpdate()
-    {
-        $poll = Poll::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/vote",
-            'poll_votes.update', [$poll->thread->channel, $poll->thread]
-        );
-    }
-
-    /* @test */
-    public function testPollResultsShow()
-    {
-        $poll = Poll::factory()->create();
-
-        $this->assertRoutePathIs(
-            "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/results",
-            'poll_results.show', [$poll->thread->channel, $poll->thread]
         );
     }
 

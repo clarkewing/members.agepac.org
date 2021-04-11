@@ -98,7 +98,7 @@ class LockThreadsTest extends TestCase
      */
     protected function toggleThreadLock(): \Livewire\Testing\TestableLivewire
     {
-        return Livewire::test(\App\Http\Livewire\Thread::class, [$this->thread])
+        return Livewire::test(\App\Http\Livewire\ThreadHeader::class, [$this->thread])
             ->call('toggleLock');
     }
 }

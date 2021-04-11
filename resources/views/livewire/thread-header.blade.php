@@ -50,13 +50,13 @@
                 </a>
             </p>
 
-{{--            @can('attachPoll', $thread)--}}
-{{--                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted"--}}
-{{--                        @click="$refs.poll.openForm()"--}}
-{{--                >--}}
-{{--                    Ajouter un Sondage--}}
-{{--                </button>--}}
-{{--            @endcan--}}
+            @can('attachPoll', $thread)
+                <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal text-muted"
+                        wire:click="$emitTo('thread-poll-form', 'openForm')"
+                >
+                    Ajouter un Sondage
+                </button>
+            @endcan
 
             @can($thread->locked ? 'unlock' : 'lock', $thread)
                 <button class="btn btn-link rounded-0 border-left p-0 pl-2 ml-2 font-size-normal {{ $thread->locked ? 'text-primary' : 'text-muted' }}"
@@ -102,12 +102,4 @@
             opacity: 1;
         }
     </style>
-@endpush
-
-@push('styles')
-    @livewireStyles
-@endpush
-
-@push('scripts')
-    @livewireScripts
 @endpush

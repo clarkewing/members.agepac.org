@@ -47,6 +47,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @livewireStyles
     @stack('styles')
 </head>
 <body>
@@ -65,6 +66,8 @@
     @show
 
     @include('kustomer::kustomer')
+
+    @livewireScripts
 
     @stack('scripts')
 </body>

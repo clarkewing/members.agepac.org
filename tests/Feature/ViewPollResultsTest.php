@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Poll;
-use App\Models\User;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class ViewPollResultsTest extends TestCase
@@ -15,143 +15,218 @@ class ViewPollResultsTest extends TestCase
     {
         parent::setUp();
 
+        $this->withExceptionHandling()->signIn();
+
         $this->poll = Poll::factory()->create();
-
-        $this->withExceptionHandling();
     }
 
     /** @test */
-    public function testGuestsCannotViewPollResults()
+    public function testIfAllowedWithoutVotingCanSeeButtonToViewResults()
     {
-        $this->getPollResults()
-            ->assertUnauthorized();
-    }
-
-    /** @test */
-    public function testUnsubscribedUsersCannotViewPollResults()
-    {
-        $this->signInUnsubscribed();
-
-        $this->getPollResults()
-            ->assertPaymentRequired();
-    }
-
-    /** @test */
-    public function testIfAllowedSubscribedUsersCanViewResultsBeforeVoting()
-    {
-        $this->signIn();
-
         $this->poll->update(['results_before_voting' => true]);
 
-        $results = $this->getPollResults()
-            ->assertOk()
-            ->json();
-
-        $this->assertArrayHasKey('votes_count', $results[0]);
-        $this->assertArrayHasKey('votes_percent', $results[0]);
+        $this->viewBallot()
+            ->assertSee('Voir les résultats');
     }
 
     /** @test */
-    public function testIfNotAllowedSubscribedUsersCannotViewResultsBeforeVoting()
+    public function testIfForbiddenWithoutVotingCannotSeeButtonToViewResults()
     {
-        $this->signIn();
-
         $this->poll->update(['results_before_voting' => false]);
 
-        $this->getPollResults()
+        $this->viewBallot()
+            ->assertDontSee('Voir les résultats');
+
+        // User must vote to see results.
+        $this->castVote();
+
+        $this->viewBallot()
+            ->assertSee('Voir les résultats');
+    }
+
+    /** @test */
+    public function testPollCreatorCanAlwaysSeeButtonToViewResults()
+    {
+        $this->poll->update(['results_before_voting' => false]);
+
+        $this->signIn($this->poll->thread->creator);
+
+        $this->viewBallot()
+            ->assertSee('Voir les résultats');
+    }
+
+    /** @test */
+    public function testUsersWithPermissionsCanAlwaysSeeButtonToViewResults()
+    {
+        $this->poll->update(['results_before_voting' => false]);
+
+        $this->signInWithPermission('threads.edit');
+
+        $this->viewBallot()
+            ->assertSee('Voir les résultats');
+    }
+
+    /** @test */
+    public function testIfAllowedWithoutVotingCanViewResults()
+    {
+        $this->poll->update(['results_before_voting' => true]);
+
+        $this->viewResults()
+            ->assertOk();
+    }
+
+    /** @test */
+    public function testIfForbiddenWithoutVotingCannotViewResults()
+    {
+        $this->poll->update(['results_before_voting' => false]);
+
+        $this->viewResults()
             ->assertForbidden();
 
         // User must vote to see results.
-        $this->poll->castVote([$this->poll->options[0]->id]);
+        $this->castVote();
 
-        $this->getPollResults()
+        $this->viewResults()
             ->assertOk();
     }
 
     /** @test */
-    public function testPollCreatorCanViewResultsWithoutVoting()
+    public function testPollCreatorCanAlwaysViewResults()
     {
+        $this->poll->update(['results_before_voting' => false]);
+
         $this->signIn($this->poll->thread->creator);
 
-        $this->poll->update(['results_before_voting' => false]);
-
-        $this->getPollResults()
+        $this->viewResults()
             ->assertOk();
     }
 
     /** @test */
-    public function testUsersWithPermissionsCanViewResultsWithoutVoting()
+    public function testUsersWithPermissionsCanAlwaysViewResults()
     {
+        $this->poll->update(['results_before_voting' => false]);
+
         $this->signInWithPermission('threads.edit');
 
-        $this->poll->update(['results_before_voting' => false]);
-
-        $this->getPollResults()
+        $this->viewResults()
             ->assertOk();
     }
 
     /** @test */
-    public function testIfVotesArePublicSubscribedUsersCanViewVotes()
+    public function testShowingVotersOpensModal()
     {
-        $this->signIn();
-
         $this->poll->update(['votes_privacy' => 'public', 'results_before_voting' => true]);
 
-        $this->assertArrayHasKey('voters', $this->getPollResults()->json()[0]);
+        $option = $this->poll->options->first();
+
+        $component = $this->viewResults()
+            ->call('showVoters', $option->id);
+
+        $component
+            ->assertSeeHtml('id="votersModal"')
+            ->assertDispatchedBrowserEvent('showVoters');
+
+        $this->assertTrue($component->get('modalOption')->is($option));
     }
 
     /** @test */
-    public function testIfVotesArePrivateSubscribedUsersCannotViewVotes()
+    public function testHidingVotersRemovesModal()
     {
-        $this->signIn();
+        $this->poll->update(['votes_privacy' => 'public', 'results_before_voting' => true]);
 
+        $component = $this->viewResults()
+            ->call('showVoters', $this->poll->options->first()->id);
+
+        $component->call('hideVoters')
+            ->assertDontSeeHtml('id="votersModal"')
+            ->assertSet('modalOption', null);
+    }
+
+    /** @test */
+    public function testUsersCanViewPublicVotes()
+    {
+        $this->poll->update(['votes_privacy' => 'public', 'results_before_voting' => true]);
+
+        $this->assertCanViewVotes();
+    }
+
+    /** @test */
+    public function testUsersCannotViewPrivateVotes()
+    {
         $this->poll->update(['votes_privacy' => 'private', 'results_before_voting' => true]);
 
-        $this->assertArrayNotHasKey('voters', $this->getPollResults()->json()[0]);
+        $this->assertCannotViewVotes();
     }
 
     /** @test */
-    public function testIfVotesArePrivateThreadCreatorCanViewVotes()
+    public function testThreadCreatorCanViewPrivateVotes()
     {
+        $this->poll->update(['votes_privacy' => 'private', 'results_before_voting' => true]);
+
         $this->signIn($this->poll->thread->creator);
 
-        $this->poll->update(['votes_privacy' => 'private', 'results_before_voting' => true]);
-
-        $this->assertArrayHasKey('voters', $this->getPollResults()->json()[0]);
+        $this->assertCanViewVotes();
     }
 
     /** @test */
-    public function testIfVotesArePrivateUsersWithPermissionCanViewVotes()
+    public function testUsersWithPermissionCanViewPrivateVotes()
     {
+        $this->poll->update(['votes_privacy' => 'private', 'results_before_voting' => true]);
+
         $this->signInWithPermission('threads.edit');
 
-        $this->poll->update(['votes_privacy' => 'private', 'results_before_voting' => true]);
-
-        $this->assertArrayHasKey('voters', $this->getPollResults()->json()[0]);
+        $this->assertCanViewVotes();
     }
 
     /** @test */
-    public function testIfVotesAreAnonymousNoOneCanViewVotes()
+    public function testNoOneCanViewAnonymousVotes()
     {
         $this->poll->update(['votes_privacy' => 'anonymous', 'results_before_voting' => true]);
 
-        $this->actingAs(User::factory()->create())
-            ->assertArrayNotHasKey('voters', $this->getPollResults()->json()[0]);
+        $this->signIn();
+        $this->assertCannotViewVotes();
 
-        $this->actingAs($this->poll->thread->creator)
-            ->assertArrayNotHasKey('voters', $this->getPollResults()->json()[0]);
+        $this->signIn($this->poll->thread->creator);
+        $this->assertCannotViewVotes();
+
+        $this->signInWithPermission('threads.edit');
+        $this->assertCannotViewVotes();
     }
 
-    /**
-     * Send get request to fetch poll results.
-     *
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function getPollResults()
+    protected function viewBallot(): \Livewire\Testing\TestableLivewire
     {
-        return $this->getJson(route(
-            'poll_results.show',
-            [$this->poll->thread->channel, $this->poll->thread],
-        ));
+        return Livewire::test('thread-poll', ['thread' => $this->poll->thread])
+            ->call('showBallot');
+    }
+
+    protected function viewResults(): \Livewire\Testing\TestableLivewire
+    {
+        return Livewire::test('thread-poll', ['thread' => $this->poll->thread])
+            ->call('showResults');
+    }
+
+    protected function castVote(): void
+    {
+        $this->poll->castVote([$this->poll->options->first()->id]);
+    }
+
+    protected function assertCanViewVotes(): void
+    {
+        $option = $this->poll->options->first();
+
+        $this->viewResults()
+            ->assertSee("showVoters($option->id)")
+            ->call('showVoters', $option->id)
+            ->assertOk();
+    }
+
+    protected function assertCannotViewVotes(): void
+    {
+        $option = $this->poll->options->first();
+
+        $this->viewResults()
+            ->assertDontSee("showVoters($option->id)")
+            ->call('showVoters', $option->id)
+            ->assertForbidden();
     }
 }

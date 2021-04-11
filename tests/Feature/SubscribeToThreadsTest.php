@@ -63,7 +63,7 @@ class SubscribeToThreadsTest extends TestCase
 
     protected function toggleSubscription()
     {
-        return Livewire::test(\App\Http\Livewire\Thread::class, [$this->thread])
+        return Livewire::test(\App\Http\Livewire\ThreadHeader::class, [$this->thread])
             ->call('toggleSubscription');
     }
 }

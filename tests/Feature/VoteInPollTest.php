@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Poll;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class VoteInPollTest extends TestCase
@@ -22,70 +22,27 @@ class VoteInPollTest extends TestCase
     }
 
     /** @test */
-    public function testGuestsCannotViewPoll()
+    public function testPollIsRendered()
     {
-        Auth::logout();
-
-        $this->getPoll()
-            ->assertUnauthorized();
+        $this->get($this->poll->thread->path())
+            ->assertSeeLivewire('thread-poll');
     }
 
     /** @test */
-    public function testUnsubscribedUsersCannotViewPoll()
-    {
-        $this->signInUnsubscribed();
-
-        $this->getPoll()
-            ->assertPaymentRequired();
-    }
-
-    /** @test */
-    public function testSubscribedUsersCanViewPoll()
-    {
-        $this->getPoll()
-            ->assertOk()
-            ->assertJson($this->poll->makeHidden(['thread'])->toArray());
-    }
-
-    /** @test */
-    public function testPollResponseIncludesUsersVote()
-    {
-        $this->getPoll()
-            ->assertJson(['vote' => []]);
-
-        $this->poll->castVote([$this->poll->options[0]->id]);
-
-        $responseVote = $this->getPoll()->json('vote');
-
-        $this->assertCount(1, $responseVote);
-        $this->assertEquals($this->poll->options[0]->id, $responseVote[0]['id']);
-    }
-
-    /** @test */
-    public function testGuestsCannotVote()
-    {
-        Auth::logout();
-
-        $this->voteInPoll()
-            ->assertUnauthorized();
-    }
-
-    /** @test */
-    public function testUnsubscribedUsersCannotVote()
-    {
-        $this->signInUnsubscribed();
-
-        $this->voteInPoll()
-            ->assertPaymentRequired();
-    }
-
-    /** @test */
-    public function testSubscribedUsersCanVote()
+    public function testUsersCanVote()
     {
         $this->voteInPoll()
-            ->assertOk();
+            ->assertHasNoErrors();
 
         $this->assertDatabaseCount('poll_votes', 1);
+    }
+
+    /** @test */
+    public function testUserIsShownResultsAfterVoting()
+    {
+        $this->voteInPoll()
+            ->assertHasNoErrors()
+            ->assertSet('panel', 'results');
     }
 
     /** @test */
@@ -95,13 +52,13 @@ class VoteInPollTest extends TestCase
 
         $selectedOption = $this->poll->options[0]->id;
 
-        $this->voteInPoll(['vote' => [$selectedOption]])
-            ->assertOk();
+        $this->voteInPoll([$selectedOption])
+            ->assertHasNoErrors();
 
         $this->assertDatabaseCount('poll_votes', 1);
 
-        $this->voteInPoll(['vote' => [$selectedOption]])
-            ->assertOk();
+        $this->voteInPoll([$selectedOption])
+            ->assertHasNoErrors();
 
         $this->assertDatabaseCount('poll_votes', 1);
     }
@@ -110,6 +67,9 @@ class VoteInPollTest extends TestCase
     public function testUsersCannotVoteOncePollIsLocked()
     {
         $this->poll->update(['locked_at' => now()->subDay()]);
+
+        $this->viewBallot()
+            ->assertSee('Tu ne peux pas modifier ton vote');
 
         $this->voteInPoll()
             ->assertForbidden();
@@ -123,13 +83,17 @@ class VoteInPollTest extends TestCase
         $pollOptions = $this->poll->options->pluck('id');
 
         // Initial vote.
-        $this->voteInPoll(['vote' => [$pollOptions[0]]])
-            ->assertOk();
+        $this->viewBallot()
+            ->assertSee('Soumettre');
+        $this->voteInPoll([$pollOptions[0]])
+            ->assertHasNoErrors();
 
         $this->assertVoteIs([$pollOptions[0]]);
 
         // Vote change attempt.
-        $this->voteInPoll(['vote' => [$pollOptions[1]]])
+        $this->viewBallot()
+            ->assertSee('Tu ne peux pas modifier ton vote');
+        $this->voteInPoll([$pollOptions[1]])
             ->assertForbidden();
 
         $this->assertVoteIs([$pollOptions[0]]);
@@ -143,14 +107,18 @@ class VoteInPollTest extends TestCase
         $pollOptions = $this->poll->options->pluck('id');
 
         // Initial vote.
-        $this->voteInPoll(['vote' => [$pollOptions[0]]])
-            ->assertOk();
+        $this->viewBallot()
+            ->assertSee('Soumettre');
+        $this->voteInPoll([$pollOptions[0]])
+            ->assertHasNoErrors();
 
         $this->assertVoteIs([$pollOptions[0]]);
 
         // Vote change attempt.
-        $this->voteInPoll(['vote' => [$pollOptions[1]]])
-            ->assertOk();
+        $this->viewBallot()
+            ->assertSee('Soumettre');
+        $this->voteInPoll([$pollOptions[1]])
+            ->assertHasNoErrors();
 
         $this->assertVoteIs([$pollOptions[1]]);
     }
@@ -163,14 +131,14 @@ class VoteInPollTest extends TestCase
         $pollOptions = $this->poll->options->pluck('id');
 
         // Initial vote.
-        $this->voteInPoll(['vote' => [$pollOptions[0]]])
-            ->assertOk();
+        $this->voteInPoll([$pollOptions[0]])
+            ->assertHasNoErrors();
 
         $this->assertVoteIs([$pollOptions[0]]);
 
         // Vote removal attempt.
-        $this->voteInPoll(['vote' => []])
-            ->assertOk();
+        $this->voteInPoll([])
+            ->assertHasNoErrors();
 
         $this->assertVoteIs([]);
     }
@@ -182,11 +150,11 @@ class VoteInPollTest extends TestCase
 
         $pollOptions = $this->poll->options->pluck('id');
 
-        $this->voteInPoll(['vote' => [$pollOptions[0], $pollOptions[1]]])
-            ->assertJsonValidationErrors('vote');
+        $this->voteInPoll([$pollOptions[0], $pollOptions[1]])
+            ->assertHasErrors(['state.vote' => 'max']);
 
-        $this->voteInPoll(['vote' => [$pollOptions[0]]])
-            ->assertJsonMissingValidationErrors('vote');
+        $this->voteInPoll([$pollOptions[0]])
+            ->assertHasNoErrors(['state.vote' => 'max']);
     }
 
     /** @test */
@@ -196,42 +164,41 @@ class VoteInPollTest extends TestCase
 
         $pollOptions = $this->poll->options->pluck('id');
 
-        $this->voteInPoll(['vote' => [$pollOptions[0], $pollOptions[1]]])
-            ->assertJsonMissingValidationErrors('vote');
+        $this->voteInPoll([$pollOptions[0], $pollOptions[1]])
+            ->assertHasNoErrors(['state.vote' => 'max']);
     }
 
-    /**
-     * Retrieve poll info.
-     *
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function getPoll()
+    /** @test */
+    public function testVotedOptionMustBeAssociatedWithPoll()
     {
-        return $this->getJson(route(
-            'polls.show',
-            [$this->poll->thread->channel, $this->poll->thread]
-        ));
+        $this->voteInPoll([99])
+            ->assertHasErrors(['state.vote.0' => 'in']);
+    }
+
+    protected function viewBallot(): \Livewire\Testing\TestableLivewire
+    {
+        return Livewire::test('thread-poll', ['thread' => $this->poll->thread])
+            ->call('showBallot');
     }
 
     /**
      * Submit a vote.
      *
-     * @param  array  $data
-     * @return \Illuminate\Testing\TestResponse
+     * @param  array|null  $vote
+     * @return \Livewire\Testing\TestableLivewire
      */
-    protected function voteInPoll(array $data = []): \Illuminate\Testing\TestResponse
+    protected function voteInPoll(array $vote = null): \Livewire\Testing\TestableLivewire
     {
-        $initialData = [
-            'vote' => Arr::random(
+        if (is_null($vote)) {
+            $vote = Arr::random(
                 $this->poll->options->pluck('id')->all(),
                 rand(1, $this->poll->max_votes),
-            ),
-        ];
+            );
+        }
 
-        return $this->putJson(
-            route('poll_votes.update', [$this->poll->thread->channel, $this->poll->thread]),
-            array_merge($initialData, $data),
-        );
+        return $this->viewBallot()
+            ->set('state.vote', $vote)
+            ->call('castVote');
     }
 
     /**

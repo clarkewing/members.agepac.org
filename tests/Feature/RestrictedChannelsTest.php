@@ -6,8 +6,8 @@ use App\Models\Channel;
 use App\Models\Poll;
 use App\Models\Post;
 use App\Models\Thread;
-use Illuminate\Support\Arr;
 use Illuminate\Testing\TestResponse;
+use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -236,7 +236,11 @@ class RestrictedChannelsTest extends TestCase
 
         $poll = $this->createPoll();
 
-        $this->voteInPoll($poll)
+        Livewire::test('thread-poll', ['thread' => $poll->thread])
+            ->call('showBallot')
+            ->assertSee('Tu ne peux pas modifier ton vote')
+            ->set('state.vote', [1])
+            ->call('castVote')
             ->assertForbidden();
     }
 
@@ -249,8 +253,12 @@ class RestrictedChannelsTest extends TestCase
 
         $poll = $this->createPoll();
 
-        $this->voteInPoll($poll)
-            ->assertSuccessful();
+        Livewire::test('thread-poll', ['thread' => $poll->thread])
+            ->call('showBallot')
+            ->assertSee('Soumettre')
+            ->set('state.vote', [1])
+            ->call('castVote')
+            ->assertOk();
     }
 
     /**
@@ -332,18 +340,6 @@ class RestrictedChannelsTest extends TestCase
     {
         return Poll::factory()->create(
             ['thread_id' => Thread::factory()->create(['channel_id' => $this->channel->id])->id]
-        );
-    }
-
-    /**
-     * @param  \App\Models\Poll  $poll
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function voteInPoll(Poll $poll): TestResponse
-    {
-        return $this->putJson(
-            route('poll_votes.update', [$poll->thread->channel, $poll->thread]),
-            ['vote' => (array) Arr::random($poll->options->pluck('id')->all())]
         );
     }
 }

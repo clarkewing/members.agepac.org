@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use InvalidArgumentException;
 
 class Poll extends Model
 {
@@ -57,20 +58,6 @@ class Poll extends Model
      * @var array
      */
     protected $appends = ['has_votes'];
-
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
-    {
-        static::saving(function ($poll) {
-            if (in_array($poll->votes_privacy, static::$votesPrivacyValues, true)) {
-                $poll->votes_privacy = array_flip(static::$votesPrivacyValues)[$poll->votes_privacy];
-            }
-        });
-    }
 
     /**
      * Get the thread that the poll belongs to.
@@ -166,7 +153,7 @@ class Poll extends Model
      * Cast a vote.
      *
      * @param  array  $vote
-     * @param  \App\User|null  $user
+     * @param  \App\Models\User|null  $user
      * @return void
      */
     public function castVote(array $vote, User $user = null)
@@ -197,7 +184,7 @@ class Poll extends Model
     /**
      * Get a user's vote.
      *
-     * @param  \App\User|null  $user
+     * @param  \App\Models\User|null  $user
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getVote(User $user = null)
@@ -221,7 +208,7 @@ class Poll extends Model
     /**
      * Determine if the user has voted.
      *
-     * @param  \App\User|null  $user
+     * @param  \App\Models\User|null  $user
      * @return bool
      */
     public function hasVoted(User $user = null): bool
@@ -251,5 +238,34 @@ class Poll extends Model
 
             return $option;
         });
+    }
+
+    /**
+     * Get the vote_privacy attribute.
+     *
+     * @return string
+     */
+    public function getVotesPrivacyAttribute($value)
+    {
+        return static::$votesPrivacyValues[$value];
+    }
+
+    /**
+     * Set the vote_privacy attribute.
+     *
+     * @param  int|string  $value
+     * @return void
+     */
+    public function setVotesPrivacyAttribute($value)
+    {
+        if (is_string($value)) {
+            if (! in_array($value, static::$votesPrivacyValues, true)) {
+                throw new InvalidArgumentException('The value passed to votes_privacy is invalid.');
+            }
+
+            $value = array_search($value, static::$votesPrivacyValues);
+        }
+
+        $this->attributes['votes_privacy'] = $value;
     }
 }

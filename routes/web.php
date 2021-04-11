@@ -64,19 +64,6 @@ Route::get('/posts/{post}/favorites', [FavoritesController::class, 'show'])->nam
 Route::post('/attachments', [AttachmentsController::class, 'store'])->name('attachments.store');
 Route::delete('/attachments/{attachment}', [AttachmentsController::class, 'destroy'])->name('attachments.destroy');
 
-/* Polls */
-Route::prefix('/threads/{channel}/{thread}/poll')->group(function () {
-    Route::get('/', [PollsController::class, 'show'])->name('polls.show');
-    Route::get('/create', [PollsController::class, 'create'])->name('polls.create');
-    Route::post('/', [PollsController::class, 'store'])->name('polls.store');
-    Route::put('/', [PollsController::class, 'update'])->name('polls.update');
-    Route::delete('/', [PollsController::class, 'destroy'])->name('polls.destroy');
-
-    Route::put('/vote', [PollVotesController::class, 'update'])->name('poll_votes.update');
-
-    Route::get('/results', [PollResultsController::class, 'show'])->name('poll_results.show');
-});
-
 /* Profiles */
 Route::apiResource('profiles', ProfilesController::class)->only(['index', 'show', 'update']);
 

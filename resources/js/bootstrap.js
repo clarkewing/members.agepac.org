@@ -66,6 +66,8 @@ window.flash = function (message, level = 'success') {
     window.events.$emit('flash', { message, level });
 };
 
+import 'alpinejs';
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

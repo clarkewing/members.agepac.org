@@ -1,9 +1,14 @@
 @extends('threads._layout')
 
 @section('main')
-    <livewire:thread :thread="$thread" />
+    <livewire:thread-header :thread="$thread" />
 
-{{--    <thread-view :thread="{{ $thread }}" inline-template>--}}
+    <livewire:thread-poll :thread="$thread" />
+    @if(Auth::user()->can('attachPoll', $thread) || (! is_null($thread->poll) && Auth::user()->can('update', $thread->poll)))
+        <livewire:thread-poll-form :thread="$thread" />
+    @endif
+
+    {{--    <thread-view :thread="{{ $thread }}" inline-template>--}}
 {{--        <div>--}}
 {{--            @include('threads._title-header')--}}
 

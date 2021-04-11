@@ -98,7 +98,7 @@ class PinThreadsTest extends TestCase
             ],
         ]);
 
-        Livewire::test(\App\Http\Livewire\Thread::class, [$pinnedThread = $threadThree])
+        Livewire::test(\App\Http\Livewire\ThreadHeader::class, [$pinnedThread = $threadThree])
             ->call('togglePin')
             ->assertOk();
 
@@ -116,7 +116,7 @@ class PinThreadsTest extends TestCase
      */
     protected function toggleThreadPin(): \Livewire\Testing\TestableLivewire
     {
-        return Livewire::test(\App\Http\Livewire\Thread::class, [$this->thread])
+        return Livewire::test(\App\Http\Livewire\ThreadHeader::class, [$this->thread])
             ->call('togglePin');
     }
 }

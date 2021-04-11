@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Http\Livewire\ThreadPollForm;
 use App\Models\Poll;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Livewire;
+use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
 
 class EditPollTest extends TestCase
@@ -21,48 +24,84 @@ class EditPollTest extends TestCase
     }
 
     /** @test */
-    public function testGuestsCannotEditPoll()
+    public function testRandomUserCannotSeeButtonToEditPoll()
     {
-        Auth::logout();
-
-        $this->updatePoll()
-            ->assertUnauthorized();
-    }
-
-    /** @test */
-    public function testUnsubscribedUsersCannotEditPoll()
-    {
-        $this->signInUnsubscribed();
-
-        $this->updatePoll()
-            ->assertPaymentRequired();
-    }
-
-    /** @test */
-    public function testOnlyPollThreadCreatorCanEditPoll()
-    {
-        $this->updatePoll()
-            ->assertOk();
-
-        Auth::logout();
         $this->signIn();
 
-        $this->updatePoll()
-            ->assertForbidden();
+        $this->get($this->poll->thread->path())
+            ->assertDontSee('Modifier le Sondage');
     }
 
     /** @test */
-    public function testUserWithPermissionCanEditPoll()
+    public function testUserWithPermissionCanSeeButtonToEditPoll()
     {
-        Auth::logout();
         $this->signInWithPermission('threads.edit');
 
-        $this->updatePoll()
-            ->assertOk();
+        $this->get($this->poll->thread->path())
+            ->assertSee('Modifier le Sondage');
     }
 
     /** @test */
-    public function testPollCannotBeEditedIfItIsLocked()
+    public function testThreadCreatorCanSeeButtonToEditPoll()
+    {
+        $this->get($this->poll->thread->path())
+            ->assertSee('Modifier le Sondage');
+    }
+
+    /** @test */
+    public function testButtonToEditPollIsHiddenIfPollIsLocked()
+    {
+        $this->poll->update(['locked_at' => now()]);
+
+        $this->get($this->poll->thread->path())
+            ->assertDontSee('Modifier le Sondage');
+    }
+
+    /** @test */
+    public function testButtonToEditPollIsHiddenIfThreadIsLocked()
+    {
+        $this->poll->thread->update(['locked' => true]);
+
+        $this->get($this->poll->thread->path())
+            ->assertDontSee('Modifier le Sondage');
+    }
+
+    /** @test */
+    public function testButtonToEditPollIsHiddenIfItHasReceivedVotes()
+    {
+        $this->poll->castVote([$this->poll->options[0]->id]);
+
+        $this->get($this->poll->thread->path())
+            ->assertDontSee('Modifier le Sondage');
+    }
+
+    /** @test */
+    public function testFormIsNotRenderedForRandomUser()
+    {
+        $this->signIn();
+
+        $this->get($this->poll->thread->path())
+            ->assertDontSeeLivewire('thread-poll-form');
+    }
+
+    /** @test */
+    public function testFormIsRenderedForUserWithPermission()
+    {
+        $this->signInWithPermission('threads.edit');
+
+        $this->get($this->poll->thread->path())
+            ->assertSeeLivewire('thread-poll-form');
+    }
+
+    /** @test */
+    public function testFormIsRenderedForThreadCreator()
+    {
+        $this->get($this->poll->thread->path())
+            ->assertSeeLivewire('thread-poll-form');
+    }
+
+    /** @test */
+    public function testCannotUpdatePollIfItIsLocked()
     {
         $this->poll->update(['locked_at' => now()]);
 
@@ -71,7 +110,7 @@ class EditPollTest extends TestCase
     }
 
     /** @test */
-    public function testPollCannotBeEditedIfItsThreadIsLocked()
+    public function testCannotUpdatePollIfThreadIsLocked()
     {
         $this->poll->thread->update(['locked' => true]);
 
@@ -80,7 +119,7 @@ class EditPollTest extends TestCase
     }
 
     /** @test */
-    public function testPollCannotBeEditedIfItHasReceivedVotes()
+    public function testCannotUpdatePollIfItHasReceivedVotes()
     {
         $this->poll->castVote([$this->poll->options[0]->id]);
 
@@ -89,39 +128,46 @@ class EditPollTest extends TestCase
     }
 
     /** @test */
+    public function testPollCanBeUpdated()
+    {
+        $this->updatePoll()
+            ->assertEmitted('pollUpdated');
+    }
+
+    /** @test */
     public function testPollMustHaveAtLeastTwoOptions()
     {
-        $this->updatePoll(['options' => null])
-            ->assertJsonValidationErrors('options');
+        $this->updatePoll(['options' => []])
+            ->assertHasErrors(['state.options' => 'required']);
 
         $this->updatePoll(['options' => [
-            ['label' => 'Option 1'],
+            ['label' => 'Option 1', 'color' => '#FFFFFF'],
         ]])
-            ->assertJsonValidationErrors('options');
+            ->assertHasErrors(['state.options' => 'min']);
 
         $this->updatePoll(['options' => [
-            ['label' => 'Option 1'],
-            ['label' => 'Option 2'],
+            ['label' => 'Option 1', 'color' => '#FFFFFF'],
+            ['label' => 'Option 2', 'color' => '#FFFFFF'],
         ]])
-            ->assertJsonMissingValidationErrors('options');
+            ->assertHasNoErrors(['state.options']);
     }
 
     /** @test */
     public function testPollOptionLabelIsRequired()
     {
         $this->updatePoll(['options' => [
-            ['label' => null],
+            ['label' => null, 'color' => '#FFFFFF'],
         ]])
-            ->assertJsonValidationErrors('options.0.label');
+            ->assertHasErrors(['state.options.0.label' => 'required']);
     }
 
     /** @test */
     public function testPollOptionLabelCannotBeLongerThan255Characters()
     {
         $this->updatePoll(['options' => [
-            ['label' => str_repeat('*', 256)],
+            ['label' => str_repeat('*', 256), 'color' => '#FFFFFF'],
         ]])
-            ->assertJsonValidationErrors('options.0.label');
+            ->assertHasErrors(['state.options.0.label' => 'max']);
     }
 
     /** @test */
@@ -130,7 +176,7 @@ class EditPollTest extends TestCase
         $this->updatePoll(['options' => [
             ['label' => 'Cool label', 'color' => null],
         ]])
-            ->assertJsonMissingValidationErrors('options.0.color');
+            ->assertHasNoErrors(['state.options.0.color']);
     }
 
     /** @test */
@@ -139,12 +185,12 @@ class EditPollTest extends TestCase
         $this->updatePoll(['options' => [
             ['label' => 'Cool label', 'color' => 'foobar'],
         ]])
-            ->assertJsonValidationErrors('options.0.color');
+            ->assertHasErrors(['state.options.0.color' => 'regex']);
 
         $this->updatePoll(['options' => [
             ['label' => 'Cool label', 'color' => '#ffffff'],
         ]])
-            ->assertJsonMissingValidationErrors('options.0.color');
+            ->assertHasNoErrors(['state.options.0.color']);
     }
 
     /** @test */
@@ -153,42 +199,42 @@ class EditPollTest extends TestCase
         $this->updatePoll(['options' => [
             ['label' => 'Cool label', 'color' => '#fff'],
         ]])
-            ->assertJsonMissingValidationErrors('options.0.color');
+            ->assertHasNoErrors(['state.options.0.color']);
     }
 
     /** @test */
     public function testVotesEditableIsRequired()
     {
         $this->updatePoll(['votes_editable' => null])
-            ->assertJsonValidationErrors('votes_editable');
+            ->assertHasErrors(['state.votes_editable' => 'required']);
     }
 
     /** @test */
     public function testVotesEditableMustBeBoolean()
     {
         $this->updatePoll(['votes_editable' => 'foobar'])
-            ->assertJsonValidationErrors('votes_editable');
+            ->assertHasErrors(['state.votes_editable' => 'boolean']);
     }
 
     /** @test */
     public function testMaxVotesIsOptional()
     {
         $this->updatePoll(['max_votes' => null])
-            ->assertJsonMissingValidationErrors('max_votes');
+            ->assertHasNoErrors(['state.max_votes']);
     }
 
     /** @test */
     public function testMaxVotesMustBeInteger()
     {
         $this->updatePoll(['max_votes' => 'foobar'])
-            ->assertJsonValidationErrors('max_votes');
+            ->assertHasErrors(['state.max_votes' => 'integer']);
     }
 
     /** @test */
-    public function testMaxVotesMustBeGreaterThan1()
+    public function testMaxVotesMustBeGreaterOrEqualTo1()
     {
         $this->updatePoll(['max_votes' => 0])
-            ->assertJsonValidationErrors('max_votes');
+            ->assertHasErrors(['state.max_votes' => 'min']);
     }
 
     /** @test */
@@ -196,149 +242,82 @@ class EditPollTest extends TestCase
     {
         $this->updatePoll([
             'options' => [
-                ['label' => 'Option 1'],
-                ['label' => 'Option 2'],
+                ['label' => 'Option 1', 'color' => '#FFFFFF'],
+                ['label' => 'Option 2', 'color' => '#FFFFFF'],
             ],
             'max_votes' => 3,
         ])
-            ->assertJsonValidationErrors('max_votes');
+            ->assertHasErrors(['state.max_votes' => 'max']);
     }
 
     /** @test */
     public function testVotesPrivacyIsRequired()
     {
         $this->updatePoll(['votes_privacy' => null])
-            ->assertJsonValidationErrors('votes_privacy');
+            ->assertHasErrors(['state.votes_privacy' => 'required']);
     }
 
     /** @test */
     public function testVotesPrivacyMustBeValidValue()
     {
         $this->updatePoll(['votes_privacy' => 'foobar'])
-            ->assertJsonValidationErrors('votes_privacy');
+            ->assertHasErrors(['state.votes_privacy' => 'in']);
 
         $this->updatePoll(['votes_privacy' => 1])
-            ->assertJsonValidationErrors('votes_privacy');
+            ->assertHasErrors(['state.votes_privacy' => 'in']);
 
         $this->updatePoll(['votes_privacy' => 'anonymous'])
-            ->assertJsonMissingValidationErrors('votes_privacy');
+            ->assertHasNoErrors(['state.votes_privacy']);
 
         $this->updatePoll(['votes_privacy' => 'private'])
-            ->assertJsonMissingValidationErrors('votes_privacy');
+            ->assertHasNoErrors(['state.votes_privacy']);
 
         $this->updatePoll(['votes_privacy' => 'public'])
-            ->assertJsonMissingValidationErrors('votes_privacy');
+            ->assertHasNoErrors(['state.votes_privacy']);
     }
 
     /** @test */
     public function testResultsBeforeVotingIsRequired()
     {
         $this->updatePoll(['results_before_voting' => null])
-            ->assertJsonValidationErrors('results_before_voting');
+            ->assertHasErrors(['state.results_before_voting' => 'required']);
     }
 
     /** @test */
     public function testResultsBeforeVotingMustBeBoolean()
     {
         $this->updatePoll(['results_before_voting' => 'foo'])
-            ->assertJsonValidationErrors('results_before_voting');
+            ->assertHasErrors(['state.results_before_voting' => 'boolean']);
     }
 
     /** @test */
     public function testLockedAtIsOptional()
     {
         $this->updatePoll(['locked_at' => null])
-            ->assertJsonMissingValidationErrors('locked_at');
+            ->assertHasNoErrors(['state.locked_at']);
     }
 
     /** @test */
     public function testLockedAtMustBeDateOfProperFormat()
     {
         $this->updatePoll(['locked_at' => 'foobar'])
-            ->assertJsonValidationErrors('locked_at');
+            ->assertHasErrors(['state.locked_at' => 'date_format']);
 
         $this->updatePoll(['locked_at' => 1603356876])
-            ->assertJsonValidationErrors('locked_at');
+            ->assertHasErrors(['state.locked_at' => 'date_format']);
 
         $this->updatePoll(['locked_at' => '2020-09-22 05:00:00'])
-            ->assertJsonMissingValidationErrors('locked_at');
+            ->assertHasNoErrors(['state.locked_at']);
     }
 
-    /** @test */
-    public function testGuestsCannotDeletePoll()
+    protected function updatePoll(array $data = []): TestableLivewire
     {
-        Auth::logout();
-
-        $this->deletePoll()
-            ->assertUnauthorized();
-    }
-
-    /** @test */
-    public function testUnsubscribedUsersCannotDeletePoll()
-    {
-        $this->signInUnsubscribed();
-
-        $this->deletePoll()
-            ->assertPaymentRequired();
-    }
-
-    /** @test */
-    public function testOnlyPollThreadCreatorCanDeletePoll()
-    {
-        Auth::logout();
-        $this->signIn();
-
-        $this->deletePoll()
-            ->assertForbidden();
-
-        $this->signIn($this->poll->thread->creator);
-
-        $this->deletePoll()
-            ->assertNoContent();
-    }
-
-    /** @test */
-    public function testUserWithPermissionCanDeletePoll()
-    {
-        Auth::logout();
-        $this->signInWithPermission('threads.edit');
-
-        $this->deletePoll()
-            ->assertNoContent();
-    }
-
-    /** @test */
-    public function testPollCannotBeDeletedIfItsThreadIsLocked()
-    {
-        $this->poll->thread->update(['locked' => true]);
-
-        $this->deletePoll()
-            ->assertForbidden();
-    }
-
-    /**
-     * Send put request to update the poll.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function updatePoll(array $data = [])
-    {
-        return $this->putJson(
-            route('polls.update', [$this->poll->thread->channel, $this->poll->thread]),
-            $data
-        );
-    }
-
-    /**
-     * Send delete request to destroy the poll.
-     *
-     * @return \Illuminate\Testing\TestResponse
-     */
-    protected function deletePoll()
-    {
-        return $this->deleteJson(
-            route('polls.destroy', [$this->poll->thread->channel, $this->poll->thread])
-        );
+       return Livewire::test(ThreadPollForm::class, ['thread' => $this->poll->thread])
+            ->set('state', array_merge(
+                $this->poll->toArray(),
+                ['options' => $this->poll->options->toArray()],
+                $data,
+            ))
+            ->call('save');
     }
 }

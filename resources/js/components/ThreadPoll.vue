@@ -69,7 +69,6 @@
 
 <script>
 import axios from "axios";
-import ThreadPollForm from "./ThreadPollForm";
 import ThreadPollResults from "./ThreadPollResults";
 
 export default {

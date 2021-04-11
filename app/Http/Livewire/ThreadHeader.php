@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Thread as ThreadModel;
+use App\Models\Thread;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
-class Thread extends Component
+class ThreadHeader extends Component
 {
     use AuthorizesRequests;
 
@@ -23,7 +23,7 @@ class Thread extends Component
     /**
      * The thread model.
      */
-    public ThreadModel $thread;
+    public Thread $thread;
 
     /**
      * The component's validation rules.
@@ -35,7 +35,7 @@ class Thread extends Component
     /**
      * Prepare the component.
      */
-    public function mount(ThreadModel $thread): void
+    public function mount(Thread $thread): void
     {
         $this->thread = $thread;
 
@@ -108,6 +108,6 @@ class Thread extends Component
 
     public function render()
     {
-        return view('livewire.thread');
+        return view('livewire.thread-header');
     }
 }

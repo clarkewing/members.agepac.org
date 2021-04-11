@@ -5,21 +5,43 @@ namespace Tests\Unit;
 use App\Models\Poll;
 use App\Models\PollOption;
 use App\Models\User;
+use InvalidArgumentException;
 use Tests\TestCase;
 
 class PollTest extends TestCase
 {
     /** @test */
-    public function testStringVotesPrivacyIsConvertedToIntValueInDB()
+    public function testVotesPrivacyIsRetrievedAsString()
     {
-        $poll = Poll::factory()->create(['votes_privacy' => 'public']);
-        $this->assertEquals(0, $poll->fresh()->votes_privacy);
+        $poll = Poll::factory()->create(['votes_privacy' => 0]);
+        $this->assertEquals('public', $poll->votes_privacy);
 
-        $poll = Poll::factory()->create(['votes_privacy' => 'private']);
-        $this->assertEquals(1, $poll->fresh()->votes_privacy);
+        $poll = Poll::factory()->create(['votes_privacy' => 1]);
+        $this->assertEquals('private', $poll->votes_privacy);
 
-        $poll = Poll::factory()->create(['votes_privacy' => 'anonymous']);
-        $this->assertEquals(2, $poll->fresh()->votes_privacy);
+        $poll = Poll::factory()->create(['votes_privacy' => 2]);
+        $this->assertEquals('anonymous', $poll->votes_privacy);
+    }
+
+    /** @test */
+    public function testVotesPrivacyIsPersistedAsInt()
+    {
+        $poll = Poll::factory()->make(['votes_privacy' => 'public']);
+        $this->assertEquals(0, $poll->getAttributes()['votes_privacy']);
+
+        $poll = Poll::factory()->make(['votes_privacy' => 'private']);
+        $this->assertEquals(1, $poll->getAttributes()['votes_privacy']);
+
+        $poll = Poll::factory()->make(['votes_privacy' => 'anonymous']);
+        $this->assertEquals(2, $poll->getAttributes()['votes_privacy']);
+    }
+
+    /** @test */
+    public function testVotesPrivacyMutatorRejectsUnrecognizedStrings()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Poll::factory()->make(['votes_privacy' => 'foobar']);
     }
 
     /** @test */

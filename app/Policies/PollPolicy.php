@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Poll;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class PollPolicy
 {
@@ -47,7 +48,8 @@ class PollPolicy
      */
     public function vote(User $user, Poll $poll)
     {
-        return (is_null($poll->locked_at) || $poll->locked_at > now())
+        return Gate::allows('vote', $poll->thread->channel)
+               && (is_null($poll->locked_at) || $poll->locked_at > now())
                && (! $poll->hasVoted($user) || $poll->votes_editable);
     }
 
@@ -73,7 +75,7 @@ class PollPolicy
      */
     public function viewVotes(User $user, Poll $poll)
     {
-        switch (Poll::$votesPrivacyValues[$poll->votes_privacy]) {
+        switch ($poll->votes_privacy) {
             case 'public':
                 return true;
 

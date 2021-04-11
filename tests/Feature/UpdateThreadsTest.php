@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\Thread;
+use App\Http\Livewire\ThreadHeader;
 use App\Models\Thread as ThreadModel;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Livewire;
@@ -22,10 +22,10 @@ class UpdateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function testThreadComponentIsRendered()
+    public function testThreadHeaderComponentIsRendered()
     {
         $this->get($this->thread->path)
-            ->assertSeeLivewire('thread');
+            ->assertSeeLivewire('thread-header');
     }
 
     /** @test */
@@ -79,7 +79,7 @@ class UpdateThreadsTest extends TestCase
      */
     protected function updateThread(array $data = []): \Livewire\Testing\TestableLivewire
     {
-        return Livewire::test(Thread::class, [$this->thread])
+        return Livewire::test(ThreadHeader::class, [$this->thread])
             ->set('state', $data)
             ->call('update');
     }
