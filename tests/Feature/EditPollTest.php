@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Http\Livewire\ThreadPollForm;
 use App\Models\Poll;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Livewire;
 use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
@@ -312,7 +311,7 @@ class EditPollTest extends TestCase
 
     protected function updatePoll(array $data = []): TestableLivewire
     {
-       return Livewire::test(ThreadPollForm::class, ['thread' => $this->poll->thread])
+        return Livewire::test(ThreadPollForm::class, ['thread' => $this->poll->thread])
             ->set('state', array_merge(
                 $this->poll->toArray(),
                 ['options' => $this->poll->options->toArray()],

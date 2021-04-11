@@ -43,7 +43,7 @@ class ThreadPollForm extends Component
     public $poll;
 
     /**
-     * The listeners for the component
+     * The listeners for the component.
      */
     protected $listeners = [
         'openForm' => 'openForm',

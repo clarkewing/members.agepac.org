@@ -33,7 +33,7 @@ class ThreadPoll extends Component
     public ?Poll $poll;
 
     /**
-     * The listeners for the component
+     * The listeners for the component.
      */
     protected $listeners = ['pollUpdated' => '$refresh'];
 
@@ -107,7 +107,7 @@ class ThreadPoll extends Component
     {
         $rules = [
             'state.vote' => ['array'],
-            'state.vote.*' => ['integer', Rule::in($this->poll->options->pluck('id'))]
+            'state.vote.*' => ['integer', Rule::in($this->poll->options->pluck('id'))],
         ];
 
         if (! is_null($this->poll->max_votes)) {
