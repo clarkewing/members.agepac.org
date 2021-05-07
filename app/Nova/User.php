@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\UserClassCourse;
+use App\Nova\Filters\UserClassYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -166,7 +168,10 @@ class User extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new UserClassCourse,
+            new UserClassYear,
+        ];
     }
 
     /**
