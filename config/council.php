@@ -32,6 +32,8 @@ return [
         'EPL/U',
         'EPL/P',
         'Cursus Prépa ATPL',
+        'EPL',
+        'EPT',
     ],
 
     /*

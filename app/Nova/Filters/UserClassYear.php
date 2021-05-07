@@ -46,7 +46,7 @@ class UserClassYear extends Filter
     {
         $resource = Nova::resourceForKey($request->route('resource'));
 
-        $years = call_user_func([$resource, 'newModel'])->pluck('class_year')->toArray();
+        $years = call_user_func([$resource, 'newModel'])->pluck('class_year')->sort()->toArray();
 
         return Arr::keysFromValues($years);
     }
