@@ -114,7 +114,7 @@ return [
             /**
              * The available actions in the automation flows. You can add custom
              * actions to this array, make sure they extend
-             * \Spatie\Mailcoach\Domain\Automation\Support\Actions\AutomationAction
+             * \Spatie\Mailcoach\Domain\Automation\Support\Actions\AutomationAction.
              */
             'actions' => [
                 \Spatie\Mailcoach\Domain\Automation\Support\Actions\AddTagsAction::class,
@@ -130,7 +130,7 @@ return [
             /**
              * The available triggers in the automation settings. You can add
              * custom triggers to this array, make sure they extend
-             * \Spatie\Mailcoach\Domain\Automation\Support\Triggers\AutomationTrigger
+             * \Spatie\Mailcoach\Domain\Automation\Support\Triggers\AutomationTrigger.
              */
             'triggers' => [
                 \Spatie\Mailcoach\Domain\Automation\Support\Triggers\NoTrigger::class,
@@ -146,7 +146,7 @@ return [
              * \Spatie\Mailcoach\Domain\Automation\Support\Conditions\Condition
              * interface.
              */
-            'conditions' => []
+            'conditions' => [],
         ],
 
         'perform_on_queue' => [
@@ -234,7 +234,6 @@ return [
      */
     'queue_connection' => '',
 
-
     /*
      * Unauthorized users will get redirected to this route.
      */
@@ -263,7 +262,6 @@ return [
             'auth:api',
         ],
     ],
-
 
     'models' => [
         /*
