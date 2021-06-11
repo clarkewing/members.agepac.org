@@ -55,14 +55,14 @@ class SubscriptionObserver
     protected function addToEmailList(User $user): void
     {
         Subscriber::createWithEmail($user->email, $user->only([
-                'first_name',
-                'last_name',
-                'class_course',
-                'class_year',
-                'gender',
-                'birthdate',
-                'phone',
-            ]))
+            'first_name',
+            'last_name',
+            'class_course',
+            'class_year',
+            'gender',
+            'birthdate',
+            'phone',
+        ]))
             ->subscribeTo($this->emailList());
     }
 

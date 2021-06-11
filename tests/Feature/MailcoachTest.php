@@ -58,13 +58,13 @@ class MailcoachTest extends TestCase
         $this->signIn($user = User::factory()->withoutSubscription()->create());
 
         $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
 
         SubscriptionFactory::new()->create(['user_id' => $user->id]);
 
         $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
     }
 
@@ -73,7 +73,7 @@ class MailcoachTest extends TestCase
         $this->signIn();
 
         $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
 
         // Turn off auto-renew
@@ -82,7 +82,7 @@ class MailcoachTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
     }
 
@@ -91,7 +91,7 @@ class MailcoachTest extends TestCase
         $this->signIn();
 
         $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
 
         Auth::user()->subscription()->update([
@@ -99,7 +99,7 @@ class MailcoachTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
     }
 
@@ -108,13 +108,13 @@ class MailcoachTest extends TestCase
         $this->signIn();
 
         $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
 
         Auth::user()->subscription()->delete();
 
         $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email
+            'email' => Auth::user()->email,
         ]);
     }
 }
