@@ -12,6 +12,7 @@ use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\ThreadNovaPolicy;
 use App\Policies\UserNovaPolicy;
+use Giuga\LaravelNovaSidebar\NovaSidebar;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Events\ServingNova;
@@ -116,6 +117,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new NovaKustomer)->canSee(function ($request) {
                 return $request->user()->hasPermissionTo('feedback.manage');
             }),
+
+            (new NovaSidebar)->hydrate([
+                'Communication' => [
+                    ['Mailcoach', '/mailcoach'],
+                ],
+            ]),
         ];
     }
 
