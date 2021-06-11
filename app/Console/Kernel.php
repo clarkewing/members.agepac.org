@@ -27,6 +27,15 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(Commands\CleanupAttachments::class)
              ->cron('0 */2 * * *'); // Every two hours
+
+        $schedule->command('mailcoach:calculate-statistics')->everyMinute();
+        $schedule->command('mailcoach:send-scheduled-campaigns')->everyMinute();
+        $schedule->command('mailcoach:send-campaign-summary-mail')->hourly();
+        $schedule->command('mailcoach:send-email-list-summary-mail')->mondays()->at('9:00');
+        $schedule->command('mailcoach:run-automation-triggers')->everyMinute()->runInBackground();
+        $schedule->command('mailcoach:run-automation-actions')->everyMinute()->runInBackground();
+        $schedule->command('mailcoach:delete-old-unconfirmed-subscribers')->daily();
+        $schedule->command('mailcoach:cleanup-processed-feedback')->hourly();
     }
 
     /**
