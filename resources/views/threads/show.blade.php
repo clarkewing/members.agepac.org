@@ -1,7 +1,7 @@
 @extends('threads._layout')
 
 @section('main')
-    <thread-view :thread="{{ $thread }}" inline-template>
+    <thread-view :thread="{{ json_encode($thread) }}" inline-template>
         <div>
             @include('threads._title-header')
 
