@@ -8,10 +8,12 @@ use App\Events\ThreadPublished;
 use App\Listeners\NotifyMentionedUsers;
 use App\Listeners\NotifySubscribers;
 use App\Listeners\ReconcileAttachments;
+use App\Observers\SubscriptionObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Laravel\Cashier\Subscription;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -44,6 +46,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Subscription::observe(SubscriptionObserver::class);
     }
 }
