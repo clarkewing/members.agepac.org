@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
         $schedule->command(Commands\CleanupAttachments::class)
              ->cron('0 */2 * * *'); // Every two hours
 
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
+
         $schedule->command('mailcoach:calculate-statistics')->everyMinute();
         $schedule->command('mailcoach:send-scheduled-campaigns')->everyMinute();
         $schedule->command('mailcoach:send-campaign-summary-mail')->hourly();
