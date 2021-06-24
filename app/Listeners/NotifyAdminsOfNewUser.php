@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\User;
-use App\Notifications\NewUnverifiedUser;
+use App\Notifications\UserPendingApproval;
 use Illuminate\Auth\Events\Registered;
 
 class NotifyAdminsOfNewUser
@@ -13,11 +13,11 @@ class NotifyAdminsOfNewUser
      */
     public function handle(Registered $event): void
     {
-        if ($event->user->isVerified()) {
+        if ($event->user->isApproved()) {
             return;
         }
 
-        User::permission('users.verify')->get()
-            ->each->notify(new NewUnverifiedUser($event->user));
+        User::permission('users.approve')->get()
+            ->each->notify(new UserPendingApproval($event->user));
     }
 }

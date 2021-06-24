@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddVerifiedColumnToUsersTable extends Migration
+class AddApprovalColumnToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +15,12 @@ class AddVerifiedColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('verified_at')->nullable()->after('remember_token');
+            $table->timestamp('approved_at')->nullable()->after('remember_token');
         });
 
-        // Ensure any existing users are set as verified.
+        // Ensure any existing users are set as approved.
         User::query()
-            ->update(['verified_at' => DB::raw('`created_at`')]);
+            ->update(['approved_at' => DB::raw('`created_at`')]);
     }
 
     /**
@@ -31,7 +31,7 @@ class AddVerifiedColumnToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('verified_at');
+            $table->dropColumn('approved_at');
         });
     }
 }

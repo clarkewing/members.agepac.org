@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewUnverifiedUser extends Notification
+class UserPendingApproval extends Notification
 {
     use Queueable;
 

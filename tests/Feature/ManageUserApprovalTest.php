@@ -3,12 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Notifications\NewUnverifiedUser;
+use App\Notifications\UserPendingApproval;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class ManageUserVerificationTest extends TestCase
+class ManageUserApprovalTest extends TestCase
 {
     protected User $user;
 
@@ -20,18 +20,18 @@ class ManageUserVerificationTest extends TestCase
     }
 
     /** @test */
-    public function testAppropriateUsersAreNotifiedOfNewUnverifiedUser()
+    public function testAppropriateUsersAreNotifiedOfNewUnapprovedUser()
     {
         $userWithPermission = User::factory()->create();
-        $userWithPermission->givePermissionTo('users.verify');
+        $userWithPermission->givePermissionTo('users.approve');
         $userWithoutPermission = User::factory()->create();
 
         Notification::fake();
 
-        $this->user = User::factory()->unverified()->create();
+        $this->user = User::factory()->unapproved()->create();
         event(new Registered($this->user));
 
-        Notification::assertSentTo($userWithPermission, NewUnverifiedUser::class);
-        Notification::assertNotSentTo($userWithoutPermission, NewUnverifiedUser::class);
+        Notification::assertSentTo($userWithPermission, UserPendingApproval::class);
+        Notification::assertNotSentTo($userWithoutPermission, UserPendingApproval::class);
     }
 }

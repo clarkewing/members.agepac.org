@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class InsertUserVerificationPermissions extends Migration
+class InsertUserApprovalPermissions extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class InsertUserVerificationPermissions extends Migration
      */
     public function up()
     {
-        $this->createPermission('users.verify');
+        $this->createPermission('users.approve');
 
         Role::findByName('Administrator')
             ->syncPermissions(Permission::all());
@@ -26,7 +26,7 @@ class InsertUserVerificationPermissions extends Migration
      */
     public function down()
     {
-        $this->deletePermission('users.verify');
+        $this->deletePermission('users.approve');
     }
 
     /**

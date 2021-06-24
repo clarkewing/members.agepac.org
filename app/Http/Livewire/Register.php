@@ -153,7 +153,7 @@ class Register extends MultiStepForm
         if (! is_null($this->invitation)) {
             $this->invitation->delete();
 
-            $user->markAsVerified();
+            $user->markAsApproved();
         }
 
         event(new Registered($user));

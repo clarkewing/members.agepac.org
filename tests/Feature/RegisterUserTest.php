@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Http\Livewire\Register;
 use App\Models\User;
 use App\Models\UserInvitation;
-use App\Notifications\NewUnverifiedUser;
+use App\Notifications\UserPendingApproval;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -476,26 +476,26 @@ class RegisterUserTest extends TestCase
     }
 
     /** @test */
-    public function testWithoutInvitationUserNeedsToBeVerified()
+    public function testWithoutInvitationUserNeedsToBeApproved()
     {
         $this->fillForm()->call('run');
 
-        $this->assertFalse(Auth::user()->isVerified());
+        $this->assertFalse(Auth::user()->isApproved());
     }
 
     /** @test */
-    public function testUnverifiedUserTriggersNotificationToUsersWithPermission()
+    public function testUnapprovedUserTriggersNotificationToUsersWithPermission()
     {
         $admin = User::factory()->create();
-        $admin->givePermissionTo('users.verify');
+        $admin->givePermissionTo('users.approve');
 
         $this->fillForm()->call('run');
 
-        Notification::assertSentToTimes($admin, NewUnverifiedUser::class);
+        Notification::assertSentToTimes($admin, UserPendingApproval::class);
     }
 
     /** @test */
-    public function testWithInvitationUserIsAutomaticallyVerified()
+    public function testWithInvitationUserIsAutomaticallyApproved()
     {
         $userInvitation = UserInvitation::factory()->create();
 
@@ -505,7 +505,7 @@ class RegisterUserTest extends TestCase
         ))
             ->call('run');
 
-        $this->assertTrue(Auth::user()->isVerified());
+        $this->assertTrue(Auth::user()->isApproved());
     }
 
     /** @test */

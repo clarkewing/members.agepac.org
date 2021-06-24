@@ -24,7 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use HasReputation;
     use HasRoles;
-    use MustBeVerified;
+    use RequiresApproval;
     use Notifiable;
     use CanImpersonate;
     use Impersonatable;

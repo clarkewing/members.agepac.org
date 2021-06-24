@@ -46,7 +46,7 @@ class UserFactory extends Factory
                 '+1-202-555-5555',
             ]),
             'remember_token' => Str::random(10),
-            'verified_at' => now(),
+            'approved_at' => now(),
         ];
     }
 
@@ -71,11 +71,11 @@ class UserFactory extends Factory
         });
     }
 
-    public function unverified()
+    public function unapproved()
     {
         return $this->state(function () {
             return [
-                'verified_at' => null,
+                'approved_at' => null,
             ];
         });
     }
