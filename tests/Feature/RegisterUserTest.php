@@ -37,7 +37,7 @@ class RegisterUserTest extends TestCase
         Livewire::test(Register::class)
             ->set('active', 0)
             ->set('name', '')
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['name']);
     }
 
@@ -47,7 +47,7 @@ class RegisterUserTest extends TestCase
         Livewire::test(Register::class)
             ->set('active', 0)
             ->set('name', 42)
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['name']);
     }
 
@@ -57,7 +57,7 @@ class RegisterUserTest extends TestCase
         Livewire::test(Register::class)
             ->set('active', 0)
             ->set('name', 'John Doe')
-            ->call('findInvitation')
+            ->call('run')
             ->assertSet('first_name', 'John')
             ->assertSet('last_name', 'Doe')
             ->assertSet('class_course', '')
@@ -71,14 +71,14 @@ class RegisterUserTest extends TestCase
         Livewire::test(Register::class)
             ->set('active', 0)
             ->set('name', 'John Doe')
-            ->call('findInvitation')
+            ->call('run')
             ->assertSet('first_name', 'John')
             ->assertSet('last_name', 'Doe');
 
         Livewire::test(Register::class)
             ->set('active', 0)
             ->set('name', 'John')
-            ->call('findInvitation')
+            ->call('run')
             ->assertSet('first_name', 'John')
             ->assertSet('last_name', null);
     }
@@ -91,7 +91,7 @@ class RegisterUserTest extends TestCase
         Livewire::test(Register::class)
             ->set('active', 0)
             ->set('name', "$invitation->first_name $invitation->last_name")
-            ->call('findInvitation')
+            ->call('run')
             ->assertSet('invitation.id', $invitation->id)
             ->assertSet('first_name', $invitation->first_name)
             ->assertSet('last_name', $invitation->last_name)
@@ -107,12 +107,12 @@ class RegisterUserTest extends TestCase
         $invitation = UserInvitation::factory()->create();
 
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', $invitation->first_name)
             ->set('last_name', $invitation->last_name)
             ->set('class_course', $invitation->class_course)
             ->set('class_year', $invitation->class_year)
-            ->call('findInvitation')
+            ->call('run')
             ->assertSet('invitation.id', $invitation->id)
             ->assertSet('first_name', $invitation->first_name)
             ->assertSet('last_name', $invitation->last_name)
@@ -123,27 +123,26 @@ class RegisterUserTest extends TestCase
     }
 
     /** @test */
-    public function testIfFullDetailsMatchNoInvitationItRefusesRegistration()
+    public function testIfFullDetailsMatchNoInvitationItAllowsContinuingWithRegistration()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'John')
             ->set('last_name', 'Doe')
             ->set('class_course', 'EPL/S')
             ->set('class_year', 2015)
-            ->call('findInvitation')
+            ->call('run')
             ->assertSet('invitation', null)
-            ->assertSet('invitationNotFound', true)
-            ->assertSee('L’inscription à l’AGEPAC est exclusivement ouverte aux Élèves Pilotes de Ligne (EPL) de l’ENAC.');
+            ->assertSet('active', '3');
     }
 
     /** @test */
     public function testFirstNameIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', '')
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['first_name']);
     }
 
@@ -151,9 +150,9 @@ class RegisterUserTest extends TestCase
     public function testFirstNameCannotExceed255Characters()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', str_repeat('a', 256))
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['first_name']);
     }
 
@@ -161,10 +160,10 @@ class RegisterUserTest extends TestCase
     public function testLastNameIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'foo') // Ensure findUserInvitationByDetails is called
             ->set('last_name', '')
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['last_name']);
     }
 
@@ -172,10 +171,10 @@ class RegisterUserTest extends TestCase
     public function testLastNameCannotExceed255Characters()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'foo') // Ensure findUserInvitationByDetails is called
             ->set('last_name', str_repeat('a', 256))
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['last_name']);
     }
 
@@ -183,10 +182,10 @@ class RegisterUserTest extends TestCase
     public function testClassCourseIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'foo') // Ensure findUserInvitationByDetails is called
             ->set('class_course', '')
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['class_course']);
     }
 
@@ -194,10 +193,10 @@ class RegisterUserTest extends TestCase
     public function testClassCourseMustBeRegisteredInConfig()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'foo') // Ensure findUserInvitationByDetails is called
             ->set('class_course', 'Foobar')
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['class_course']);
     }
 
@@ -205,10 +204,10 @@ class RegisterUserTest extends TestCase
     public function testClassYearIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'foo') // Ensure findUserInvitationByDetails is called
             ->set('class_year', '')
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['class_year']);
     }
 
@@ -216,17 +215,17 @@ class RegisterUserTest extends TestCase
     public function testClassYearMustBeFourDigitYear()
     {
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'foo') // Ensure findUserInvitationByDetails is called
             ->set('class_year', 'not-a-year')
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['class_year']);
 
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 1)
             ->set('first_name', 'foo') // Ensure findUserInvitationByDetails is called
             ->set('class_year', 12)
-            ->call('findInvitation')
+            ->call('run')
             ->assertHasErrors(['class_year']);
     }
 
@@ -236,7 +235,7 @@ class RegisterUserTest extends TestCase
         $invitation = UserInvitation::factory()->create();
 
         Livewire::test(Register::class)
-            ->set('active', 0)
+            ->set('active', 2)
             ->set('invitation', $invitation)
             ->set('first_name', $invitation->first_name)
             ->set('last_name', $invitation->last_name)
@@ -244,7 +243,7 @@ class RegisterUserTest extends TestCase
             ->set('class_year', $invitation->class_year)
             ->call('run')
             ->assertHasNoErrors()
-            ->assertSet('active', 1)
+            ->assertSet('active', 3)
             ->assertSeeInOrder(['Adresse email', 'Mot de passe', 'Confirmation']);
     }
 
@@ -252,7 +251,7 @@ class RegisterUserTest extends TestCase
     public function testEmailIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('email', '')
             ->call('run')
             ->assertHasErrors(['email']);
@@ -262,7 +261,7 @@ class RegisterUserTest extends TestCase
     public function testEmailCannotExceed255Characters()
     {
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('email', str_repeat('a', 256) . '@example.com')
             ->call('run')
             ->assertHasErrors(['email']);
@@ -272,7 +271,7 @@ class RegisterUserTest extends TestCase
     public function testEmailMustBeValid()
     {
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('email', 'not-an-email')
             ->call('run')
             ->assertHasErrors(['email']);
@@ -284,7 +283,7 @@ class RegisterUserTest extends TestCase
         User::factory()->create(['email' => 'john@example.com']);
 
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('email', 'john@example.com')
             ->call('run')
             ->assertHasErrors(['email']);
@@ -294,7 +293,7 @@ class RegisterUserTest extends TestCase
     public function testPasswordIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('password', '')
             ->call('run')
             ->assertHasErrors(['password']);
@@ -304,7 +303,7 @@ class RegisterUserTest extends TestCase
     public function testPasswordMustBeLongerThan8Characters()
     {
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('password', 'foobar')
             ->call('run')
             ->assertHasErrors(['password']);
@@ -314,7 +313,7 @@ class RegisterUserTest extends TestCase
     public function testPasswordMustBeConfirmed()
     {
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('password', 'foobarbaz')
             ->set('password_confirmation', 'oopswrong')
             ->call('run')
@@ -325,13 +324,13 @@ class RegisterUserTest extends TestCase
     public function testAfterValidCredentialsItAsksForDetails()
     {
         Livewire::test(Register::class)
-            ->set('active', 1)
+            ->set('active', 3)
             ->set('email', 'john@example.com')
             ->set('password', 'topsecret')
             ->set('password_confirmation', 'topsecret')
             ->call('run')
             ->assertHasNoErrors()
-            ->assertSet('active', 2)
+            ->assertSet('active', 4)
             ->assertSeeInOrder(['Date de naissance', 'Genre', 'Numéro de téléphone']);
     }
 
@@ -339,7 +338,7 @@ class RegisterUserTest extends TestCase
     public function testGenderIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('gender', '')
             ->call('run')
             ->assertHasErrors(['gender']);
@@ -349,7 +348,7 @@ class RegisterUserTest extends TestCase
     public function testGenderMustBeRegisteredInConfig()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('gender', 'Z')
             ->call('run')
             ->assertHasErrors(['gender']);
@@ -359,7 +358,7 @@ class RegisterUserTest extends TestCase
     public function testBirthdateIsSetFromParts()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('birthdate_day', 22)
             ->set('birthdate_month', 9)
             ->set('birthdate_year', 1994)
@@ -371,7 +370,7 @@ class RegisterUserTest extends TestCase
     public function testBirthdateIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('birthdate', '')
             ->call('run')
             ->assertHasErrors(['birthdate' => 'required']);
@@ -381,13 +380,13 @@ class RegisterUserTest extends TestCase
     public function testBirthdateMustBeAValidDate()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('birthdate', 'not-a-date')
             ->call('run')
             ->assertHasErrors(['birthdate' => 'date_format']);
 
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('birthdate', '1990-02-31')
             ->call('run')
             ->assertHasErrors(['birthdate' => 'date_format']);
@@ -397,7 +396,7 @@ class RegisterUserTest extends TestCase
     public function testBirthdateMustBeOfIso8601Format()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('birthdate', '22/09/1994')
             ->call('run')
             ->assertHasErrors(['birthdate' => 'date_format']);
@@ -407,7 +406,7 @@ class RegisterUserTest extends TestCase
     public function testUserMustBeOlderThanThirteen() // Plenty of margin there...
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('birthdate', now()->subYears(10)->toDateString())
             ->call('run')
             ->assertHasErrors(['birthdate' => 'before']);
@@ -417,7 +416,7 @@ class RegisterUserTest extends TestCase
     public function testPhoneIsRequired()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('phone', '')
             ->call('run')
             ->assertHasErrors(['phone']);
@@ -427,7 +426,7 @@ class RegisterUserTest extends TestCase
     public function testPhoneMustBeAValidNumber()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('phone', 'n0t_4_ph0n3_numb3r')
             ->call('run')
             ->assertHasErrors(['phone']);
@@ -437,13 +436,13 @@ class RegisterUserTest extends TestCase
     public function testAfterValidDetailsItShowsSummary()
     {
         Livewire::test(Register::class)
-            ->set('active', 2)
+            ->set('active', 4)
             ->set('birthdate', '1994-09-22')
             ->set('gender', 'M')
             ->set('phone', '06 23 45 67 89')
             ->call('run')
             ->assertHasNoErrors()
-            ->assertSet('active', 3)
+            ->assertSet('active', 5)
             ->assertSee('Vérification')
             ->assertSeeInOrder(['Nom et promotion', 'Identifiants', 'Détails supplémentaires'])
             ->assertSee('Terminé !');
@@ -454,7 +453,7 @@ class RegisterUserTest extends TestCase
     {
         $this->fillForm()
             ->call('run')
-            ->assertSet('active', 4)
+            ->assertSet('active', 6)
             ->assertSee('Bienvenue à l’AGEPAC !');
     }
 
@@ -473,6 +472,28 @@ class RegisterUserTest extends TestCase
             'email' => $user['email'],
         ]);
         $this->assertTrue(Hash::check('password', User::first()->password));
+    }
+
+    /** @test */
+    public function testUnverifiedUserIsCreatedByDefault()
+    {
+        $this->fillForm()->call('run');
+
+        $this->assertFalse(Auth::user()->isVerified());
+    }
+
+    /** @test */
+    public function testWithUserInvitationUserIsAutomaticallyVerified()
+    {
+        $userInvitation = UserInvitation::factory()->create();
+
+        $this->fillForm(Arr::only(
+            $userInvitation->toArray(),
+            ['first_name', 'last_name', 'class_course', 'class_year']
+        ))
+            ->call('run');
+
+        $this->assertTrue(Auth::user()->isVerified());
     }
 
     /** @test */
@@ -564,31 +585,48 @@ class RegisterUserTest extends TestCase
     {
         $data = array_merge(
             User::factory()->raw(
-                UserInvitation::factory()->create(
-                    Arr::only($overrides, ['first_name', 'last_name', 'class_course', 'class_year'])
-                )->toArray()
+                Arr::only($overrides, ['first_name', 'last_name', 'class_course', 'class_year'])
             ),
             $overrides,
             ['password' => 'password']
         );
 
-        return Livewire::test(Register::class)
-            ->assertSet('active', 0)
+        $invitationExists = UserInvitation::where([
+            ['first_name', $data['first_name']],
+            ['last_name', $data['last_name']],
+            ['class_course', $data['class_course']],
+            ['class_year', $data['class_year']],
+        ])->exists();
+
+        $test = Livewire::test(Register::class)
+            ->assertSet('active', 0) // Name
             ->set('name', $data['first_name'] . ' ' . $data['last_name'])
-            ->call('findInvitation')
-            ->call('run')
-            ->assertSet('active', 1)
+            ->call('run');
+
+        if ($invitationExists) {
+            $test = $test->assertSet('active', 2) // Invitation Confirmation
+                ->call('run');
+        } else {
+            $test = $test->assertSet('active', 1) // Invitation Confirmation
+                ->set('first_name', $data['first_name'])
+                ->set('last_name', $data['last_name'])
+                ->set('class_course', $data['class_course'])
+                ->set('class_year', $data['class_year'])
+                ->call('run');
+        }
+
+        return $test->assertSet('active', 3) // Credentials
             ->set('email', $data['email'])
             ->set('password', $data['password'])
             ->set('password_confirmation', $data['password'])
             ->call('run')
-            ->assertSet('active', 2)
+            ->assertSet('active', 4) // Details
             ->set('birthdate_day', substr($data['birthdate'], 8, 2))
             ->set('birthdate_month', substr($data['birthdate'], 5, 2))
             ->set('birthdate_year', substr($data['birthdate'], 0, 4))
             ->set('gender', $data['gender'])
             ->set('phone', is_object($data['phone']) ? $data['phone']->formatInternational() : $data['phone'])
             ->call('run')
-            ->assertSet('active', 3);
+            ->assertSet('active', 5);
     }
 }
