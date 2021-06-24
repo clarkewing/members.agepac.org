@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Livewire\Register;
 use App\Models\User;
 use App\Models\UserInvitation;
+use App\Notifications\NewUnverifiedUser;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -475,7 +476,7 @@ class RegisterUserTest extends TestCase
     }
 
     /** @test */
-    public function testUnverifiedUserIsCreatedByDefault()
+    public function testWithoutInvitationUserNeedsToBeVerified()
     {
         $this->fillForm()->call('run');
 
@@ -483,7 +484,18 @@ class RegisterUserTest extends TestCase
     }
 
     /** @test */
-    public function testWithUserInvitationUserIsAutomaticallyVerified()
+    public function testUnverifiedUserTriggersNotificationToUsersWithPermission()
+    {
+        $admin = User::factory()->create();
+        $admin->givePermissionTo('users.verify');
+
+        $this->fillForm()->call('run');
+
+        Notification::assertSentToTimes($admin, NewUnverifiedUser::class);
+    }
+
+    /** @test */
+    public function testWithInvitationUserIsAutomaticallyVerified()
     {
         $userInvitation = UserInvitation::factory()->create();
 

@@ -46,6 +46,7 @@ class UserFactory extends Factory
                 '+1-202-555-5555',
             ]),
             'remember_token' => Str::random(10),
+            'verified_at' => now(),
         ];
     }
 
@@ -66,6 +67,15 @@ class UserFactory extends Factory
         return $this->state(function () {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    public function unverified()
+    {
+        return $this->state(function () {
+            return [
+                'verified_at' => null,
             ];
         });
     }
