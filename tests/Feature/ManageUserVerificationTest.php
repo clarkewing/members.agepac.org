@@ -27,7 +27,7 @@ class ManageUserVerificationTest extends TestCase
         $userWithoutPermission = User::factory()->create();
 
         Notification::fake();
-        
+
         $this->user = User::factory()->unverified()->create();
         event(new Registered($this->user));
 

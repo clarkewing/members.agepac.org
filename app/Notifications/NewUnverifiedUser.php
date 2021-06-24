@@ -16,7 +16,8 @@ class NewUnverifiedUser extends Notification
      */
     public function __construct(
         User $user
-    ) {}
+    ) {
+    }
 
     /**
      * Get the notification's delivery channels.
