@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::mailcoach('mailcoach');
             Route::mailcoachUnlayer('mailcoachUnlayer');
+            Route::mailgunFeedback('mailgun-feedback');
 
             Route::prefix('api')
                 ->middleware('api')
