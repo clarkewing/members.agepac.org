@@ -34,7 +34,7 @@ class UserPendingApproval extends Notification
         return (new MailMessage)
             ->subject('New User Awaiting Approval')
             ->greeting('Hey ' . $notifiable->first_name . ' !')
-            ->line($this->user->name . '(' . $this->user->class . ') has just registered for an AGEPAC account.')
+            ->line($this->user->name . ' (' . $this->user->class . ') has just registered for an AGEPAC account.')
             ->line('Their account must be approved in order for them to gain full access.')
             ->action('View Pending Approvals', ); // TODO: Add URL
     }
