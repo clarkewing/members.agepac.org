@@ -30,7 +30,7 @@ class User extends Resource
      *
      * @return string
      */
-    public static function group()
+    public static function group(): string
     {
         return __('nova-permission-tool::navigation.sidebar-label');
     }
@@ -70,11 +70,8 @@ class User extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function fields(Request $request)
+    public function fields(Request $request): array
     {
         return [
             $this->avatarField()
@@ -167,22 +164,16 @@ class User extends Resource
 
     /**
      * Get the cards available for the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function cards(Request $request)
+    public function cards(Request $request): array
     {
         return [];
     }
 
     /**
      * Get the filters available for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function filters(Request $request)
+    public function filters(Request $request): array
     {
         return [
             new UserClassCourse,
@@ -193,22 +184,16 @@ class User extends Resource
 
     /**
      * Get the lenses available for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function lenses(Request $request)
+    public function lenses(Request $request): array
     {
         return [];
     }
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function actions(Request $request)
+    public function actions(Request $request): array
     {
         return [
             Actions\ApproveUser::make()
@@ -218,9 +203,6 @@ class User extends Resource
         ];
     }
 
-    /**
-     * @return \Inspheric\Fields\Indicator
-     */
     protected function membershipIndicatorField(): Indicator
     {
         return Indicator::make('Membership', function () {
@@ -264,9 +246,6 @@ class User extends Resource
             ]);
     }
 
-    /**
-     * @return \Laravel\Nova\Fields\Avatar
-     */
     protected function avatarField(): Avatar
     {
         return Avatar::make('Avatar', 'avatar_path')

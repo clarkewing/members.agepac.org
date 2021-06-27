@@ -2,6 +2,7 @@
 
 namespace App\Nova\Filters;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Filters\Filter;
@@ -23,7 +24,7 @@ class UserMembershipState extends Filter
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(Request $request, $query, $value): Builder
     {
         if ($value === 'pending-approval') {
             return $query->whereNull('approved_at');
@@ -42,11 +43,8 @@ class UserMembershipState extends Filter
 
     /**
      * Get the filter's available options.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function options(Request $request)
+    public function options(Request $request): array
     {
         return [
             'Active' => 'active',
