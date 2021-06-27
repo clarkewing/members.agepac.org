@@ -34,4 +34,42 @@ class ManageUserApprovalTest extends TestCase
         Notification::assertSentTo($userWithPermission, UserPendingApproval::class);
         Notification::assertNotSentTo($userWithoutPermission, UserPendingApproval::class);
     }
+
+    /** @test */
+    public function testAnUnapprovedUserIsRedirectedUponLogin()
+    {
+        $user = User::factory()->unapproved()->create();
+
+        $this->assertFalse($user->isApproved());
+
+        $this->actingAs($user)
+            ->get(route('home'))
+            ->assertRedirect(route('pending-approval'));
+    }
+
+    /** @test */
+    public function testAnApprovedUserIsNotRedirectedUponLogin()
+    {
+        $user = User::factory()->create();
+
+        $this->assertTrue($user->isApproved());
+
+        $this->actingAs($user)
+            ->get(route('home'))
+            ->assertNotRedirect(route('pending-approval'))
+            ->assertSuccessful();
+    }
+
+    /** @test */
+    public function testAnUnapprovedUserCanAccessPendingApprovalRoute()
+    {
+        $user = User::factory()->unapproved()->create();
+
+        $this->assertFalse($user->isApproved());
+
+        $this->be($user);
+
+        $this->post(route('pending-approval'))
+            ->assertNotRedirect(route('pending-approval'));
+    }
 }

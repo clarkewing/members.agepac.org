@@ -123,6 +123,26 @@ class AppServiceProvider extends ServiceProvider
             return $this;
         });
 
+        TestResponse::macro('assertNotRedirect', function ($uri = null) {
+            if ($this->isRedirect()) {
+                if (is_null($uri)) {
+                    PHPUnit::fail('Response status code [' . $this->getStatusCode() . '] is a redirect status code.');
+                } else {
+                    PHPUnit::assertNotEquals(
+                        app('url')->to($uri), app('url')->to($this->headers->get('Location'))
+                    );
+                }
+
+                return $this;
+            }
+
+            PHPUnit::assertFalse(
+                $this->isRedirect(), 'Response status code [' . $this->getStatusCode() . '] is a redirect status code.'
+            );
+
+            return $this;
+        });
+
         Validator::extend('not_present', function ($attribute, $value, $parameters, $validator) {
             return ! array_key_exists($attribute, $validator->getData());
         });

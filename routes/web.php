@@ -43,6 +43,8 @@ Route::redirect('/', '/login');
 
 Auth::routes(['verify' => true]);
 
+Route::view('pending-approval', 'auth.pending-approval')->name('pending-approval');
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /* Threads */

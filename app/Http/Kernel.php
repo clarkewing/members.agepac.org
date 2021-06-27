@@ -45,6 +45,7 @@ class Kernel extends HttpKernel
 
         'members-area' => [
             \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+            \App\Http\Middleware\EnsureUserIsApproved::class,
             \App\Http\Middleware\EnsureUserIsSubscribed::class,
         ],
     ];
@@ -82,6 +83,7 @@ class Kernel extends HttpKernel
         \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \App\Http\Middleware\EnsureUserIsApproved::class,
         \App\Http\Middleware\EnsureUserIsSubscribed::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
