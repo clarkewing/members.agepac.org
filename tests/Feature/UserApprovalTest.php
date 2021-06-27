@@ -8,7 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class ManageUserApprovalTest extends TestCase
+class UserApprovalTest extends TestCase
 {
     protected User $user;
 
