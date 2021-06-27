@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Filters\UserClassCourse;
 use App\Nova\Filters\UserClassYear;
+use App\Nova\Filters\UserMembershipState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,7 @@ use Inspheric\Fields\Indicator;
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -28,7 +30,7 @@ class User extends Resource
      *
      * @return string
      */
-    public static function group()
+    public static function group(): string
     {
         return __('nova-permission-tool::navigation.sidebar-label');
     }
@@ -68,11 +70,8 @@ class User extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function fields(Request $request)
+    public function fields(Request $request): array
     {
         return [
             $this->avatarField()
@@ -132,8 +131,22 @@ class User extends Resource
                     ->rules('required', Rule::opinionatedPhone()),
             ]),
 
-            $this->membershipIndicatorField()
-                ->onlyOnIndex(),
+            new Panel('Membership Information', [
+                DateTime::make('Approved At')
+                    ->format('DD/MM/YYYY hh:mm:ss')
+                    ->onlyOnDetail(),
+
+                DateTime::make('Created At')
+                    ->format('DD/MM/YYYY hh:mm:ss')
+                    ->onlyOnDetail(),
+
+                DateTime::make('Updated At')
+                    ->format('DD/MM/YYYY hh:mm:ss')
+                    ->onlyOnDetail(),
+
+                $this->membershipIndicatorField()
+                    ->onlyOnIndex(),
+            ]),
 
             Subscription::make()
                 ->canSee(function ($request) {
@@ -151,57 +164,52 @@ class User extends Resource
 
     /**
      * Get the cards available for the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function cards(Request $request)
+    public function cards(Request $request): array
     {
         return [];
     }
 
     /**
      * Get the filters available for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function filters(Request $request)
+    public function filters(Request $request): array
     {
         return [
             new UserClassCourse,
             new UserClassYear,
+            new UserMembershipState,
         ];
     }
 
     /**
      * Get the lenses available for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function lenses(Request $request)
+    public function lenses(Request $request): array
     {
         return [];
     }
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
-    public function actions(Request $request)
+    public function actions(Request $request): array
     {
-        return [];
+        return [
+            Actions\ApproveUser::make()
+                ->canSee(fn () => $this->resource instanceof \App\Models\User && ! $this->resource->isApproved())
+                ->withoutConfirmation()
+                ->exceptOnIndex(),
+        ];
     }
 
-    /**
-     * @return \Inspheric\Fields\Indicator
-     */
     protected function membershipIndicatorField(): Indicator
     {
         return Indicator::make('Membership', function () {
+            if (! $this->isApproved()) {
+                return 'pending-approval';
+            }
+
             if ($this->subscribed('default')) {
                 if ($this->subscription('default')->ended()) {
                     return 'ended';
@@ -226,6 +234,7 @@ class User extends Resource
                 'on-grace-period' => 'On grace period',
                 'ended' => 'Ended',
                 'inactive' => 'Inactive',
+                'pending-approval' => 'Pending approval',
             ])
             ->colors([
                 'active' => 'green',
@@ -233,12 +242,10 @@ class User extends Resource
                 'on-grace-period' => 'orange',
                 'ended' => 'red',
                 'inactive' => 'grey',
+                'pending-approval' => 'red',
             ]);
     }
 
-    /**
-     * @return \Laravel\Nova\Fields\Avatar
-     */
     protected function avatarField(): Avatar
     {
         return Avatar::make('Avatar', 'avatar_path')

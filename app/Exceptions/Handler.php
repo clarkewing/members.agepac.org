@@ -46,11 +46,15 @@ class Handler extends ExceptionHandler
             if ($e instanceof UnsubscribedException) {
                 return $this->unsubscribed($request, $e);
             }
+
+            if ($e instanceof PendingApprovalException) {
+                return $this->pendingApproval($request, $e);
+            }
         });
     }
 
     /**
-     * Convert an authentication exception into a response.
+     * Convert an unsubscribed exception into a response.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Exceptions\UnsubscribedException  $exception
@@ -61,5 +65,19 @@ class Handler extends ExceptionHandler
         return $request->expectsJson()
             ? response()->json(['message' => $exception->getMessage()], HttpResponse::HTTP_PAYMENT_REQUIRED)
             : redirect()->to($exception->redirectTo() ?? route('subscription.edit'));
+    }
+
+    /**
+     * Convert a pending approval exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Exceptions\PendingApprovalException  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function pendingApproval(Request $request, PendingApprovalException $exception)
+    {
+        return $request->expectsJson()
+            ? response()->json(['message' => $exception->getMessage()], HttpResponse::HTTP_FORBIDDEN)
+            : redirect()->to($exception->redirectTo() ?? route('pending-approval'));
     }
 }

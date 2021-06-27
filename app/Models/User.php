@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use HasReputation;
     use HasRoles;
+    use RequiresApproval;
     use Notifiable;
     use CanImpersonate;
     use Impersonatable;
@@ -56,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'email', 'password', 'remember_token', 'email_verified_at',
+        'email', 'password', 'remember_token', 'email_verified_at', 'approved_at',
     ];
 
     /**
@@ -75,6 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'birthdate' => 'date:Y-m-d',
         'email_verified_at' => 'datetime',
         'flight_hours' => 'integer',
+        'approved_at' => 'datetime',
     ];
 
     /**

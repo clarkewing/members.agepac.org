@@ -5,6 +5,9 @@ namespace App\Providers;
 use App\Events\PostCreated;
 use App\Events\PostUpdated;
 use App\Events\ThreadPublished;
+use App\Events\UserApproved;
+use App\Listeners\NotifyAdminsOfNewUser;
+use App\Listeners\NotifyApprovedUser;
 use App\Listeners\NotifyMentionedUsers;
 use App\Listeners\NotifySubscribers;
 use App\Listeners\ReconcileAttachments;
@@ -25,6 +28,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+            NotifyAdminsOfNewUser::class,
+        ],
+        UserApproved::class => [
+            NotifyApprovedUser::class,
         ],
         ThreadPublished::class => [
             NotifyMentionedUsers::class,
