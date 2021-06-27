@@ -212,7 +212,7 @@ class User extends Resource
     {
         return [
             Actions\ApproveUser::make()
-                ->canSee(fn() => $this->resource instanceof \App\Models\User && ! $this->resource->isApproved())
+                ->canSee(fn () => $this->resource instanceof \App\Models\User && ! $this->resource->isApproved())
                 ->withoutConfirmation()
                 ->exceptOnIndex(),
         ];
