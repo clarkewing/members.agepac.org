@@ -208,7 +208,12 @@ class User extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            Actions\ApproveUser::make()
+                ->canSee(fn() => $this->resource instanceof \App\Models\User && ! $this->resource->isApproved())
+                ->withoutConfirmation()
+                ->exceptOnIndex(),
+        ];
     }
 
     /**
