@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Filters\UserClassCourse;
 use App\Nova\Filters\UserClassYear;
+use App\Nova\Filters\UserMembershipState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -186,6 +187,7 @@ class User extends Resource
         return [
             new UserClassCourse,
             new UserClassYear,
+            new UserMembershipState,
         ];
     }
 
