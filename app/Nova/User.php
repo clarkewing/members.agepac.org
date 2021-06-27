@@ -145,10 +145,10 @@ class User extends Resource
                 DateTime::make('Updated At')
                     ->format('DD/MM/YYYY hh:mm:ss')
                     ->onlyOnDetail(),
-            ]),
 
-            $this->membershipIndicatorField()
-                ->onlyOnIndex(),
+                $this->membershipIndicatorField()
+                    ->onlyOnIndex(),
+            ]),
 
             Subscription::make()
                 ->canSee(function ($request) {
@@ -217,6 +217,10 @@ class User extends Resource
     protected function membershipIndicatorField(): Indicator
     {
         return Indicator::make('Membership', function () {
+            if (! $this->isApproved()) {
+                return 'pending-approval';
+            }
+
             if ($this->subscribed('default')) {
                 if ($this->subscription('default')->ended()) {
                     return 'ended';
@@ -241,6 +245,7 @@ class User extends Resource
                 'on-grace-period' => 'On grace period',
                 'ended' => 'Ended',
                 'inactive' => 'Inactive',
+                'pending-approval' => 'Pending approval',
             ])
             ->colors([
                 'active' => 'green',
@@ -248,6 +253,7 @@ class User extends Resource
                 'on-grace-period' => 'orange',
                 'ended' => 'red',
                 'inactive' => 'grey',
+                'pending-approval' => 'red',
             ]);
     }
 
