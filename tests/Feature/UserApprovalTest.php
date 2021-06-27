@@ -12,8 +12,6 @@ use Tests\TestCase;
 
 class UserApprovalTest extends TestCase
 {
-    protected User $user;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,8 +28,8 @@ class UserApprovalTest extends TestCase
 
         Notification::fake();
 
-        $this->user = User::factory()->unapproved()->create();
-        event(new Registered($this->user));
+        $user = User::factory()->unapproved()->create();
+        event(new Registered($user));
 
         Notification::assertSentTo($userWithPermission, UserPendingApproval::class);
         Notification::assertNotSentTo($userWithoutPermission, UserPendingApproval::class);
