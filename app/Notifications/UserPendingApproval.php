@@ -15,9 +15,8 @@ class UserPendingApproval extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        User $user
-    ) {
-    }
+        protected User $user
+    ) {}
 
     /**
      * Get the notification's delivery channels.
