@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Events\UserApproved;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Action;
@@ -18,7 +19,11 @@ class ApproveUser extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $models->each->markAsApproved();
+        foreach ($models as $model) {
+            $model->markAsApproved();
+
+            event(new UserApproved($model));
+        }
 
         return Action::message(Str::plural('User', $models->count()) . ' successfully approved.');
     }
