@@ -16,5 +16,6 @@ class UserApproved extends Event
      */
     public function __construct(
         public User $user
-    ) {}
+    ) {
+    }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Livewire\Component;
@@ -24,7 +23,7 @@ abstract class MultiStepForm extends Component
         $this->goToStep($this->active + 1);
     }
 
-    public function goToStep(int|string $step): void
+    public function goToStep(int | string $step): void
     {
         if (is_int($step) && 0 <= $step && $step <= count($this->steps) - 1) {
             $this->active = $step;

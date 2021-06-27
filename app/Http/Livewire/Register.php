@@ -71,7 +71,7 @@ class Register extends MultiStepForm
             );
 
             $this->goToStep('Invitation Confirmation');
-        } catch (ModelNotFoundException|MultipleRecordsFoundException) {
+        } catch (ModelNotFoundException | MultipleRecordsFoundException) {
             $this->guessNames();
 
             $this->goToStep('Identity');
@@ -86,12 +86,14 @@ class Register extends MultiStepForm
             );
 
             $this->goToStep('Invitation Confirmation');
-        } catch (ModelNotFoundException|MultipleRecordsFoundException) {
+        } catch (ModelNotFoundException | MultipleRecordsFoundException) {
             $this->goToStep('Credentials');
         }
     }
 
-    public function runInvitationConfirmation(): void {}
+    public function runInvitationConfirmation(): void
+    {
+    }
 
     public function runCredentials(): void
     {
