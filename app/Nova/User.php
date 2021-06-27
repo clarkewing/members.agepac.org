@@ -11,6 +11,7 @@ use Inspheric\Fields\Indicator;
 use KABBOUCHI\NovaImpersonate\Impersonate;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -130,6 +131,20 @@ class User extends Resource
                     })
                     ->hideFromIndex()
                     ->rules('required', Rule::opinionatedPhone()),
+            ]),
+
+            new Panel('Membership Information', [
+                DateTime::make('Approved At')
+                    ->format('DD/MM/YYYY hh:mm:ss')
+                    ->onlyOnDetail(),
+
+                DateTime::make('Created At')
+                    ->format('DD/MM/YYYY hh:mm:ss')
+                    ->onlyOnDetail(),
+
+                DateTime::make('Updated At')
+                    ->format('DD/MM/YYYY hh:mm:ss')
+                    ->onlyOnDetail(),
             ]),
 
             $this->membershipIndicatorField()
