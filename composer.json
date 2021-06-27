@@ -41,6 +41,7 @@
         "optimistdigital/nova-menu-builder": "^2.3",
         "propaganistas/laravel-phone": "^4.2",
         "spatie/laravel-mailcoach": "^4.0",
+        "spatie/laravel-mailcoach-mailgun-feedback": "^3.0",
         "spatie/laravel-mailcoach-unlayer": "^2.0",
         "spatie/laravel-menu": "^3.6",
         "spatie/laravel-permission": "^3.17",
