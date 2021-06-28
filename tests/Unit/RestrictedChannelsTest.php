@@ -29,7 +29,8 @@ class RestrictedChannelsTest extends TestCase
     {
         $this->expectExceptionMessage('Permissions array missing on model.');
 
-        $channelWithoutPermissionsArray = new class extends Model {
+        $channelWithoutPermissionsArray = new class extends Model
+        {
             use RestrictedChannels;
         };
     }
@@ -40,7 +41,8 @@ class RestrictedChannelsTest extends TestCase
      */
     public function testNoExceptionThrownIfPermissionsArrayIsSet()
     {
-        $channelWithPermissionsArray = new class extends Model {
+        $channelWithPermissionsArray = new class extends Model
+        {
             use RestrictedChannels;
 
             protected static $permissions = ['view'];
