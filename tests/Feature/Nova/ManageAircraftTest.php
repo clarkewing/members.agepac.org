@@ -176,7 +176,8 @@ class ManageAircraftTest extends TestCase
         $aircraft = $aircraft ?? Aircraft::create(['name' => 'FooJet']);
 
         return $this->updateResource(
-            'aircraft', $aircraft->id,
+            'aircraft',
+            $aircraft->id,
             array_merge($aircraft->toArray(), $data)
         );
     }

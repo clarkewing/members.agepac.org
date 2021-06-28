@@ -12,10 +12,13 @@ class Occupation extends Model
 {
     use HasFactory, HasLocation;
 
-    const EMPLOYED_FULL_TIME = 1;
-    const EMPLOYED_PART_TIME = 2;
-    const SELF_EMPLOYED = 3;
-    const UNPAID = 4;
+    public const EMPLOYED_FULL_TIME = 1;
+
+    public const EMPLOYED_PART_TIME = 2;
+
+    public const SELF_EMPLOYED = 3;
+
+    public const UNPAID = 4;
 
     /**
      * The attributes that are mass assignable.

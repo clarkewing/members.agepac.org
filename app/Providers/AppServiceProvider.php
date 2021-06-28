@@ -116,7 +116,8 @@ class AppServiceProvider extends ServiceProvider
             $actual = $this->getStatusCode();
 
             PHPUnit::assertSame(
-                402, $actual,
+                402,
+                $actual,
                 "Response status code [{$actual}] is not a payment required status code."
             );
 
@@ -129,7 +130,8 @@ class AppServiceProvider extends ServiceProvider
                     PHPUnit::fail('Response status code [' . $this->getStatusCode() . '] is a redirect status code.');
                 } else {
                     PHPUnit::assertNotEquals(
-                        app('url')->to($uri), app('url')->to($this->headers->get('Location'))
+                        app('url')->to($uri),
+                        app('url')->to($this->headers->get('Location'))
                     );
                 }
 
@@ -137,7 +139,8 @@ class AppServiceProvider extends ServiceProvider
             }
 
             PHPUnit::assertFalse(
-                $this->isRedirect(), 'Response status code [' . $this->getStatusCode() . '] is a redirect status code.'
+                $this->isRedirect(),
+                'Response status code [' . $this->getStatusCode() . '] is a redirect status code.'
             );
 
             return $this;

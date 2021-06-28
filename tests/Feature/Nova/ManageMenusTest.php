@@ -176,7 +176,8 @@ class ManageMenusTest extends TestCase
         $menu = $menu ?? $this->createMenu();
 
         return $this->updateResource(
-            'nova-menu', $menu->id,
+            'nova-menu',
+            $menu->id,
             array_merge($menu->toArray(), $data)
         );
     }

@@ -51,9 +51,9 @@ class PostPolicy
     {
         return ! $post->is_thread_initiator
             && (
-                   $this->postIsOwnedBy($post, $user)
+                $this->postIsOwnedBy($post, $user)
                    || $user->hasPermissionTo('posts.delete')
-               );
+            );
     }
 
     /**

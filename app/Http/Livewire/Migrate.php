@@ -16,19 +16,29 @@ class Migrate extends Component
     public $token;
 
     public $verified = false;
+
     public $resent = false;
 
     public $user; // Set only once verified.
 
     public $class_course = ''; // Ensure select is initially blank
+
     public $class_year;
+
     public $password;
+
     public $password_confirmation;
+
     public $birthdate;
+
     public $birthdate_day = ''; // Ensure select is initially blank
+
     public $birthdate_month = ''; // Ensure select is initially blank
+
     public $birthdate_year = ''; // Ensure select is initially blank
+
     public $gender = ''; // Ensure select is initially blank
+
     public $phone;
 
     protected function rules()
@@ -119,7 +129,8 @@ class Migrate extends Component
 
     protected function generateExpectedToken(): string
     {
-        return tap(sprintf('%06d', mt_rand(0, 999999)),
+        return tap(
+            sprintf('%06d', mt_rand(0, 999999)),
             function ($value) {
                 Session::put('expectedToken', $value);
             }

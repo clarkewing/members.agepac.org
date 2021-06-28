@@ -182,7 +182,8 @@ class CreateCompanyTest extends TestCase
     public function testNonJsonRequestReturnsRedirect()
     {
         $this->post(
-            route('companies.store'), $company = Company::factory()->raw()
+            route('companies.store'),
+            $company = Company::factory()->raw()
         )->assertRedirect(route('companies.show', Str::slug($company['name'])));
     }
 
@@ -195,7 +196,8 @@ class CreateCompanyTest extends TestCase
     protected function storeCompany(array $overrides = [])
     {
         return $this->postJson(
-            route('companies.store'), array_merge(
+            route('companies.store'),
+            array_merge(
                 Company::factory()->make()->toArray(),
                 $overrides
             )

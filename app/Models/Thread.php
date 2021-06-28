@@ -44,6 +44,7 @@ class Thread extends Model
      * @var array
      */
     protected $with = ['creator', 'channel'];
+
     protected $withCount = ['replies'];
 
     /**

@@ -336,7 +336,8 @@ class ManageChannelsTest extends TestCase
         $channel = $channel ?? Channel::factory()->create();
 
         return $this->updateResource(
-            'channels', $channel->id,
+            'channels',
+            $channel->id,
             array_merge($channel->toArray(), $data)
         );
     }

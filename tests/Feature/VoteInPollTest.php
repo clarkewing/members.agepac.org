@@ -242,7 +242,8 @@ class VoteInPollTest extends TestCase
     protected function assertVoteIs(array $vote): void
     {
         $this->assertEquals(
-            $vote, $this->poll->fresh()->getVote()->pluck('option_id')->all(),
+            $vote,
+            $this->poll->fresh()->getVote()->pluck('option_id')->all(),
             'Vote doesn\'t match expected value.'
         );
     }

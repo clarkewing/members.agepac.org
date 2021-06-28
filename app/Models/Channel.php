@@ -19,6 +19,7 @@ class Channel extends Model
      * @var array
      */
     public static $permissions = ['view', 'post', 'vote'];
+
     /**
      * The attributes that are mass assignable.
      *

@@ -8,8 +8,9 @@ use Stevebauman\Purify\Facades\Purify;
 
 class PurifySetupProvider extends ServiceProvider
 {
-    const DEFINITION_ID = 'trix-editor';
-    const DEFINITION_REV = 1;
+    public const DEFINITION_ID = 'trix-editor';
+
+    public const DEFINITION_REV = 1;
 
     /**
      * Bootstrap the application services.

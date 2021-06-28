@@ -11,6 +11,7 @@ class NullEventDispatcher implements DispatcherContract
     use ForwardsCalls;
 
     protected $dispatcher;
+
     protected $events;
 
     public function __construct(DispatcherContract $dispatcher, $events)

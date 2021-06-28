@@ -401,7 +401,8 @@ class ManageUsersTest extends TestCase
         $user = $user ?? User::factory()->create();
 
         return $this->updateResource(
-            'users', $user->id,
+            'users',
+            $user->id,
             array_merge($user->makeVisible('email')->toArray(), $data)
         );
     }

@@ -411,7 +411,8 @@ class ManagePagesTest extends TestCase
         $page = $page ?? Page::factory()->create();
 
         return $this->updateResource(
-            'pages', $page->id,
+            'pages',
+            $page->id,
             array_merge($page->toArray(), $data)
         );
     }
