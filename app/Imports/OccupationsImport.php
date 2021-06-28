@@ -22,7 +22,8 @@ class OccupationsImport extends LegacyDBImport implements ToModel
             'company_id' => Company::firstOrCreate(
                 [
                     'name' => $row['organisation'],
-                ], [
+                ],
+                [
                     'type_code' => Company::OTHER_BUSINESS,
                     'created_at' => Carbon::createFromTimestamp($row['tdate'])->toDateString(),
                     'updated_at' => Carbon::createFromTimestamp($row['tdate'])->toDateString(),

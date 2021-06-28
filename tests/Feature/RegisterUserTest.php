@@ -537,7 +537,8 @@ class RegisterUserTest extends TestCase
         $this->fillForm()->call('run');
 
         Notification::assertSentTo(
-            [User::latest()->first()], VerifyEmail::class
+            [User::latest()->first()],
+            VerifyEmail::class
         );
     }
 

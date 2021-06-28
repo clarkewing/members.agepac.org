@@ -201,7 +201,8 @@ class ManageMentorshipTagsTest extends TestCase
         $mentorshipTag = $mentorshipTag ?? $this->createMentorshipTag();
 
         return $this->updateResource(
-            'mentorship-tags', $mentorshipTag->id,
+            'mentorship-tags',
+            $mentorshipTag->id,
             array_merge($mentorshipTag->toArray(), $data)
         );
     }

@@ -59,7 +59,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}",
-            'threads.show', [$thread->channel, $thread]
+            'threads.show',
+            [$thread->channel, $thread]
         );
     }
 
@@ -70,7 +71,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}",
-            'threads.update', [$thread->channel, $thread]
+            'threads.update',
+            [$thread->channel, $thread]
         );
     }
 
@@ -81,7 +83,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}",
-            'threads.destroy', [$thread->channel, $thread]
+            'threads.destroy',
+            [$thread->channel, $thread]
         );
     }
 
@@ -92,7 +95,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/locked-threads/{$thread->slug}",
-            'threads.lock', $thread
+            'threads.lock',
+            $thread
         );
     }
 
@@ -103,7 +107,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/locked-threads/{$thread->slug}",
-            'threads.unlock', $thread
+            'threads.unlock',
+            $thread
         );
     }
 
@@ -114,7 +119,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
-            'threads.subscribe', [$thread->channel, $thread]
+            'threads.subscribe',
+            [$thread->channel, $thread]
         );
     }
 
@@ -125,7 +131,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/subscriptions",
-            'threads.unsubscribe', [$thread->channel, $thread]
+            'threads.unsubscribe',
+            [$thread->channel, $thread]
         );
     }
 
@@ -136,7 +143,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/posts",
-            'posts.index', [$thread->channel, $thread]
+            'posts.index',
+            [$thread->channel, $thread]
         );
     }
 
@@ -147,7 +155,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$thread->channel->slug}/{$thread->slug}/posts",
-            'posts.store', [$thread->channel, $thread]
+            'posts.store',
+            [$thread->channel, $thread]
         );
     }
 
@@ -158,7 +167,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}",
-            'posts.update', $post
+            'posts.update',
+            $post
         );
     }
 
@@ -169,7 +179,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}",
-            'posts.destroy', $post
+            'posts.destroy',
+            $post
         );
     }
 
@@ -180,7 +191,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}/best",
-            'posts.mark_best', $post
+            'posts.mark_best',
+            $post
         );
     }
 
@@ -191,7 +203,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/posts/{$posts->id}/best",
-            'posts.unmark_best', $posts
+            'posts.unmark_best',
+            $posts
         );
     }
 
@@ -202,7 +215,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}/favorites",
-            'posts.favorite', $post
+            'posts.favorite',
+            $post
         );
     }
 
@@ -213,7 +227,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/posts/{$post->id}/favorites",
-            'posts.unfavorite', $post
+            'posts.unfavorite',
+            $post
         );
     }
 
@@ -233,7 +248,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/attachments/{$attachment->id}",
-            'attachments.destroy', $attachment
+            'attachments.destroy',
+            $attachment
         );
     }
 
@@ -244,7 +260,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}",
-            'threads.show', [$poll->thread->channel, $poll->thread]
+            'threads.show',
+            [$poll->thread->channel, $poll->thread]
         );
     }
 
@@ -255,7 +272,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/create",
-            'polls.create', [$poll->thread->channel, $poll->thread]
+            'polls.create',
+            [$poll->thread->channel, $poll->thread]
         );
     }
 
@@ -266,7 +284,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
-            'polls.store', [$poll->thread->channel, $poll->thread]
+            'polls.store',
+            [$poll->thread->channel, $poll->thread]
         );
     }
 
@@ -277,7 +296,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
-            'polls.update', [$poll->thread->channel, $poll->thread]
+            'polls.update',
+            [$poll->thread->channel, $poll->thread]
         );
     }
 
@@ -288,7 +308,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll",
-            'polls.destroy', [$poll->thread->channel, $poll->thread]
+            'polls.destroy',
+            [$poll->thread->channel, $poll->thread]
         );
     }
 
@@ -299,7 +320,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/vote",
-            'poll_votes.update', [$poll->thread->channel, $poll->thread]
+            'poll_votes.update',
+            [$poll->thread->channel, $poll->thread]
         );
     }
 
@@ -310,7 +332,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/threads/{$poll->thread->channel->slug}/{$poll->thread->slug}/poll/results",
-            'poll_results.show', [$poll->thread->channel, $poll->thread]
+            'poll_results.show',
+            [$poll->thread->channel, $poll->thread]
         );
     }
 
@@ -330,7 +353,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             '/profiles/' . $user->username,
-            'profiles.show', $user
+            'profiles.show',
+            $user
         );
     }
 
@@ -341,7 +365,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             '/profiles/' . $user->username,
-            'profiles.update', $user
+            'profiles.update',
+            $user
         );
     }
 
@@ -370,7 +395,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             '/companies/' . $company->slug,
-            'companies.show', $company
+            'companies.show',
+            $company
         );
     }
 
@@ -381,7 +407,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             '/companies/' . $company->slug,
-            'companies.update', $company
+            'companies.update',
+            $company
         );
     }
 
@@ -399,7 +426,8 @@ class NamedRouteTest extends TestCase
     {
         $this->assertRoutePathIs(
             '/occupations/1',
-            'occupations.update', 1
+            'occupations.update',
+            1
         );
     }
 
@@ -408,7 +436,8 @@ class NamedRouteTest extends TestCase
     {
         $this->assertRoutePathIs(
             '/occupations/1',
-            'occupations.destroy', 1
+            'occupations.destroy',
+            1
         );
     }
 
@@ -426,7 +455,8 @@ class NamedRouteTest extends TestCase
     {
         $this->assertRoutePathIs(
             '/courses/1',
-            'courses.update', 1
+            'courses.update',
+            1
         );
     }
 
@@ -435,7 +465,8 @@ class NamedRouteTest extends TestCase
     {
         $this->assertRoutePathIs(
             '/courses/1',
-            'courses.destroy', 1
+            'courses.destroy',
+            1
         );
     }
 
@@ -452,7 +483,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/notifications/{$notificationId}",
-            'notifications.destroy', $notificationId
+            'notifications.destroy',
+            $notificationId
         );
     }
 
@@ -469,7 +501,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             '/api/users/' . $user->username . '/avatar',
-            'api.users.avatar.store', $user
+            'api.users.avatar.store',
+            $user
         );
     }
 
@@ -531,7 +564,8 @@ class NamedRouteTest extends TestCase
     {
         $this->assertRoutePathIs(
             '/account/subscription/invoice/thisIsTheInvoiceId',
-            'subscription.invoices.show', 'thisIsTheInvoiceId'
+            'subscription.invoices.show',
+            'thisIsTheInvoiceId'
         );
     }
 
@@ -560,7 +594,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/account/subscription/payment-methods/{$paymentMethodId}",
-            'subscription.payment-methods.update', $paymentMethodId
+            'subscription.payment-methods.update',
+            $paymentMethodId
         );
     }
 
@@ -571,7 +606,8 @@ class NamedRouteTest extends TestCase
 
         $this->assertRoutePathIs(
             "/account/subscription/payment-methods/{$paymentMethodId}",
-            'subscription.payment-methods.destroy', $paymentMethodId
+            'subscription.payment-methods.destroy',
+            $paymentMethodId
         );
     }
 

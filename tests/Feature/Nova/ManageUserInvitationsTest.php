@@ -251,7 +251,8 @@ class ManageUserInvitationsTest extends TestCase
         $userInvitation = $userInvitation ?? UserInvitation::factory()->create();
 
         return $this->updateResource(
-            'user-invitations', $userInvitation->id,
+            'user-invitations',
+            $userInvitation->id,
             array_merge($userInvitation->toArray(), $data)
         );
     }

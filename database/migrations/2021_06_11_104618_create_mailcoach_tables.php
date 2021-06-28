@@ -74,12 +74,14 @@ class CreateMailcoachTables extends Migration
             $table
                 ->unique(['email_list_id', 'email']);
 
-            $table->index([
-                'email_list_id',
-                'subscribed_at',
-                'unsubscribed_at',
-            ],
-                'email_list_subscribed_index');
+            $table->index(
+                [
+                    'email_list_id',
+                    'subscribed_at',
+                    'unsubscribed_at',
+                ],
+                'email_list_subscribed_index'
+            );
 
             $table->index(['email_list_id', 'created_at'], 'email_list_id_created_at');
         });

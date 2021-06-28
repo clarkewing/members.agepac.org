@@ -241,7 +241,8 @@ class AccountTest extends TestCase
         ]);
 
         Notification::assertSentTo(
-            [Auth::user()], VerifyEmail::class
+            [Auth::user()],
+            VerifyEmail::class
         );
     }
 

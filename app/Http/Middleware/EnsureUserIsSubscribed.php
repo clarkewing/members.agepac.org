@@ -47,7 +47,8 @@ class EnsureUserIsSubscribed
     protected function unsubscribed(Request $request)
     {
         throw new UnsubscribedException(
-            'Subscription inactive.', $this->redirectTo($request)
+            'Subscription inactive.',
+            $this->redirectTo($request)
         );
     }
 }

@@ -124,7 +124,8 @@ class Poll extends Model
     public function addOption(array $option)
     {
         return $this->options()->updateOrCreate(
-            ['label' => $option['label']], $option
+            ['label' => $option['label']],
+            $option
         );
     }
 

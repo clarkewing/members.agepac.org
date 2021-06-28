@@ -52,11 +52,15 @@ class Register extends MultiStepForm
     public $email;
 
     public $password;
+
     public $password_confirmation;
 
     public $birthdate;
+
     public $birthdate_day = ''; // Ensure select is initially blank
+
     public $birthdate_month = ''; // Ensure select is initially blank
+
     public $birthdate_year = ''; // Ensure select is initially blank
 
     public $gender = ''; // Ensure select is initially blank
@@ -175,7 +179,9 @@ class Register extends MultiStepForm
         ]);
 
         return $this->invitation = UserInvitation::where(
-            Builder::concat('`first_name`', '" "', '`last_name`'), 'LIKE', $this->name
+            Builder::concat('`first_name`', '" "', '`last_name`'),
+            'LIKE',
+            $this->name
         )->sole();
     }
 

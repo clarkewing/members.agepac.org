@@ -14,13 +14,19 @@ class Company extends Model
 {
     use HasFactory, HasSlug, Searchable;
 
-    const AIRLINE = 1;
-    const AIRWORK = 2;
-    const SCHOOL = 3;
-    const FLYING_CLUB = 4;
-    const GOV_AGENCY = 5;
-    const ASSOCIATION = 6;
-    const OTHER_BUSINESS = 9;
+    public const AIRLINE = 1;
+
+    public const AIRWORK = 2;
+
+    public const SCHOOL = 3;
+
+    public const FLYING_CLUB = 4;
+
+    public const GOV_AGENCY = 5;
+
+    public const ASSOCIATION = 6;
+
+    public const OTHER_BUSINESS = 9;
 
     /**
      * The attributes that are mass assignable.

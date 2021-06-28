@@ -39,6 +39,8 @@ class AttachmentsController extends Controller
                     $uploadedFile,
                     $uploadedFile->getClientOriginalName()
                 ),
-            ]), 201);
+            ]),
+            201
+        );
     }
 }

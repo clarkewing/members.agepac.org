@@ -131,7 +131,8 @@ class ManageThreadsTest extends TestCase
         $thread = $thread ?? Thread::factory()->create();
 
         return $this->updateResource(
-            'threads', $thread->id,
+            'threads',
+            $thread->id,
             array_merge($thread->toArray(), $data)
         );
     }
