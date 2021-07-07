@@ -19,3 +19,7 @@ mix.js('resources/js/app.js', 'public/js').vue()
         proxy: 'agepac.test',
         browser: 'google chrome'
     });
+
+if (mix.inProduction()) {
+    mix.version();
+}

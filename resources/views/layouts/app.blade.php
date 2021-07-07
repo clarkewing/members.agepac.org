@@ -21,8 +21,8 @@
     </script>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('vendor/kustomer/js/kustomer.js') }}" defer></script>
+    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ mix('vendor/kustomer/js/kustomer.js') }}" defer></script>
     <script>
         window.App = {!! json_encode([
             'signedIn' => Auth::check(),
@@ -46,7 +46,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Raleway:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>

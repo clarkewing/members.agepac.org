@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Facture</title>
 
-    <link rel="stylesheet" href="{{ public_path('css/invoice.css') }}" media="all"/>
+    <link rel="stylesheet" href="{{ mix('css/invoice.css') }}" media="all"/>
 </head>
 
 <body>
