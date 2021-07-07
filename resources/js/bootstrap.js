@@ -13,7 +13,7 @@ try {
     require('bootstrap');
 } catch (e) {}
 
-window.Vue = require('vue');
+window.Vue = require('vue').default;
 
 import InstantSearch from 'vue-instantsearch';
 Vue.use(InstantSearch);
