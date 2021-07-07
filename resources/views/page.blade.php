@@ -13,5 +13,5 @@
 @endsection
 
 @push('styles')
-    <link href="{{ mix('vendor/laraberg/css/laraberg.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/laraberg/css/laraberg.css') }}" rel="stylesheet">
 @endpush
