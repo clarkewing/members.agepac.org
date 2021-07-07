@@ -112,4 +112,57 @@ class ActivityTest extends TestCase
             now()->subWeek()->format('Y-m-d')
         ));
     }
+
+    /** @test */
+    public function testDeletingAUserDeletesAssociatedActivities()
+    {
+        $user = User::factory()->create();
+        $this->signIn($user);
+
+        $this->assertDatabaseHas('activities', $createdUserActivity = [
+            'type' => 'created_user',
+            'user_id' => $user->id,
+            'subject_id' => $user->id,
+            'subject_type' => array_flip(Relation::$morphMap)[get_class($user)],
+        ]);
+
+        $user->profile->update(['bio' => 'This should trigger an update.']);
+
+        $this->assertDatabaseHas('activities', $updatedProfileActivity = [
+            'type' => 'updated_profile',
+            'user_id' => $user->id,
+            'subject_id' => $user->profile->id,
+            'subject_type' => array_flip(Relation::$morphMap)[get_class($user->profile)],
+        ]);
+
+        $thread = Thread::factory()->create(['user_id' => $user->id]);
+
+        $this->assertDatabaseHas('activities', $createdThreadActivity = [
+            'type' => 'created_thread',
+            'user_id' => $user->id,
+            'subject_id' => $thread->id,
+            'subject_type' => array_flip(Relation::$morphMap)[get_class($thread)],
+        ]);
+
+        $post = $thread->addPost([
+            'user_id' => $user->id,
+            'body' => 'Here is a post.',
+        ]);
+
+        $this->assertDatabaseHas('activities', $createdPostActivity = [
+            'type' => 'created_post',
+            'subject_id' => $post->id,
+            'subject_type' => array_flip(Relation::$morphMap)[get_class($post)],
+        ]);
+
+        $user->delete();
+
+        $this->assertDatabaseMissing('activities', $createdUserActivity);
+
+        $this->assertDatabaseMissing('activities', $updatedProfileActivity);
+
+        $this->assertDatabaseMissing('activities', $createdThreadActivity);
+
+        $this->assertDatabaseMissing('activities', $createdPostActivity);
+    }
 }

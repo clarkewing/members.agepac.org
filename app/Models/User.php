@@ -94,6 +94,10 @@ class User extends Authenticatable implements MustVerifyEmail
                 'subject_type' => array_flip(Relation::$morphMap)[static::class],
             ]);
         });
+
+        static::deleting(function ($user) {
+            $user->activity()->delete();
+        });
     }
 
     /**
