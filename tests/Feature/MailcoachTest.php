@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Auth;
 use Database\Factories\SubscriptionFactory;
+use Spatie\Mailcoach\Domain\Audience\Models\Subscriber;
 use Stripe\Subscription;
 use Tests\TestCase;
 
@@ -112,6 +113,26 @@ class MailcoachTest extends TestCase
         ]);
 
         Auth::user()->subscription()->delete();
+
+        $this->assertDatabaseMissing('mailcoach_subscribers', [
+            'email' => Auth::user()->email,
+        ]);
+    }
+
+    public function testUpdatingSubscriptionForUnsubscribedUserWorksWithoutErrors()
+    {
+        $this->signIn();
+
+        Subscriber::whereEmail(Auth::user()->email)->delete();
+
+        $this->assertDatabaseMissing('mailcoach_subscribers', [
+            'email' => Auth::user()->email,
+        ]);
+
+        // End subscription
+        Auth::user()->subscription()->update([
+            'ends_at' => now(),
+        ]);
 
         $this->assertDatabaseMissing('mailcoach_subscribers', [
             'email' => Auth::user()->email,
