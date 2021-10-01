@@ -8,6 +8,10 @@
         <livewire:thread-poll-form :thread="$thread" />
     @endif
 
+    <livewire:thread-posts :thread="$thread" />
+
+    <livewire:thread-new-post :thread="$thread" />
+
     {{--    <thread-view :thread="{{ $thread }}" inline-template>--}}
 {{--        <div>--}}
 {{--            @include('threads._title-header')--}}
