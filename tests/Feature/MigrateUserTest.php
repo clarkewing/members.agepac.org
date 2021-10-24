@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Livewire\Migrate;
 use App\Models\User;
 use App\Notifications\VerificationToken;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -32,7 +32,7 @@ class MigrateUserTest extends TestCase
     /** @test */
     public function testEmailIsRequiredToMigrate()
     {
-        $this->post(action([LoginController::class, 'login']), [
+        $this->post(action([AuthenticatedSessionController::class, 'store']), [
             'email' => null,
         ])
             ->assertSessionHasErrors('email');
@@ -41,17 +41,18 @@ class MigrateUserTest extends TestCase
     /** @test */
     public function testPasswordIsNotRequiredToMigrate()
     {
-        $this->post(action([LoginController::class, 'login']), [
-            'email' => $this->user->email,
+        $this->post(action([AuthenticatedSessionController::class, 'store']), [
+            'password' => null,
         ])
-            ->assertSessionDoesntHaveErrors();
+            ->assertSessionHasErrors('password');
     }
 
     /** @test */
     public function testAUserWithANullPasswordSeesTheMigrationComponent()
     {
-        $this->post(action([LoginController::class, 'login']), [
+        $this->post(action([AuthenticatedSessionController::class, 'store']), [
             'email' => $this->user->email,
+            'password' => '1234',
         ])
             ->assertSeeLivewire('migrate');
     }
@@ -408,8 +409,9 @@ class MigrateUserTest extends TestCase
     {
         Notification::fake();
 
-        $this->post(action([LoginController::class, 'login']), [
+        $this->post(action([AuthenticatedSessionController::class, 'store']), [
             'email' => $this->user->email,
+            'password' => '1234',
         ]);
 
         Notification::fake(); // Reset the notification fake counter.

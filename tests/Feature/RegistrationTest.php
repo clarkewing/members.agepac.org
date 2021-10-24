@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class RegisterUserTest extends TestCase
+class RegistrationTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -23,6 +23,13 @@ class RegisterUserTest extends TestCase
         $this->withExceptionHandling();
 
         Notification::fake();
+    }
+
+    public function test_registration_screen_can_be_rendered()
+    {
+        $response = $this->get('/register');
+
+        $response->assertStatus(200);
     }
 
     /** @test */
@@ -553,7 +560,7 @@ class RegisterUserTest extends TestCase
         $this->assertNull($user->email_verified_at);
 
         $this->get((new VerifyEmail)->toMail($user)->actionUrl)
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('home') . '?verified=1');
 
         $this->assertNotNull($user->email_verified_at);
     }
@@ -618,10 +625,10 @@ class RegisterUserTest extends TestCase
 
         if ($invitationExists) {
             $test = $test->assertSet('active', 2) // Invitation Confirmation
-                ->call('run');
+            ->call('run');
         } else {
             $test = $test->assertSet('active', 1) // Invitation Confirmation
-                ->set('first_name', $data['first_name'])
+            ->set('first_name', $data['first_name'])
                 ->set('last_name', $data['last_name'])
                 ->set('class_course', $data['class_course'])
                 ->set('class_year', $data['class_year'])
@@ -629,7 +636,7 @@ class RegisterUserTest extends TestCase
         }
 
         return $test->assertSet('active', 3) // Credentials
-            ->set('email', $data['email'])
+        ->set('email', $data['email'])
             ->set('password', $data['password'])
             ->set('password_confirmation', $data['password'])
             ->call('run')

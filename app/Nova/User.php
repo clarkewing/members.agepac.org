@@ -248,9 +248,9 @@ class User extends Resource
 
     protected function avatarField(): Avatar
     {
-        return Avatar::make('Avatar', 'avatar_path')
+        return Avatar::make('Avatar', 'profile_photo_url')
             ->disableDownload() // Tough to make it work.
-            ->deletable(! is_null($this->model()->getRawOriginal('avatar_path')))
+            ->deletable(! is_null($this->model()->getRawOriginal('profile_photo_url')))
             ->preview(function ($value) {
                 return $value;
             })
@@ -258,15 +258,15 @@ class User extends Resource
                 return $value;
             })
             ->store(function (Request $request, $user) {
-                Storage::disk('public')->delete($user->getRawOriginal('avatar_path'));
+                Storage::disk('public')->delete($user->getRawOriginal('profile_photo_url'));
 
                 return [
-                    'avatar_path' => $request->file('avatar_path')
+                    'profile_photo_url' => $request->file('profile_photo_url')
                         ->store('avatars', 'public'),
                 ];
             })
             ->delete(function (Request $request, $user, $disk, $path) {
-                Storage::disk('public')->delete($user->getRawOriginal('avatar_path'));
+                Storage::disk('public')->delete($user->getRawOriginal('profile_photo_url'));
             });
     }
 }

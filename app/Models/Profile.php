@@ -186,7 +186,7 @@ class Profile extends User
             'username' => $this->username,
             'class_course' => $this->class_course,
             'class_year' => $this->class_year,
-            'avatar_path' => $this->avatar_path,
+            'profile_photo_url' => $this->profile_photo_url,
             'mentorship_tags' => $this->mentorship_tags->pluck('name')->all(),
         ]);
     }

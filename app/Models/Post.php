@@ -268,7 +268,7 @@ class Post extends Model
             'owner' => [
                 'name' => $this->owner->name,
                 'username' => $this->owner->username,
-                'avatar_path' => $this->owner->avatar_path,
+                'profile_photo_url' => $this->owner->profile_photo_url,
                 'reputation' => $this->owner->reputation,
             ],
 
@@ -284,7 +284,7 @@ class Post extends Model
                 'creator' => [
                     'name' => $this->thread->creator->name,
                     'username' => $this->thread->creator->username,
-                    'avatar_path' => $this->thread->creator->avatar_path,
+                    'profile_photo_url' => $this->thread->creator->profile_photo_url,
                 ],
 
                 'channel' => [

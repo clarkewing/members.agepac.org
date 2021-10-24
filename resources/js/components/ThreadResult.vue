@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex pt-2 mb-4">
         <div class="pr-3">
-            <img :src="thread.creator.avatar_path"
+            <img :src="thread.creator.profile_photo_url"
                  :alt="thread.creator.name"
                  class="rounded-circle cover"
                  style="width: 2.5rem; height: 2.5rem;">

@@ -1,7 +1,7 @@
 <template>
     <div class="row no-gutters pt-2 mb-4" :id="'post-' + post.id">
         <div class="col-auto flex-column pr-3">
-            <img :src="post.owner.avatar_path"
+            <img :src="post.owner.profile_photo_url"
                  :alt="post.owner.name"
                  class="rounded-circle cover mb-4"
                  style="width: 2.5rem; height: 2.5rem;">

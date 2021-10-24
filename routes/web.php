@@ -39,9 +39,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/login');
+//Route::redirect('/', '/login');
 
-Auth::routes(['verify' => true]);
+//Auth::routes(['verify' => true]);
 
 Route::view('pending-approval', 'auth.pending-approval')->name('pending-approval');
 
@@ -132,3 +132,7 @@ Route::prefix('/account')->group(function () {
             ->only(['create', 'store', 'update', 'destroy']);
     });
 });
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

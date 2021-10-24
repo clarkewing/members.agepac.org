@@ -169,7 +169,7 @@
                     noMatchTemplate: '',
 
                     menuItemTemplate: function (item) {
-                        return '<img src="' + item.original.avatar_path + '" class="rounded-circle cover mr-2" style="width: 1.5em; height: 1.5em;">'
+                        return '<img src="' + item.original.profile_photo_url + '" class="rounded-circle cover mr-2" style="width: 1.5em; height: 1.5em;">'
                             + '<span>' + item.string + '</span>';
                     },
 

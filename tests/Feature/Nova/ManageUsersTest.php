@@ -106,7 +106,7 @@ class ManageUsersTest extends TestCase
         $this->updateUser(
             $user = User::factory()->make()
                 ->makeVisible('email')
-                ->makeHidden(['name'])
+                ->makeHidden(['name', 'profile_photo_url'])
                 ->toArray()
         )->assertOk();
 

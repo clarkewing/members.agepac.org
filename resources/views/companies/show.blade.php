@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.legacy')
 
 @section('content')
     <company-view :data="{{ $company->toJson() }}"></company-view>

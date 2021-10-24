@@ -1,71 +1,46 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-100">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- We'll transition to a more privacy focused solution ASAP -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BD3RY2NEC"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        <!-- Styles -->
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        gtag('config', 'G-4BD3RY2NEC');
-    </script>
+        @livewireStyles
 
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}" defer></script>
-    <script src="{{ asset('vendor/kustomer/js/kustomer.js') }}" defer></script>
-    <script>
-        window.App = {!! json_encode([
-            'signedIn' => Auth::check(),
-            'user' => Auth::check()
-                ? Auth::user()->toArray()
-                 + ['isVerified' => Auth::user()->hasVerifiedEmail()]
-                 + ['permissions' => Auth::user()->getAllPermissions()->pluck('name')]
-                 + ['defaultPaymentMethod' => optional(Auth::user()->defaultPaymentMethod())->id]
-                : null,
-            'config' => [
-                'scout' => [
-                    'algolia' => Arr::except(config('scout.algolia'), ['secret']),
-                ],
-                'cashier' => Arr::only(config('cashier'), ['key']),
-            ],
-        ]) !!}
-    </script>
+        <!-- Scripts -->
+        <script src="{{ mix('js/app.js') }}" defer></script>
+    </head>
+    <body class="font-sans antialiased">
+        <x-jet-banner />
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Raleway:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+        <div class="min-h-screen bg-gray-100">
+            @livewire('navigation-menu')
 
-    <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    @stack('styles')
-</head>
-<body>
-    @section('body')
-    <div id="app">
-        @include('layouts.navbar')
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
+        </div>
 
-        @include('layouts.footer')
+        @stack('modals')
 
-        <flash message="{{ session('flash') }}"></flash>
-    </div>
-    @show
-
-    @include('kustomer::kustomer')
-
-    @stack('scripts')
-</body>
+        @livewireScripts
+    </body>
 </html>

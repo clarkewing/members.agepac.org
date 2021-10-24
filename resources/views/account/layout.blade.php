@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.legacy')
 
 @section('content')
     <div class="container-lg border-bottom border-lg-x rounded-bottom my-n4">

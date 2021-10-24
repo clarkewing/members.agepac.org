@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.legacy')
 
 @section('content')
     <div class="container text-primary bg-white mt-n4 py-4 border border-top-0 rounded-bottom">

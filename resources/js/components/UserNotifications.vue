@@ -23,7 +23,7 @@
                    :href="notification.data.link"
                    @click.prevent="markAsRead(notification)"
                 >
-                    <img :src="notification.data.notifier.avatar_path"
+                    <img :src="notification.data.notifier.profile_photo_url"
                          :alt="notification.data.notifier.username"
                          class="rounded-circle cover mr-2"
                          style="width: 1.5em; height: 1.5em;">

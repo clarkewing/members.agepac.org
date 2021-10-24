@@ -12,7 +12,7 @@
         </div>
 
         <button type="button" v-else class="btn btn-block border-placeholder p-5 d-flex align-items-center" @click="toggleEditing">
-            <img :src="App.user.avatar_path"
+            <img :src="App.user.profile_photo_url"
                  :alt="App.user.name"
                  class="rounded-circle cover mr-3"
                  style="width: 2.5rem; height: 2.5rem;">

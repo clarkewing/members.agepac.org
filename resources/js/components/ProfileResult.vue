@@ -3,7 +3,7 @@
         <div class="embed-responsive embed-responsive-1by1 bg-light rounded-circle flex-shrink-0 mr-3"
              style="width: 3.5rem;">
             <img class="d-block embed-responsive-item cover"
-                 :src="avatar_path"
+                 :src="profile_photo_url"
                  :alt="name"
                  @error="showLogo = false">
         </div>
@@ -39,7 +39,7 @@
             'username',
             'class_course',
             'class_year',
-            'avatar_path',
+            'profile_photo_url',
             'mentorship_tags',
         ],
 

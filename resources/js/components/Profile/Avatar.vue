@@ -29,7 +29,7 @@
 
         data() {
             return {
-                avatarSrc: this.data.avatar_path,
+                avatarSrc: this.data.profile_photo_url,
             };
         },
 

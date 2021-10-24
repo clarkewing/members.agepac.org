@@ -14,28 +14,34 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
+use Laravel\Sanctum\HasApiTokens;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Spatie\Permission\Traits\HasRoles;
 use Torann\GeoIP\Facades\GeoIP;
 use URLify;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasApiTokens;
     use HasFactory;
     use HasReputation;
     use HasRoles;
     use RequiresApproval;
+    use HasProfilePhoto;
     use Notifiable;
     use CanImpersonate;
     use Impersonatable;
     use Billable {
         createAsStripeCustomer as protected traitCreateAsStripeCustomer;
     }
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = [
         'first_name',
@@ -48,27 +54,24 @@ class User extends Authenticatable implements MustVerifyEmail
         'gender',
         'birthdate',
         'phone',
-        'avatar_path',
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for serialization.
      *
      * @var array
      */
     protected $hidden = [
-        'email', 'password', 'remember_token', 'email_verified_at', 'approved_at',
+        'password',
+        'remember_token',
+        'email_verified_at',
+        'approved_at',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['name'];
-
-    /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be cast.
      *
      * @var array
      */
@@ -77,6 +80,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'flight_hours' => 'integer',
         'approved_at' => 'datetime',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'name',
+        'profile_photo_url',
     ];
 
     /**

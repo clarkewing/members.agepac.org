@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.legacy')
 
 @section('content')
     <div class="container text-primary bg-white mt-n4 py-4 border border-top-0 rounded-bottom">
         <div class="row">
             <div class="col-md-4 col-lg-3 offset-md-0 offset-lg-1">
                 <profile.avatar classes="rounded-circle w-50 mx-auto mb-3"
-                                :data="{{ json_encode(Arr::only($profile->toArray(), ['avatar_path'])) }}"
+                                :data="{{ json_encode(Arr::only($profile->toArray(), ['profile_photo_url'])) }}"
                 ></profile.avatar>
 
                 <h1 class="h2 font-weight-bold text-center">

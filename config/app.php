@@ -178,6 +178,8 @@ return [
         App\Providers\NovaServiceProvider::class,
         App\Providers\PurifySetupProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class,
+        App\Providers\JetstreamServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
 
     ],
