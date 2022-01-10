@@ -64,7 +64,8 @@
                             {{ $latestAnnouncement->title }}
                         </a>
                     </h4>
-                    <div>{!! $latestAnnouncement->initiatorPost->body !!}</div>
+                    <style>.announcement-container figure img { width: auto; }</style>
+                    <div class="announcement-container">{!! $latestAnnouncement->initiatorPost->body !!}</div>
                 </section>
             @endif
         </div>
