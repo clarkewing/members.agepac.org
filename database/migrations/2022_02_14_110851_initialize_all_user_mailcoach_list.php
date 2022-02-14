@@ -1,30 +1,16 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Laravel\Cashier\Subscription;
 use Spatie\Mailcoach\Domain\Audience\Models\EmailList;
 use Spatie\Mailcoach\Domain\Audience\Models\Subscriber;
 
-class InitializeMailcoach extends Migration
+class InitializeAllUserMailcoachList extends Migration
 {
-    protected string $emailListName = 'Members';
+    protected string $emailListName = 'All Users';
 
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::table('mailcoach_subscribers', function (Blueprint $table) {
-            $table->string('class_course', 30)->nullable();
-            $table->year('class_year')->nullable();
-            $table->string('gender', 1)->default('U');
-            $table->date('birthdate')->nullable();
-            $table->string('phone', 20)->nullable();
-        });
-
         EmailList::create([
             'name' => $this->emailListName,
             'default_from_email' => 'bonjour@agepac.org',
@@ -39,25 +25,16 @@ class InitializeMailcoach extends Migration
         $this->importSubscribers();
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::table('mailcoach_subscribers', function (Blueprint $table) {
-            $table->dropColumn(['class_course', 'class_year', 'gender', 'birthdate', 'phone']);
-        });
-
         EmailList::where('name', $this->emailListName)->delete();
     }
 
     protected function importSubscribers()
     {
-        Subscription::query()->active()->with('user')->chunk(100, function ($subscriptions) {
-            foreach ($subscriptions as $subscription) {
-                Subscriber::createWithEmail($subscription->user->email, $subscription->user->only([
+        User::query()->chunk(100, function ($users) {
+            foreach ($users as $user) {
+                Subscriber::createWithEmail($user->email, $user->only([
                     'first_name',
                     'last_name',
                     'class_course',

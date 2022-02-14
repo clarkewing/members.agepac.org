@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Auth;
 use Database\Factories\SubscriptionFactory;
+use Spatie\Mailcoach\Domain\Audience\Models\EmailList;
 use Spatie\Mailcoach\Domain\Audience\Models\Subscriber;
 use Stripe\Subscription;
 use Tests\TestCase;
@@ -54,69 +55,108 @@ class MailcoachTest extends TestCase
             ->assertSuccessful();
     }
 
+    public function testUserIsAddedToAllUsersListWhenCreated()
+    {
+        $user = User::factory()->create();
+
+        $this->assertNotNull(
+            Subscriber::findForEmail($user->email, $this->allUsersEmailList())
+        );
+    }
+
+    public function testUserIsRemovedFromAllUsersListWhenDeleted()
+    {
+        $user = User::factory()->create();
+
+        $user->delete();
+
+        $this->assertNull(
+            Subscriber::findForEmail($user->email, $this->allUsersEmailList())
+        );
+    }
+
+    public function testUserEmailIsUpdatedWhenChanged()
+    {
+        $user = User::factory()->withoutSubscription()->create(['email' => 'foo@bar.com']);
+
+        $this->assertDatabaseHas(Subscriber::class, [
+            'email' => 'foo@bar.com',
+        ]);
+
+        $user->update(['email' => 'newfoo@bar.com']);
+
+        $this->assertDatabaseMissing(Subscriber::class, [
+            'email' => 'foo@bar.com',
+        ]);
+
+        $this->assertDatabaseHas(Subscriber::class, [
+            'email' => 'newfoo@bar.com',
+        ]);
+    }
+
     public function testUserIsAddedToMembersListWhenSubscriptionCreated()
     {
         $this->signIn($user = User::factory()->withoutSubscription()->create());
 
-        $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNull(
+            Subscriber::findForEmail($user->email, $this->membersEmailList())
+        );
 
         SubscriptionFactory::new()->create(['user_id' => $user->id]);
 
-        $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNotNull(
+            Subscriber::findForEmail($user->email, $this->membersEmailList())
+        );
     }
 
     public function testUserRemainsOnMembersListWhenSubscriptionUpdated()
     {
         $this->signIn();
 
-        $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNotNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
 
         // Turn off auto-renew
         Auth::user()->subscription()->update([
             'ends_at' => now()->addYear(),
         ]);
 
-        $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNotNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
     }
 
     public function testUserIsRemovedFromMembersListWhenSubscriptionExpires()
     {
         $this->signIn();
 
-        $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNotNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
 
         Auth::user()->subscription()->update([
             'stripe_status' => Subscription::STATUS_INCOMPLETE_EXPIRED,
         ]);
 
-        $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
     }
 
     public function testUserIsRemovedFromMembersListWhenSubscriptionIsDeleted()
     {
         $this->signIn();
 
-        $this->assertDatabaseHas('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNotNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
 
         Auth::user()->subscription()->delete();
 
-        $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
     }
 
     public function testUpdatingSubscriptionForUnsubscribedUserWorksWithoutErrors()
@@ -125,17 +165,27 @@ class MailcoachTest extends TestCase
 
         Subscriber::whereEmail(Auth::user()->email)->delete();
 
-        $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
 
         // End subscription
         Auth::user()->subscription()->update([
             'ends_at' => now(),
         ]);
 
-        $this->assertDatabaseMissing('mailcoach_subscribers', [
-            'email' => Auth::user()->email,
-        ]);
+        $this->assertNull(
+            Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
+        );
+    }
+
+    protected function allUsersEmailList()
+    {
+        return EmailList::whereName('All Users')->firstOrFail();
+    }
+
+    protected function membersEmailList()
+    {
+        return EmailList::whereName('Members')->firstOrFail();
     }
 }

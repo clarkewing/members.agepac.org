@@ -3,12 +3,13 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Traits\ManagesEmailList;
 use Laravel\Cashier\Subscription as StripeSubscription;
-use Spatie\Mailcoach\Domain\Audience\Models\EmailList;
-use Spatie\Mailcoach\Domain\Audience\Models\Subscriber as EmailSubscriber;
 
 class SubscriptionObserver
 {
+    use ManagesEmailList;
+
     protected string $emailListName = 'Members';
 
     /**
@@ -28,14 +29,6 @@ class SubscriptionObserver
     }
 
     /**
-     * @return \Spatie\Mailcoach\Domain\Audience\Models\EmailList
-     */
-    protected function emailList(): EmailList
-    {
-        return EmailList::where('name', $this->emailListName)->firstOrFail();
-    }
-
-    /**
      * Handle the subscription "deleted" event.
      *
      * @param  StripeSubscription  $subscription
@@ -47,32 +40,6 @@ class SubscriptionObserver
         }
 
         $this->removeFromEmailList($subscription->user);
-    }
-
-    /**
-     * @param  \App\Models\User  $user
-     */
-    protected function addToEmailList(User $user): void
-    {
-        EmailSubscriber::createWithEmail($user->email, $user->only([
-            'first_name',
-            'last_name',
-            'class_course',
-            'class_year',
-            'gender',
-            'birthdate',
-            'phone',
-        ]))
-            ->subscribeTo($this->emailList());
-    }
-
-    /**
-     * @param  \App\Models\User  $user
-     */
-    protected function removeFromEmailList(User $user): void
-    {
-        EmailSubscriber::findForEmail($user->email, $this->emailList())
-            ?->delete();
     }
 
     protected function hasActiveSubscription(User $user)
