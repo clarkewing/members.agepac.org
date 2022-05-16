@@ -27,6 +27,7 @@ use App\Http\Controllers\ThreadSubscriptionsController;
 use App\Http\Controllers\UserNotificationsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::view('test', 'auth.two-factor-challenge');
 //Route::redirect('/', '/login');
 
 //Auth::routes(['verify' => true]);
@@ -114,6 +115,8 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
 });
 
 /* Account */
+Route::middleware(['auth', 'verified'])->get('/account', [UserProfileController::class, 'show'])->name('profile.show');
+
 Route::prefix('/account')->group(function () {
     Route::prefix('/info')->name('account.')->group(function () {
         Route::get('/', [AccountInfoController::class, 'edit'])->name('edit');

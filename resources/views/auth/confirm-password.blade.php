@@ -1,28 +1,28 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
-
-        <div class="mb-4 text-sm text-gray-600">
+<x-auth-form-layout>
+    <x-slot name="header">
+        <p class="text-sm text-gray-600">
             {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+        </p>
+    </x-slot>
+
+    @if (session('status'))
+        <div class="mb-4 font-medium text-sm text-green-600">
+            {{ session('status') }}
         </div>
+    @endif
 
-        <x-jet-validation-errors class="mb-4" />
+    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+        @csrf
 
-        <form method="POST" action="{{ route('password.confirm') }}">
-            @csrf
+        <x-form.input
+            label="Password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            autofocus
+        />
 
-            <div>
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" autofocus />
-            </div>
-
-            <div class="flex justify-end mt-4">
-                <x-jet-button class="ml-4">
-                    {{ __('Confirm') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+        <x-form.submit>{{ __('Confirm') }}</x-form.submit>
+    </form>
+</x-auth-form-layout>

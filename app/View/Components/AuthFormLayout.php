@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class GuestLayout extends Component
+class AuthFormLayout extends Component
 {
     public ?string $title;
 
@@ -16,10 +16,10 @@ class GuestLayout extends Component
     /**
      * Get the view / contents that represents the component.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory
      */
     public function render()
     {
-        return view('layouts.guest');
+        return view('layouts.auth-form');
     }
 }
