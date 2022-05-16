@@ -9,7 +9,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21.1",
+        "axios": "^0.25",
         "bootstrap": "^4.6.0",
         "browser-sync": "^2.27.3",
         "browser-sync-webpack-plugin": "^2.3.0",
