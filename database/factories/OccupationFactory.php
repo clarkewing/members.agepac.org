@@ -13,13 +13,6 @@ use Illuminate\Support\Arr;
 class OccupationFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Occupation::class;
-
-    /**
      * Configure the model factory.
      *
      * @return $this

@@ -9,13 +9,6 @@ use Illuminate\Support\Arr;
 class UserInvitationFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = UserInvitation::class;
-
-    /**
      * Define the model's default state.
      *
      * @return array

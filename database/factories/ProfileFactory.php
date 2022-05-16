@@ -21,13 +21,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ProfileFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Profile::class;
-
-    /**
      * Configure the model factory.
      *
      * @return $this

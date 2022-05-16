@@ -10,13 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PollFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Poll::class;
-
-    /**
      * Configure the model factory.
      *
      * @return $this
