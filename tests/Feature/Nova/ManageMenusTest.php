@@ -235,7 +235,7 @@ class ManageMenusTest extends TestCase
         $faker = \Faker\Factory::create();
 
         return array_merge([
-            'name' => $name = $faker->sentence,
+            'name' => $name = $faker->sentence(),
             'slug' => Str::slug($name),
             'locale' => 'fr_FR',
         ], $overrides);
@@ -267,7 +267,7 @@ class ManageMenusTest extends TestCase
             'class' => 'OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL',
             'enabled' => true,
             'name' => $faker->text(30),
-            'value' => $faker->url,
+            'value' => $faker->url(),
             'target' => '_self',
         ], $overrides);
     }

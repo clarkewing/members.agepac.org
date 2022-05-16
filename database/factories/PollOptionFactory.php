@@ -26,8 +26,8 @@ class PollOptionFactory extends Factory
             'poll_id' => function () {
                 return Poll::factory()->create()->id;
             },
-            'label' => $this->faker->sentence,
-            'color' => $this->faker->hexColor,
+            'label' => $this->faker->sentence(),
+            'color' => $this->faker->hexColor(),
         ];
     }
 }

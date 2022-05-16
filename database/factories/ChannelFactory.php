@@ -22,8 +22,8 @@ class ChannelFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->word,
-            'description' => $this->faker->sentence,
+            'name' => $this->faker->unique()->word(),
+            'description' => $this->faker->sentence(),
             'archived' => false,
         ];
     }

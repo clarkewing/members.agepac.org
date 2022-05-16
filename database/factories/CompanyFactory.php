@@ -22,13 +22,13 @@ class CompanyFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->company,
+            'name' => $this->faker->company(),
             'type_code' => $this->faker->randomKey(Company::typeStrings()),
-            'website' => $this->faker->url,
-            'description' => $this->faker->paragraph,
-            'operations' => $this->faker->paragraph,
-            'conditions' => $this->faker->paragraph,
-            'remarks' => $this->faker->paragraph,
+            'website' => $this->faker->url(),
+            'description' => $this->faker->paragraph(),
+            'operations' => $this->faker->paragraph(),
+            'conditions' => $this->faker->paragraph(),
+            'remarks' => $this->faker->paragraph(),
         ];
     }
 }

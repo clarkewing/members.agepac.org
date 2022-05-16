@@ -42,11 +42,11 @@ class CourseFactory extends Factory
             'user_id' => function () {
                 return User::factory()->create()->id;
             },
-            'title' => $this->faker->jobTitle,
-            'school' => $this->faker->company,
-            'description' => $this->faker->paragraph,
-            'start_date' => $start_date = $this->faker->date,
-            'end_date' => $this->faker->boolean ? $this->faker->dateTimeBetween($start_date, 'now') : null,
+            'title' => $this->faker->jobTitle(),
+            'school' => $this->faker->company(),
+            'description' => $this->faker->paragraph(),
+            'start_date' => $start_date = $this->faker->date(),
+            'end_date' => $this->faker->boolean() ? $this->faker->dateTimeBetween($start_date, 'now') : null,
         ];
     }
 }

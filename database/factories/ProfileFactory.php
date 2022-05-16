@@ -47,7 +47,7 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return User::factory()->raw([
-            'bio' => $this->faker->paragraph,
+            'bio' => $this->faker->paragraph(),
             'flight_hours' => $this->faker->numberBetween(0, 15000),
         ]);
     }

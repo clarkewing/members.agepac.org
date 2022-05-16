@@ -30,14 +30,14 @@ class LocationFactory extends Factory
             },
             'locatable_type' => array_flip(Relation::$morphMap)[\App\Models\User::class],
             'type' => Arr::random(['country', 'city', 'address', 'busStop', 'trainStation', 'townhall', 'airport']),
-            'name' => $this->faker->sentence,
-            'street_line_1' => $this->faker->streetAddress,
-            'street_line_2' => $this->faker->secondaryAddress,
-            'municipality' => $this->faker->city,
+            'name' => $this->faker->sentence(),
+            'street_line_1' => $this->faker->streetAddress(),
+            'street_line_2' => $this->faker->secondaryAddress(),
+            'municipality' => $this->faker->city(),
             'administrative_area' => $this->faker->region,
             'sub_administrative_area' => null,
-            'postal_code' => $this->faker->postcode,
-            'country' => $country = $this->faker->country,
+            'postal_code' => $this->faker->postcode(),
+            'country' => $country = $this->faker->country(),
             'country_code' => function () {
                 \Locale::setDefault(config('app.locale'));
 

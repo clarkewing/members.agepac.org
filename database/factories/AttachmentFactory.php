@@ -25,10 +25,10 @@ class AttachmentFactory extends Factory
      */
     public function definition()
     {
-        $file = $this->faker->boolean
-        ? UploadedFile::fake()->image($fileName = "{$this->faker->word}.jpg")
+        $file = $this->faker->boolean()
+        ? UploadedFile::fake()->image($fileName = "{$this->faker->word()}.jpg")
         : UploadedFile::fake()->create(
-            $fileName = "{$this->faker->word}.{$this->faker->fileExtension}",
+            $fileName = "{$this->faker->word()}.{$this->faker->fileExtension()}",
             $this->faker->numberBetween(20, 10000),
             mimetype_from_filename($fileName)
         );

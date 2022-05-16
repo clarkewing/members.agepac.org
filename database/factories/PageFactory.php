@@ -24,7 +24,7 @@ class PageFactory extends Factory
         $this->faker->addProvider(new \App\FakerProviders\Gutenberg($this->faker));
 
         return [
-            'title' => $this->faker->sentence,
+            'title' => $this->faker->sentence(),
             'path' => $this->faker->unique()->parse($this->faker->randomElement(['{{slug}}/{{slug}}', '{{slug}}'])),
             'body' => $this->faker->gutenberg,
             'restricted' => false,

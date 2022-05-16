@@ -27,7 +27,7 @@ class SubscriptionFactory extends Factory
                 return User::factory()->create()->id;
             },
             'name' => 'default',
-            'stripe_id' => $this->faker->md5, // Random string
+            'stripe_id' => $this->faker->md5(), // Random string
             'stripe_status' => 'active',
             'stripe_plan' => $this->faker->randomElement(config('council.plans')),
             'quantity' => 1,

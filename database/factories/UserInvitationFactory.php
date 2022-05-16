@@ -23,10 +23,10 @@ class UserInvitationFactory extends Factory
     public function definition()
     {
         return [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
             'class_course' => Arr::random(config('council.courses')),
-            'class_year' => $this->faker->year,
+            'class_year' => $this->faker->year(),
         ];
     }
 }

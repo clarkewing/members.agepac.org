@@ -41,21 +41,21 @@ class OccupationFactory extends Factory
      */
     public function definition()
     {
-        $is_pilot = $this->faker->boolean;
+        $is_pilot = $this->faker->boolean();
 
         return [
             'user_id' => function () {
                 return User::factory()->create()->id;
             },
-            'position' => $is_pilot ? Arr::random(['CDB', 'OPL']) : $this->faker->jobTitle,
+            'position' => $is_pilot ? Arr::random(['CDB', 'OPL']) : $this->faker->jobTitle(),
             'aircraft_id' => $is_pilot ? Aircraft::all()->random()->id : null,
             'company_id' => function () {
                 return Company::factory()->create()->id;
             },
             'status' => Arr::random(array_keys(Occupation::statusStrings())),
-            'description' => $this->faker->paragraph,
-            'start_date' => $start_date = $this->faker->date,
-            'end_date' => $this->faker->boolean ? $this->faker->dateTimeBetween($start_date, 'now') : null,
+            'description' => $this->faker->paragraph(),
+            'start_date' => $start_date = $this->faker->date(),
+            'end_date' => $this->faker->boolean() ? $this->faker->dateTimeBetween($start_date, 'now') : null,
             'is_primary' => false,
         ];
     }
@@ -69,7 +69,7 @@ class OccupationFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'position' => $this->faker->jobTitle,
+                'position' => $this->faker->jobTitle(),
                 'aircraft_id' => null,
             ];
         });
@@ -79,7 +79,7 @@ class OccupationFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'start_date' => $start_date = $this->faker->date,
+                'start_date' => $start_date = $this->faker->date(),
                 'end_date' => $this->faker->dateTimeBetween($start_date, 'now'),
             ];
         });
