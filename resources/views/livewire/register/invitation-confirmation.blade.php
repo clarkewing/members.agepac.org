@@ -1,42 +1,29 @@
-<div role="tabpanel"
-     class="tab-pane fade {{ $active ? 'active show' : null }}">
+<div>
+    <h3 class="text-lg leading-6 font-medium text-gray-900">Trouvé !</h3>
+    <p class="mt-1 max-w-2xl text-sm text-gray-500">Vérifie que les informations ci-dessous te correspondent bien.</p>
+</div>
 
-    <h5 class="text-center mb-3">
-        Trouvé !
-    </h5>
+<x-dl class="mt-5 border-t border-gray-200">
+    <x-dl-item title="Prénom">
+        {{ $first_name }}
+    </x-dl-item>
+    <x-dl-item title="Nom">
+        {{ $last_name }}
+    </x-dl-item>
+    <x-dl-item title="Promotion">
+        {{ $class_course }} {{ $class_year }}
+    </x-dl-item>
+</x-dl>
 
-    <div>
-        <dl class="mb-4">
-            <dt>Prénom</dt>
-            <dd>{{ $first_name }}</dd>
+<div class="mt-6 space-y-3">
+    <x-button wire:click="run">
+        <span>C’est bien moi</span>
+        <x-heroicon-s-arrow-right class="ml-2 h-4 w-4" aria-hidden="true" wire:loading.remove wire:target="run" />
+        <x-loading-indicator class="ml-2" wire:loading wire:target="run" />
+    </x-button>
 
-            <dt>Nom</dt>
-            <dd>{{ $last_name }}</dd>
-
-            <dt>Promotion</dt>
-            <dd>{{ $class_course }} {{ $class_year }}</dd>
-        </dl>
-
-        <button type="button"
-                class="btn btn-primary rounded-pill d-flex align-items-center mx-auto mb-2"
-                wire:click="run">
-            <span>C’est bien moi</span>
-
-            <svg class="bi bi-arrow-right-short ml-2" width="1em" height="1em" viewBox="0 0 16 16"
-                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                      d="M8.146 4.646a.5.5 0 01.708 0l3 3a.5.5 0 010 .708l-3 3a.5.5 0 01-.708-.708L10.793 8 8.146 5.354a.5.5 0 010-.708z"
-                      clip-rule="evenodd"/>
-                <path fill-rule="evenodd" d="M4 8a.5.5 0 01.5-.5H11a.5.5 0 010 1H4.5A.5.5 0 014 8z"
-                      clip-rule="evenodd"/>
-            </svg>
-        </button>
-
-        <button type="button"
-                class="btn btn-link d-flex align-items-center mx-auto"
-                wire:click="resetIdentity">
-            <span>Ce n’est pas moi</span>
-        </button>
-    </div>
-
+    <x-button-secondary wire:click="resetIdentity">
+        <span>Ce n’est pas moi</span>
+        <x-loading-indicator class="ml-2" wire:loading wire:target="resetIdentity" />
+    </x-button-secondary>
 </div>

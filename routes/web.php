@@ -25,7 +25,6 @@ use App\Http\Controllers\SubscriptionInvoicesController;
 use App\Http\Controllers\ThreadsController;
 use App\Http\Controllers\ThreadSubscriptionsController;
 use App\Http\Controllers\UserNotificationsController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 
@@ -39,7 +38,7 @@ use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::view('test', 'auth.two-factor-challenge');
+
 //Route::redirect('/', '/login');
 
 //Auth::routes(['verify' => true]);

@@ -1,10 +1,16 @@
 <x-auth-form-layout>
     <x-slot name="header">
         <x-application-mark class="h-10 w-auto" />
-        <h2 class="mt-6 text-3xl font-extrabold text-gray-900">{{ __('Ton compte doit être approuvé.') }}</h2>
+        <h2 class="mt-6 text-2xl font-extrabold text-gray-900">{{ __('Ton compte doit être approuvé.') }}</h2>
         <p class="mt-2 text-sm text-gray-600">
             {{ __('Ceci prend généralement moins de 24 heures.') }}<br>
             {{ __('Tu recevras un email une fois les vérifications nécessaires effectuées.') }}
         </p>
     </x-slot>
+
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+
+        <x-form.submit-secondary>{{ __('Log Out') }}</x-form.submit-secondary>
+    </form>
 </x-auth-form-layout>

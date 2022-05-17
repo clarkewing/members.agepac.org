@@ -12,7 +12,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+    <form method="POST" action="{{ route('password.reset') }}" class="space-y-6">
         @csrf
 
         <input type="hidden" name="token" value="{{ $request->route('token') }}">

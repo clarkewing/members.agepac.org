@@ -1,6 +1,7 @@
 <x-auth-form-layout>
     <x-slot name="header">
-        <p class="text-sm text-gray-600">
+        <x-application-mark class="h-10 w-auto" />
+        <p class="mt-6 text-sm text-gray-600">
             {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
         </p>
     </x-slot>

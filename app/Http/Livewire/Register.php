@@ -80,6 +80,8 @@ class Register extends MultiStepForm
 
             $this->goToStep('Identity');
         }
+
+        $this->emit('registration-started');
     }
 
     public function runIdentity(): void
