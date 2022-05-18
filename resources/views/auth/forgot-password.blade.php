@@ -24,6 +24,13 @@
             autofocus
         />
 
-        <x-form.submit>{{ __('Email Password Reset Link') }}</x-form.submit>
+        <div class="space-y-4">
+            <x-form.submit>{{ __('Email Password Reset Link') }}</x-form.submit>
+
+            <x-button-secondary href="{{ route('login') }}">
+                <x-heroicon-s-arrow-left class="mr-2 h-4 w-4" aria-hidden="true" />
+                <span>{{ __('Go back') }}</span>
+            </x-button-secondary>
+        </div>
     </form>
 </x-auth-form-layout>

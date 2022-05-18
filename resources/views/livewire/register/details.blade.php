@@ -34,7 +34,7 @@
         required
     />
 
-    <x-form.submit class="mt-6" wire:loading.attr="disabled">
+    <x-form.submit wire:loading.attr="disabled">
         <span>Vérification</span>
         <x-heroicon-s-arrow-right class="ml-2 h-4 w-4" aria-hidden="true" wire:loading.remove />
         <x-loading-indicator class="ml-2" wire:loading />

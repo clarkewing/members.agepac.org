@@ -39,7 +39,7 @@ use Laravel\Jetstream\Http\Controllers\Livewire\UserProfileController;
 |
 */
 
-//Route::redirect('/', '/login');
+Route::redirect('/', '/login');
 
 //Auth::routes(['verify' => true]);
 

@@ -5,7 +5,6 @@
     {{ $attributes->class([
         'animate-spin',
         'h-5 w-5' => ! Str::contains($attributes->get('class'), ['h-', 'w-']),
-        'text-white' => ! Str::contains($attributes->get('class'), 'text-'),
     ]) }}
 >
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
