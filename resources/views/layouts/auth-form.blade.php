@@ -7,7 +7,7 @@
                     {{ $header }}
                 </div>
 
-                <div class="mt-8 px-px lg:overflow-y-auto lg:scroll-smooth">
+                <div class="mt-8 -mx-1 px-1 pb-1 lg:overflow-y-auto lg:scroll-smooth">
                     {{ $slot }}
                 </div>
             </div>
