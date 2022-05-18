@@ -1,4 +1,4 @@
-@props(['label', 'name', 'help' => null])
+@props(['label' => null, 'name', 'help' => null])
 
 <div class="space-y-1">
     @isset($label)
