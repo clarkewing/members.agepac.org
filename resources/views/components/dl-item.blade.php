@@ -3,11 +3,11 @@
         {{ $title }}
     </dt>
     <dd class="flex text-sm text-gray-900 col-span-2">
-        <span class="flex-grow">
+        <span class="grow">
             {{ $description ?? $slot }}
         </span>
         @isset($actions)
-            <span class="ml-4 flex-shrink-0">
+            <span class="ml-4 shrink-0">
                 {{ $actions }}
             </span>
         @endisset
