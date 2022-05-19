@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2de068515ce94d3f8c9b9a6b0bb003d7",
+    "content-hash": "151d99d6d5f3cd6f413d17ed955781d3",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -160,52 +160,6 @@
                 "source": "https://github.com/algolia/scout-extended/tree/v1.16.0"
             },
             "time": "2021-04-08T15:17:35+00:00"
-        },
-        {
-            "name": "artisansdk/ratelimiter",
-            "version": "1.0.0-rc4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/artisansdk/ratelimiter.git",
-                "reference": "9bc8edcae20949e06ea79e6f7ca5e47c25101018"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/artisansdk/ratelimiter/zipball/9bc8edcae20949e06ea79e6f7ca5e47c25101018",
-                "reference": "9bc8edcae20949e06ea79e6f7ca5e47c25101018",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "~5.0 | ~6.0 | ~7.0 | ~8.0| ~9.0",
-                "nesbot/carbon": "~1.0 | ~2.0",
-                "php": ">=7.0|>=8.0",
-                "symfony/http-kernel": "~2.6|~3.3|~4.0|~5.0|~6.0"
-            },
-            "require-dev": {
-                "artisansdk/bench": "~1.0.0-rc1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ArtisanSdk\\RateLimiter\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel LaBarge",
-                    "email": "daniel@artisanscollaborative.com"
-                }
-            ],
-            "description": "A leaky bucket rate limiter and middleware controls for route-level granularity.",
-            "support": {
-                "issues": "https://github.com/artisansdk/ratelimiter/issues",
-                "source": "https://github.com/artisansdk/ratelimiter/tree/1.0.0-rc4"
-            },
-            "time": "2022-01-12T16:39:05+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -3439,16 +3393,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.12",
+            "version": "v8.83.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "2af2314989845db68dfbb65a54b8748ffaf26204"
+                "reference": "1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/2af2314989845db68dfbb65a54b8748ffaf26204",
-                "reference": "2af2314989845db68dfbb65a54b8748ffaf26204",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20",
+                "reference": "1eed68ec70c98d1a7a6f0fcedbea10cb6dd69a20",
                 "shasum": ""
             },
             "require": {
@@ -3608,7 +3562,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-05-10T13:57:07+00:00"
+            "time": "2022-05-17T14:08:01+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -4043,16 +3997,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "9e4b005daa20b0c161f3845040046dc9ddc1d74e"
+                "reference": "09f0e9fb61829f628205b7c94906c28740ff9540"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/9e4b005daa20b0c161f3845040046dc9ddc1d74e",
-                "reference": "9e4b005daa20b0c161f3845040046dc9ddc1d74e",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/09f0e9fb61829f628205b7c94906c28740ff9540",
+                "reference": "09f0e9fb61829f628205b7c94906c28740ff9540",
                 "shasum": ""
             },
             "require": {
@@ -4098,7 +4052,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2022-02-11T19:23:53+00:00"
+            "time": "2022-05-16T17:09:47+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -4583,30 +4537,27 @@
         },
         {
             "name": "league/html-to-markdown",
-            "version": "5.1.0",
+            "version": "4.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/html-to-markdown.git",
-                "reference": "e0fc8cf07bdabbcd3765341ecb50c34c271d64e1"
+                "reference": "0868ae7a552e809e5cd8f93ba022071640408e88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/e0fc8cf07bdabbcd3765341ecb50c34c271d64e1",
-                "reference": "e0fc8cf07bdabbcd3765341ecb50c34c271d64e1",
+                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/0868ae7a552e809e5cd8f93ba022071640408e88",
+                "reference": "0868ae7a552e809e5cd8f93ba022071640408e88",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-xml": "*",
-                "php": "^7.2.5 || ^8.0"
+                "php": ">=5.3.3"
             },
             "require-dev": {
-                "mikehaertl/php-shellcommand": "^1.1.0",
-                "phpstan/phpstan": "^0.12.99",
-                "phpunit/phpunit": "^8.5 || ^9.2",
-                "scrutinizer/ocular": "^1.6",
-                "unleashedtech/php-coding-standard": "^2.7",
-                "vimeo/psalm": "^4.22"
+                "mikehaertl/php-shellcommand": "~1.1.0",
+                "phpunit/phpunit": "^4.8|^5.7",
+                "scrutinizer/ocular": "~1.1"
             },
             "bin": [
                 "bin/html-to-markdown"
@@ -4614,7 +4565,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.2-dev"
+                    "dev-master": "4.10-dev"
                 }
             },
             "autoload": {
@@ -4648,7 +4599,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/html-to-markdown/issues",
-                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.1.0"
+                "source": "https://github.com/thephpleague/html-to-markdown/tree/4.10.0"
             },
             "funding": [
                 {
@@ -4664,11 +4615,11 @@
                     "type": "github"
                 },
                 {
-                    "url": "https://tidelift.com/funding/github/packagist/league/html-to-markdown",
-                    "type": "tidelift"
+                    "url": "https://www.patreon.com/colinodell",
+                    "type": "patreon"
                 }
             ],
-            "time": "2022-03-02T17:24:08+00:00"
+            "time": "2020-07-01T00:34:03+00:00"
         },
         {
             "name": "league/iso3166",
@@ -4987,29 +4938,31 @@
         },
         {
             "name": "maennchen/zipstream-php",
-            "version": "2.1.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maennchen/ZipStream-PHP.git",
-                "reference": "c4c5803cc1f93df3d2448478ef79394a5981cc58"
+                "reference": "211e9ba1530ea5260b45d90c9ea252f56ec52729"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/c4c5803cc1f93df3d2448478ef79394a5981cc58",
-                "reference": "c4c5803cc1f93df3d2448478ef79394a5981cc58",
+                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/211e9ba1530ea5260b45d90c9ea252f56ec52729",
+                "reference": "211e9ba1530ea5260b45d90c9ea252f56ec52729",
                 "shasum": ""
             },
             "require": {
                 "myclabs/php-enum": "^1.5",
-                "php": ">= 7.1",
+                "php": "^7.4 || ^8.0",
                 "psr/http-message": "^1.0",
                 "symfony/polyfill-mbstring": "^1.0"
             },
             "require-dev": {
                 "ext-zip": "*",
-                "guzzlehttp/guzzle": ">= 6.3",
+                "guzzlehttp/guzzle": "^6.5.3 || ^7.2.0",
                 "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": ">= 7.5"
+                "php-coveralls/php-coveralls": "^2.4",
+                "phpunit/phpunit": "^8.5.8 || ^9.4.2",
+                "vimeo/psalm": "^4.1"
             },
             "type": "library",
             "autoload": {
@@ -5046,7 +4999,7 @@
             ],
             "support": {
                 "issues": "https://github.com/maennchen/ZipStream-PHP/issues",
-                "source": "https://github.com/maennchen/ZipStream-PHP/tree/master"
+                "source": "https://github.com/maennchen/ZipStream-PHP/tree/2.2.1"
             },
             "funding": [
                 {
@@ -5054,7 +5007,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-05-30T13:11:16+00:00"
+            "time": "2022-05-18T15:52:06+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -7817,17 +7770,17 @@
         },
         {
             "name": "spatie/laravel-mailcoach",
-            "version": "4.17.0",
+            "version": "4.4.4",
             "source": {
                 "type": "git",
                 "url": "git@github.com:spatie/laravel-mailcoach.git",
-                "reference": "cfdd79105475e65c521541dc31ed4f8e5f7145c8"
+                "reference": "f155d451d33bfed459f92ba85c172770f7159acd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://satis.spatie.be/dist/spatie/laravel-mailcoach/spatie-laravel-mailcoach-cfdd79105475e65c521541dc31ed4f8e5f7145c8-zip-4530da.zip",
-                "reference": "cfdd79105475e65c521541dc31ed4f8e5f7145c8",
-                "shasum": "255b244724247b4125a41188681e38b91d6099d4"
+                "url": "https://satis.spatie.be/dist/spatie/laravel-mailcoach/spatie-laravel-mailcoach-f155d451d33bfed459f92ba85c172770f7159acd-zip-03a8fa.zip",
+                "reference": "f155d451d33bfed459f92ba85c172770f7159acd",
+                "shasum": "906014891055aa2c654e5174b498f599c01334f9"
             },
             "require": {
                 "cakephp/chronos": "^2.0",
@@ -7841,7 +7794,7 @@
                 "illuminate/redis": "^8.0",
                 "illuminate/support": "^8.0",
                 "laravel/horizon": "^5.0",
-                "league/html-to-markdown": "^4.10|^5.0",
+                "league/html-to-markdown": "^4.10",
                 "livewire/livewire": "^2.4",
                 "nesbot/carbon": "^2.37",
                 "php": "^8.0",
@@ -7853,15 +7806,15 @@
                 "spatie/laravel-model-cleanup": "^3.1",
                 "spatie/laravel-package-tools": "^1.4.3",
                 "spatie/laravel-query-builder": "^3.0",
-                "spatie/laravel-rate-limited-job-middleware": "^2.0",
-                "spatie/laravel-schemaless-attributes": "^1.8|^2.0",
+                "spatie/laravel-rate-limited-job-middleware": "^1.4",
+                "spatie/laravel-schemaless-attributes": "^1.8",
                 "spatie/laravel-validation-rules": "^3.0",
                 "spatie/laravel-view-models": "^1.3.2",
                 "spatie/laravel-webhook-client": "^2.7.4",
                 "spatie/query-string": "^1.0",
                 "spatie/simple-excel": "^1.10",
                 "spatie/temporary-directory": "^2.0",
-                "symfony/css-selector": "^5.2|^6.0",
+                "symfony/css-selector": "^5.2",
                 "symfony/dom-crawler": "^5.2",
                 "tijsverkoyen/css-to-inline-styles": "^2.2"
             },
@@ -7873,12 +7826,10 @@
                 "nunomaduro/collision": "^5.3",
                 "orchestra/testbench": "^6.0",
                 "orchestra/testbench-core": "^6.12",
-                "pestphp/pest": "^1.18",
-                "pestphp/pest-plugin-parallel": "^0.3.1",
+                "phpunit/phpunit": "^9.5",
                 "predis/predis": "^1.1",
                 "psalm/plugin-laravel": "^1.4",
                 "spatie/laravel-ray": "^1.9",
-                "spatie/pest-plugin-snapshots": "^1.1",
                 "spatie/phpunit-snapshot-assertions": "^4.2",
                 "spatie/test-time": "^1.2",
                 "symfony/var-dumper": "^5.2",
@@ -7908,7 +7859,7 @@
                     "vendor/bin/php-cs-fixer fix --allow-risky=yes"
                 ],
                 "test": [
-                    "./vendor/bin/pest"
+                    "./vendor/bin/testbench package:test --parallel"
                 ],
                 "test-coverage": [
                     "vendor/bin/phpunit --coverage-html coverage"
@@ -7937,27 +7888,26 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-mailcoach/tree/4.17.0",
+                "source": "https://github.com/spatie/laravel-mailcoach/tree/4.4.4",
                 "issues": "https://github.com/spatie/laravel-mailcoach/issues"
             },
-            "time": "2022-02-14T13:16:36+00:00"
+            "time": "2021-06-11T07:30:35+00:00"
         },
         {
             "name": "spatie/laravel-mailcoach-mailgun-feedback",
-            "version": "3.1.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-mailcoach-mailgun-feedback.git",
-                "reference": "08d5a430aa124041755775aa6501f0808a9e4eec"
+                "reference": "5b406b32cab88864b87af6e28d440721fde98fc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://satis.spatie.be/dist/spatie/laravel-mailcoach-mailgun-feedback/spatie-laravel-mailcoach-mailgun-feedback-08d5a430aa124041755775aa6501f0808a9e4eec-zip-71082c.zip",
-                "reference": "08d5a430aa124041755775aa6501f0808a9e4eec",
-                "shasum": "11c3a2613df7d836d05f89d0cb03f5f271dec5ee"
+                "url": "https://satis.spatie.be/dist/spatie/laravel-mailcoach-mailgun-feedback/spatie-laravel-mailcoach-mailgun-feedback-5b406b32cab88864b87af6e28d440721fde98fc1-zip-f94bea.zip",
+                "reference": "5b406b32cab88864b87af6e28d440721fde98fc1",
+                "shasum": "bec1f895914b5f6e0f965e50193152eb5022eeda"
             },
             "require": {
-                "illuminate/support": "^8.67",
                 "php": "^8.0",
                 "spatie/laravel-mailcoach": "^4.0"
             },
@@ -7965,7 +7915,7 @@
                 "ext-json": "*",
                 "fakerphp/faker": "^1.12",
                 "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^9.4.4",
+                "phpunit/phpunit": "^9.4",
                 "symfony/var-dumper": "^5.2"
             },
             "type": "library",
@@ -8010,34 +7960,33 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-mailcoach-mailgun-feedback/tree/3.1.0"
+                "source": "https://github.com/spatie/laravel-mailcoach-mailgun-feedback/tree/3.0.0"
             },
-            "time": "2021-11-18T09:50:10+00:00"
+            "time": "2021-03-10T08:19:27+00:00"
         },
         {
             "name": "spatie/laravel-mailcoach-unlayer",
-            "version": "2.1.2",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-mailcoach-unlayer.git",
-                "reference": "271b602f1953d8d0ee06bdb6ea10225ed0950335"
+                "reference": "7bac5333a85c127a10e09e6b6ae4ee9b2084ccce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://satis.spatie.be/dist/spatie/laravel-mailcoach-unlayer/spatie-laravel-mailcoach-unlayer-271b602f1953d8d0ee06bdb6ea10225ed0950335-zip-733a0b.zip",
-                "reference": "271b602f1953d8d0ee06bdb6ea10225ed0950335",
-                "shasum": "4431d4fdff50b1a2562f4c0e926f3b3d3ef43080"
+                "url": "https://satis.spatie.be/dist/spatie/laravel-mailcoach-unlayer/spatie-laravel-mailcoach-unlayer-7bac5333a85c127a10e09e6b6ae4ee9b2084ccce-zip-063548.zip",
+                "reference": "7bac5333a85c127a10e09e6b6ae4ee9b2084ccce",
+                "shasum": "8e033d5bcdcccb41b2a7246b53556795f7ca3d0a"
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/support": "^8.67",
                 "php": "^8.0",
                 "spatie/laravel-mailcoach": "^4.0"
             },
             "require-dev": {
                 "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^8.5.21|^9.5",
-                "symfony/var-dumper": "^5.2"
+                "phpunit/phpunit": "^9.4",
+                "symfony/var-dumper": "^5.0"
             },
             "type": "library",
             "extra": {
@@ -8081,9 +8030,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-mailcoach-unlayer/tree/2.1.2"
+                "source": "https://github.com/spatie/laravel-mailcoach-unlayer/tree/2.0.2"
             },
-            "time": "2022-02-03T08:59:07+00:00"
+            "time": "2021-05-14T12:39:26+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -8544,31 +8493,27 @@
         },
         {
             "name": "spatie/laravel-rate-limited-job-middleware",
-            "version": "2.2.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-rate-limited-job-middleware.git",
-                "reference": "b6cd5052ce35da1b9608b3203513cc6a5f41c99e"
+                "reference": "7b72592e0d823e2948c413f5e661de0fd3431db5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-rate-limited-job-middleware/zipball/b6cd5052ce35da1b9608b3203513cc6a5f41c99e",
-                "reference": "b6cd5052ce35da1b9608b3203513cc6a5f41c99e",
+                "url": "https://api.github.com/repos/spatie/laravel-rate-limited-job-middleware/zipball/7b72592e0d823e2948c413f5e661de0fd3431db5",
+                "reference": "7b72592e0d823e2948c413f5e661de0fd3431db5",
                 "shasum": ""
             },
             "require": {
-                "artisansdk/ratelimiter": "1.0.0-rc4",
-                "illuminate/cache": "^8.0|^9.0",
-                "illuminate/redis": "^8.0|^9.0",
-                "php": "^8.0"
+                "illuminate/redis": "^6.0|^7.0|^8.0",
+                "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "mockery/mockery": "^1.4.1",
-                "orchestra/testbench": "^6.23|^7.0",
-                "pestphp/pest": "^1.21",
-                "phpunit/phpunit": "^9.5",
-                "spatie/pest-plugin-test-time": "^1.0",
-                "symfony/var-dumper": "^5.4|^6.0"
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^8.2|^9.0",
+                "symfony/var-dumper": "^4.3|^5.0"
             },
             "type": "library",
             "autoload": {
@@ -8596,43 +8541,38 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-rate-limited-job-middleware/issues",
-                "source": "https://github.com/spatie/laravel-rate-limited-job-middleware/tree/2.2.1"
+                "source": "https://github.com/spatie/laravel-rate-limited-job-middleware/tree/1.5.0"
             },
             "funding": [
                 {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
+                    "url": "https://www.patreon.com/spatie",
+                    "type": "patreon"
                 }
             ],
-            "time": "2022-04-18T07:54:01+00:00"
+            "time": "2020-11-27T09:36:55+00:00"
         },
         {
             "name": "spatie/laravel-schemaless-attributes",
-            "version": "2.3.0",
+            "version": "1.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-schemaless-attributes.git",
-                "reference": "3ac6d63f36c631edfafa5f34d7a3885f47b96e48"
+                "reference": "e3037a509683fe7fc0a2681b6f404b90aeffdaf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-schemaless-attributes/zipball/3ac6d63f36c631edfafa5f34d7a3885f47b96e48",
-                "reference": "3ac6d63f36c631edfafa5f34d7a3885f47b96e48",
+                "url": "https://api.github.com/repos/spatie/laravel-schemaless-attributes/zipball/e3037a509683fe7fc0a2681b6f404b90aeffdaf0",
+                "reference": "e3037a509683fe7fc0a2681b6f404b90aeffdaf0",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^7.0|^8.0|^9.0",
-                "illuminate/database": "^7.0|^8.0|^9.0",
-                "illuminate/support": "^7.0|^8.0|^9.0",
-                "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.4.3"
+                "illuminate/database": "^5.6|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
+                "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "brianium/paratest": "^6.2",
-                "mockery/mockery": "^1.4",
-                "nunomaduro/collision": "^5.3|^6.0",
-                "orchestra/testbench": "^6.15|^7.0",
-                "phpunit/phpunit": "^9.5.4"
+                "orchestra/testbench": "^3.6|^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
             },
             "type": "library",
             "extra": {
@@ -8667,19 +8607,15 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-schemaless-attributes/issues",
-                "source": "https://github.com/spatie/laravel-schemaless-attributes/tree/2.3.0"
+                "source": "https://github.com/spatie/laravel-schemaless-attributes/tree/1.8.3"
             },
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
                     "type": "custom"
-                },
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
                 }
             ],
-            "time": "2022-01-12T08:21:28+00:00"
+            "time": "2020-11-04T13:21:43+00:00"
         },
         {
             "name": "spatie/laravel-sluggable",
@@ -9806,20 +9742,21 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v6.0.3",
+            "version": "v5.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "1955d595c12c111629cc814d3f2a2ff13580508a"
+                "reference": "b0a190285cd95cb019237851205b8140ef6e368e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/1955d595c12c111629cc814d3f2a2ff13580508a",
-                "reference": "1955d595c12c111629cc814d3f2a2ff13580508a",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/b0a190285cd95cb019237851205b8140ef6e368e",
+                "reference": "b0a190285cd95cb019237851205b8140ef6e368e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.0.2"
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.16"
             },
             "type": "library",
             "autoload": {
@@ -9851,7 +9788,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v6.0.3"
+                "source": "https://github.com/symfony/css-selector/tree/v5.4.3"
             },
             "funding": [
                 {
@@ -9867,7 +9804,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T09:55:41+00:00"
+            "time": "2022-01-02T09:53:40+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
