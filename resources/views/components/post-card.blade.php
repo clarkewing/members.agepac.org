@@ -4,9 +4,9 @@
     <div class="flex space-x-3">
         <div class="flex-shrink-0">
             <img
-                    class="h-10 w-10 rounded-full"
-                    src="{{ $post->owner->getProfilePhotoUrlAttribute() }}"
-                    alt="{{ $post->owner->name }}"
+                class="h-10 w-10 rounded-full"
+                src="{{ $post->owner->getProfilePhotoUrlAttribute() }}"
+                alt="{{ $post->owner->name }}"
             />
         </div>
         <div class="min-w-0 flex-1">
