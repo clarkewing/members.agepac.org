@@ -8,9 +8,7 @@
         </p>
     </x-slot>
 
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-
+    <x-logout-form>
         <x-form.submit-secondary>{{ __('Log Out') }}</x-form.submit-secondary>
-    </form>
+    </x-logout-form>
 </x-auth-form-layout>

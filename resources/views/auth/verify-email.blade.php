@@ -18,9 +18,7 @@
         <x-form.submit>{{ __('Resend Verification Email') }}</x-form.submit>
     </form>
 
-    <form method="POST" action="{{ route('logout') }}" class="mt-4">
-        @csrf
-
+    <x-logout-form class="mt-4">
         <x-form.submit-secondary>{{ __('Log Out') }}</x-form.submit-secondary>
-    </form>
+    </x-logout-form>
 </x-auth-form-layout>

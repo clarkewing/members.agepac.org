@@ -21,9 +21,7 @@
         {{ __('pour en demander le renvoi') }}.
     </form>
 
-    <form method="POST" action="{{ route('logout') }}" class="mt-6">
-        @csrf
-
+    <x-logout-form class="mt-6">
         <x-form.submit-secondary>{{ __('Log Out') }}</x-form.submit-secondary>
-    </form>
+    </x-logout-form>
 </x-auth-form-layout>

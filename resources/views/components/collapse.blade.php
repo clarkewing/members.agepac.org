@@ -44,6 +44,7 @@
 >
     <span
         x-on:click="expanded = ! expanded"
+        aria-haspopup="true"
         :aria-expanded="expanded"
         :aria-controls="$id('collapse')"
         {{-- TODO: Implement slot class --}}
@@ -55,6 +56,7 @@
         x-show="expanded"
         x-collapse
         :id="$id('collapse')"
+        role="menu"
         style="display: none; height: 0; overflow: hidden;"
         {{-- TODO: Implement slot class --}}
         class="mt-1 space-y-1"
