@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class UserApproved extends Event
+class UserDeleted extends Event
 {
     use Dispatchable, SerializesModels;
 

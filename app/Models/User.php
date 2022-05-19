@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\UserDeleted;
 use App\Traits\CanImpersonate;
 use App\Traits\HasReputation;
 use App\Traits\Impersonatable;
@@ -90,6 +91,15 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'name',
         'profile_photo_url',
+    ];
+
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'deleted' => UserDeleted::class,
     ];
 
     /**

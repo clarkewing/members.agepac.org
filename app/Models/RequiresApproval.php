@@ -2,8 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait RequiresApproval
 {
+    /**
+     * Scope a query to only include popular users.
+     */
+    public function scopeApproved(Builder $query): Builder
+    {
+        return $query->whereNotNull('approved_at');
+    }
+
     /**
      * Determine if the model has been approved by an authorized entity.
      */

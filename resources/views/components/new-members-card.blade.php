@@ -4,14 +4,14 @@
 
         <div class="flow-root mt-6">
             <x-stacked-list>
-                @foreach(\App\Models\User::latest()->take(4)->get() as $user)
-                    <x-avatar-group :user="$user">
-                        <x-slot name="title">{{ $user->name }}</x-slot>
-                        <x-slot name="subtitle">{{ '@' . $user->username }}</x-slot>
+                @foreach($newUsers as $newUser)
+                    <x-avatar-group :user="$newUser">
+                        <x-slot name="title">{{ $newUser->name }}</x-slot>
+                        <x-slot name="subtitle">{{ '@' . $newUser->username }}</x-slot>
 
                         <x-slot name="actions">
                             <a
-                                href="{{ route('profiles.show', $user) }}"
+                                href="{{ route('profiles.show', $newUser) }}"
                                 class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
                             >
                                 Voir
