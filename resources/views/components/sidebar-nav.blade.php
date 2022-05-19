@@ -18,15 +18,13 @@
         </x-slot>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Statuts
         </x-sidebar-nav-item>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Gouvernance
         </x-sidebar-nav-item>
@@ -43,15 +41,13 @@
         </x-slot>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Annuaire des EPL
         </x-sidebar-nav-item>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Trombinoscopes
         </x-sidebar-nav-item>
@@ -68,53 +64,46 @@
         </x-slot>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Annuaire des Compagnies
         </x-sidebar-nav-item>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             LCE
         </x-sidebar-nav-item>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Prorogation IRME
         </x-sidebar-nav-item>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Refresh MCC
         </x-sidebar-nav-item>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             RSFI
         </x-sidebar-nav-item>
     </x-collapse>
 
     <x-sidebar-nav-item
-        href="{{ route('dashboard') }}"
+        href="#"
         icon="heroicon-o-calendar"
-        :active="request()->routeIs('dashboard')"
     >
         Événements
     </x-sidebar-nav-item>
 
     <x-sidebar-nav-item
-        href="{{ route('dashboard') }}"
+        href="#"
         icon="heroicon-o-folder"
-        :active="request()->routeIs('dashboard')"
     >
         Drive
     </x-sidebar-nav-item>
@@ -130,8 +119,7 @@
         </x-slot>
 
         <x-sidebar-nav-item child
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Préparation des vols
         </x-sidebar-nav-item>

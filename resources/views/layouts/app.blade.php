@@ -1,36 +1,39 @@
-<x-base-layout>
-    <div
-        class="h-screen flex overflow-hidden bg-gray-100"
-        x-data="{ sidebarOpen: false }"
-        @keydown.window.escape="sidebarOpen = false"
-    >
-        <x-sidebar />
+<x-base-layout class="h-full">
+    <div class="min-h-screen bg-gray-100">
+        <x-layout.header/>
 
-        <div x-init="$el.focus()" class="flex flex-col flex-1 overflow-auto focus:outline-none" tabindex="0">
-            <x-jet-banner />
+        <div class="py-6">
+            <div class="flex justify-between mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:gap-8">
+                <div class="hidden lg:block lg:w-60">
+                    <nav aria-label="Sidebar" class="sticky top-[5.875rem]">
+                        <x-sidebar-nav/>
 
-            <!-- Navigation Bar -->
-            <div class="z-10 {{ isset($header) ? '' : 'shadow' }}">
-                <livewire:navigation-menu />
+                        <x-sidebar-headlines class="mt-8" />
+                    </nav>
+                </div>
+
+                <!-- Main wrapper & right aside -->
+                <div class="flex-1 flex {{ $asideOnTop ? 'flex-col-reverse' : 'flex-col' }} gap-6 lg:gap-8 md:grid md:grid-cols-12">
+                    <main class="{{ isset($aside) ? 'md:col-span-8' : 'md:col-span-12' }}">
+                        <!-- Start main area-->
+                        {{ $slot }}
+                        <!-- End main area -->
+                    </main>
+
+                    @isset($aside)
+                        <aside class="md:col-span-4">
+                            <div class="sticky top-[5.875rem] space-y-4">
+                                <!-- Start right column area -->
+                                {{ $aside }}
+                                <!-- End right column area -->
+                            </div>
+                        </aside>
+                    @endisset
+                </div>
+
             </div>
-
-            <!-- Page Heading -->
-            <div class="relative flex-none bg-white shadow">
-                @if (isset($header))
-                    <div class="px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-                        <div class="py-6 lg:border-t lg:border-gray-200">
-                            {{ $header }}
-                        </div>
-                    </div>
-                @endif
-            </div>
-
-            <!-- Page Content -->
-            <main class="flex-1 {{ $withContentPadding ? 'py-8' : '' }} overflow-auto">
-                {{ $slot }}
-            </main>
         </div>
     </div>
 
-    @stack('modals')
+    <x-layout.footer/>
 </x-base-layout>

@@ -26,8 +26,7 @@
     </div>
     <div class="mt-3 px-2 space-y-1">
         <x-sidebar-nav-item
-            href="{{ route('dashboard') }}"
-            :active="request()->routeIs('dashboard')"
+            href="#"
         >
             Account settings
         </x-sidebar-nav-item>
