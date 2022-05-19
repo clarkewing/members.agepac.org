@@ -20,6 +20,12 @@
         <x-sidebar-nav-item child
             href="#"
         >
+            Actualités
+        </x-sidebar-nav-item>
+
+        <x-sidebar-nav-item child
+            href="#"
+        >
             Statuts
         </x-sidebar-nav-item>
 
