@@ -44,10 +44,7 @@
     </div>
 
     <div class="relative">
-        <a
-                href="{{ $post->path() }}"
-                class="hover:underline focus:outline-none"
-        >
+        <a href="{{ $post->path() }}" class="hover:underline focus:outline-none">
             <span class="absolute inset-0" aria-hidden="true"></span>
             <h3 id="post-title-{{ $post->id }}" class="mt-4 text-base font-medium text-gray-900">
                 {{ $post->thread->title }}

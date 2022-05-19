@@ -58,9 +58,10 @@
         :id="$id('collapse')"
         role="menu"
         style="display: none; height: 0; overflow: hidden;"
-        {{-- TODO: Implement slot class --}}
-        class="mt-1 space-y-1"
     >
-        {{ $slot }}
+        {{-- TODO: Implement slot class --}}
+        <div class="pt-1 space-y-1">
+            {{ $slot }}
+        </div>
     </div>
 </div>
