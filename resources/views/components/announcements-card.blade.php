@@ -30,7 +30,7 @@
         </div>
 
         <div class="mt-6">
-            <x-button-white href="#">Tout voir</x-button-white>
+            <x-button.white href="#">Tout voir</x-button.white>
         </div>
     </x-card>
 </section>

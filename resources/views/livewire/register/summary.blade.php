@@ -6,9 +6,9 @@
     <div>
         <x-dl-header title="Nom et promotion">
             <x-slot name="actions">
-                <x-button-text wire:click="goToStep('Identity')">
+                <x-link.primary wire:click="goToStep('Identity')">
                     Modifier
-                </x-button-text>
+                </x-link.primary>
             </x-slot>
         </x-dl-header>
 
@@ -25,9 +25,9 @@
     <div>
         <x-dl-header title="Identifiants">
             <x-slot name="actions">
-                <x-button-text wire:click="goToStep('Credentials')">
+                <x-link.primary wire:click="goToStep('Credentials')">
                     Modifier
-                </x-button-text>
+                </x-link.primary>
             </x-slot>
         </x-dl-header>
 
@@ -44,9 +44,9 @@
     <div>
         <x-dl-header title="Détails supplémentaires">
             <x-slot name="actions">
-                <x-button-text wire:click="goToStep('Details')">
+                <x-link.primary wire:click="goToStep('Details')">
                     Modifier
-                </x-button-text>
+                </x-link.primary>
             </x-slot>
         </x-dl-header>
 

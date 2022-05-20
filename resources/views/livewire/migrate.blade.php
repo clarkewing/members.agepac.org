@@ -25,10 +25,10 @@
                         Le code a été renvoyé à ton adresse email.
                     @else
                         Tu n’as pas reçu de code ?
-                        <x-button-text wire:click.prevent="resendToken" wire:loading.attr="disabled" wire:target="resendToken">
+                        <x-link.primary wire:click.prevent="resendToken" wire:loading.attr="disabled" wire:target="resendToken">
                             Le renvoyer
                             <x-loading-indicator class="h-4 w-4 ml-1.5" wire:loading wire:target="resendToken" />
-                        </x-button-text>
+                        </x-link.primary>
                     @endif
                 </p>
             </div>

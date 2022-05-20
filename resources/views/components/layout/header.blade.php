@@ -37,7 +37,7 @@
                     </x-dropdown>
 
                     <div class="pl-1">
-                        <x-button href="#">New Post</x-button>
+                        <x-button.primary href="#">New Post</x-button.primary>
                     </div>
                 </div>
 

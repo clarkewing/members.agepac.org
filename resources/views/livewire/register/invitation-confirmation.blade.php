@@ -16,14 +16,14 @@
 </x-dl>
 
 <div class="mt-6 space-y-3">
-    <x-button wire:click="run">
+    <x-button.primary wire:click="run">
         <span>C’est bien moi</span>
         <x-heroicon-s-arrow-right class="ml-2 h-4 w-4" aria-hidden="true" wire:loading.remove wire:target="run" />
         <x-loading-indicator class="ml-2" wire:loading wire:target="run" />
-    </x-button>
+    </x-button.primary>
 
-    <x-button-secondary wire:click="resetIdentity">
+    <x-button.secondary wire:click="resetIdentity">
         <span>Ce n’est pas moi</span>
         <x-loading-indicator class="ml-2" wire:loading wire:target="resetIdentity" />
-    </x-button-secondary>
+    </x-button.secondary>
 </div>

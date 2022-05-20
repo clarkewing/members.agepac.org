@@ -27,4 +27,4 @@
     Tu recevras dans les prochaines minutes un email avec tous nos conseils pour profiter pleinement de ton adhésion !
 </p>
 
-<x-button href="/home" class="mt-6">C’est parti !</x-button>
+<x-button.primary href="/home" class="mt-6">C’est parti !</x-button.primary>

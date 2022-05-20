@@ -1,1 +1,1 @@
-<x-button type="submit" {{ $attributes }}>{{ $slot }}</x-button>
+<x-button.primary type="submit" {{ $attributes }}>{{ $slot }}</x-button.primary>
