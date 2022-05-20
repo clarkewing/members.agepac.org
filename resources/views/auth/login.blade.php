@@ -55,6 +55,6 @@
             </div>
         </div>
 
-        <x-form.submit>Connexion</x-form.submit>
+        <x-button.primary type="submit">Connexion</x-button.primary>
     </form>
 </x-auth-form-layout>

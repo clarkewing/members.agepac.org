@@ -24,6 +24,6 @@
             autofocus
         />
 
-        <x-form.submit>{{ __('Confirm') }}</x-form.submit>
+        <x-button.primary type="submit">{{ __('Confirm') }}</x-button.primary>
     </form>
 </x-auth-form-layout>

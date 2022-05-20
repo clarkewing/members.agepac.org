@@ -9,6 +9,6 @@
     </x-slot>
 
     <x-logout-form>
-        <x-form.submit-secondary>{{ __('Log Out') }}</x-form.submit-secondary>
+        <x-button.secondary type="submit">{{ __('Log Out') }}</x-button.secondary>
     </x-logout-form>
 </x-auth-form-layout>

@@ -43,6 +43,6 @@
             autofocus
         />
 
-        <x-form.submit>{{ __('Reset Password') }}</x-form.submit>
+        <x-button.primary type="submit">{{ __('Reset Password') }}</x-button.primary>
     </form>
 </x-auth-form-layout>

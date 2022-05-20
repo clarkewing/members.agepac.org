@@ -33,11 +33,11 @@
                 </p>
             </div>
 
-            <x-form.submit wire:loading.attr="disabled" wire:target="verify">
+            <x-button.primary type="submit" wire:loading.attr="disabled" wire:target="verify">
                 <span>Continuer</span>
                 <x-heroicon-s-arrow-right class="ml-2 h-4 w-4" aria-hidden="true" wire:loading.remove wire:target="verify" />
                 <x-loading-indicator class="ml-2" wire:loading wire:target="verify" />
-            </x-form.submit>
+            </x-button.primary>
         </form>
     @else
         <h3 class="text-xl font-bold">
@@ -130,11 +130,11 @@
                 required
             />
 
-            <x-form.submit wire:loading.attr="disabled" wire:target="saveUser">
+            <x-button.primary type="submit" wire:loading.attr="disabled" wire:target="saveUser">
                 <span>Valider</span>
                 <x-heroicon-s-paper-airplane class="ml-2 h-4 w-4 rotate-45 -translate-y-0.5" aria-hidden="true" wire:loading.remove wire:target="saveUser" />
                 <x-loading-indicator class="ml-2" wire:loading wire:target="saveUser" />
-            </x-form.submit>
+            </x-button.primary>
         </form>
     @endif
 </div>

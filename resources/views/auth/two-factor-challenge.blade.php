@@ -54,7 +54,7 @@
                     {{ __('Use an authentication code') }}
                 </button>
 
-                <x-form.submit>{{ __('Log in') }}</x-form.submit>
+                <x-button.primary type="submit">{{ __('Log in') }}</x-button.primary>
             </div>
         </form>
     </div>

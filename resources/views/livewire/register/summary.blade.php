@@ -65,9 +65,9 @@
 </div>
 
 <form wire:submit.prevent="run">
-    <x-form.submit class="mt-6" wire:loading.attr="disabled">
+    <x-button.primary type="submit" class="mt-6" wire:loading.attr="disabled">
         <span>Terminé !</span>
         <x-heroicon-s-paper-airplane class="ml-2 h-4 w-4 rotate-45 -translate-y-0.5" aria-hidden="true" wire:loading.remove />
         <x-loading-indicator class="ml-2" wire:loading />
-    </x-form.submit>
+    </x-button.primary>
 </form>

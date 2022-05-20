@@ -34,9 +34,9 @@
         required
     />
 
-    <x-form.submit class="mt-6" wire:loading.attr="disabled">
+    <x-button.primary type="submit" class="mt-6" wire:loading.attr="disabled">
         <span>Continuer</span>
         <x-heroicon-s-arrow-right class="ml-2 h-4 w-4" aria-hidden="true" wire:loading.remove />
         <x-loading-indicator class="ml-2" wire:loading />
-    </x-form.submit>
+    </x-button.primary>
 </form>

@@ -25,7 +25,7 @@
         />
 
         <div class="space-y-4">
-            <x-form.submit>{{ __('Email Password Reset Link') }}</x-form.submit>
+            <x-button.primary type="submit">{{ __('Email Password Reset Link') }}</x-button.primary>
 
             <x-button.secondary href="{{ route('login') }}">
                 <x-heroicon-s-arrow-left class="mr-2 h-4 w-4" aria-hidden="true" />
