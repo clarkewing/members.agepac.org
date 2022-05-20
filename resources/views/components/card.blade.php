@@ -1,6 +1,4 @@
-@props(['tag' => 'div'])
-
-<{{ $tag }} {{ $attributes->class(['bg-white shadow sm:rounded-lg divide-y divide-gray-200']) }}>
+<div {{ $attributes->class(['bg-white shadow sm:rounded-lg divide-y divide-gray-200']) }}>
     @isset($header)
         <div class="px-4 py-5 sm:px-6">
             {{ $header }}
@@ -16,4 +14,4 @@
             {{ $footer }}
         </div>
     @endisset
-</{{ $tag }}>
+</div>
