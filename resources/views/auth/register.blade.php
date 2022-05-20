@@ -62,12 +62,7 @@
             <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Rejoins l’AGEPAC</h2>
             <p class="mt-2 text-sm text-gray-600">
                 Ou
-                <a
-                    href="{{ route('login') }}"
-                    class="font-medium text-wedgewood-600 hover:text-wedgewood-500"
-                >
-                    connecte-toi avec ton compte existant
-                </a>
+                <x-link.primary href="{{ route('login') }}">connecte-toi avec ton compte existant</x-link.primary>
             </p>
         </div>
     </x-slot>

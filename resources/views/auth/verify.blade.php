@@ -17,7 +17,7 @@
         @csrf
 
         {{ __('Si vous n\'avez pas reçu l\'email de vérification') }},
-        <button type="submit" class="inline-flex font-medium text-wedgewood-600 hover:text-wedgewood-400">{{ __('cliquez ici') }}</button>
+        <x-link.primary type="submit">{{ __('cliquez ici') }}</x-link.primary>
         {{ __('pour en demander le renvoi') }}.
     </form>
 

@@ -4,12 +4,7 @@
         <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Connecte-toi à ton compte</h2>
         <p class="mt-2 text-sm text-gray-600">
             Ou
-            <a
-                href="{{ route('register') }}"
-                class="font-medium text-wedgewood-600 hover:text-wedgewood-500"
-            >
-                crée ton compte
-            </a>
+            <x-link.primary href="{{ route('register') }}">crée ton compte</x-link.primary>
         </p>
     </x-slot>
 
@@ -45,14 +40,12 @@
                 name="remember"
             />
 
-            <div class="text-sm">
-                <a
-                    href="{{ route('password.request') }}"
-                    class="font-medium text-wedgewood-600 hover:text-wedgewood-500"
-                >
-                    Mot de passe oublié ?
-                </a>
-            </div>
+            <x-link.primary
+                href="{{ route('password.request') }}"
+                class="text-sm"
+            >
+                Mot de passe oublié ?
+            </x-link.primary>
         </div>
 
         <x-button.primary type="submit">Connexion</x-button.primary>

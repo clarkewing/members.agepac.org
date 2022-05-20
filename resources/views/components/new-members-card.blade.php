@@ -10,12 +10,9 @@
                         <x-slot name="subtitle">{{ '@' . $newUser->username }}</x-slot>
 
                         <x-slot name="actions">
-                            <a
-                                href="{{ route('profiles.show', $newUser) }}"
-                                class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
-                            >
+                            <x-button.white size="xs" round href="{{ route('profiles.show', $newUser) }}">
                                 Voir
-                            </a>
+                            </x-button.white>
                         </x-slot>
                     </x-avatar-group>
                 @endforeach
