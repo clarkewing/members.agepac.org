@@ -14,11 +14,7 @@
     @endpush
 @endonce
 
-@php
-    $tag = $attributes->has('href') ? 'a' : 'button';
-@endphp
-
-<{{ $tag }}
+<x-base.button
     {{ $attributes
         ->class([
             'group w-full flex items-center px-3 py-2 text-sm font-medium rounded-md',
@@ -26,9 +22,8 @@
             'bg-gray-200 text-gray-900' => $active,
             'text-gray-600 hover:text-gray-900 hover:bg-gray-50' => ! $active,
         ])
-        ->merge($tag === 'a' ? ['href' => '#'] : ['type' => 'button'])
+        ->when($active, fn($attributes) => $attributes->merge(['aria-current' => 'page']))
     }}
-    @if($active) aria-current="page" @endif
 >
     @isset($icon)
         <x-dynamic-component
@@ -50,4 +45,4 @@
     >
         <path d="M6 6L14 10L6 14V6Z" fill="currentColor" />
     </svg>
-</{{ $tag }}>
+</x-base.button>
