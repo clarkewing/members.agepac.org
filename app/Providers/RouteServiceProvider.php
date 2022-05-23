@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\Controllers\PagesController;
 use App\Models\Channel;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -48,6 +49,14 @@ class RouteServiceProvider extends ServiceProvider
                 ->where('page', '[a-z0-9]+([a-z0-9-\/][a-z0-9]+)*')
                 ->middleware('web')
                 ->name('pages.show');
+
+            if ($this->app->environment('local')) {
+                Route::middleware('web')->get('/auto-login', function () {
+                    Auth::login(User::first());
+
+                    return redirect()->intended(static::HOME);
+                })->name('dev-login');
+            }
         });
 
         Route::bind('channel', function ($value) {
