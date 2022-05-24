@@ -4,6 +4,7 @@ namespace Tests\Feature\Nova;
 
 use Illuminate\Support\Str;
 use OptimistDigital\MenuBuilder\Http\Controllers\MenuController;
+use OptimistDigital\MenuBuilder\MenuBuilder;
 use OptimistDigital\MenuBuilder\Models\Menu;
 use OptimistDigital\MenuBuilder\Models\MenuItem;
 use Tests\NovaTestRequests;
@@ -161,7 +162,7 @@ class ManageMenusTest extends TestCase
      */
     protected function storeMenu(array $overrides = []): \Illuminate\Testing\TestResponse
     {
-        return $this->storeResource('nova-menu', $this->makeMenuData($overrides));
+        return $this->storeResource($this->getUriKey(), $this->makeMenuData($overrides));
     }
 
     /**
@@ -176,7 +177,7 @@ class ManageMenusTest extends TestCase
         $menu = $menu ?? $this->createMenu();
 
         return $this->updateResource(
-            'nova-menu',
+            $this->getUriKey(),
             $menu->id,
             array_merge($menu->toArray(), $data)
         );
@@ -237,7 +238,6 @@ class ManageMenusTest extends TestCase
         return array_merge([
             'name' => $name = $faker->sentence(),
             'slug' => Str::slug($name),
-            'locale' => 'fr_FR',
         ], $overrides);
     }
 
@@ -264,9 +264,10 @@ class ManageMenusTest extends TestCase
 
         return array_merge([
             'menu_id' => $this->createMenu()->id,
-            'class' => 'OptimistDigital\MenuBuilder\Classes\MenuItemStaticURL',
+            'class' => \OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType::class,
             'enabled' => true,
             'name' => $faker->text(30),
+            'locale' => 'fr_FR',
             'value' => $faker->url(),
             'target' => '_self',
         ], $overrides);
@@ -283,5 +284,10 @@ class ManageMenusTest extends TestCase
         return MenuItem::forceCreate(
             $this->makeMenuItemData(array_merge(['order' => 1], $overrides))
         );
+    }
+
+    protected function getUriKey()
+    {
+        return MenuBuilder::getMenuResource()::uriKey();
     }
 }

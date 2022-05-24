@@ -60,7 +60,7 @@ class SearchTest extends TestCase
             $results = $this->getJson(route('threads.search') . "?query=$search")
                 ->assertOk()
                 ->json()['data'];
-        } while (empty($results) && now()->lessThan($maxTime));
+        } while (count($results) < 2 && now()->lessThan($maxTime));
 
         $this->assertCount(2, $results);
 

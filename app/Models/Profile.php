@@ -147,11 +147,9 @@ class Profile extends User
         return $this->morphToMany(
             self::getTagClassName(),
             'taggable',
-            'taggables',
-            null,
-            'tag_id',
+            relatedPivotKey: 'tag_id',
         )
-            ->orderBy('order_column');
+            ->ordered();
     }
 
     /**

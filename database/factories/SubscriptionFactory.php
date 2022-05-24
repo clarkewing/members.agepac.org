@@ -29,7 +29,7 @@ class SubscriptionFactory extends Factory
             'name' => 'default',
             'stripe_id' => $this->faker->md5(), // Random string
             'stripe_status' => 'active',
-            'stripe_plan' => $this->faker->randomElement(config('council.plans')),
+            'stripe_price' => $this->faker->randomElement(config('council.plans')),
             'quantity' => 1,
         ];
     }

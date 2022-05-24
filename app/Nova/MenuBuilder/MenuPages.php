@@ -3,9 +3,9 @@
 namespace App\Nova\MenuBuilder;
 
 use App\Models\Page;
-use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
+use OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemSelectType;
 
-class MenuPages extends MenuLinkable
+class MenuPages extends MenuItemSelectType
 {
     /**
      * @inheritdoc
@@ -34,12 +34,15 @@ class MenuPages extends MenuLinkable
     /**
      * @inheritdoc
      */
-    public static function getDisplayValue($value = null, array $parameters = null)
+    public static function getDisplayValue($value, array $data = null, $locale)
     {
-        return 'Page: ' . static::getValue($value, $parameters)->title;
+        return 'Page: ' . static::getValue($value)->title;
     }
 
-    public static function getValue($value = null, array $parameters = null)
+    /**
+     * @inheritdoc
+     */
+    public static function getValue($value, array $data = null, $locale)
     {
         return Page::find($value);
     }

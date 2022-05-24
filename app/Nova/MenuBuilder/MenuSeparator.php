@@ -2,16 +2,16 @@
 
 namespace App\Nova\MenuBuilder;
 
-use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
+use OptimistDigital\MenuBuilder\MenuItemTypes\BaseMenuItemType;
 
-class MenuSeparator extends MenuLinkable
+class MenuSeparator extends BaseMenuItemType
 {
     /**
      * @inheritdoc
      */
     public static function getType(): string
     {
-        return 'text';
+        return 'separator';
     }
 
     /**
@@ -33,7 +33,7 @@ class MenuSeparator extends MenuLinkable
     /**
      * @inheritdoc
      */
-    public static function getDisplayValue($value = null, array $parameters = null)
+    public static function getDisplayValue($value, array $data = null, $locale)
     {
         return '';
     }
@@ -41,9 +41,7 @@ class MenuSeparator extends MenuLinkable
     /**
      * @inheritdoc
      */
-    public static function getValue($value = null, array $parameters = null)
-    {
-    }
+    public static function getValue($value, array $data = null, $locale) {}
 
     public static function getRules(): array
     {

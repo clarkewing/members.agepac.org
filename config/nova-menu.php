@@ -48,7 +48,7 @@ return [
     | Set all the linkable models in an array.
     */
 
-    'linkable_models' => [
+    'menu_item_types' => [
         \App\Nova\MenuBuilder\MenuSeparator::class,
         \App\Nova\MenuBuilder\MenuPages::class,
         \App\Nova\MenuBuilder\MenuRoute::class,

@@ -148,12 +148,12 @@ class SubscriptionTest extends StripeTestCase
     {
         ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
 
-        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac'), 'default'));
+        $this->assertTrue($user->subscribedToPrice(config('council.plans.agepac'), 'default'));
 
         $this->updateSubscription(['plan' => 'agepac+alumni'])->assertOk();
 
-        $this->assertFalse($user->subscribedToPlan(config('council.plans.agepac'), 'default'));
-        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac+alumni'), 'default'));
+        $this->assertFalse($user->subscribedToPrice(config('council.plans.agepac'), 'default'));
+        $this->assertTrue($user->subscribedToPrice(config('council.plans.agepac+alumni'), 'default'));
     }
 
     /**
@@ -165,7 +165,7 @@ class SubscriptionTest extends StripeTestCase
     {
         ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
 
-        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac'), 'default'));
+        $this->assertTrue($user->subscribedToPrice(config('council.plans.agepac'), 'default'));
 
         $this->updateSubscription(['plan' => 'agepac'])->assertOk();
     }
