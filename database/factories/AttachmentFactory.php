@@ -22,7 +22,7 @@ class AttachmentFactory extends Factory
         : UploadedFile::fake()->create(
             $fileName = "{$this->faker->word()}.{$this->faker->fileExtension()}",
             $this->faker->numberBetween(20, 10000),
-                MimeType::fromFilename($fileName)
+            MimeType::fromFilename($fileName)
         );
 
         return [
