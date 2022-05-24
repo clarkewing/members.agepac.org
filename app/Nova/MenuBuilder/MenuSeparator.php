@@ -41,7 +41,9 @@ class MenuSeparator extends BaseMenuItemType
     /**
      * @inheritdoc
      */
-    public static function getValue($value, array $data = null, $locale) {}
+    public static function getValue($value, array $data = null, $locale)
+    {
+    }
 
     public static function getRules(): array
     {

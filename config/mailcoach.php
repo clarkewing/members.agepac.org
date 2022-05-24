@@ -111,7 +111,7 @@ return [
         ],
 
         'flows' => [
-            /**
+            /*
              * The available actions in the automation flows. You can add custom
              * actions to this array, make sure they extend
              * \Spatie\Mailcoach\Domain\Automation\Support\Actions\AutomationAction
@@ -127,7 +127,7 @@ return [
                 \Spatie\Mailcoach\Domain\Automation\Support\Actions\UnsubscribeAction::class,
             ],
 
-            /**
+            /*
              * The available triggers in the automation settings. You can add
              * custom triggers to this array, make sure they extend
              * \Spatie\Mailcoach\Domain\Automation\Support\Triggers\AutomationTrigger
@@ -141,7 +141,7 @@ return [
                 \Spatie\Mailcoach\Domain\Automation\Support\Triggers\WebhookTrigger::class,
             ],
 
-            /**
+            /*
              * Custom conditions for the ConditionAction, these have to implement the
              * \Spatie\Mailcoach\Domain\Automation\Support\Conditions\Condition
              * interface.
@@ -196,7 +196,7 @@ return [
             'render_template' => \Spatie\Mailcoach\Domain\TransactionalMail\Actions\RenderTemplateAction::class,
         ],
 
-        /**
+        /*
          * Here you can configure which transactional mail template editor Mailcoach uses.
          * By default this is a text editor that highlights HTML.
          */

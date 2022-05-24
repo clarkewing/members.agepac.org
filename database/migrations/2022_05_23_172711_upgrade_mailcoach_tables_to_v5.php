@@ -19,7 +19,7 @@ class UpgradeMailcoachTablesToV5 extends Migration
             $table->timestamp('all_sends_dispatched_at')->nullable();
         });
 
-        Schema::table('mailcoach_email_lists', function(Blueprint $table) {
+        Schema::table('mailcoach_email_lists', function (Blueprint $table) {
             $table->string('automation_mailer')->after('campaign_mailer')->nullable();
         });
 
