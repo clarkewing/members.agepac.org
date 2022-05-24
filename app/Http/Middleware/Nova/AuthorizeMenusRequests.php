@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware\Nova;
 
+use OptimistDigital\MenuBuilder\MenuBuilder;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class AuthorizeMenusRequests
@@ -18,7 +19,7 @@ class AuthorizeMenusRequests
     {
         if (
             $request->segment(1) === 'nova-vendor'
-            && $request->segment(2) === 'nova-menu'
+            && $request->segment(2) === MenuBuilder::getMenuResource()::uriKey()
         ) {
             throw_unless(
                 $request->user()->hasPermissionTo('menus.manage'),

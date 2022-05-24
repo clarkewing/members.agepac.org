@@ -50,7 +50,7 @@ class InitializeMailcoach extends Migration
             $table->dropColumn(['class_course', 'class_year', 'gender', 'birthdate', 'phone']);
         });
 
-        EmailList::where('name', 'Members')->delete();
+        EmailList::where('name', $this->emailListName)->delete();
     }
 
     protected function importSubscribers()

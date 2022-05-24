@@ -13,6 +13,9 @@
         z-index: 1;
         pointer-events: none;
     }
+    .announcement-container figure img {
+        width: auto;
+    }
 </style>
 @endpush
 
@@ -64,7 +67,7 @@
                             {{ $latestAnnouncement->title }}
                         </a>
                     </h4>
-                    <div>{!! $latestAnnouncement->initiatorPost->body !!}</div>
+                    <div class="announcement-container">{!! $latestAnnouncement->initiatorPost->body !!}</div>
                 </section>
             @endif
         </div>

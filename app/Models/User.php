@@ -323,7 +323,7 @@ class User extends Authenticatable implements MustVerifyEmail
             [
                 'name' => $this->name,
                 'description' => $this->class,
-                'phone' => optional($this->phone)->formatInternational(),
+                'phone' => $this->phone?->formatInternational(),
             ],
             $options
         ));

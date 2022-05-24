@@ -9,13 +9,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PollOptionFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = PollOption::class;
-
-    /**
      * Define the model's default state.
      *
      * @return array
@@ -26,8 +19,8 @@ class PollOptionFactory extends Factory
             'poll_id' => function () {
                 return Poll::factory()->create()->id;
             },
-            'label' => $this->faker->sentence,
-            'color' => $this->faker->hexColor,
+            'label' => $this->faker->sentence(),
+            'color' => $this->faker->hexColor(),
         ];
     }
 }

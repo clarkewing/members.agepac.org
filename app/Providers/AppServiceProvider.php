@@ -63,15 +63,15 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         Relation::morphMap([
-            'activity' => 'App\Models\Activity',
-            'course' => 'App\Models\Course',
-            'favorite' => 'App\Models\Favorite',
-            'location' => 'App\Models\Location',
-            'occupation' => 'App\Models\Occupation',
-            'post' => 'App\Models\Post',
-            'profile' => 'App\Models\Profile',
-            'thread' => 'App\Models\Thread',
-            'user' => 'App\Models\User',
+            'activity' => \App\Models\Activity::class,
+            'course' => \App\Models\Course::class,
+            'favorite' => \App\Models\Favorite::class,
+            'location' => \App\Models\Location::class,
+            'occupation' => \App\Models\Occupation::class,
+            'post' => \App\Models\Post::class,
+            'profile' => \App\Models\Profile::class,
+            'thread' => \App\Models\Thread::class,
+            'user' => \App\Models\User::class,
         ]);
 
         Str::macro('nameCase', function (

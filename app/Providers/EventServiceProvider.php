@@ -13,7 +13,9 @@ use App\Listeners\NotifyApprovedUser;
 use App\Listeners\NotifyMentionedUsers;
 use App\Listeners\NotifySubscribers;
 use App\Listeners\ReconcileAttachments;
+use App\Models\User;
 use App\Observers\SubscriptionObserver;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -60,5 +62,16 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Subscription::observe(SubscriptionObserver::class);
+        User::observe(UserObserver::class);
+    }
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return false;
     }
 }

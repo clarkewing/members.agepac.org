@@ -24,7 +24,7 @@ return [
          * Here you can configure which campaign template editor Mailcoach uses.
          * By default this is a text editor that highlights HTML.
          */
-        'editor' => \Spatie\MailcoachUnlayer\UnlayerEditor::class,
+        'editor' => \Spatie\Mailcoach\Domain\Shared\Support\Editor\TextEditor::class,
 
         'unlayer' => [
             'disk_name' => env('MAILCOACH_UPLOAD_DISK', 'public'),
@@ -81,7 +81,7 @@ return [
         /*
          * The default mailer used by Mailcoach for automation mails.
          */
-        'mailer' => 'mailgun',
+        'mailer' => null,
 
         /*
          * Here you can configure which automation mail template editor Mailcoach uses.
@@ -111,10 +111,10 @@ return [
         ],
 
         'flows' => [
-            /*
+            /**
              * The available actions in the automation flows. You can add custom
              * actions to this array, make sure they extend
-             * \Spatie\Mailcoach\Domain\Automation\Support\Actions\AutomationAction.
+             * \Spatie\Mailcoach\Domain\Automation\Support\Actions\AutomationAction
              */
             'actions' => [
                 \Spatie\Mailcoach\Domain\Automation\Support\Actions\AddTagsAction::class,
@@ -127,10 +127,10 @@ return [
                 \Spatie\Mailcoach\Domain\Automation\Support\Actions\UnsubscribeAction::class,
             ],
 
-            /*
+            /**
              * The available triggers in the automation settings. You can add
              * custom triggers to this array, make sure they extend
-             * \Spatie\Mailcoach\Domain\Automation\Support\Triggers\AutomationTrigger.
+             * \Spatie\Mailcoach\Domain\Automation\Support\Triggers\AutomationTrigger
              */
             'triggers' => [
                 \Spatie\Mailcoach\Domain\Automation\Support\Triggers\NoTrigger::class,
@@ -141,7 +141,7 @@ return [
                 \Spatie\Mailcoach\Domain\Automation\Support\Triggers\WebhookTrigger::class,
             ],
 
-            /*
+            /**
              * Custom conditions for the ConditionAction, these have to implement the
              * \Spatie\Mailcoach\Domain\Automation\Support\Conditions\Condition
              * interface.
@@ -180,7 +180,7 @@ return [
         /*
          * The default mailer used by Mailcoach for transactional mails.
          */
-        'mailer' => 'mailgun',
+        'mailer' => null,
 
         /*
          * Replacers are classes that can make replacements in the body of transactional mails.
@@ -196,7 +196,7 @@ return [
             'render_template' => \Spatie\Mailcoach\Domain\TransactionalMail\Actions\RenderTemplateAction::class,
         ],
 
-        /*
+        /**
          * Here you can configure which transactional mail template editor Mailcoach uses.
          * By default this is a text editor that highlights HTML.
          */
@@ -221,7 +221,7 @@ return [
      * The mailer used by Mailcoach for password resets and summary emails.
      * Mailcoach will use the default Laravel mailer if this is not set.
      */
-    'mailer' => 'mailgun',
+    'mailer' => null,
 
     /*
      * The date format used on all screens of the UI

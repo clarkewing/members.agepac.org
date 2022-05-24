@@ -45,7 +45,7 @@ class AccountInfoController extends Controller
             'phone' => [Rule::opinionatedPhone()],
             'email' => ['email', Rule::unique('users')->ignore($user->id)],
             'current_password' => [
-                'password',
+                'current_password',
                 Rule::requiredIf(function () use ($request, $user) {
                     return ($request->has('email') && $request->input('email') !== $user->email)
                         || $request->has('new_password');

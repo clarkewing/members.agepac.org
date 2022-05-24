@@ -182,10 +182,10 @@ class Migrate extends Component
 
         $this->class_year = $this->user->class_year;
 
-        $this->birthdate = optional($this->user->birthdate)->toDateString();
+        $this->birthdate = $this->user->birthdate?->toDateString();
         $this->updatedBirthdate();
 
-        $this->phone = optional($this->user->phone)->formatInternational();
+        $this->phone = $this->user->phone?->formatInternational();
     }
 
     protected function fillUserInfo(): void

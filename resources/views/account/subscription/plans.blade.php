@@ -3,9 +3,9 @@
 
     <div class="px-lg-4 mb-5">
         <h5>
-            @if(Auth::user()->subscribedToPlan(config('council.plans.agepac'), 'default'))
+            @if(Auth::user()->subscribedToPrice(config('council.plans.agepac'), 'default'))
                 AGEPAC (30,00 € / an)
-            @elseif(Auth::user()->subscribedToPlan(config('council.plans.agepac+alumni'), 'default'))
+            @elseif(Auth::user()->subscribedToPrice(config('council.plans.agepac+alumni'), 'default'))
                 AGEPAC + ENAC Alumni (60,00 € / an)
             @endif
         </h5>
