@@ -48,6 +48,8 @@
         "spatie/laravel-sluggable": "^3.4",
         "spatie/laravel-tags": "^4.3",
         "stevebauman/purify": "^4.0",
+        "symfony/http-client": "^6.0",
+        "symfony/mailgun-mailer": "^6.0",
         "torann/geoip": "^3.0"
     },
     "require-dev": {
