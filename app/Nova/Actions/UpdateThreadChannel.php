@@ -51,7 +51,7 @@ class UpdateThreadChannel extends Action
                             'label' => $channel->name,
                             'group' => $channel->archived
                                 ? 'Archived'
-                                : optional($channel->parent)->name ?? $channel->name,
+                                : $channel->parent?->name ?? $channel->name,
                         ],
                     ];
                 }))

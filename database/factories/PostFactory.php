@@ -12,13 +12,6 @@ use Illuminate\Support\Facades\Storage;
 class PostFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Post::class;
-
-    /**
      * Define the model's default state.
      *
      * @return array
@@ -32,7 +25,7 @@ class PostFactory extends Factory
             'user_id' => function () {
                 return User::factory()->create()->id;
             },
-            'body' => $this->faker->paragraph,
+            'body' => $this->faker->paragraph(),
             'is_thread_initiator' => false,
         ];
     }
@@ -58,7 +51,7 @@ class PostFactory extends Factory
                       . '" class="attachment attachment--file"></figure>';
 
             return [
-                'body' => $this->faker->paragraph . $trixAttachment . $this->faker->paragraph,
+                'body' => $this->faker->paragraph() . $trixAttachment . $this->faker->paragraph(),
             ];
         });
     }

@@ -114,17 +114,21 @@
 
         <!-- Display The Discount -->
         @if ($invoice->hasDiscount())
-            <tr>
-                <td></td>
-                <td colspan="{{ $invoice->hasTax() ? 2 : 1 }}">
-                    @if ($invoice->discountIsPercentage())
-                        {{ $invoice->coupon() }} (Réduction {{ $invoice->percentOff() }}%)
-                    @else
-                        {{ $invoice->coupon() }} (Réduction {{ $invoice->amountOff() }})
-                    @endif
-                </td>
-                <td>-{{ $invoice->discount() }}</td>
-            </tr>
+            @foreach ($invoice->discounts() as $discount)
+                @php($coupon = $discount->coupon())
+
+                <tr>
+                    <td></td>
+                    <td colspan="{{ $invoice->hasTax() ? 2 : 1 }}">
+                        @if ($invoice->discountIsPercentage())
+                            {{ $coupon->name() }} (Réduction {{ $coupon->percentOff() }}%)
+                        @else
+                            {{ $coupon->name() }} (Réduction {{ $coupon->amountOff() }})
+                        @endif
+                    </td>
+                    <td>-{{ $invoice->discountFor($discount) }}</td>
+                </tr>
+            @endforeach
         @endif
 
         <!-- Display The Taxes -->

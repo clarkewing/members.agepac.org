@@ -21,13 +21,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ProfileFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Profile::class;
-
-    /**
      * Configure the model factory.
      *
      * @return $this
@@ -47,7 +40,7 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return User::factory()->raw([
-            'bio' => $this->faker->paragraph,
+            'bio' => $this->faker->paragraph(),
             'flight_hours' => $this->faker->numberBetween(0, 15000),
         ]);
     }

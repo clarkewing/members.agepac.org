@@ -20,7 +20,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        if (optional($user->fresh()->lastPost)->wasJustPublished()) {
+        if ($user->fresh()->lastPost?->wasJustPublished()) {
             throw new ThrottleException('Du calme moussaillon. Tu postes beaucoup, prends une petite pause.');
         }
 

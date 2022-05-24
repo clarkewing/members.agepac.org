@@ -172,7 +172,7 @@ class Poll extends Model
      */
     public function castVote(array $vote, User $user = null)
     {
-        $user_id = optional($user)->id ?? Auth::id();
+        $user_id = $user?->id ?? Auth::id();
 
         // Reset option votes.
         $this->votes()
@@ -204,7 +204,7 @@ class Poll extends Model
     public function getVote(User $user = null)
     {
         return $this->votes()
-            ->where('user_id', optional($user)->id ?? Auth::id())
+            ->where('user_id', $user?->id ?? Auth::id())
             ->with('option')
             ->get();
     }
@@ -228,7 +228,7 @@ class Poll extends Model
     public function hasVoted(User $user = null): bool
     {
         return $this->votes()
-            ->where('user_id', optional($user)->id ?? Auth::id())
+            ->where('user_id', $user?->id ?? Auth::id())
             ->exists();
     }
 

@@ -10,13 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PollFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Poll::class;
-
-    /**
      * Configure the model factory.
      *
      * @return $this
@@ -41,11 +34,11 @@ class PollFactory extends Factory
             'thread_id' => function () {
                 return Thread::factory()->create()->id;
             },
-            'title' => $this->faker->sentence,
-            'votes_editable' => $this->faker->boolean,
+            'title' => $this->faker->sentence(),
+            'votes_editable' => $this->faker->boolean(),
             'max_votes' => 1,
             'votes_privacy' => $this->faker->randomElement(Poll::$votesPrivacyValues),
-            'results_before_voting' => $this->faker->boolean,
+            'results_before_voting' => $this->faker->boolean(),
             'locked_at' => $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d H:i:s'),
         ];
     }

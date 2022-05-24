@@ -19,11 +19,11 @@ class Main extends Component
     {
         $nav = Menu::new();
 
-        if (is_null(nova_get_menu('main'))) {
+        if (is_null(nova_get_menu_by_slug('main'))) {
             return '';
         }
 
-        nova_get_menu('main')['menuItems']
+        nova_get_menu_by_slug('main')['menuItems']
             ->each(function ($menuItem) use ($nav) {
                 $this->addItem($nav, $menuItem);
             });
@@ -110,6 +110,7 @@ class Main extends Component
     {
         switch ($menuItem['type']) {
             case 'text':
+            case null:
                 $navItem = $isSubmenu
                     ? Html::raw('<h6 class="dropdown-header">' . $menuItem['name'] . '</h6>')
                     : Html::raw('<span class="navbar-text">' . $menuItem['name'] . '</span>');
@@ -129,6 +130,7 @@ class Main extends Component
 
             case 'static-url':
             default:
+                dump($menuItem);
                 $navItem = Link::toUrl($menuItem['value'], $menuItem['name'], $menuItem['parameters'] ?? []);
                 break;
         }

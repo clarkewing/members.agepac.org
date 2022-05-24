@@ -2,18 +2,10 @@
 
 namespace App\Nova\MenuBuilder;
 
-use OptimistDigital\MenuBuilder\Classes\MenuLinkable;
+use OptimistDigital\MenuBuilder\MenuItemTypes\MenuItemStaticURLType;
 
-class MenuRoute extends MenuLinkable
+class MenuRoute extends MenuItemStaticURLType
 {
-    /**
-     * @inheritdoc
-     */
-    public static function getType(): string
-    {
-        return 'static-url';
-    }
-
     /**
      * @inheritdoc
      */
@@ -33,7 +25,7 @@ class MenuRoute extends MenuLinkable
     /**
      * @inheritdoc
      */
-    public static function getDisplayValue($value = null, array $parameters = null)
+    public static function getDisplayValue($value, array $data = null, $locale)
     {
         return 'Route: ' . $value;
     }
@@ -41,11 +33,11 @@ class MenuRoute extends MenuLinkable
     /**
      * @inheritdoc
      */
-    public static function getValue($value = null, array $parameters = null)
+    public static function getValue($value, array $data = null, $locale)
     {
         return [
             'route' => $value,
-            'params' => $parameters,
+            'params' => $data,
         ];
     }
 }

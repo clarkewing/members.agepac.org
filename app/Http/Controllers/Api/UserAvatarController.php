@@ -29,7 +29,9 @@ class UserAvatarController extends Controller
         ]);
 
         // Delete existing avatar from disk.
-        Storage::disk('public')->delete($request->user()->getRawOriginal('avatar_path'));
+        if (! is_null($request->user()->getRawOriginal('avatar_path'))) {
+            Storage::disk('public')->delete($request->user()->getRawOriginal('avatar_path'));
+        }
 
         $request->user()->update([
             'avatar_path' => $request->file('avatar')->store('avatars', 'public'),

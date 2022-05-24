@@ -58,7 +58,7 @@ class PagePolicy
         }
 
         if (is_null($page->published_at) || $page->published_at->isFuture()) {
-            return optional($user)->hasPermissionTo('pages.viewUnpublished') === true;
+            return $user?->hasPermissionTo('pages.viewUnpublished') === true;
         }
 
         return true;

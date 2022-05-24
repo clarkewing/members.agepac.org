@@ -88,7 +88,7 @@ class SubscriptionController extends Controller
 
         if (
             $request->has('plan')
-            && $this->planId($request->input('plan')) !== $subscription->stripe_plan
+            && $this->planId($request->input('plan')) !== $subscription->stripe_price
         ) {
             try {
                 $subscription->swap($this->planId($request->input('plan')));
