@@ -43,7 +43,7 @@
 
                             <h6 class="dropdown-header">Mon Compte</h6>
 
-                            <a class="dropdown-item" href="{{ route('account.edit') }}">
+                            <a class="dropdown-item" href="{{ route('account.info') }}">
                                 Mes informations
                             </a>
 

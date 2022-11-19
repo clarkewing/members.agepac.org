@@ -57,7 +57,7 @@
             @endif
         @endif
 
-        <div class="mt-5">
+        <div class="flex mt-5">
             @if (! $this->enabled)
                 <x-jet-confirms-password wire:then="enableTwoFactorAuthentication">
                     <x-button.primary class="w-auto" wire:loading.attr="disabled">
@@ -67,22 +67,22 @@
             @else
                 @if ($showingRecoveryCodes)
                     <x-jet-confirms-password wire:then="regenerateRecoveryCodes">
-                        <x-button.secondary class="w-auto mr-3">
+                        <x-button.white class="w-auto mr-3">
                             Régénérer les codes de récupération
-                        </x-button.secondary>
+                        </x-button.white>
                     </x-jet-confirms-password>
                 @else
                     <x-jet-confirms-password wire:then="showRecoveryCodes">
-                        <x-button.secondary class="w-auto mr-3">
+                        <x-button.white class="w-auto mr-3">
                             Afficher les codes de récupération
-                        </x-button.secondary>
+                        </x-button.white>
                     </x-jet-confirms-password>
                 @endif
 
                 <x-jet-confirms-password wire:then="disableTwoFactorAuthentication">
-                    <x-button.secondary class="w-auto" wire:loading.attr="disabled">
+                    <x-button.danger class="w-auto" wire:loading.attr="disabled">
                         Désactiver
-                    </x-button.secondary>
+                    </x-button.danger>
                 </x-jet-confirms-password>
             @endif
         </div>
