@@ -1,14 +1,17 @@
 <div {{ $attributes->class(['divide-y divide-gray-100']) }}>
     <div class="px-4 pt-2 pb-3" role="none">
-        <p class="text-sm" role="none">Signed in as</p>
-        <p class="text-sm font-medium text-gray-900 truncate" role="none">tom@example.com</p>
+        <p class="text-sm" role="none">Connecté en tant que</p>
+        <p class="text-sm font-medium text-gray-900 truncate" role="none">{{ Auth::user()->email }}</p>
     </div>
     <div class="py-1" role="none">
         <x-dropdown-item href="#">
             Profil
         </x-dropdown-item>
-        <x-dropdown-item href="#">
-            Réglages
+        <x-dropdown-item href="{{ route('account.info') }}">
+            Informations
+        </x-dropdown-item>
+        <x-dropdown-item href="{{ route('account.security') }}">
+            Sûreté
         </x-dropdown-item>
         <x-dropdown-item href="#">
             Cotisation
