@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AccountInfoController extends Controller
+class AccountSecurityController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -16,7 +16,7 @@ class AccountInfoController extends Controller
 
     public function __invoke(Request $request)
     {
-        return view('account.info', [
+        return view('account.security', [
             'request' => $request,
             'user' => $request->user(),
         ]);

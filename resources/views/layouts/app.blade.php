@@ -6,9 +6,13 @@
             <div class="flex justify-between mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:gap-8">
                 <div class="hidden lg:block lg:w-60">
                     <nav aria-label="Sidebar" class="sticky top-[5.875rem]">
-                        <x-sidebar-nav/>
+                        @isset($sidebar)
+                            {{ $sidebar }}
+                        @else
+                            <x-sidebar-nav/>
 
-                        <x-sidebar-headlines class="mt-8" />
+                            <x-sidebar-headlines class="mt-8" />
+                        @endif
                     </nav>
                 </div>
 

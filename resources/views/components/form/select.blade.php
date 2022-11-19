@@ -36,7 +36,7 @@
         @foreach($options as $optionValue => $optionName)
             <option
                 value="{{ $optionValue }}"
-                @selected(old($name, $value) == $optionValue)
+                @selected(old($name, $value ?? null) == $optionValue)
             >
                 {{ $optionName }}
             </option>

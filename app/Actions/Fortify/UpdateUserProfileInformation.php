@@ -19,10 +19,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update($user, array $input)
     {
         Validator::make($input, [
+            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', Rule::in(array_keys(config('council.genders')))],
+            'birthdate' => ['required', 'date_format:Y-m-d', 'before:13 years ago'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'phone' => ['required', Rule::opinionatedPhone()],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -36,7 +39,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->forceFill([
                 'first_name' => $input['first_name'],
                 'last_name' => $input['last_name'],
+                'gender' => $input['gender'],
+                'birthdate' => $input['birthdate'],
                 'email' => $input['email'],
+                'phone' => $input['phone'],
             ])->save();
         }
     }
@@ -53,8 +59,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         $user->forceFill([
             'first_name' => $input['first_name'],
             'last_name' => $input['last_name'],
+            'gender' => $input['gender'],
+            'birthdate' => $input['birthdate'],
             'email' => $input['email'],
             'email_verified_at' => null,
+            'phone' => $input['phone'],
         ])->save();
 
         $user->sendEmailVerificationNotification();

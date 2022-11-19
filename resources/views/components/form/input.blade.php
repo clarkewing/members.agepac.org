@@ -1,4 +1,4 @@
-@props(['label', 'name', 'value', 'help' => null])
+@props(['label' => null, 'name', 'value', 'help' => null])
 
 <x-form._form-group
     :label="$label"

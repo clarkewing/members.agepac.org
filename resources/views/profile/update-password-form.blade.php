@@ -1,39 +1,64 @@
 <x-jet-form-section submit="updatePassword">
     <x-slot name="title">
-        {{ __('Update Password') }}
+        Modifier mot de passe
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Ensure your account is using a long, random password to stay secure.') }}
+        En ce qui concerne le mot de passe, sois {{ $this->user->gender === 'F' ? 'futée' : 'futé' }},
+        choisis quelque chose de super mega secret et sûr.<br>
+        Voici
+        <a href="https://xkcd.com/936/" target="_blank" title="XKCD Password Strength" class="text-wedgewood-500 hover:underline">une petite BD</a>
+        trop chouette pour t'aider à choisir.
     </x-slot>
 
     <x-slot name="form">
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="current_password" value="{{ __('Current Password') }}" />
-            <x-jet-input id="current_password" type="password" class="mt-1 block w-full" wire:model.defer="state.current_password" autocomplete="current-password" />
-            <x-jet-input-error for="current_password" class="mt-2" />
-        </div>
+        <div class="grid grid-cols-3 gap-6">
+            <div class="col-span-3 sm:col-span-2">
+                <x-form.input
+                    label="Mot de passe actuel"
+                    name="password"
+                    type="password"
+                    wire:model.defer="state.current_password"
+                    autocomplete="current-password"
+                    required
+                />
+            </div>
 
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="password" value="{{ __('New Password') }}" />
-            <x-jet-input id="password" type="password" class="mt-1 block w-full" wire:model.defer="state.password" autocomplete="new-password" />
-            <x-jet-input-error for="password" class="mt-2" />
-        </div>
+            <div class="col-span-3 sm:col-span-2">
+                <x-form.input
+                    label="Nouveau mot de passe"
+                    name="password"
+                    type="password"
+                    wire:model.defer="state.password"
+                    autocomplete="new-password"
+                    required
+                />
+            </div>
 
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-            <x-jet-input id="password_confirmation" type="password" class="mt-1 block w-full" wire:model.defer="state.password_confirmation" autocomplete="new-password" />
-            <x-jet-input-error for="password_confirmation" class="mt-2" />
+            <div class="col-span-3 sm:col-span-2">
+                <x-form.input
+                    label="Confirmation mot de passe"
+                    name="password_confirmation"
+                    type="password"
+                    wire:model.defer="state.password_confirmation"
+                    autocomplete="new-password"
+                    required
+                />
+            </div>
         </div>
     </x-slot>
 
     <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
-            {{ __('Saved.') }}
+            Sauvegardé !
         </x-jet-action-message>
 
-        <x-jet-button>
-            {{ __('Save') }}
-        </x-jet-button>
+        <x-button.primary
+            type="submit"
+            class="w-auto"
+            wire:loading.attr="disabled"
+        >
+            Sauvegarder
+        </x-button.primary>
     </x-slot>
 </x-jet-form-section>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountInfoController;
+use App\Http\Controllers\AccountSecurityController;
 use App\Http\Controllers\Api\TagsController;
 use App\Http\Controllers\Api\UserAvatarController;
 use App\Http\Controllers\Api\UsersController;
@@ -117,10 +118,8 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
 Route::middleware(['auth', 'verified'])->get('/account', [UserProfileController::class, 'show'])->name('profile.show');
 
 Route::prefix('/account')->group(function () {
-    Route::prefix('/info')->name('account.')->group(function () {
-        Route::get('/', [AccountInfoController::class, 'edit'])->name('edit');
-        Route::patch('/', [AccountInfoController::class, 'update'])->name('update');
-    });
+    Route::get('/info', AccountInfoController::class)->name('account.info');
+    Route::get('/security', AccountSecurityController::class)->name('account.security');
 
     Route::prefix('/subscription')->name('subscription.')->group(function () {
         Route::post('/', [SubscriptionController::class, 'store'])->name('store');
