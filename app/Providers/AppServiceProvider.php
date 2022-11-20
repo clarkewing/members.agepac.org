@@ -106,6 +106,17 @@ class AppServiceProvider extends ServiceProvider
             return $value;
         });
 
+        Str::macro('feminine', function (
+            string $value,
+            string $feminine = null,
+        ) {
+            if (auth()->check() && auth()->user()->gender === 'F') {
+                return $feminine ?? $value . 'e';
+            }
+
+            return $value;
+        });
+
         Rule::macro('opinionatedPhone', function () {
             return Rule::phone()
                 ->detect() // Auto-detect country if country code supplied
