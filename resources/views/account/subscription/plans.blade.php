@@ -6,7 +6,7 @@
             @if(Auth::user()->subscribedToPlan(config('council.plans.agepac'), 'default'))
                 AGEPAC (30,00 € / an)
             @elseif(Auth::user()->subscribedToPlan(config('council.plans.agepac+alumni'), 'default'))
-                AGEPAC + ENAC Alumni (60,00 € / an)
+                AGEPAC + ENAC Alumni (65,00 € / an)
             @endif
         </h5>
     </div>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="card-body">
                         <h1 class="card-title">
-                            60€ <small class="text-muted">/ an</small>
+                            65€ <small class="text-muted">/ an</small>
                         </h1>
 
                         <h4 class="text-uppercase text-info font-weight-bold mt-n1">Le plus complet</h4>
