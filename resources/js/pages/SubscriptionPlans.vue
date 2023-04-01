@@ -11,7 +11,7 @@
                     },
                     'agepac+alumni': {
                         name: 'AGEPAC + ENAC Alumni',
-                        price: 6000 // in cents
+                        price: 6500 // in cents
                     }
                 },
 

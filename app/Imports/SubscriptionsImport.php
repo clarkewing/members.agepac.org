@@ -19,7 +19,7 @@ class SubscriptionsImport extends LegacyDBImport implements OnEachRow
 
         $plan = [
             30 => 'agepac',
-            60 => 'agepac+alumni',
+            65 => 'agepac+alumni',
         ][$row['montant']];
 
         $expiry = Carbon::createFromTimestamp($row['d_expiry'])->startOfDay();
@@ -52,7 +52,7 @@ class SubscriptionsImport extends LegacyDBImport implements OnEachRow
     {
         return [
             'userid' => ['required', 'integer', Rule::exists('users', 'id')],
-            'montant' => ['required', 'integer', Rule::in([30, 60])],
+            'montant' => ['required', 'integer', Rule::in([30, 65])],
             'd_expiry' => ['required', 'date_format:U', 'after_or_equal:now'],
             'statut' => ['required', 'boolean', 'accepted'],
         ];
