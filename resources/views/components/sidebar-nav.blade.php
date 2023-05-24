@@ -10,7 +10,7 @@
     <x-collapse>
         <x-slot name="button">
             <x-sidebar-nav-item
-                icon="heroicon-o-library"
+                icon="heroicon-o-building-library"
                 role="menuitem"
             >
                 Association
@@ -117,7 +117,7 @@
     <x-collapse>
         <x-slot name="button">
             <x-sidebar-nav-item
-                icon="heroicon-o-lightning-bolt"
+                icon="heroicon-o-bolt"
                 role="menuitem"
             >
                 Outils

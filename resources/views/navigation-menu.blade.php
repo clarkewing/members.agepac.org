@@ -51,7 +51,7 @@
                                 class="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-wedgewood-500"
                                 aria-expanded="false">
                             <span class="sr-only">Open menu</span>
-                            <x-heroicon-o-menu class="h-6 w-6" aria-hidden="true"/>
+                            <x-heroicon-o-bars-3 class="h-6 w-6" aria-hidden="true"/>
                         </button>
                     </x-slot>
 

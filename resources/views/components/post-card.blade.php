@@ -27,7 +27,7 @@
                     <x-slot name="button">
                         <div class="-m-2 p-2 rounded-full flex items-center text-gray-400 hover:text-gray-600">
                             <span class="sr-only">Open options</span>
-                            <x-heroicon-s-dots-vertical class="h-5 w-5" aria-hidden="true"/>
+                            <x-heroicon-s-ellipsis-vertical class="h-5 w-5" aria-hidden="true"/>
                         </div>
                     </x-slot>
 
@@ -60,12 +60,12 @@
         <div class="mt-6 flex justify-between space-x-8">
             <div class="flex space-x-6">
                 <div class="inline-flex space-x-2 text-sm text-gray-400">
-                    <x-heroicon-s-thumb-up class="h-5 w-5" aria-hidden="true"/>
+                    <x-heroicon-s-hand-thumb-up class="h-5 w-5" aria-hidden="true"/>
                     <span class="font-medium text-gray-900">{{ $post->favorites_count }}</span>
                     <span class="sr-only">likes</span>
                 </div>
                 <div class="inline-flex space-x-2 text-sm text-gray-400">
-                    <x-heroicon-s-chat-alt class="h-5 w-5" aria-hidden="true"/>
+                    <x-heroicon-s-chat-bubble-left-ellipsis class="h-5 w-5" aria-hidden="true"/>
                     <span class="font-medium text-gray-900">{{ $post->thread->replies_count }}</span>
                     <span class="sr-only">replies</span>
                 </div>
@@ -77,7 +77,7 @@
             </div>
             <div class="flex text-sm">
                 <button type="button" class="inline-flex space-x-2 text-sm text-gray-400 hover:text-gray-500">
-                    <x-heroicon-s-reply class="h-5 w-5" aria-hidden="true"/>
+                    <x-heroicon-s-arrow-uturn-left class="h-5 w-5" aria-hidden="true"/>
                     <span class="font-medium text-gray-900">Répondre</span>
                 </button>
             </div>

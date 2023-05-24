@@ -65,7 +65,7 @@
             <div class="mt-6">
                 <div>
                     <x-button.white href="{{ route('dev-login') }}">
-                        <x-heroicon-o-code class="mr-2 h-5 w-5 text-gray-600" aria-hidden="true" />
+                        <x-heroicon-o-code-bracket class="mr-2 h-5 w-5 text-gray-600" aria-hidden="true" />
                         Developer Account
                     </x-button.white>
                 </div>

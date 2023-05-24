@@ -2,7 +2,7 @@
     <label for="search" class="sr-only">Quick search</label>
     <div class="relative">
         <div class="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-            <x-heroicon-s-search class="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <x-heroicon-s-magnifying-glass class="h-5 w-5 text-gray-400" aria-hidden="true" />
         </div>
         <input
             type="search"

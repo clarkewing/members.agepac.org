@@ -23,7 +23,7 @@
                             type="button"
                             class="inline-flex items-center py-2 px-3 border border-transparent rounded-full bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            <x-heroicon-s-plus-sm class="-ml-1 mr-0.5 h-5 w-5 text-gray-400" aria-hidden="true"/>
+                            <x-heroicon-s-plus-small class="-ml-1 mr-0.5 h-5 w-5 text-gray-400" aria-hidden="true"/>
                             <span class="text-sm font-medium text-gray-900">
                                 Suivre <span class="sr-only">{{ $user->name }}</span>
                             </span>

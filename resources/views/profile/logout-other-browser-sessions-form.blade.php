@@ -22,9 +22,9 @@
                     <div class="flex items-center">
                         <div>
                             @if ($session->agent->isDesktop())
-                                <x-heroicon-o-desktop-computer class="w-8 h-8 text-gray-500" aria-hidden="true" />
+                                <x-heroicon-o-computer-desktop class="w-8 h-8 text-gray-500" aria-hidden="true" />
                             @else
-                                <x-heroicon-o-device-mobile class="w-8 h-8 text-gray-500" aria-hidden="true" />
+                                <x-heroicon-o-device-phone-mobile class="w-8 h-8 text-gray-500" aria-hidden="true" />
                             @endif
                         </div>
 

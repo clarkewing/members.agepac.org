@@ -24,7 +24,7 @@
 
     <x-sidebar-nav-item
         href="{{ route('subscription.edit') }}"
-        icon="heroicon-o-cash"
+        icon="heroicon-o-banknotes"
         :active="Request::is('account/subscription')"
     >
         Cotisation

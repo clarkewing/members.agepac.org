@@ -53,7 +53,7 @@
                         class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     >
                         <span class="sr-only">Close sidebar</span>
-                        <x-heroicon-o-x class="h-6 w-6 text-white" aria-hidden="true"/>
+                        <x-heroicon-o-x-mark class="h-6 w-6 text-white" aria-hidden="true"/>
                     </button>
                 </div>
 
