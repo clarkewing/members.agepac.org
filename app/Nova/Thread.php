@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Nova\Actions\UpdateThreadChannel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
@@ -69,6 +70,10 @@ class Thread extends Resource
                 return $this->initiatorPost->body;
             })
                 ->onlyOnDetail(),
+
+            Boolean::make('Pinned'),
+
+            Boolean::make('Locked'),
         ];
     }
 
