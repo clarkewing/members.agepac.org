@@ -83,11 +83,10 @@
         data() {
             return {
                 locationOptions: {
-                    type: 'city',
-                    aroundLatLngViaIP: false,
-                    templates: {
-                        value: (suggestion) => {
-                            return (suggestion.city || suggestion.name) + ', ' + suggestion.country;
+                    types: ['city'],
+                    format: {
+                        value: (item) => {
+                            return (item.city || item.name) + ', ' + item.country;
                         }
                     },
                 }

@@ -21,17 +21,17 @@
         "resolve-url-loader": "^3.1.4",
         "sass": "^1.35.1",
         "sass-loader": "^8.0.2",
-        "vue": "^2.6.14",
+        "vue": "^2.7.16",
         "vue-loader": "^15.9.7",
-        "vue-template-compiler": "^2.6.14"
+        "vue-template-compiler": "^2.7.16"
     },
     "dependencies": {
+        "@placekit/autocomplete-js": "^2.2.1",
         "algoliasearch": "^4.10.2",
         "bootstrap-icons": "^1.5.0",
         "bootstrap-vue": "^2.21.2",
         "laravel-vue-pagination": "^2.3.1",
         "moment": "^2.29.1",
-        "places.js": "^1.19.0",
         "striptags": "^3.2.0",
         "tributejs": "^5.1.3",
         "trix": "^1.3.1",

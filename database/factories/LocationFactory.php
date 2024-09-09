@@ -29,7 +29,7 @@ class LocationFactory extends Factory
                 return User::factory()->create()->id;
             },
             'locatable_type' => array_flip(Relation::$morphMap)[\App\Models\User::class],
-            'type' => Arr::random(['country', 'city', 'address', 'busStop', 'trainStation', 'townhall', 'airport']),
+            'type' => Arr::random(['administrative', 'airport', 'bus', 'city', 'country', 'county', 'street', 'tourism', 'townhall', 'train']),
             'name' => $this->faker->sentence,
             'street_line_1' => $this->faker->streetAddress,
             'street_line_2' => $this->faker->secondaryAddress,

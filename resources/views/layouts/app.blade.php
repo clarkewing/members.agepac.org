@@ -37,6 +37,7 @@
                     'algolia' => Arr::except(config('scout.algolia'), ['secret']),
                 ],
                 'cashier' => Arr::only(config('cashier'), ['key']),
+                'placekit' => Arr::only(config('services.placekit'), ['key']),
             ],
         ]) !!}
     </script>

@@ -128,17 +128,17 @@
         data() {
             return {
                 locationOptions: {
-                    templates: {
-                        value: (suggestion) => {
-                            if (suggestion.type === 'city' || suggestion.type === 'address') {
-                                return (suggestion.city || suggestion.name) + ', ' + suggestion.country;
+                    format: {
+                        value: (item) => {
+                            if (item.type === 'city' || item.type === 'street') {
+                                return (item.city || item.name) + ', ' + item.country;
                             }
 
-                            if (suggestion.type === 'airport') {
-                                return suggestion.name + ', ' + suggestion.administrative + ', ' + suggestion.country;
+                            if (item.type === 'airport') {
+                                return item.name + ', ' + item.administrative + ', ' + item.country;
                             }
 
-                            return suggestion.name + ', ' + suggestion.city + ', ' + suggestion.administrative + ', ' + suggestion.country;
+                            return item.name + ', ' + item.city + ', ' + item.administrative + ', ' + item.country;
                         }
                     },
                 },

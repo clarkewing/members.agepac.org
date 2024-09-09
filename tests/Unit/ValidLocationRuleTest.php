@@ -41,6 +41,7 @@ class ValidLocationRuleTest extends TestCase
     /** @test */
     public function testTypeMustBeValid()
     {
+        $this->assertRuleFails(['type' => 'address']);
         $this->assertRuleFails(['type' => 'foobar']);
     }
 
@@ -91,10 +92,10 @@ class ValidLocationRuleTest extends TestCase
     }
 
     /** @test */
-    public function testAppropriateFieldsRequiredWithAddressType()
+    public function testAppropriateFieldsRequiredWithStreetType()
     {
         $this->assertRulePasses($this->location([
-            'type' => 'address',
+            'type' => 'street',
             'street_line_1' => '172 boulevard Saint Germain',
             'municipality' => 'Paris',
             'country' => 'France',
@@ -102,22 +103,22 @@ class ValidLocationRuleTest extends TestCase
         ]));
 
         $this->assertRuleFails($this->location([
-            'type' => 'address',
+            'type' => 'street',
             'street_line_1' => null,
         ]));
 
         $this->assertRuleFails($this->location([
-            'type' => 'address',
+            'type' => 'street',
             'municipality' => null,
         ]));
 
         $this->assertRuleFails($this->location([
-            'type' => 'address',
+            'type' => 'street',
             'country' => null,
         ]));
 
         $this->assertRuleFails($this->location([
-            'type' => 'address',
+            'type' => 'street',
             'country_code' => null,
         ]));
     }
@@ -126,12 +127,17 @@ class ValidLocationRuleTest extends TestCase
     public function testNameRequiredWithAmenityTypes()
     {
         $this->assertRuleFails($this->location([
-            'type' => 'busStop',
+            'type' => 'airport',
             'name' => null,
         ]));
 
         $this->assertRuleFails($this->location([
-            'type' => 'trainStation',
+            'type' => 'bus',
+            'name' => null,
+        ]));
+
+        $this->assertRuleFails($this->location([
+            'type' => 'tourism',
             'name' => null,
         ]));
 
@@ -141,7 +147,7 @@ class ValidLocationRuleTest extends TestCase
         ]));
 
         $this->assertRuleFails($this->location([
-            'type' => 'airport',
+            'type' => 'train',
             'name' => null,
         ]));
     }

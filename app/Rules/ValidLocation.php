@@ -77,7 +77,7 @@ class ValidLocation implements BaseRule
 
             "$attribute.type" => [
                 'required',
-                Rule::in(['country', 'city', 'address', 'busStop', 'trainStation', 'townhall', 'airport']),
+                Rule::in(['administrative', 'airport', 'bus', 'city', 'country', 'county', 'street', 'tourism', 'townhall', 'train']),
             ],
         ]);
 
@@ -91,13 +91,13 @@ class ValidLocation implements BaseRule
         $validator = $this->getValidatorFactory()->make([$attribute => $value], [
             "$attribute.name" => array_merge($baseRules, [
                 Rule::requiredIf(function () use ($value) {
-                    return in_array($value['type'], ['busStop', 'trainStation', 'townhall', 'airport']);
+                    return in_array($value['type'], ['airport', 'bus', 'tourism', 'townhall', 'train']);
                 }),
             ]),
 
             "$attribute.street_line_1" => array_merge($baseRules, [
                 Rule::requiredIf(function () use ($value) {
-                    return in_array($value['type'], ['address']);
+                    return in_array($value['type'], ['street']);
                 }),
             ]),
 
@@ -105,7 +105,7 @@ class ValidLocation implements BaseRule
 
             "$attribute.municipality" => array_merge($baseRules, [
                 Rule::requiredIf(function () use ($value) {
-                    return in_array($value['type'], ['city', 'address']);
+                    return in_array($value['type'], ['city', 'street']);
                 }),
             ]),
 
@@ -117,7 +117,7 @@ class ValidLocation implements BaseRule
 
             "$attribute.country" => array_merge($baseRules, [
                 Rule::requiredIf(function () use ($value) {
-                    return in_array($value['type'], ['country', 'city', 'address']);
+                    return in_array($value['type'], ['country', 'city', 'street']);
                 }),
             ]),
 
@@ -126,7 +126,7 @@ class ValidLocation implements BaseRule
                 'string',
                 'size:2',
                 Rule::requiredIf(function () use ($value) {
-                    return in_array($value['type'], ['country', 'city', 'address']);
+                    return in_array($value['type'], ['country', 'city', 'street']);
                 }),
             ],
         ]);
