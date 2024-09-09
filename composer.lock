@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a92d75a279c2e8dc92836925e810592c",
+    "content-hash": "b63d5b680e6a062219331d387200491a",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -3422,7 +3422,7 @@
         },
         {
             "name": "laravel/nova",
-            "version": "dev-master",
+            "version": "3.32.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:clarkewing/laravel-nova.git",
@@ -3454,7 +3454,6 @@
                 "phpunit/phpunit": "^9.5.10",
                 "predis/predis": "^1.1"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3515,7 +3514,7 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/clarkewing/laravel-nova/tree/master",
+                "source": "https://github.com/clarkewing/laravel-nova/tree/v3.32.0",
                 "issues": "https://github.com/clarkewing/laravel-nova/issues"
             },
             "time": "2024-09-09T08:28:02+00:00"
@@ -14619,9 +14618,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "laravel/nova": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
