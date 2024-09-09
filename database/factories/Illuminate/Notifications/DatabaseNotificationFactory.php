@@ -31,7 +31,7 @@ class DatabaseNotificationFactory extends Factory
             'notifiable_id' => function () {
                 return Auth::id() ?? User::factory()->create()->id;
             },
-            'notifiable_type' => array_flip(Relation::$morphMap)[User::class],
+            'notifiable_type' => (new User)->getMorphClass(),
             'data' => ['foo' => 'bar'],
         ];
     }

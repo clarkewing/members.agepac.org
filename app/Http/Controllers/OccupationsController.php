@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOccupationRequest;
 use App\Http\Requests\UpdateOccupationRequest;
 use App\Models\Company;
 use App\Models\Occupation;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -54,7 +55,7 @@ class OccupationsController extends Controller
     public function update(UpdateOccupationRequest $request, Occupation $occupation)
     {
         if ($request->filled('company')) {
-            $occupation->company()->associate(Company::firstOrCreate($request->input('company'), [
+            $occupation->company()->associate(Company::firstOrCreate(Arr::only($request->input('company'), ['id', 'name']), [
                 'type_code' => $request->has('aircraft_id')
                     ? Company::AIRLINE
                     : Company::OTHER_BUSINESS,

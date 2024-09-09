@@ -26,7 +26,7 @@ class CourseFactory extends Factory
         return $this->afterCreating(function ($course) {
             Location::factory()->create([
                 'locatable_id' => $course->id,
-                'locatable_type' => get_class($course),
+                'locatable_type' => $course->getMorphClass(),
             ]);
         });
     }

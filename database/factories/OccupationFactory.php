@@ -29,7 +29,7 @@ class OccupationFactory extends Factory
         return $this->afterCreating(function ($occupation) {
             Location::factory()->create([
                 'locatable_id' => $occupation->id,
-                'locatable_type' => get_class($occupation),
+                'locatable_type' => $occupation->getMorphClass(),
             ]);
         });
     }

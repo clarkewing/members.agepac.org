@@ -231,8 +231,7 @@
 import axios from "axios";
 import VSwatches from "vue-swatches";
 import "vue-swatches/dist/vue-swatches.css";
-import DatePicker from "v-calendar/lib/components/date-picker.umd";
-
+import DatePicker from 'v-calendar/lib/v-calendar.umd'
 export default {
     components: { VSwatches, DatePicker },
 
