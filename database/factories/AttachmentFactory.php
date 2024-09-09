@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Attachment;
-use function GuzzleHttp\Psr7\mimetype_from_filename;
+use GuzzleHttp\Psr7\MimeType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +30,7 @@ class AttachmentFactory extends Factory
         : UploadedFile::fake()->create(
             $fileName = "{$this->faker->word}.{$this->faker->fileExtension}",
             $this->faker->numberBetween(20, 10000),
-            mimetype_from_filename($fileName)
+            MimeType::fromFilename($fileName)
         );
 
         return [

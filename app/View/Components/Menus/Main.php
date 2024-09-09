@@ -7,6 +7,7 @@ use Spatie\Menu\Item;
 use Spatie\Menu\Laravel\Html;
 use Spatie\Menu\Laravel\Link;
 use Spatie\Menu\Laravel\Menu;
+use OptimistDigital\MenuBuilder\Models\Menu as MenuModel;
 
 class Main extends Component
 {
@@ -19,11 +20,11 @@ class Main extends Component
     {
         $nav = Menu::new();
 
-        if (is_null(nova_get_menu('main'))) {
+        if (is_null($this->getMenu('main'))) {
             return '';
         }
 
-        nova_get_menu('main')['menuItems']
+        $this->getMenu('main')['menuItems']
             ->each(function ($menuItem) use ($nav) {
                 $this->addItem($nav, $menuItem);
             });
@@ -111,8 +112,8 @@ class Main extends Component
         switch ($menuItem['type']) {
             case 'text':
                 $navItem = $isSubmenu
-                    ? Html::raw('<h6 class="dropdown-header">' . $menuItem['name'] . '</h6>')
-                    : Html::raw('<span class="navbar-text">' . $menuItem['name'] . '</span>');
+                    ? Html::raw('<h6 class="dropdown-header">'.$menuItem['name'].'</h6>')
+                    : Html::raw('<span class="navbar-text">'.$menuItem['name'].'</span>');
                 break;
 
             case 'separator':
@@ -160,5 +161,19 @@ class Main extends Component
             ->addClass('dropdown-menu')
             ->withoutParentTag()
             ->addItemClass('dropdown-item');
+    }
+
+    protected function getMenu(string $slug): ?array
+    {
+        if (empty($slug)) {
+            return null;
+        }
+
+        $menu = MenuModel::query()
+            ->where('slug', $slug)
+            ->get()
+            ->first();
+
+        return ! empty($menu) ? $menu->formatForAPI() : null;
     }
 }
