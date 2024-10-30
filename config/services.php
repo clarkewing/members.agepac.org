@@ -32,6 +32,6 @@ return [
 
     'placekit' => [
         'key' => env('PLACEKIT_KEY'),
-    ]
+    ],
 
 ];
