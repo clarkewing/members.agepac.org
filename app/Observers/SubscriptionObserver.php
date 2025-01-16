@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Actions\SubscribeUserToMembersNewsletterAction;
+use App\Actions\UnsubscribeUserFromMembersNewsletterAction;
 use App\Models\User;
 use App\Traits\ManagesEmailList;
 use Laravel\Cashier\Subscription as StripeSubscription;
@@ -20,12 +22,20 @@ class SubscriptionObserver
     public function saved(StripeSubscription $subscription)
     {
         if ($subscription->valid() || $this->hasActiveSubscription($subscription->user)) {
+            // Self-hosted Mailcoach
             $this->addToEmailList($subscription->user);
+
+            // Mailcoach Cloud
+            app(SubscribeUserToMembersNewsletterAction::class)->execute($subscription->user);
 
             return;
         }
 
+        // Self-hosted Mailcoach
         $this->removeFromEmailList($subscription->user);
+
+        // Mailcoach Cloud
+        app(UnsubscribeUserFromMembersNewsletterAction::class)->execute($subscription->user);
     }
 
     /**
@@ -36,10 +46,17 @@ class SubscriptionObserver
     public function deleted(StripeSubscription $subscription)
     {
         if ($this->hasActiveSubscription($subscription->user)) {
+            // Mailcoach Cloud
+            app(SubscribeUserToMembersNewsletterAction::class)->execute($subscription->user);
+
             return;
         }
 
+        // Self-hosted Mailcoach
         $this->removeFromEmailList($subscription->user);
+
+        // Mailcoach Cloud
+        app(UnsubscribeUserFromMembersNewsletterAction::class)->execute($subscription->user);
     }
 
     protected function hasActiveSubscription(User $user)

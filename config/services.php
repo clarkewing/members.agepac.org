@@ -32,6 +32,14 @@ return [
 
     'placekit' => [
         'key' => env('PLACEKIT_KEY'),
-    ]
+    ],
+
+    'mailcoach' => [
+        'url' => env('MAILCOACH_URL'),
+        'token' => env('MAILCOACH_TOKEN'),
+        'lists' => [
+            'default' => env('MAILCOACH_DEFAULT_LIST_UUID'),
+        ]
+    ],
 
 ];

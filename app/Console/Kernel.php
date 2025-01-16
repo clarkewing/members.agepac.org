@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\CleanupAttachments::class,
         Commands\ImportLegacyDB::class,
+        Commands\MailcoachCloud\ImportUsers::class,
     ];
 
     /**
@@ -26,7 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(Commands\CleanupAttachments::class)
-             ->cron('0 */2 * * *'); // Every two hours
+            ->cron('0 */2 * * *'); // Every two hours
 
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
@@ -47,7 +48,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }
