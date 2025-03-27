@@ -120,7 +120,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             (new NovaSidebar)->hydrate([
                 'Communication' => [
-                    ['Mailcoach', '/mailcoach'],
+                    ['Mailcoach', 'https://agepac.mailcoach.app/'],
                 ],
             ]),
         ];
