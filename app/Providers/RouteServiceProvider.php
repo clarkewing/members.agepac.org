@@ -33,10 +33,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::mailcoach('mailcoach');
-            Route::mailcoachUnlayer('mailcoachUnlayer');
-            Route::mailgunFeedback('mailgun-feedback');
-
             Route::prefix('api')
                 ->middleware('api')
                 ->group(base_path('routes/api.php'));
