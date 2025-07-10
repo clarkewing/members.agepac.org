@@ -174,7 +174,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
-        App\Providers\MailcoachServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\PurifySetupProvider::class,
         App\Providers\RouteServiceProvider::class,
