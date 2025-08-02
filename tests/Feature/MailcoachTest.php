@@ -16,6 +16,8 @@ class MailcoachTest extends TestCase
     {
         parent::setUp();
 
+        $this->markTestSkipped('Migrated from self-hosted Mailcoach to Mailcoach Cloud.');
+
         $this->withExceptionHandling();
     }
 
