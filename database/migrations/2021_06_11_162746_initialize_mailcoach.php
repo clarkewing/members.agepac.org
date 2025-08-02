@@ -17,6 +17,10 @@ class InitializeMailcoach extends Migration
      */
     public function up()
     {
+        if (! class_exists(\Spatie\Mailcoach\MailcoachServiceProvider::class)) {
+            return;
+        }
+
         Schema::table('mailcoach_subscribers', function (Blueprint $table) {
             $table->string('class_course', 30)->nullable();
             $table->year('class_year')->nullable();
@@ -46,6 +50,10 @@ class InitializeMailcoach extends Migration
      */
     public function down()
     {
+        if (! class_exists(\Spatie\Mailcoach\MailcoachServiceProvider::class)) {
+            return;
+        }
+
         Schema::table('mailcoach_subscribers', function (Blueprint $table) {
             $table->dropColumn(['class_course', 'class_year', 'gender', 'birthdate', 'phone']);
         });

@@ -166,6 +166,8 @@ return [
          * Package Service Providers...
          */
 
+        App\Services\Mailcoach\MailcoachServiceProvider::class,
+
         /*
          * Application Service Providers...
          */

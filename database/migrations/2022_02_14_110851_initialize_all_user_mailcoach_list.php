@@ -11,6 +11,10 @@ class InitializeAllUserMailcoachList extends Migration
 
     public function up()
     {
+        if (! class_exists(\Spatie\Mailcoach\MailcoachServiceProvider::class)) {
+            return;
+        }
+
         EmailList::create([
             'name' => $this->emailListName,
             'default_from_email' => 'bonjour@agepac.org',
@@ -27,6 +31,10 @@ class InitializeAllUserMailcoachList extends Migration
 
     public function down()
     {
+        if (! class_exists(\Spatie\Mailcoach\MailcoachServiceProvider::class)) {
+            return;
+        }
+
         EmailList::where('name', $this->emailListName)->delete();
     }
 
