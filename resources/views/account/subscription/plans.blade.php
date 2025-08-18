@@ -1,11 +1,11 @@
-@if(Auth::user()->subscribed('default'))
+@if(Auth::user()->subscribed('membership'))
     <h5 class="font-weight-bold pb-2 border-bottom mb-4">Adhésion en cours</h5>
 
     <div class="px-lg-4 mb-5">
         <h5>
-            @if(Auth::user()->subscribedToPlan(config('council.plans.agepac'), 'default'))
+            @if(Auth::user()->subscribedToPlan(config('council.plans.agepac'), 'membership'))
                 AGEPAC (30,00 € / an)
-            @elseif(Auth::user()->subscribedToPlan(config('council.plans.agepac+alumni'), 'default'))
+            @elseif(Auth::user()->subscribedToPlan(config('council.plans.agepac+alumni'), 'membership'))
                 AGEPAC + ENAC Alumni (65,00 € / an)
             @endif
         </h5>

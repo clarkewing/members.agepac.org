@@ -74,7 +74,7 @@ class SubscriptionInvoiceTest extends StripeTestCase
     protected function subscribeUser(User $user = null): void
     {
         ($user ?? Auth::user())->newSubscription(
-            'default',
+            'membership',
             config('council.plans.agepac')
         )->add();
     }

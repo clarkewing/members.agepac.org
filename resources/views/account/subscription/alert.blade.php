@@ -1,4 +1,4 @@
-@if(! Auth::user()->subscribed('default'))
+@if(! Auth::user()->subscribed('membership'))
     <div class="alert alert-danger mb-5" role="alert">
         <h4 class="alert-heading">Ta cotisation n’est pas à jour.</h4>
         <p>Rejoins l’AGEPAC ci-dessous afin d’accéder à toutes les fonctionalités du site.</p>
@@ -8,7 +8,7 @@
         </p>
     </div>
 
-@elseif(! Auth::user()->subscription('default')->onGracePeriod() && ! Auth::user()->hasDefaultPaymentMethod())
+@elseif(! Auth::user()->subscription('membership')->onGracePeriod() && ! Auth::user()->hasDefaultPaymentMethod())
     <div class="alert alert-warning mb-5" role="alert">
         <h4 class="alert-heading">Nous ne pourrons pas renouveller ta cotisation.</h4>
         <p>

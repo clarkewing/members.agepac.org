@@ -18,7 +18,7 @@ class EnsureUserIsSubscribed
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() && ! $request->user()->subscribed('default')) {
+        if ($request->user() && ! $request->user()->subscribed('membership')) {
             $this->unsubscribed($request);
         }
 
