@@ -45,6 +45,7 @@ class SubscriptionObserver
     {
         return StripeSubscription
             ::where('user_id', $user->id)
+            ->where('name', 'membership')
             ->active()
             ->exists();
     }

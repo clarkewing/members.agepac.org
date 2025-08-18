@@ -37,7 +37,7 @@ class SubscriptionController extends Controller
 
         try {
             $subscription = $request->user()->newSubscription(
-                'default',
+                'membership',
                 $this->planId($request->input('plan'))
             )->add();
         } catch (IncompletePayment $exception) {
@@ -63,7 +63,7 @@ class SubscriptionController extends Controller
     {
         return view('account.subscription', [
             'paymentMethods' => Auth::user()->paymentMethods(),
-            'subscription' => Auth::user()->subscription('default'),
+            'subscription' => Auth::user()->subscription('membership'),
         ]);
     }
 
@@ -84,7 +84,7 @@ class SubscriptionController extends Controller
             ],
         ]);
 
-        $subscription = $request->user()->subscription('default');
+        $subscription = $request->user()->subscription('membership');
 
         if (
             $request->has('plan')

@@ -53,7 +53,7 @@ class ProfilesController extends Controller
      */
     public function show(Request $request, Profile $profile)
     {
-        if ($profile->id !== Auth::id() && ! Auth::user()->subscribed('default')) {
+        if ($profile->id !== Auth::id() && ! Auth::user()->subscribed('membership')) {
             throw new UnsubscribedException;
         }
 

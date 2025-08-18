@@ -43,7 +43,7 @@ class SubscriptionTest extends StripeTestCase
         $this->signIn(tap(User::factory()->create())
             ->createAsStripeCustomer(['balance' => -99999])); // Give user large credit
 
-        Auth::user()->newSubscription('default', config('council.plans.agepac'))->add();
+        Auth::user()->newSubscription('membership', config('council.plans.agepac'))->add();
 
         $this->get(route('subscription.edit'))
             ->assertSee('Aucun moyen de paiement n’est enregistré pour ton compte.');
@@ -59,9 +59,9 @@ class SubscriptionTest extends StripeTestCase
         $this->signIn(tap(User::factory()->create())
             ->createAsStripeCustomer(['balance' => -99999])); // Give user large credit
 
-        Auth::user()->newSubscription('default', config('council.plans.agepac'))->add();
+        Auth::user()->newSubscription('membership', config('council.plans.agepac'))->add();
 
-        Auth::user()->subscription('default')->cancel();
+        Auth::user()->subscription('membership')->cancel();
 
         $this->get(route('subscription.edit'))
             ->assertDontSee('role="alert"', false)
@@ -75,7 +75,7 @@ class SubscriptionTest extends StripeTestCase
      */
     public function testBillingPageDoesntShowAlertIfSubscribed()
     {
-        Auth::user()->newSubscription('default', config('council.plans.agepac'))->add();
+        Auth::user()->newSubscription('membership', config('council.plans.agepac'))->add();
 
         $this->get(route('subscription.edit'))
             ->assertDontSee('role="alert"', false);
@@ -92,7 +92,7 @@ class SubscriptionTest extends StripeTestCase
 
         $this->createSubscription()->assertForbidden();
 
-        $this->assertFalse(Auth::user()->subscribed('default'));
+        $this->assertFalse(Auth::user()->subscribed('membership'));
     }
 
     /**
@@ -106,7 +106,7 @@ class SubscriptionTest extends StripeTestCase
             'plan' => null,
         ])->assertSessionHasErrors('plan');
 
-        $this->assertFalse(Auth::user()->subscribed('default'));
+        $this->assertFalse(Auth::user()->subscribed('membership'));
     }
 
     /**
@@ -120,7 +120,7 @@ class SubscriptionTest extends StripeTestCase
             'plan' => 'foobar',
         ])->assertSessionHasErrors('plan');
 
-        $this->assertFalse(Auth::user()->subscribed('default'));
+        $this->assertFalse(Auth::user()->subscribed('membership'));
     }
 
     /**
@@ -136,7 +136,7 @@ class SubscriptionTest extends StripeTestCase
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('subscription.edit'));
 
-        $this->assertTrue(Auth::user()->subscribed('default'));
+        $this->assertTrue(Auth::user()->subscribed('membership'));
     }
 
     /**
@@ -146,14 +146,14 @@ class SubscriptionTest extends StripeTestCase
      */
     public function testUserCanChangeToAnotherPlan()
     {
-        ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
+        ($user = Auth::user())->newSubscription('membership', config('council.plans.agepac'))->add();
 
-        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac'), 'default'));
+        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac'), 'membership'));
 
         $this->updateSubscription(['plan' => 'agepac+alumni'])->assertOk();
 
-        $this->assertFalse($user->subscribedToPlan(config('council.plans.agepac'), 'default'));
-        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac+alumni'), 'default'));
+        $this->assertFalse($user->subscribedToPlan(config('council.plans.agepac'), 'membership'));
+        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac+alumni'), 'membership'));
     }
 
     /**
@@ -163,9 +163,9 @@ class SubscriptionTest extends StripeTestCase
      */
     public function testChangingToSamePlanDoesntCauseError()
     {
-        ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
+        ($user = Auth::user())->newSubscription('membership', config('council.plans.agepac'))->add();
 
-        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac'), 'default'));
+        $this->assertTrue($user->subscribedToPlan(config('council.plans.agepac'), 'membership'));
 
         $this->updateSubscription(['plan' => 'agepac'])->assertOk();
     }
@@ -177,15 +177,15 @@ class SubscriptionTest extends StripeTestCase
      */
     public function testUserCanCancelTheirSubscription()
     {
-        ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add();
+        ($user = Auth::user())->newSubscription('membership', config('council.plans.agepac'))->add();
 
-        $this->assertTrue($user->subscribed('default'));
-        $this->assertFalse($user->subscription('default')->onGracePeriod());
+        $this->assertTrue($user->subscribed('membership'));
+        $this->assertFalse($user->subscription('membership')->onGracePeriod());
 
         $this->updateSubscription(['active' => false])->assertOk();
 
-        $this->assertTrue($user->subscribed('default'));
-        $this->assertTrue($user->subscription('default')->onGracePeriod());
+        $this->assertTrue($user->subscribed('membership'));
+        $this->assertTrue($user->subscription('membership')->onGracePeriod());
     }
 
     /**
@@ -195,15 +195,15 @@ class SubscriptionTest extends StripeTestCase
      */
     public function testUserCanResumeTheirCancelledSubscription()
     {
-        ($user = Auth::user())->newSubscription('default', config('council.plans.agepac'))->add()->cancel();
+        ($user = Auth::user())->newSubscription('membership', config('council.plans.agepac'))->add()->cancel();
 
-        $this->assertTrue($user->subscribed('default'));
-        $this->assertTrue($user->subscription('default')->onGracePeriod());
+        $this->assertTrue($user->subscribed('membership'));
+        $this->assertTrue($user->subscription('membership')->onGracePeriod());
 
         $this->updateSubscription(['active' => true])->assertOk();
 
-        $this->assertTrue($user->subscribed('default'));
-        $this->assertFalse($user->subscription('default')->onGracePeriod());
+        $this->assertTrue($user->subscribed('membership'));
+        $this->assertFalse($user->subscription('membership')->onGracePeriod());
     }
 
     /**

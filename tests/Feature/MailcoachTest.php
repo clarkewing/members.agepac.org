@@ -120,7 +120,7 @@ class MailcoachTest extends TestCase
         );
 
         // Turn off auto-renew
-        Auth::user()->subscription()->update([
+        Auth::user()->subscription('membership')->update([
             'ends_at' => now()->addYear(),
         ]);
 
@@ -137,7 +137,7 @@ class MailcoachTest extends TestCase
             Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
         );
 
-        Auth::user()->subscription()->update([
+        Auth::user()->subscription('membership')->update([
             'stripe_status' => Subscription::STATUS_INCOMPLETE_EXPIRED,
         ]);
 
@@ -154,7 +154,7 @@ class MailcoachTest extends TestCase
             Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
         );
 
-        Auth::user()->subscription()->delete();
+        Auth::user()->subscription('membership')->delete();
 
         $this->assertNull(
             Subscriber::findForEmail(Auth::user()->email, $this->membersEmailList())
@@ -172,7 +172,7 @@ class MailcoachTest extends TestCase
         );
 
         // End subscription
-        Auth::user()->subscription()->update([
+        Auth::user()->subscription('membership')->update([
             'ends_at' => now(),
         ]);
 

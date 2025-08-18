@@ -37,7 +37,7 @@ class SubscriptionsImport extends LegacyDBImport implements OnEachRow
         $user->createOrGetStripeCustomer(); // Ensure user is customer.
 
         $user->newSubscription(
-            'default',
+            'membership',
             config("council.plans.$plan")
         )
             ->anchorBillingCycleOn($anchor)

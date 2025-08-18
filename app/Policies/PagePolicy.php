@@ -44,7 +44,7 @@ class PagePolicy
                 throw new AuthenticationException;
             }
 
-            if (! $user->subscribed('default')) {
+            if (! $user->subscribed('membership')) {
                 throw new UnsubscribedException;
             }
         }

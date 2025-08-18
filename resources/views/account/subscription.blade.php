@@ -11,7 +11,7 @@
 
     @include('account.subscription.payment-methods')
 
-    @if(Auth::user()->subscribed('default'))
+    @if(Auth::user()->subscribed('membership'))
         @include('account.subscription.invoices')
 
         @include('account.subscription.autorenew')

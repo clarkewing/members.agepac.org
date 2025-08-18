@@ -32,12 +32,12 @@ class UserMembershipState extends Filter
 
         if ($value === 'inactive') {
             return $query->whereDoesntHave('subscriptions', function ($innerQuery) {
-                $innerQuery->whereName('default');
+                $innerQuery->whereName('membership');
             });
         }
 
         return $query->whereHas('subscriptions', function ($innerQuery) use ($value) {
-            $innerQuery->whereName('default')->{Str::camel($value)}();
+            $innerQuery->whereName('membership')->{Str::camel($value)}();
         });
     }
 

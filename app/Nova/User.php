@@ -210,16 +210,16 @@ class User extends Resource
                 return 'pending-approval';
             }
 
-            if ($this->subscribed('default')) {
-                if ($this->subscription('default')->ended()) {
+            if ($this->subscribed('membership')) {
+                if ($this->subscription('membership')->ended()) {
                     return 'ended';
                 }
 
-                if ($this->subscription('default')->onGracePeriod()) {
+                if ($this->subscription('membership')->onGracePeriod()) {
                     return 'on-grace-period';
                 }
 
-                if ($this->subscription('default')->onTrial()) {
+                if ($this->subscription('membership')->onTrial()) {
                     return 'on-trial';
                 }
 
