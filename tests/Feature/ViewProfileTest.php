@@ -111,7 +111,7 @@ class ViewProfileTest extends TestCase
 
         $this->getProfile()
             ->assertSee('Emploi :')
-            ->assertSeeText("{$occupation->title} chez {$occupation->company->name}");
+            ->assertSeeTextInOrder([$occupation->title, $occupation->company->name]);
     }
 
     /** @test */
