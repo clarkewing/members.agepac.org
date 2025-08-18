@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efe290c0960964210fb6977c7a41f271",
+    "content-hash": "8c554d900427dd013533894aab2fc81f",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -529,6 +529,72 @@
                 }
             ],
             "time": "2023-12-11T17:09:12+00:00"
+        },
+        {
+            "name": "clarkewing/handoff",
+            "version": "v0.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clarkewing/handoff.git",
+                "reference": "d3c1784f780e520e7eccecb7d27e0d8594beb762"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clarkewing/handoff/zipball/d3c1784f780e520e7eccecb7d27e0d8594beb762",
+                "reference": "d3c1784f780e520e7eccecb7d27e0d8594beb762",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/routing": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "php": "^8.0",
+                "spatie/url": "^2.4"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.5",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^v1.23.1|^2.34|^3.7",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3|^3.1",
+                "pestphp/pest-plugin-type-coverage": "^3.6",
+                "phpstan/phpstan": "^2.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ClarkeWing\\Handoff\\HandoffServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ClarkeWing\\Handoff\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hugo Clarke-Wing",
+                    "email": "7689302+clarkewing@users.noreply.github.com"
+                }
+            ],
+            "description": "Lightweight Laravel package for secure cross-application user handoff via signed URLs and route mapping.",
+            "homepage": "https://github.com/clarkewing/handoff",
+            "keywords": [
+                "clarkewing",
+                "handoff",
+                "laravel",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/clarkewing/handoff/issues",
+                "source": "https://github.com/clarkewing/handoff/tree/v0.1.3"
+            },
+            "time": "2025-08-02T21:21:02+00:00"
         },
         {
             "name": "composer/ca-bundle",

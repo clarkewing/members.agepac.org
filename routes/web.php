@@ -120,15 +120,18 @@ Route::prefix('/account')->group(function () {
         Route::patch('/', [AccountInfoController::class, 'update'])->name('update');
     });
 
-    Route::prefix('/subscription')->name('subscription.')->group(function () {
-        Route::post('/', [SubscriptionController::class, 'store'])->name('store');
-        Route::get('/', [SubscriptionController::class, 'edit'])->name('edit');
-        Route::patch('/', [SubscriptionController::class, 'update'])->name('update');
+    Route::prefix('/subscription')
+        ->middleware('handoff:/settings/membership')
+        ->name('subscription.')
+        ->group(function () {
+            Route::post('/', [SubscriptionController::class, 'store'])->name('store');
+            Route::get('/', [SubscriptionController::class, 'edit'])->name('edit');
+            Route::patch('/', [SubscriptionController::class, 'update'])->name('update');
 
-        Route::get('/invoice/{invoiceId}', [SubscriptionInvoicesController::class, 'show'])
-            ->name('invoices.show');
+            Route::get('/invoice/{invoiceId}', [SubscriptionInvoicesController::class, 'show'])
+                ->name('invoices.show');
 
-        Route::resource('payment-methods', PaymentMethodsController::class)
-            ->only(['create', 'store', 'update', 'destroy']);
-    });
+            Route::resource('payment-methods', PaymentMethodsController::class)
+                ->only(['create', 'store', 'update', 'destroy']);
+        });
 });
