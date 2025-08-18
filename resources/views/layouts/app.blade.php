@@ -9,16 +9,11 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- We'll transition to a more privacy focused solution ASAP -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BD3RY2NEC"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-4BD3RY2NEC');
-    </script>
+    <script
+        defer
+        src='https://static.cloudflareinsights.com/beacon.min.js'
+        data-cf-beacon='{"token": "9318628569ea49d3a823ea8f52a9b673"}'
+    ></script>
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
