@@ -12,7 +12,7 @@
     <script
         defer
         src='https://static.cloudflareinsights.com/beacon.min.js'
-        data-cf-beacon='{"token": "9318628569ea49d3a823ea8f52a9b673"}'
+        data-cf-beacon='{"token": "9b62891ef8834af9a7c4af08a615caaa"}'
     ></script>
 
     <!-- Scripts -->
