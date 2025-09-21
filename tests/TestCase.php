@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
+use ClarkeWing\LegacySync\Facades\LegacySync;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,8 @@ abstract class TestCase extends BaseTestCase
         $this->withoutExceptionHandling();
 
         Mailcoach::fake();
+
+        LegacySync::fake();
     }
 
     /**
