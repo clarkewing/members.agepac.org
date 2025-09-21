@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c554d900427dd013533894aab2fc81f",
+    "content-hash": "9ad0dac7a9cf428f6980cd7dc4316ad8",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -595,6 +595,74 @@
                 "source": "https://github.com/clarkewing/handoff/tree/v0.1.3"
             },
             "time": "2025-08-02T21:21:02+00:00"
+        },
+        {
+            "name": "clarkewing/legacy-sync",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clarkewing/legacy-sync.git",
+                "reference": "12d19e244abbd98ece99c2d58217aacdf561090c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clarkewing/legacy-sync/zipball/12d19e244abbd98ece99c2d58217aacdf561090c",
+                "reference": "12d19e244abbd98ece99c2d58217aacdf561090c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/database": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.5",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^v1.23.1|^2.34|^3.7",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3|^3.1",
+                "pestphp/pest-plugin-type-coverage": "^3.6",
+                "phpstan/phpstan": "^2.1",
+                "spatie/invade": "^2.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ClarkeWing\\LegacySync\\LegacySyncServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ClarkeWing\\LegacySync\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hugo Clarke-Wing",
+                    "email": "7689302+clarkewing@users.noreply.github.com"
+                }
+            ],
+            "description": "Lightweight Laravel package for bi-directional database syncing between a legacy and modern app.",
+            "homepage": "https://github.com/clarkewing/legacy-sync",
+            "keywords": [
+                "clarkewing",
+                "database",
+                "laravel",
+                "legacy",
+                "php",
+                "sync"
+            ],
+            "support": {
+                "issues": "https://github.com/clarkewing/legacy-sync/issues",
+                "source": "https://github.com/clarkewing/legacy-sync/tree/v0.2"
+            },
+            "time": "2025-08-12T20:55:43+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -12804,7 +12872,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*"
     },
     "platform-dev": {},
