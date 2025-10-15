@@ -16,13 +16,13 @@ class SubscriptionObserver
      */
     public function saved(StripeSubscription $subscription)
     {
-        if ($subscription->valid() || $this->hasActiveSubscription($subscription->user)) {
-            app(SubscribeUserToMembersNewsletterAction::class)->execute($subscription->user);
-
-            return;
-        }
-
-        app(UnsubscribeUserFromMembersNewsletterAction::class)->execute($subscription->user);
+        // if ($subscription->valid() || $this->hasActiveSubscription($subscription->user)) {
+        //     app(SubscribeUserToMembersNewsletterAction::class)->execute($subscription->user);
+        //
+        //     return;
+        // }
+        //
+        // app(UnsubscribeUserFromMembersNewsletterAction::class)->execute($subscription->user);
     }
 
     /**
@@ -32,13 +32,13 @@ class SubscriptionObserver
      */
     public function deleted(StripeSubscription $subscription)
     {
-        if ($this->hasActiveSubscription($subscription->user)) {
-            app(SubscribeUserToMembersNewsletterAction::class)->execute($subscription->user);
-
-            return;
-        }
-
-        app(UnsubscribeUserFromMembersNewsletterAction::class)->execute($subscription->user);
+        // if ($this->hasActiveSubscription($subscription->user)) {
+        //     app(SubscribeUserToMembersNewsletterAction::class)->execute($subscription->user);
+        //
+        //     return;
+        // }
+        //
+        // app(UnsubscribeUserFromMembersNewsletterAction::class)->execute($subscription->user);
     }
 
     protected function hasActiveSubscription(User $user)
