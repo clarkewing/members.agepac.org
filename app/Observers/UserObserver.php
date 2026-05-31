@@ -20,6 +20,14 @@ class UserObserver
 
     public function updated(User $user)
     {
+        // Propagate updates to the new app. This app owns columns like password
+        // and anything edited via Nova or the user's settings; without this,
+        // those changes never reach the new app. Cashier-managed columns
+        // (stripe_id, pm_type, pm_last_four, trial_ends_at) are excluded from
+        // this direction in legacy_sync.php because the new app owns them via
+        // the Stripe webhooks only it receives.
+        LegacySync::syncRecord($user->getTable(), $user->getKey(), SyncDirection::LegacyToNew);
+
         // if ($user->wasChanged('email')) {
         //     app(UpdateUserNewsletterEmailAction::class)->execute($user);
         // }

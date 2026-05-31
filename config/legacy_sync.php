@@ -50,6 +50,15 @@ return [
                 'card_brand' => 'pm_type',
                 'card_last_four' => 'pm_last_four',
             ],
+
+            // Stripe webhooks now land only on the new app, so it owns the
+            // Cashier-managed columns. Exclude them in the LegacyToNew direction
+            // (target = 'new') so a save on this app can never push a stale
+            // Cashier value over a fresh one the new app just wrote from a webhook.
+            'exclude' => [
+                'legacy' => [],
+                'new' => ['stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at'],
+            ],
         ],
 
         'subscriptions' => [
