@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
-use VanOns\Laraberg\Helpers\EmbedHelper;
+use App\Support\EmbedHelper;
 
 class PagesController extends Controller
 {
@@ -24,7 +24,7 @@ class PagesController extends Controller
     }
 
     /**
-     * Extracted from \VanOns\Laraberg\Helpers\EmbedHelper to replace $regex
+     * Extracted from VanOns\Laraberg\Helpers\EmbedHelper to replace $regex.
      * Renders any embeds in the HTML.
      *
      * @param  string  $html
