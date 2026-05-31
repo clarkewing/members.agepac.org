@@ -245,8 +245,9 @@ class ForcedPasswordResetTest extends TestCase
     {
         // $verified is a public Livewire property, so a malicious client
         // can flip it to true in the request payload without going through
-        // verify(). The server's source of truth must be the session, not
-        // the property — this test pins that.
+        // verify(). The updatedVerified() hook snaps it back to the
+        // session-backed truth, and resetPassword()'s abort_unless is the
+        // final boundary.
         $this->getComponent()
             ->set('verified', true)
             ->set('password', 'NewSecurePassword123!')
@@ -258,6 +259,24 @@ class ForcedPasswordResetTest extends TestCase
 
         $this->assertSame(User::PASSWORD_RESET_SENTINEL, $this->user->password);
         $this->assertFalse(Auth::check());
+    }
+
+    /** @test */
+    public function testTamperingWithVerifiedDoesNotLeakUserFirstName()
+    {
+        // Without the updatedVerified() hook, flipping $verified to true
+        // would advance the view to step 2 which renders "Bonjour
+        // {{ $user->first_name }} !" — leaking the first name to anyone
+        // who knows a sentinel user's email. The hook prevents this by
+        // resetting $verified to the session value on every client update,
+        // keeping the view on step 1.
+        $this->user->update(['first_name' => 'Unguessable']);
+
+        $this->getComponent()
+            ->set('verified', true)
+            ->assertSet('verified', false)
+            ->assertDontSee('Unguessable')
+            ->assertSee('Saisis le code à 6 chiffres');
     }
 
     /** @test */

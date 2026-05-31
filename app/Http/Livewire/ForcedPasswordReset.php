@@ -66,6 +66,16 @@ class ForcedPasswordReset extends Component
         $this->verified = true;
     }
 
+    /**
+     * Snap the public $verified property back to the session-backed truth
+     * on every client update, so a malicious client cannot flip it to true
+     * to skip the email-token step or advance the view to step 2.
+     */
+    public function updatedVerified()
+    {
+        $this->verified = Session::get(self::SESSION_KEY . '.verified', false) === true;
+    }
+
     public function resetPassword()
     {
         abort_unless(Session::get(self::SESSION_KEY . '.verified') === true, 403);
