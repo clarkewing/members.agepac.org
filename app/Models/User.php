@@ -21,6 +21,14 @@ use URLify;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    /**
+     * Sentinel written to users.password to force a reset on next login.
+     * Not a valid bcrypt hash, so Hash::check() always fails against it.
+     * See LoginController::handleResetRequiredUser() and the 2026_05_31
+     * invalidate_all_passwords migration.
+     */
+    public const PASSWORD_RESET_SENTINEL = 'RESET_REQUIRED';
+
     use HasFactory;
     use HasReputation;
     use HasRoles;

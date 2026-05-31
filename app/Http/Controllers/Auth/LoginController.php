@@ -49,7 +49,30 @@ class LoginController extends Controller
             $this->username() => 'required|string',
         ]);
 
-        return $this->handleUnmigratedUser() ?: $this->traitLogin($request);
+        return $this->handleUnmigratedUser()
+            ?: $this->handleResetRequiredUser($request)
+            ?: $this->traitLogin($request);
+    }
+
+    /**
+     * Catch users whose password was force-invalidated after the security
+     * incident. Hand them off to the ForcedPasswordReset Livewire flow so
+     * they can verify by email token and set a new password without leaving
+     * the site.
+     *
+     * @return \Illuminate\Contracts\View\View|bool
+     */
+    protected function handleResetRequiredUser(Request $request)
+    {
+        $user = User::where($this->username(), $request->input($this->username()))
+            ->where('password', User::PASSWORD_RESET_SENTINEL)
+            ->first();
+
+        if (is_null($user)) {
+            return false;
+        }
+
+        return view('auth.reset-required', ['user' => $user]);
     }
 
     /**
@@ -71,7 +94,7 @@ class LoginController extends Controller
      */
     protected function handleUnmigratedUser()
     {
-        $unmigratedUser = User::where($this->username(), request()->input($this->username()))
+         $unmigratedUser = User::where($this->username(), request()->input($this->username()))
             ->whereNull('password')
             ->first();
 
