@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Livewire\Migrate;
 use App\Models\User;
 use App\Notifications\VerificationToken;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
@@ -399,6 +400,35 @@ class MigrateUserTest extends TestCase
         $this->submitUserInfo();
 
         $this->assertTrue($this->user->hasVerifiedEmail());
+    }
+
+    /** @test */
+    public function testCannotBypassVerificationByTamperingWithVerifiedProperty()
+    {
+        // $verified is a public Livewire property — a malicious client
+        // can flip it to true in the payload to try to skip the email-
+        // token step. The updatedVerified() hook snaps it back to the
+        // session-backed truth, and saveUser()'s abort_unless guard is
+        // the final boundary. Neither the account nor the auth state
+        // changes.
+        $this->testStep1()
+            ->set('verified', true)
+            ->set('class_course', 'EPL/S')
+            ->set('class_year', 2015)
+            ->set('password', 'password')
+            ->set('password_confirmation', 'password')
+            ->set('birthdate_year', 1994)
+            ->set('birthdate_month', 9)
+            ->set('birthdate_day', 22)
+            ->set('gender', 'M')
+            ->set('phone', '06 52 52 41 22')
+            ->call('saveUser')
+            ->assertForbidden();
+
+        $this->user->refresh();
+
+        $this->assertNull($this->user->password);
+        $this->assertFalse(Auth::check());
     }
 
     /**

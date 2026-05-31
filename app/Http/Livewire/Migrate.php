@@ -41,6 +41,17 @@ class Migrate extends Component
 
     public $phone;
 
+    /**
+     * Public Livewire properties are hydrated from the client payload on
+     * every request, so $verified cannot be trusted as authorization
+     * state. The authoritative copy lives in the session under SESSION_KEY
+     * and is re-checked on every server action. The updatedVerified() hook
+     * snaps the public property back to the session value whenever the
+     * client tries to flip it, so the view also never advances to step 2
+     * unless verify() has succeeded server-side.
+     */
+    protected const SESSION_KEY = 'userMigration';
+
     protected function rules()
     {
         return [
@@ -63,13 +74,27 @@ class Migrate extends Component
             'token' => ['required', 'string', 'digits:6', Rule::in([$this->getExpectedToken()])],
         ]);
 
+        Session::put(self::SESSION_KEY . '.verified', true);
+
         $this->verified = true;
 
         $this->populateUser();
     }
 
+    /**
+     * Snap the public $verified property back to the session-backed truth
+     * on every client update, so a malicious client cannot flip it to true
+     * to skip the email-token step or advance the view to step 2.
+     */
+    public function updatedVerified()
+    {
+        $this->verified = Session::get(self::SESSION_KEY . '.verified', false) === true;
+    }
+
     public function saveUser()
     {
+        abort_unless(Session::get(self::SESSION_KEY . '.verified') === true, 403);
+
         $this->setBirthdate();
 
         $this->validate();
@@ -83,6 +108,8 @@ class Migrate extends Component
         $this->markUserEmailAsVerified();
 
         Auth::login(tap($this->user)->save());
+
+        Session::forget(self::SESSION_KEY);
 
         $this->redirect(route('home'));
     }
