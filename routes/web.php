@@ -10,6 +10,7 @@ use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LegacyFilemanagerController;
 use App\Http\Controllers\LockedThreadsController;
 use App\Http\Controllers\OccupationsController;
 use App\Http\Controllers\PaymentMethodsController;
@@ -46,6 +47,17 @@ Auth::routes(['verify' => true]);
 Route::view('pending-approval', 'auth.pending-approval')->name('pending-approval');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// Bridge routes for files uploaded via the (removed) unisharp/laravel-
+// filemanager package. Keeps historical /laravel-filemanager/{files,photos}/...
+// URLs working for links embedded in old page bodies. See the controller for
+// the security-relevant differences from the original implementation.
+Route::middleware('auth')->group(function () {
+    Route::get('/laravel-filemanager/files/{base_path}/{file_name}', [LegacyFilemanagerController::class, 'getFile'])
+        ->name('lfm.legacy.file');
+    Route::get('/laravel-filemanager/photos/{base_path}/{image_name}', [LegacyFilemanagerController::class, 'getImage'])
+        ->name('lfm.legacy.image');
+});
 
 /* Threads */
 Route::resource('threads', ThreadsController::class)->only(['create', 'store']);
