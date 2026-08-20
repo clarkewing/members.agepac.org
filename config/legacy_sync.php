@@ -56,7 +56,9 @@ return [
             // (target = 'new') so a save on this app can never push a stale
             // Cashier value over a fresh one the new app just wrote from a webhook.
             'exclude' => [
-                'legacy' => [],
+                // role only exists on the new app's side; never touch it
+                // against the legacy database.
+                'legacy' => ['role'],
                 'new' => ['stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at'],
             ],
         ],
