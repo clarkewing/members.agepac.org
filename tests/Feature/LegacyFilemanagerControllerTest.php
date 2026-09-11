@@ -79,6 +79,46 @@ class LegacyFilemanagerControllerTest extends TestCase
     }
 
     /** @test */
+    public function testTheExportTokenGrantsAccessWithoutASession()
+    {
+        config(['services.export.token' => 'secret-export-token']);
+
+        $response = $this->withToken('secret-export-token')
+            ->get('/laravel-filemanager/files/999999/test-document.pdf');
+
+        $response->assertOk();
+        $this->assertSame($this->fileFixture, $response->baseResponse->getFile()->getPathname());
+    }
+
+    /** @test */
+    public function testAnInvalidExportTokenIsRedirectedToLogin()
+    {
+        config(['services.export.token' => 'secret-export-token']);
+
+        $this->withToken('wrong-token')
+            ->get('/laravel-filemanager/files/999999/test-document.pdf')
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function testABearerTokenGrantsNothingWhenNoTokenIsConfigured()
+    {
+        $this->withToken('secret-export-token')
+            ->get('/laravel-filemanager/files/999999/test-document.pdf')
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function testAnEmptyBearerTokenNeverMatchesAnEmptyConfiguredToken()
+    {
+        config(['services.export.token' => '']);
+
+        $this->withHeaders(['Authorization' => 'Bearer '])
+            ->get('/laravel-filemanager/files/999999/test-document.pdf')
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
     public function testMissingFileReturns404()
     {
         $this->signIn();
