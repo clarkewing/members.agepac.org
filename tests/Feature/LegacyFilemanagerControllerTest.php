@@ -79,6 +79,19 @@ class LegacyFilemanagerControllerTest extends TestCase
     }
 
     /** @test */
+    public function testSessionAuthenticationStillWorksWhileAnExportTokenIsConfigured()
+    {
+        config(['services.export.token' => 'secret-export-token']);
+
+        $this->signIn();
+
+        $response = $this->get('/laravel-filemanager/files/999999/test-document.pdf');
+
+        $response->assertOk();
+        $this->assertSame($this->fileFixture, $response->baseResponse->getFile()->getPathname());
+    }
+
+    /** @test */
     public function testTheExportTokenGrantsAccessWithoutASession()
     {
         config(['services.export.token' => 'secret-export-token']);
