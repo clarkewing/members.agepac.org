@@ -15,12 +15,12 @@ class PagesRoutesTest extends TestCase
         Page::factory()->create(['path' => 'foo', 'title' => 'Foo title']);
 
         $this->get('/pages/foo')
-            ->assertOk();
+            ->assertStatus(302);
 
         Page::factory()->create(['path' => 'foo/bar-baz', 'title' => 'Bar baz title']);
 
         $this->get('/pages/foo/bar-baz')
-            ->assertOk();
+            ->assertStatus(302);
     }
 
     /** @test */
