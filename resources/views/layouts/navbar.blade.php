@@ -58,6 +58,10 @@
                                     Administration
                                 </a>
 
+                                <a class="dropdown-item" href="{{ route('new-admin') }}">
+                                    Nouvelle administration
+                                </a>
+
                                 <div class="dropdown-divider"></div>
                             @endcan
 
