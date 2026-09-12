@@ -14,6 +14,12 @@ return [
     |
     */
 
+    'export' => [
+        // Grants the new app's page import read access to the legacy
+        // filemanager bridge routes; must match the new app's value.
+        'token' => env('LEGACY_EXPORT_TOKEN'),
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

@@ -52,7 +52,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // filemanager package. Keeps historical /laravel-filemanager/{files,photos}/...
 // URLs working for links embedded in old page bodies. See the controller for
 // the security-relevant differences from the original implementation.
-Route::middleware('auth')->group(function () {
+Route::middleware('auth.export-token')->group(function () {
     Route::get('/laravel-filemanager/files/{base_path}/{file_name}', [LegacyFilemanagerController::class, 'getFile'])
         ->name('lfm.legacy.file');
     Route::get('/laravel-filemanager/photos/{base_path}/{image_name}', [LegacyFilemanagerController::class, 'getImage'])
