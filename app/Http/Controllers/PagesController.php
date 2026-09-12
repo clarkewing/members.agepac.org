@@ -3,43 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
-use App\Support\EmbedHelper;
+use ClarkeWing\Handoff\Actions\GenerateHandoffUrl;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
     /**
-     * Display the specified resource.
+     * Redirect the page to its new home.
      *
+     * Pages are now authored and served by the new app: public pages
+     * redirect to the public site. Restricted pages live on the members
+     * app, which has no active login yet — so members authenticate here
+     * and are handed off with their session, while the new app stays the
+     * authority on approval and publication.
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Page  $page
-     * @return \Illuminate\View\View
-     */
-    public function show(Page $page)
-    {
-        $this->authorize('view', $page);
-
-        return view('page', [
-            'title' => $page->title,
-            'body' => $this->renderEmbeds($page->body),
-        ]);
-    }
-
-    /**
-     * Extracted from VanOns\Laraberg\Helpers\EmbedHelper to replace $regex.
-     * Renders any embeds in the HTML.
+     * @return \Illuminate\Http\RedirectResponse
      *
-     * @param  string  $html
-     * @return string - The HTML containing all embed code
+     * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function renderEmbeds($html)
+    public function show(Request $request, Page $page)
     {
-        // Match URL from raw Gutenberg embed content
-        $regex = '/<!-- wp:core-embed\/.*?-->\s*?<figure class="wp-block-embed.*?".*?\s*?<div class="wp-block-embed__wrapper">\s*?(.*?)\s*?<\/div>(?:\s*?<figcaption>.*?<\/figcaption>)?\s*?<\/figure>/';
+        if (! $page->restricted) {
+            return redirect()->away(config('app.public_site_url')."/pages/{$page->path}");
+        }
 
-        return preg_replace_callback($regex, function ($matches) {
-            $embed = EmbedHelper::create($matches[1]);
-            $url = preg_replace('/\//', '\/', preg_quote($matches[1]));
-            // Replace URL with OEmbed HTML
-            return preg_replace("/>\s*?$url\s*?</", ">$embed->code<", $matches[0]);
-        }, $html);
+        if (is_null($user = $request->user())) {
+            throw new AuthenticationException;
+        }
+
+        return redirect()->away(resolve(GenerateHandoffUrl::class)->generate(
+            user: $user,
+            toPath: "/pages/{$page->path}",
+        ));
     }
 }

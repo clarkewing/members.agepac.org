@@ -58,6 +58,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Public Site URL
+    |--------------------------------------------------------------------------
+    |
+    | The base URL of the public AGEPAC site, which now serves the public
+    | pages this app redirects to. The members counterpart lives in the
+    | handoff config as the target host.
+    |
+    */
+
+    'public_site_url' => env('PUBLIC_SITE_URL', 'https://agepac.org'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
