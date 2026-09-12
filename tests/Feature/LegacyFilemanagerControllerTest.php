@@ -132,6 +132,22 @@ class LegacyFilemanagerControllerTest extends TestCase
     }
 
     /** @test */
+    public function testNestedDirectoriesAreSupported()
+    {
+        // Real legacy uploads nest folders (e.g. photos/3481/Trombinoscopes/EPL 17.PNG).
+        $path = base_path('storage/photos/999999/Trombinoscopes/EPL 17.PNG');
+        File::ensureDirectoryExists(dirname($path));
+        File::put($path, 'nested image bytes');
+
+        $this->signIn();
+
+        $response = $this->get('/laravel-filemanager/photos/999999/Trombinoscopes/EPL%2017.PNG');
+
+        $response->assertOk();
+        $this->assertSame($path, $response->baseResponse->getFile()->getPathname());
+    }
+
+    /** @test */
     public function testMissingFileReturns404()
     {
         $this->signIn();
