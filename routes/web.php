@@ -48,6 +48,11 @@ Route::view('pending-approval', 'auth.pending-approval')->name('pending-approval
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+// Hands admins off to the new app's admin panel with their session.
+Route::get('/new-admin', fn () => redirect()->route('home'))
+    ->middleware(['auth', 'can:viewNova', 'handoff:/admin'])
+    ->name('new-admin');
+
 // Bridge routes for files uploaded via the (removed) unisharp/laravel-
 // filemanager package. Keeps historical /laravel-filemanager/{files,photos}/...
 // URLs working for links embedded in old page bodies. See the controller for
