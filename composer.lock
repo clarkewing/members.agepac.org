@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa4d01e20c0c1301a918386632c676ed",
+    "content-hash": "63ecdb2c945b41774db04cb175b50d22",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -532,31 +532,31 @@
         },
         {
             "name": "clarkewing/handoff",
-            "version": "v0.1.3",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clarkewing/handoff.git",
-                "reference": "d3c1784f780e520e7eccecb7d27e0d8594beb762"
+                "reference": "4d40157ea83030a2d4a22e2a58eebb4426115d3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clarkewing/handoff/zipball/d3c1784f780e520e7eccecb7d27e0d8594beb762",
-                "reference": "d3c1784f780e520e7eccecb7d27e0d8594beb762",
+                "url": "https://api.github.com/repos/clarkewing/handoff/zipball/4d40157ea83030a2d4a22e2a58eebb4426115d3c",
+                "reference": "4d40157ea83030a2d4a22e2a58eebb4426115d3c",
                 "shasum": ""
             },
             "require": {
-                "illuminate/auth": "^8.0|^9.0|^10.0|^11.0|^12.0",
-                "illuminate/routing": "^8.0|^9.0|^10.0|^11.0|^12.0",
-                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/auth": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "illuminate/routing": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
                 "php": "^8.0",
                 "spatie/url": "^2.4"
             },
             "require-dev": {
                 "laravel/pint": "^1.5",
-                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "pestphp/pest": "^v1.23.1|^2.34|^3.7",
-                "pestphp/pest-plugin-laravel": "^1.1|^2.3|^3.1",
-                "pestphp/pest-plugin-type-coverage": "^3.6",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "pestphp/pest": "^v1.23.1|^2.34|^3.7|^4.0",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3|^3.1|^4.0",
+                "pestphp/pest-plugin-type-coverage": "^3.6|^4.0",
                 "phpstan/phpstan": "^2.1"
             },
             "type": "library",
@@ -592,9 +592,9 @@
             ],
             "support": {
                 "issues": "https://github.com/clarkewing/handoff/issues",
-                "source": "https://github.com/clarkewing/handoff/tree/v0.1.3"
+                "source": "https://github.com/clarkewing/handoff/tree/v0.2.0"
             },
-            "time": "2025-08-02T21:21:02+00:00"
+            "time": "2026-10-16T12:33:28+00:00"
         },
         {
             "name": "clarkewing/legacy-sync",

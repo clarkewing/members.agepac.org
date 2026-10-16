@@ -55,11 +55,14 @@ return [
             // Cashier-managed columns. Exclude them in the LegacyToNew direction
             // (target = 'new') so a save on this app can never push a stale
             // Cashier value over a fresh one the new app just wrote from a webhook.
+            // Login lives on the new app too, so it owns password and
+            // remember_token: a save here would otherwise push a null password
+            // over its MIGRATION_REQUIRED sentinel.
             'exclude' => [
                 // role only exists on the new app's side; never touch it
                 // against the legacy database.
                 'legacy' => ['role'],
-                'new' => ['stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at'],
+                'new' => ['stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at', 'password', 'remember_token'],
             ],
         ],
 

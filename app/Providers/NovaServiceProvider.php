@@ -75,9 +75,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function routes()
     {
+        // Admins log in on the new app, and come back to Nova once they have.
         Nova::routes()
-            ->withAuthenticationRoutes()
-            ->withPasswordResetRoutes()
+            ->withAuthenticationRoutes(['web', 'handoff.login'])
             ->register();
     }
 
