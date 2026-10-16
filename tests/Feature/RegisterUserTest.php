@@ -26,10 +26,10 @@ class RegisterUserTest extends TestCase
     }
 
     /** @test */
-    public function testGuestCanSeeRegisterComponent()
+    public function testGuestsAreSentToTheNewAppToRegister()
     {
-        $this->get(route('register'))
-            ->assertSeeLivewire('register');
+        $this->get('/register')
+            ->assertRedirect(config('handoff.target_host').'/register');
     }
 
     /** @test */
