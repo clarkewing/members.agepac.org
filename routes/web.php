@@ -42,7 +42,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true, 'register' => false]);
+
+// Members register on the new app.
+Route::redirect('register', config('handoff.target_host').'/register')->name('register');
 
 Route::view('pending-approval', 'auth.pending-approval')->name('pending-approval');
 

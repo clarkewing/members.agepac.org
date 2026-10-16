@@ -12,6 +12,13 @@ class ManageUsersTest extends TestCase
 {
     use NovaTestRequests;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->markTestSkipped('Users are managed in the new app’s admin panel.');
+    }
+
     public function permissionProvider()
     {
         return [
