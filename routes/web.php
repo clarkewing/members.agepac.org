@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\TagsController;
 use App\Http\Controllers\Api\UserAvatarController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\AttachmentsController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BestPostsController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CoursesController;
@@ -42,10 +43,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
-Auth::routes(['verify' => true, 'register' => false]);
+Auth::routes(['verify' => true, 'register' => false, 'reset' => false]);
 
-// Members register on the new app.
+// Members register, log in and reset their password on the new app. Guests
+// sent to log in come back to the page they wanted here.
 Route::redirect('register', config('handoff.target_host').'/register')->name('register');
+Route::get('login', [LoginController::class, 'showLoginForm'])->middleware('handoff.login')->name('login');
+Route::post('login', [LoginController::class, 'login'])->middleware('handoff.login');
+Route::redirect('password/reset', config('handoff.target_host').'/forgot-password')->name('password.request');
 
 Route::view('pending-approval', 'auth.pending-approval')->name('pending-approval');
 
