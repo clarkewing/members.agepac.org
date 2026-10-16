@@ -56,6 +56,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
+     * Register the application's Nova resources.
+     *
+     * @return void
+     */
+    protected function resources()
+    {
+        Nova::resourcesIn(app_path('Nova'));
+
+        // Users are managed in the new app's admin panel.
+        Nova::replaceResources(array_values(array_diff(Nova::$resources, [\App\Nova\User::class])));
+    }
+
+    /**
      * Register the Nova routes.
      *
      * @return void
