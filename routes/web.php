@@ -134,10 +134,13 @@ Route::namespace('Api')->prefix('/api')->name('api.')->group(function () {
 
 /* Account */
 Route::prefix('/account')->group(function () {
-    Route::prefix('/info')->name('account.')->group(function () {
-        Route::get('/', [AccountInfoController::class, 'edit'])->name('edit');
-        Route::patch('/', [AccountInfoController::class, 'update'])->name('update');
-    });
+    Route::prefix('/info')
+        ->middleware(['auth', 'handoff:/settings/profile'])
+        ->name('account.')
+        ->group(function () {
+            Route::get('/', [AccountInfoController::class, 'edit'])->name('edit');
+            Route::patch('/', [AccountInfoController::class, 'update'])->name('update');
+        });
 
     Route::prefix('/subscription')
         ->middleware('handoff:/settings/membership')
