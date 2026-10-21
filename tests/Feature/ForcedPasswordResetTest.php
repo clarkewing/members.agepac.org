@@ -41,6 +41,8 @@ class ForcedPasswordResetTest extends TestCase
     /** @test */
     public function testInvalidatedUserSeesForcedResetComponentOnLoginAttempt()
     {
+        $this->markTestSkipped('Logins are handled by the new app since #161, so LoginController::login() is no longer reachable.');
+
         $this->post(action([LoginController::class, 'login']), [
             'email' => $this->user->email,
             'password' => 'whatever-they-used-to-have',
@@ -54,6 +56,8 @@ class ForcedPasswordResetTest extends TestCase
     /** @test */
     public function testUnknownUserGetsStandardInvalidCredentialsPath()
     {
+        $this->markTestSkipped('Logins are handled by the new app since #161, so LoginController::login() is no longer reachable.');
+
         // No special branch for unknown emails — they hit the normal failure
         // path, so the incident doesn't leak which accounts exist.
         Notification::fake();
@@ -71,6 +75,8 @@ class ForcedPasswordResetTest extends TestCase
     /** @test */
     public function testLegacyNullPasswordUserStillHitsMigrateWizard()
     {
+        $this->markTestSkipped('Logins are handled by the new app since #161, so LoginController::login() is no longer reachable.');
+
         $legacyUser = User::factory()->create([
             'email' => 'legacy@example.com',
             'password' => null,

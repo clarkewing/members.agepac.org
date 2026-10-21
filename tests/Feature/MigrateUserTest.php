@@ -22,6 +22,8 @@ class MigrateUserTest extends TestCase
     {
         parent::setUp();
 
+        $this->markTestSkipped('Logins are handled by the new app since #161, so the migration wizard is no longer reachable.');
+
         $this->withExceptionHandling();
 
         $this->user = User::factory()->create([
