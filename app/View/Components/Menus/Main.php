@@ -3,11 +3,11 @@
 namespace App\View\Components\Menus;
 
 use Illuminate\View\Component;
+use OptimistDigital\MenuBuilder\Models\Menu as MenuModel;
 use Spatie\Menu\Item;
 use Spatie\Menu\Laravel\Html;
 use Spatie\Menu\Laravel\Link;
 use Spatie\Menu\Laravel\Menu;
-use OptimistDigital\MenuBuilder\Models\Menu as MenuModel;
 
 class Main extends Component
 {
@@ -112,8 +112,8 @@ class Main extends Component
         switch ($menuItem['type']) {
             case 'text':
                 $navItem = $isSubmenu
-                    ? Html::raw('<h6 class="dropdown-header">'.$menuItem['name'].'</h6>')
-                    : Html::raw('<span class="navbar-text">'.$menuItem['name'].'</span>');
+                    ? Html::raw('<h6 class="dropdown-header">' . $menuItem['name'] . '</h6>')
+                    : Html::raw('<span class="navbar-text">' . $menuItem['name'] . '</span>');
                 break;
 
             case 'separator':

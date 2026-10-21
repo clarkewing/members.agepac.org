@@ -8,6 +8,7 @@ use Tests\TestCase;
 class LegacyFilemanagerControllerTest extends TestCase
 {
     private string $fileFixture;
+
     private string $imageFixture;
 
     protected function setUp(): void

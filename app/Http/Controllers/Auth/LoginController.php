@@ -94,7 +94,7 @@ class LoginController extends Controller
      */
     protected function handleUnmigratedUser()
     {
-         $unmigratedUser = User::where($this->username(), request()->input($this->username()))
+        $unmigratedUser = User::where($this->username(), request()->input($this->username()))
             ->whereNull('password')
             ->first();
 

@@ -23,7 +23,7 @@ class RedirectPagesTest extends TestCase
 
         $this->get(route('pages.show', $page))
             ->assertStatus(302)
-            ->assertRedirect(config('app.public_site_url')."/pages/{$page->path}");
+            ->assertRedirect(config('app.public_site_url') . "/pages/{$page->path}");
     }
 
     /** @test */
@@ -38,7 +38,7 @@ class RedirectPagesTest extends TestCase
             ->headers->get('Location');
 
         $this->assertStringStartsWith('http://squawk.agepac.org.test/handoff?', $location);
-        $this->assertStringContainsString('target='.urlencode("/pages/{$page->path}"), $location);
+        $this->assertStringContainsString('target=' . urlencode("/pages/{$page->path}"), $location);
         $this->assertStringContainsString('signature=', $location);
     }
 
@@ -65,7 +65,7 @@ class RedirectPagesTest extends TestCase
         $page = Page::factory()->create(['restricted' => false, 'path' => 'guides/orientation']);
 
         $this->get(route('pages.show', $page))
-            ->assertRedirect(config('app.public_site_url').'/pages/guides/orientation');
+            ->assertRedirect(config('app.public_site_url') . '/pages/guides/orientation');
     }
 
     /** @test */

@@ -47,10 +47,10 @@ Auth::routes(['verify' => true, 'register' => false, 'reset' => false]);
 
 // Members register, log in and reset their password on the new app. Guests
 // sent to log in come back to the page they wanted here.
-Route::redirect('register', config('handoff.target_host').'/register')->name('register');
+Route::redirect('register', config('handoff.target_host') . '/register')->name('register');
 Route::get('login', [LoginController::class, 'showLoginForm'])->middleware('handoff.login')->name('login');
 Route::post('login', [LoginController::class, 'login'])->middleware('handoff.login');
-Route::redirect('password/reset', config('handoff.target_host').'/forgot-password')->name('password.request');
+Route::redirect('password/reset', config('handoff.target_host') . '/forgot-password')->name('password.request');
 
 Route::view('pending-approval', 'auth.pending-approval')->name('pending-approval');
 

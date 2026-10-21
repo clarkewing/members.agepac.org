@@ -29,7 +29,7 @@ class RegisterUserTest extends TestCase
     public function testGuestsAreSentToTheNewAppToRegister()
     {
         $this->get('/register')
-            ->assertRedirect(config('handoff.target_host').'/register');
+            ->assertRedirect(config('handoff.target_host') . '/register');
     }
 
     /** @test */
