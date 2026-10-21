@@ -14,7 +14,7 @@ class MailcoachApi
 
         try {
             $response = Http::timeout(10)->withToken(config('services.mailcoach.token'))
-                ->get(config('services.mailcoach.url')."/email-lists/{$listUuid}/subscribers", [
+                ->get(config('services.mailcoach.url') . "/email-lists/{$listUuid}/subscribers", [
                     'filter' => [
                         'email' => $email,
                     ],
@@ -40,16 +40,15 @@ class MailcoachApi
         string $email,
         string $first_name = null,
         string $last_name = null,
-        array  $extra_attributes = null,
+        array $extra_attributes = null,
         string $listUuid = null,
-        bool   $skipConfirmation = false,
-        bool   $skipWelcomeMail = false,
-    ): ?Subscriber
-    {
+        bool $skipConfirmation = false,
+        bool $skipWelcomeMail = false,
+    ): ?Subscriber {
         $listUuid ??= config('services.mailcoach.lists.default');
 
         $response = Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->post(config('services.mailcoach.url')."/email-lists/{$listUuid}/subscribers", [
+            ->post(config('services.mailcoach.url') . "/email-lists/{$listUuid}/subscribers", [
                 'email' => $email,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -67,7 +66,7 @@ class MailcoachApi
     public function unsubscribe(Subscriber $subscriber): void
     {
         Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->post(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}/unsubscribe");
+            ->post(config('services.mailcoach.url') . "/subscribers/{$subscriber->uuid}/unsubscribe");
     }
 
     public function update(Subscriber $subscriber, array $attributes): void
@@ -87,14 +86,14 @@ class MailcoachApi
         $attributes['extra_attributes'] = $extraAttributes;
 
         Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->patch(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}", $attributes)
+            ->patch(config('services.mailcoach.url') . "/subscribers/{$subscriber->uuid}", $attributes)
             ->throw();
     }
 
     public function addTags(Subscriber $subscriber, array $tags): void
     {
         Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->patch(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}", [
+            ->patch(config('services.mailcoach.url') . "/subscribers/{$subscriber->uuid}", [
                 'tags' => $tags,
                 'append_tags' => true,
             ])
@@ -106,7 +105,7 @@ class MailcoachApi
         $tags = array_filter($subscriber->tags, fn (string $existingTag) => $existingTag !== $tag);
 
         Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->patch(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}", [
+            ->patch(config('services.mailcoach.url') . "/subscribers/{$subscriber->uuid}", [
                 'tags' => $tags,
                 'append_tags' => false,
             ])
@@ -116,7 +115,7 @@ class MailcoachApi
     public function delete(Subscriber $subscriber): void
     {
         Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->delete(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}")
+            ->delete(config('services.mailcoach.url') . "/subscribers/{$subscriber->uuid}")
             ->throw();
     }
 }

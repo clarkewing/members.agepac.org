@@ -25,7 +25,7 @@ class VisitNewAdminTest extends TestCase
             ->headers->get('Location');
 
         $this->assertStringStartsWith('http://squawk.agepac.org.test/handoff?', $location);
-        $this->assertStringContainsString('target='.urlencode('/admin'), $location);
+        $this->assertStringContainsString('target=' . urlencode('/admin'), $location);
         $this->assertStringContainsString('signature=', $location);
     }
 

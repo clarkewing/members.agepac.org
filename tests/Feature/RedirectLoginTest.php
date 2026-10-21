@@ -17,7 +17,7 @@ class RedirectLoginTest extends TestCase
     public function testGuestsAreSentToTheNewAppToLogIn()
     {
         $this->get(route('login'))
-            ->assertRedirect(config('handoff.target_host').'/login');
+            ->assertRedirect(config('handoff.target_host') . '/login');
     }
 
     /** @test */
@@ -27,14 +27,14 @@ class RedirectLoginTest extends TestCase
             ->assertRedirect(route('login'));
 
         $this->get(route('login'))
-            ->assertRedirect(config('handoff.target_host').'/login?intended='.urlencode('/home'));
+            ->assertRedirect(config('handoff.target_host') . '/login?intended=' . urlencode('/home'));
     }
 
     /** @test */
     public function testGuestsCannotLogInHere()
     {
         $this->post('/login', ['email' => 'member@example.com', 'password' => 'password'])
-            ->assertRedirect(config('handoff.target_host').'/login');
+            ->assertRedirect(config('handoff.target_host') . '/login');
 
         $this->assertGuest();
     }
@@ -52,7 +52,7 @@ class RedirectLoginTest extends TestCase
     public function testGuestsResetTheirPasswordOnTheNewApp()
     {
         $this->get(route('password.request'))
-            ->assertRedirect(config('handoff.target_host').'/forgot-password');
+            ->assertRedirect(config('handoff.target_host') . '/forgot-password');
     }
 
     /** @test */
@@ -62,6 +62,6 @@ class RedirectLoginTest extends TestCase
             ->assertRedirect('/nova/login');
 
         $this->get('/nova/login')
-            ->assertRedirect(config('handoff.target_host').'/login?intended='.urlencode('/nova'));
+            ->assertRedirect(config('handoff.target_host') . '/login?intended=' . urlencode('/nova'));
     }
 }

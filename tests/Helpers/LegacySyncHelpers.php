@@ -11,7 +11,7 @@ use function PHPUnit\Framework\assertNotNull;
 class LegacySyncHelpers
 {
     /**
-     * Setup new database with in-memory SQLite
+     * Setup new database with in-memory SQLite.
      */
     public static function setupNewDatabase(): void
     {
@@ -53,7 +53,7 @@ class LegacySyncHelpers
     }
 
     /**
-     * Setup legacy database and verify sync between databases
+     * Setup legacy database and verify sync between databases.
      *
      * @param  string  $table  The table name to check
      * @param  int  $id  The record ID to check

@@ -25,7 +25,7 @@ class RedirectAccountInfoTest extends TestCase
             ->headers->get('Location');
 
         $this->assertStringStartsWith('http://squawk.agepac.org.test/handoff?', $location);
-        $this->assertStringContainsString('target='.urlencode('/settings/profile'), $location);
+        $this->assertStringContainsString('target=' . urlencode('/settings/profile'), $location);
         $this->assertStringContainsString('signature=', $location);
     }
 
