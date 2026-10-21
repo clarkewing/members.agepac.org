@@ -1,9 +1,9 @@
-dist: bionic
+dist: jammy
 
 language: php
 
 php:
-  - 7.4
+  - 8.3
 
 before_script:
   - cp .env.travis .env

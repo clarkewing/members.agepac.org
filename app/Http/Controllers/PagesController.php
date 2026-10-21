@@ -27,7 +27,7 @@ class PagesController extends Controller
     public function show(Request $request, Page $page)
     {
         if (! $page->restricted) {
-            return redirect()->away(config('app.public_site_url')."/pages/{$page->path}");
+            return redirect()->away(config('app.public_site_url') . "/pages/{$page->path}");
         }
 
         if (is_null($user = $request->user())) {

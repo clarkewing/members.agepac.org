@@ -35,12 +35,11 @@ class MailcoachApiFake extends MailcoachApi
         string $email,
         string $first_name = null,
         string $last_name = null,
-        array  $extra_attributes = null,
+        array $extra_attributes = null,
         string $listUuid = null,
-        bool   $skipConfirmation = false,
-        bool   $skipWelcomeMail = false,
-    ): ?Subscriber
-    {
+        bool $skipConfirmation = false,
+        bool $skipWelcomeMail = false,
+    ): ?Subscriber {
         return tap(new Subscriber(
             uuid: Str::uuid()->toString(),
             email: $email,
@@ -109,7 +108,7 @@ class MailcoachApiFake extends MailcoachApi
     {
         $listUuid ??= config('services.mailcoach.lists.default');
 
-        return "{$listUuid}::".strtolower($email);
+        return "{$listUuid}::" . strtolower($email);
     }
 
     protected function updateSubscriber(Subscriber $targetSubscriber, callable $mutator): void

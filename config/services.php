@@ -45,7 +45,7 @@ return [
         'token' => env('MAILCOACH_TOKEN'),
         'lists' => [
             'default' => env('MAILCOACH_DEFAULT_LIST_UUID'),
-        ]
+        ],
     ],
 
 ];
