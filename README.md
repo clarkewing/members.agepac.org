@@ -22,7 +22,7 @@ The [AGEPAC](http://www.agepac.org "View the AGEPAC website") is a non-profit as
 
 ### Step 1.
 
-> To run this project, you must have PHP 7.2 or higher installed as a prerequisite.
+> To run this project, you must have PHP 8.3 installed as a prerequisite.
 
 Begin by cloning this repository to your machine, and installing all Composer dependencies.
 
