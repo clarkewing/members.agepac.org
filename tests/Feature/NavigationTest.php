@@ -13,7 +13,7 @@ class NavigationTest extends TestCase
             ->assertRedirect(route('login'));
 
         $this->get(route('login'))
-            ->assertRedirect(config('handoff.target_host').'/login');
+            ->assertRedirect(config('handoff.target_host') . '/login');
     }
 
     /** @test */
